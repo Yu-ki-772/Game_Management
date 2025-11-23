@@ -1,7 +1,11 @@
 ## サービス概要
 「ゲームを長時間やってしまう」、「ゲーム仲間に上手く切り出せない」を解決するアプリです。
+
 ## 画面遷移図
-[Figmaリンク]( https://www.figma.com/design/PRGRQvJJLNZn0P9iSbN27m/Game_Management?node-id=0-1&t=lGb1RV0cOcybh6KE-1 )
+[Figmaリンク](https://www.figma.com/design/PRGRQvJJLNZn0P9iSbN27m/Game_Management?node-id=0-1&t=lGb1RV0cOcybh6KE-1)
+
+## ER図
+[draw.ioリンク](https://drive.google.com/file/d/1peliZu3S-7Y-Ucdi7gNU5Jug4bT9Q32d/view?usp=sharing)
 
 ## このサービスへの思い・作りたい理由
 『自分がよくゲームをしていた時期に、夢中になってなかなかやめようと思えない』、『一緒にプレイしているゲーム仲間へ「やめます」と言いづらい』といった問題が発生していた。この問題が解決しやすくなれば、時間管理がスムーズに行きやすくなる。
