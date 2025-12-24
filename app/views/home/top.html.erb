@@ -1,3 +1,63 @@
-<h1>仮トップページ</h1>
-<p>動作確認</p>
-<p>環境: <%= Rails.env %></p>
+
+<div class="px-4 py-5 my-5 text-center">
+  <%# ロゴが出来次第、変更 %>
+  <span class="d-block mx-auto mb-4">MyApp</span>
+  <%# キャッチフレーズ %>
+  <h1 class="display-5 fw-bold text-body-emphasis">
+    ゲーム時間をスマートに
+  </h1>
+  
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">
+      適切なタイミングでのプレイ終了をサポート。
+    </p>
+    
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      <%= link_to "ログイン", "#", class: "btn btn-dark btn-lg px-4 gap-3" %>
+    </div>
+  </div>
+</div>
+
+
+<%# 機能紹介セクション %>
+<div class="container px-4 py-5" id="featured-3">
+  <h2 class="pb-2 border-bottom">Features</h2>
+  
+  <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+    <div class="feature col">
+      <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-dark bg-gradient fs-2 mb-3 p-3 rounded-3">
+        <i class="bi bi-alarm"></i>
+      </div>
+      <h3 class="fs-2 text-body-emphasis">
+        <%= link_to "アラーム", '#' %>
+      </h3>
+      <p>
+        終了予定時刻を設定。
+      </p>
+    </div>
+
+    <div class="feature col">
+      <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-dark bg-gradient fs-2 mb-3 p-3 rounded-3">
+        <i class="bi bi-clipboard-data"></i>
+      </div>
+      <h3 class="fs-2 text-body-emphasis">
+        <%= link_to "記録", '#' %>
+      </h3>
+      <p>
+        プレイ時間の節制の記録確認。
+      </p>
+    </div>
+
+    <div class="feature col">
+      <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-dark bg-gradient fs-2 mb-3 p-3 rounded-3">
+        <i class="bi bi-chat-text"></i>
+      </div>
+      <h3 class="fs-2 text-body-emphasis">
+        <%= link_to "定型文", '#' %>
+      </h3>
+      <p>
+        終了したい時、ゲーム仲間へのメッセージを考える手間を省きます。
+      </p>
+    </div>
+  </div>
+</div>
