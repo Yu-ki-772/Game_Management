@@ -24,6 +24,17 @@
   </head>
 
   <body>
-    <%= yield %>
+    <!-- ヘッダ -->
+    <%= render 'shared/header' %>
+    <div class="container-fluid">
+      <div class="d-flex">
+        <!-- サイドバー -->
+        <%= render 'shared/sidebar' %>
+        <!-- メインコンテンツ -->
+        <main class="flex-grow-1 p-3">
+          <%= yield %>
+        </main>
+      </div>
+    </div>
   </body>
 </html>
