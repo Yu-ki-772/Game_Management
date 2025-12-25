@@ -32,6 +32,14 @@
         <%= render 'shared/sidebar' %>
         <!-- メインコンテンツ -->
         <main class="flex-grow-1 p-3">
+          <!-- フラッシュメッセージ関連 -->
+          <% if notice %>
+            <p class="alert alert-success" role="alert"><%= notice %></p>
+          <% end %>
+          <% if alert %>
+            <p class="alert alert-danger" role="alert"><%= alert %></p>
+          <% end %>
+
           <%= yield %>
         </main>
       </div>
