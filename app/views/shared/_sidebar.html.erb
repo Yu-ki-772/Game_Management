@@ -1,21 +1,26 @@
-<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-secondary" style="width: 280px; min-height: 100vh;">
-  <nav>
-    <ul class="nav flex-column">
-      <li class="nav-item">
-        <%= link_to "Home", root_path, class: "nav-link text-white" %>
+<aside class="w-64 bg-gray-700 text-white min-h-screen">
+  <nav class="p-4">
+    <ul class="space-y-2">
+      <li>
+        <%= link_to "Home", root_path, 
+            class: "block px-4 py-2 rounded hover:bg-gray-600 transition" %>
       </li>
-      <li class="nav-item">
-        <%= link_to "アラーム", "#", class: "nav-link text-white" %>
+      <li>
+        <%= link_to "アラーム", "#", 
+            class: "block px-4 py-2 rounded hover:bg-gray-600 transition" %>
       </li>
-      <li class="nav-item">
-        <%= link_to "アラーム解除", "#", class: "nav-link text-white" %>
+      <li>
+        <%= link_to "アラーム解除", "#", 
+            class: "block px-4 py-2 rounded hover:bg-gray-600 transition" %>
       </li>
-      <li class="nav-item">
-        <%= link_to "記録", "#", class: "nav-link text-white" %>
+      <li>
+        <%= link_to "記録", "#", 
+            class: "block px-4 py-2 rounded hover:bg-gray-600 transition" %>
       </li>
-      <li class="nav-item">
-        <%= link_to "定型文", "#", class: "nav-link text-white" %>
+      <li>
+        <%= link_to "定型文", "#", 
+            class: "block px-4 py-2 rounded hover:bg-gray-600 transition" %>
       </li>
     </ul>
   </nav>
-</div>
+</aside>

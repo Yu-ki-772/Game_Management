@@ -23,21 +23,25 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
+  <body class="bg-gray-50">
     <!-- ヘッダ -->
     <%= render 'shared/header' %>
     <div class="container-fluid">
-      <div class="d-flex">
+      <div class="flex">
         <!-- サイドバー -->
         <%= render 'shared/sidebar' %>
         <!-- メインコンテンツ -->
-        <main class="flex-grow-1 p-3">
+        <main class="flex-1 p-6">
           <!-- フラッシュメッセージ関連 -->
           <% if notice %>
-            <p class="alert alert-success" role="alert"><%= notice %></p>
+            <div class="mb-4 rounded-lg bg-green-50 p-4 text-green-800 border border-green-200" role="alert">
+              <%= notice %>
+            </div>
           <% end %>
           <% if alert %>
-            <p class="alert alert-danger" role="alert"><%= alert %></p>
+            <div class="mb-4 rounded-lg bg-red-50 p-4 text-red-800 border border-red-200" role="alert">
+              <%= alert %>
+            </div>
           <% end %>
 
           <%= yield %>
