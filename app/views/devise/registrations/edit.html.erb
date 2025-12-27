@@ -1,43 +1,79 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full bg-white rounded-lg shadow-md p-8">
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold text-gray-900 text-center">アカウント設定</h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        登録情報を更新できます
+      </p>
+    </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "space-y-6" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+      <div>
+        <%= f.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= f.email_field :email, 
+            autofocus: true, 
+            autocomplete: "email",
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" %>
+      </div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div class="text-sm text-amber-600 bg-amber-50 p-3 rounded-lg">
+          確認待ち: <%= resource.unconfirmed_email %>
+        </div>
+      <% end %>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+      <div>
+        <%= f.label :password, class: "block text-sm font-medium text-gray-700 mb-2" do %>
+          パスワード
+          <span class="text-xs text-gray-500">(変更しない場合は空欄のままにしてください)</span>
+        <% end %>
+        <%= f.password_field :password, 
+            autocomplete: "new-password",
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" %>
+        <% if @minimum_password_length %>
+          <p class="mt-1 text-xs text-gray-500"><%= @minimum_password_length %> 文字以上</p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= f.label :password_confirmation, "パスワード確認", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= f.password_field :password_confirmation, 
+            autocomplete: "new-password",
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" %>
+      </div>
+
+      <div>
+        <%= f.label :current_password, "現在のパスワード", class: "block text-sm font-medium text-gray-700 mb-2" do %>
+          現在のパスワード
+          <span class="text-xs text-gray-500">(変更を確認するために必要です)</span>
+        <% end %>
+        <%= f.password_field :current_password, 
+            autocomplete: "current-password",
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" %>
+      </div>
+
+      <div>
+        <%= f.submit "更新", 
+            class: "w-full py-3 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900" %>
+      </div>
     <% end %>
+
+    <div class="mt-8 pt-6 border-t border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">アカウントの削除</h3>
+      <p class="text-sm text-gray-600 mb-4">
+        アカウントを削除すると、すべてのデータが失われます。この操作は取り消せません。
+      </p>
+      <%= button_to "アカウントを削除する", 
+          registration_path(resource_name), 
+          data: { confirm: "本当にアカウントを削除しますか？この操作は取り消せません。", turbo_confirm: "本当にアカウントを削除しますか？" }, 
+          method: :delete,
+          class: "w-full py-2 px-4 border-2 border-red-500 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition font-semibold" %>
+    </div>
+
+    <div class="mt-6 text-center">
+      <%= link_to "戻る", :back, class: "text-sm text-gray-600 hover:text-gray-900 transition" %>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+</div>
