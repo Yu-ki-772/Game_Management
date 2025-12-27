@@ -1,0 +1,16 @@
+<div>
+  <% @message_templates.group_by(&:reason).each do |reason, templates| %>
+    <section>
+      <div>
+        <%= reason %>
+      </div>
+      <ul>
+        <% templates.each do |template| %>
+          <li>
+            <%= template.template %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+</div>
