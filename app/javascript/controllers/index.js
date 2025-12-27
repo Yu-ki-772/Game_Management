@@ -6,3 +6,7 @@ import { application } from "./application"
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+// ヘッダのドロップダウン
+import Dropdown from '@stimulus-components/dropdown'
+application.register('dropdown', Dropdown)
