@@ -1,0 +1,25 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold pb-4 border-b-2 border-gray-300 mb-8">定型文一覧</h1>
+  
+  <div class="space-y-8">
+    <% @message_templates.group_by(&:reason).each do |reason, templates| %>
+      <section class="bg-white rounded-lg shadow-md p-6">
+        <div class="mb-4">
+          <h2 class="text-2xl font-bold text-gray-900">
+            <%= reason %>
+          </h2>
+        </div>
+        
+        <ul class="space-y-3">
+          <% templates.each do |template| %>
+            <li class="px-4 py-3 bg-gray-50 rounded hover:bg-gray-100 transition">
+              <p class="text-gray-700">
+                <%= template.template %>
+              </p>
+            </li>
+          <% end %>
+        </ul>
+      </section>
+    <% end %>
+  </div>
+</div>
