@@ -16,9 +16,9 @@ class AlarmsController < ApplicationController
     @alarm = current_user.alarms.new(alarm_params)
 
     if @alarm.save
-      redirect_to alarms_path, notice: 'アラームを作成しました'
+      redirect_to alarms_path, notice: "アラームを作成しました"
     else
-      flash.now[:danger] = 'アラームを作成できませんでした'
+      flash.now[:danger] = "アラームを作成できませんでした"
       render :new, status: :unprocessable_entity
     end
   end
