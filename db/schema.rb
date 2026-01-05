@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_27_112556) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_29_045956) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "alarms", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "label", default: "アラーム", null: false
+    t.datetime "scheduled_at", null: false
+    t.boolean "sent", default: false, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_alarms_on_user_id"
+  end
 
   create_table "message_templates", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -33,4 +43,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_27_112556) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "alarms", "users"
 end

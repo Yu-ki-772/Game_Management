@@ -3,3 +3,6 @@ ja:
     attributes:
       user:
         name: ユーザーネーム
+      alarm:
+        label: ラベル
+        scheduled_at: 日時
