@@ -1,0 +1,29 @@
+<%# アラーム作成画面 %>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold pb-4 border-b-2 border-gray-300 mb-8">アラームを作成</h1>
+  <div class="bg-white rounded-lg shadow-md p-6 max-w-2xl">
+    <%= form_with model: @alarm, class: "space-y-6" do |f| %>
+      <%# バリデーションエラー表示用のパーシャルを読込 %>
+      <%= render 'shared/error_messages', object: f.object %>
+      <div>
+        <%= f.label :label, 'ラベル', class: "block text-gray-700 font-semibold mb-2" %>
+        <%= f.text_field :label, 
+            placeholder: 'アラーム', 
+            class: "w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent" %>
+      </div>
+
+      <div>
+        <%= f.label :scheduled_at, '日時', class: "block text-gray-700 font-semibold mb-2" %>
+        <%= f.datetime_field :scheduled_at, 
+            class: "w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent" %>
+      </div>
+
+      <div class="flex items-center space-x-4 pt-4">
+        <%= f.submit 'アラームを作成', 
+            class: "px-6 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition font-semibold cursor-pointer" %>
+        <%= link_to 'キャンセル', alarms_path, 
+            class: "px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition font-semibold" %>
+      </div>
+    <% end %>
+  </div>
+</div>
