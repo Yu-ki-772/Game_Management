@@ -31,9 +31,9 @@ class AlarmsController < ApplicationController
     @alarm = current_user.alarms.find(params[:id])
 
     if @alarm.update(alarm_params)
-      redirect_to alarms_path, notice: 'アラームを更新しました'
+      redirect_to alarms_path, notice: "アラームを更新しました"
     else
-      flash.now[:danger] = 'アラームを更新できませんでした'
+      flash.now[:danger] = "アラームを更新できませんでした"
       render :edit, status: :unprocessable_entity
     end
   end
@@ -41,7 +41,7 @@ class AlarmsController < ApplicationController
   def destroy
     @alarm = current_user.alarms.find(params[:id])
     @alarm.destroy!
-    redirect_to alarms_path, notice: 'アラームを削除しました', status: :see_other
+    redirect_to alarms_path, notice: "アラームを削除しました", status: :see_other
   end
 
   private
