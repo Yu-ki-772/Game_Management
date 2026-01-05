@@ -11,10 +11,10 @@
       </div>
       
       <div class="flex flex-col space-y-1.5">
-        <%= link_to '編集', "#",
+        <%= link_to '編集', edit_alarm_path(alarm),
             class: "px-3 py-1.5 bg-gray-100 text-gray-900 rounded hover:bg-gray-200 transition font-semibold text-center text-sm" %>
         
-        <%= button_to "#",
+        <%= button_to alarm_path(alarm),
             method: :delete,
             data: { turbo_confirm: '本当に削除しますか?' },
             class: "px-3 py-1.5 bg-red-700 text-white rounded hover:bg-red-800 transition font-semibold text-center text-sm" do %>
