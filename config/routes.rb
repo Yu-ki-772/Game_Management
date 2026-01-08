@@ -14,4 +14,16 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # 開発環境でメール送信を確認（letter_opener_web）
+  # URL: http://localhost:3000/letter_opener/
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+
+
+  # バックグラウンドジョブのダッシュボード（good_job）
+  # ※管理者ユーザのみアクセス可能
+  # URL: http://localhost:3000/good_job/jobs?locale=ja
+  authenticate :user, ->(user) { user.admin? } do
+    mount GoodJob::Engine => "good_job"
+  end
 end

@@ -46,6 +46,12 @@ gem "image_processing", "~> 1.2"
 gem "devise", "4.9.4"
 gem "devise-i18n", "~> 1.15"
 
+# メール送信サービス
+gem "resend", "~> 1.0"
+
+# バックグラウンドジョブの実装用
+gem "good_job", "~> 4.13", ">= 4.13.1"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -63,6 +69,8 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  # 開発環境でのメール確認用
+  gem "letter_opener_web", "~> 3.0"
 end
 
 group :test do

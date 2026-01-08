@@ -8,6 +8,11 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+
+# ============================================================
+# 定型文のデフォルトデータ投入
+# ============================================================
+
 # リセット処理
 MessageTemplate.destroy_all
 
@@ -40,3 +45,18 @@ end
 
 # 確認用のログを出力
 puts "#{MessageTemplate.count}件の定型文を作成しました。"
+
+
+
+# ============================================================
+# 管理者ユーザのデータを投入
+# ============================================================
+user = User.find_or_create_by!(email: "admin@example.com") do |user|
+  user.name = "管理者"
+  user.password = ENV["ADMIN_PASSWORD"]
+  user.password_confirmation = ENV["ADMIN_PASSWORD"]
+  user.admin = true
+end
+
+# 確認用のログ
+puts "管理者ユーザ： #{user.email}"

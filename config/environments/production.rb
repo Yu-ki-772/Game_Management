@@ -50,15 +50,23 @@ Rails.application.configure do
   config.cache_store = :solid_cache_store
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
-  config.active_job.queue_adapter = :solid_queue
-  config.solid_queue.connects_to = { database: { writing: :queue } }
+  # solid_queue関連の設定をコメントアウト
+  # config.active_job.queue_adapter = :solid_queue
+  # config.solid_queue.connects_to = { database: { writing: :queue } }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+
+  # メールテンプレートをキャッシュに保存
+  config.action_mailer.perform_caching = true
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+
+  # https方式で接続
+  config.action_mailer.default_url_options = { host: ENV["APP_HOST"], protocol: "https" }
+
+  # メールの配信方法としてresendを設定
+  config.action_mailer.delivery_method = :resend
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
   # config.action_mailer.smtp_settings = {
@@ -87,4 +95,27 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # good_jobの設定
+  config.good_job = {
+    # ジョブが終了した後もジョブ記録を保持
+    preserve_job_records: true,
+
+    # エラーハンドリング
+    on_thread_error: ->(exception) { Rails.error.report(exception) },
+
+    # Webサーバプロセス内でジョブを実行
+    execution_mode: :async,
+
+    # すべてのキューを処理
+    queues: "*",
+
+    # スレッド数の制約を設定
+    max_threads: 2,
+
+    # DBへのポーリングの間隔（秒数）を設定
+    poll_interval: 30,
+
+    dashboard_default_locale: :ja
+  }
 end
