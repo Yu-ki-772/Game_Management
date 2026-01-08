@@ -7,7 +7,7 @@ class Alarm < ApplicationRecord
   validate :scheduled_at_must_be_in_the_future
 
   # コールバック
-  after_commit :schedule_notification_job, on: [:create, :update]
+  after_commit :schedule_notification_job, on: [ :create, :update ]
   after_commit :cancel_existing_job, on: :destroy
 
   # スコープ

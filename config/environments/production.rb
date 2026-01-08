@@ -102,13 +102,13 @@ Rails.application.configure do
     preserve_job_records: true,
 
     # エラーハンドリング
-    on_thread_error: -> (exception) { Rails.error.report(exception) },
+    on_thread_error: ->(exception) { Rails.error.report(exception) },
 
     # Webサーバプロセス内でジョブを実行
     execution_mode: :async,
 
     # すべてのキューを処理
-    queues: '*',
+    queues: "*",
 
     # スレッド数の制約を設定
     max_threads: 2,
@@ -116,6 +116,6 @@ Rails.application.configure do
     # DBへのポーリングの間隔（秒数）を設定
     poll_interval: 30,
 
-    dashboard_default_locale: :ja,
+    dashboard_default_locale: :ja
   }
 end

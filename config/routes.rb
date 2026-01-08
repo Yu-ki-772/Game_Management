@@ -24,6 +24,6 @@ Rails.application.routes.draw do
   # ※管理者ユーザのみアクセス可能
   # URL: http://localhost:3000/good_job/jobs?locale=ja
   authenticate :user, ->(user) { user.admin? } do
-    mount GoodJob::Engine => 'good_job'
+    mount GoodJob::Engine => "good_job"
   end
 end
