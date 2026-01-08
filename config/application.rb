@@ -23,6 +23,7 @@ module Myapp
 
     # タイムゾーンを日本時間に設定
     config.time_zone = "Tokyo"
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -30,5 +31,8 @@ module Myapp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # active_jobのキューアダプターをgood_jobに設定
+    config.active_job.queue_adapter = :good_job
   end
 end
