@@ -10,7 +10,7 @@ class AlarmsController < ApplicationController
     if user_signed_in?
       # ログインしている場合の処理
       # 未送信でかつ未来のものに絞る
-      @alarms = current_user.alarms.unsent.future.order(scheduled_at: :asc)
+      @alarms = current_user.alarms.unsent.future.locked.order(scheduled_at: :asc)
     end
   end
 
