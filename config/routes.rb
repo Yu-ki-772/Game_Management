@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
-  resources :alarms, only: %i[index new create edit update destroy]
+  resources :alarms, only: %i[index new create edit update destroy] do
+    collection do
+      get :pending
+    end
+    member do
+      patch :unlock
+    end
+  end
+  resources :alarm_logs, only: %i[ index ]
   resources :message_templates, only: [ :index ]
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

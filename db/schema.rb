@@ -10,19 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_07_010334) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_11_025622) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
+  create_table "alarm_logs", force: :cascade do |t|
+    t.bigint "alarm_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "minutes_to_unlock"
+    t.datetime "unlocked_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["alarm_id"], name: "index_alarm_logs_on_alarm_id"
+  end
+
   create_table "alarms", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.boolean "ignored", default: false, null: false
     t.string "job_id"
     t.string "label", default: "アラーム", null: false
     t.datetime "scheduled_at", null: false
     t.boolean "sent", default: false, null: false
+    t.boolean "unlocked", default: false, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["job_id"], name: "index_alarms_on_job_id"
+    t.index ["scheduled_at"], name: "index_alarms_on_scheduled_at"
     t.index ["user_id"], name: "index_alarms_on_user_id"
   end
 
@@ -138,5 +150,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_07_010334) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "alarm_logs", "alarms"
   add_foreign_key "alarms", "users"
 end

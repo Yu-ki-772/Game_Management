@@ -1,0 +1,61 @@
+<div class="container mx-auto px-4 py-8">
+
+  <%# 統計データセクション %>
+  <h1 class="text-2xl font-bold pb-4 border-b-2 border-gray-300 mb-8">統計</h1>
+  <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div class="grid grid-cols-2 gap-4">
+      <div class="text-center">
+        <p class="text-gray-600 text-sm mb-1">記録の平均</p>
+        <p class="text-3xl font-bold text-gray-900">
+          <%# 記録の平均(分) %>
+          <%= format_minutes_defer(@alarm_logs.average(:minutes_to_unlock)&.round) %>
+        </p>
+      </div>
+      <div class="text-center">
+        <p class="text-gray-600 text-sm mb-1">記録数</p>
+        <p class="text-3xl font-bold text-gray-900">
+          <%# 記録の件数 %>
+          <%= @alarm_logs.count %>件
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <%# 記録一覧セクション %>
+  <h2 class="text-2xl font-bold pb-4 border-b-2 border-gray-300 mb-8">記録一覧</h2>
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+    <% @alarm_logs.each do |alarm_log| %>
+      <div class="bg-white rounded-lg shadow-md p-5 aspect-square flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <span class="text-2xl font-bold text-gray-900">
+                <%= format_minutes_defer(alarm_log.minutes_to_unlock) %>
+              </span>
+              <% if alarm_log.alarm.ignored %>
+                <span class="ml-2 px-2 py-1 bg-red-100 text-red-700 text-sm rounded">
+                  長すぎ
+                </span>
+              <% end %>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm text-gray-600">
+            <div class="flex items-start">
+              <span class="font-semibold mr-2 whitespace-nowrap">ラベル:</span>
+              <span class="truncate"><%= alarm_log.alarm.label %></span>
+            </div>
+            <div class="flex items-start">
+              <span class="font-semibold mr-2 whitespace-nowrap">予定:</span>
+              <span class="text-xs"><%= l(alarm_log.alarm.scheduled_at, format: :short) %></span>
+            </div>
+            <div class="flex items-start">
+              <span class="font-semibold mr-2 whitespace-nowrap">やめた時間:</span>
+              <span class="text-xs"><%= l(alarm_log.unlocked_at, format: :short) %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

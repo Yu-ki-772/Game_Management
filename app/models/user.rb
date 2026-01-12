@@ -5,6 +5,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  # Alarmとのアソシエーション
+  # アソシエーション
   has_many :alarms, dependent: :destroy
+  has_many :alarm_logs, through: :alarms
 end
