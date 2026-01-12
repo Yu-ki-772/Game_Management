@@ -8,10 +8,10 @@
       <%= link_to '新規アラーム作成', new_alarm_path, 
           class: "inline-block px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition text-lg font-semibold mb-6" %>
       
-      <%= render 'alarm_list', alarms: @alarms %>
+      <%= render 'alarms/index/alarm_list', alarms: @alarms %>
     <% else %>
       <%# アラーム一覧が存在しない場合 %>
-      <%= render 'no_alarms_message' %>
+      <%= render 'alarms/index/no_alarms_message' %>
     <% end %>
   </div>
 </div>

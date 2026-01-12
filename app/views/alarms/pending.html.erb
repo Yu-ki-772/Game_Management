@@ -1,0 +1,30 @@
+<%# アラーム解除画面 %>
+
+<%# バリデーションエラーの表示 %>
+<% if @alarm_log&.errors&.any? %>
+  <%= render 'shared/error_messages', object: @alarm_log %>
+<% end %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-8">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-900">アラーム解除画面</h1>
+      <%= link_to '新規アラーム作成', new_alarm_path, 
+          class: "inline-block px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition text-lg font-semibold" %>
+    </div>
+    
+    <div class="text-sm text-gray-600 mb-6">
+      ※一日以上先または一日以上前のアラームは表示されません
+    </div>
+    
+    <% if @alarms.present? %>
+      <%# 解除可能なアラームが存在する場合 %>
+      <%= render 'alarms/pending/alarm_list', alarms: @alarms %>
+    <% else %>
+      <%# 解除可能なアラームが存在しない場合 %>
+      <%= render 'alarms/pending/no_alarms_message' %>
+    <% end %>
+  </div>
+</div>
+
+
