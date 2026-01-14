@@ -67,6 +67,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # N+1問題対策
+  gem "bullet", "~> 8.1"
 end
 
 group :development do
@@ -74,9 +77,6 @@ group :development do
   gem "web-console"
   # 開発環境でのメール確認用
   gem "letter_opener_web", "~> 3.0"
-
-  # N+1問題対策
-  gem "bullet", "~> 8.1"
 end
 
 group :test do
