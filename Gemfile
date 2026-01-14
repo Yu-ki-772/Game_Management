@@ -74,6 +74,9 @@ group :development do
   gem "web-console"
   # 開発環境でのメール確認用
   gem "letter_opener_web", "~> 3.0"
+
+  # N+1問題対策
+  gem 'bullet', '~> 8.1'
 end
 
 group :test do
