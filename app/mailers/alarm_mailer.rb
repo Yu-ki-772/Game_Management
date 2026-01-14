@@ -5,7 +5,7 @@ class AlarmMailer < ApplicationMailer
   #   en.alarm_mailer.alarm_notification.subject
   #
   def alarm_notification(alarm_id)
-    @alarm = Alarm.includes(:user).find_by(id: alarm_id)
+    @alarm = Alarm.find_by(id: alarm_id)
 
     return unless @alarm
 
