@@ -1,7 +1,6 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-
   # bulletの設定
   config.after_initialize do
     Bullet.enable        = true

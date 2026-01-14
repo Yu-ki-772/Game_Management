@@ -76,7 +76,7 @@ group :development do
   gem "letter_opener_web", "~> 3.0"
 
   # N+1問題対策
-  gem 'bullet', '~> 8.1'
+  gem "bullet", "~> 8.1"
 end
 
 group :test do
