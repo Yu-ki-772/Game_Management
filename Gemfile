@@ -49,7 +49,8 @@ gem "action_text-trix", "~> 2.1", ">= 2.1.16"
 gem "devise", "4.9.4"
 gem "devise-i18n", "~> 1.15"
 
-# gem "resend", "~> 1.0"
+# メール送信サービス
+gem "resend", "~> 1.0"
 
 # バックグラウンドジョブの実装用
 gem "good_job", "~> 4.13", ">= 4.13.1"

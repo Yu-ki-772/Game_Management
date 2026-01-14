@@ -65,18 +65,17 @@ Rails.application.configure do
   # https方式で接続
   config.action_mailer.default_url_options = { host: ENV["APP_HOST"], protocol: "https" }
 
-  # メールの送信方法としてsmtpを設定
-  config.action_mailer.delivery_method = :smtp
+  # メールの配信方法としてresendを設定
+  config.action_mailer.delivery_method = :resend
 
-  # SMTP設定
-  config.action_mailer.smtp_settings = {
-    user_name: ENV['MAIL_ADDRESS'],
-    password: ENV['MAIL_PASSWORD'],
-    address: "smtp.gmail.com",
-    port: 587,
-    authentication: :plain,
-    enable_starttls_auto: true
-  }
+  # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
+  # config.action_mailer.smtp_settings = {
+  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
+  #   password: Rails.application.credentials.dig(:smtp, :password),
+  #   address: "smtp.example.com",
+  #   port: 587,
+  #   authentication: :plain
+  # }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
