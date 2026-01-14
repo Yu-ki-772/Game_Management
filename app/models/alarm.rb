@@ -61,6 +61,10 @@ class Alarm < ApplicationRecord
 
   private
 
+  #=========================================
+  # privateメソッド
+  #=========================================
+
   # scheduled_atが未来の日時である場合のみ許可する
   def scheduled_at_must_be_in_the_future
     return if scheduled_at.blank?

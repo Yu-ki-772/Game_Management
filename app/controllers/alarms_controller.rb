@@ -1,11 +1,16 @@
 class AlarmsController < ApplicationController
+  #=================================================
+  # フィルタ設定
+  #=================================================
   # indexとpendingのみログイン前でも許可
   skip_before_action :authenticate_user!, only: [ :index, :pending ]
 
   # 対象アラームをセット
   before_action :set_alarm, only: [ :edit, :update, :unlock, :destroy ]
 
-
+  #=================================================
+  # 一覧・表示系アクション
+  #=================================================
   def index
     if user_signed_in?
       # ログインしている場合の処理
@@ -13,7 +18,6 @@ class AlarmsController < ApplicationController
       @alarms = current_user.alarms.unsent.future.locked.order(scheduled_at: :asc)
     end
   end
-
 
   def pending
     if user_signed_in?
@@ -23,6 +27,9 @@ class AlarmsController < ApplicationController
     end
   end
 
+  #=================================================
+  # 作成・更新系アクション
+  #=================================================
   def new
     @alarm = Alarm.new
   end
@@ -61,6 +68,9 @@ class AlarmsController < ApplicationController
     end
   end
 
+  #=================================================
+  # 削除アクション
+  #=================================================
   def destroy
     @alarm.destroy!
     redirect_to alarms_path, notice: "アラームを削除しました", status: :see_other
@@ -68,6 +78,10 @@ class AlarmsController < ApplicationController
 
   private
 
+  #=================================================
+  # privateメソッド
+  #=================================================
+  
   # 現在のユーザのアラームから対象を取得
   def set_alarm
     @alarm = current_user.alarms.find(params[:id])

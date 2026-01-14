@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  #=============================================================
+  # メインリソース
+  #=============================================================
+  root "home#top"
+
   resources :alarms, only: %i[index new create edit update destroy] do
     collection do
       get :pending
@@ -9,19 +14,17 @@ Rails.application.routes.draw do
   end
   resources :alarm_logs, only: %i[ index ]
   resources :message_templates, only: [ :index ]
+
+  #==============================================================
+  # ログイン認証
+  #==============================================================
   devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  root "home#top"
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+
+  #==============================================================
+  # その他
+  #==============================================================
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 
   # 開発環境でメール送信を確認（letter_opener_web）
   # URL: http://localhost:3000/letter_opener/
