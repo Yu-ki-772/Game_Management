@@ -81,7 +81,7 @@ class AlarmsController < ApplicationController
   #=================================================
   # privateメソッド
   #=================================================
-  
+
   # 現在のユーザのアラームから対象を取得
   def set_alarm
     @alarm = current_user.alarms.find(params[:id])
