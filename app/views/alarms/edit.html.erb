@@ -3,17 +3,27 @@
     <%# バリデーションエラー表示用のパーシャルを読込 %>
     <%= render 'shared/error_messages', object: f.object %>
 
+    <p class="text-sm text-gray-600 mb-4">
+      <span class="text-red-600">*</span>がついているのは必須項目です
+    </p>
+
     <div>
-      <%= f.label :label, 'ラベル', class: "block text-gray-700 font-semibold mb-2" %>
+      <%= f.label :label, class: "block text-gray-700 font-semibold mb-2" do %>
+        ラベル<span class="text-red-600">*</span>
+      <% end %>
       <%= f.text_field :label, 
           placeholder: 'アラーム', 
           class: "w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent" %>
     </div>
 
     <div>
-      <%= f.label :scheduled_at, '日時', class: "block text-gray-700 font-semibold mb-2" %>
+      <%= f.label :scheduled_at, class: "block text-gray-700 font-semibold mb-2" do %>
+        日時<span class="text-red-600">*</span>
+        
+      <% end %>
       <%= f.datetime_field :scheduled_at, 
           class: "w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent" %>
+      <span class="text-xs text-gray-500 font-normal ml-2">(未来の日時のみ可)</span>
     </div>
 
     <div class="pt-4">
