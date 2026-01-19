@@ -2,7 +2,7 @@
   <% if user_signed_in? %>
     <%# ログイン時の表示 %>
     <%# 統計データセクション %>
-    <h1 class="text-2xl font-bold pb-4 border-b-2 border-gray-300 mb-8">統計</h1>
+    <h1 class="text-2xl font-bold pb-4 border-b-2 border-emerald-500 mb-8">統計</h1>
     <section class="bg-white rounded-lg shadow-md p-6 mb-8">
       <div class="grid grid-cols-2 gap-4">
         <div class="text-center">
@@ -23,7 +23,7 @@
     </section>
 
     <%# 記録一覧セクション %>
-    <h2 class="text-2xl font-bold pb-4 border-b-2 border-gray-300 mb-8">記録一覧</h2>
+    <h2 class="text-2xl font-bold pb-4 border-b-2 border-emerald-500 mb-8">記録一覧</h2>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
       <% @alarm_logs.each do |alarm_log| %>
         <div class="bg-white rounded-lg shadow-md p-5 aspect-square flex flex-col justify-between">
@@ -34,7 +34,7 @@
                   <%= format_minutes_defer(alarm_log.minutes_to_unlock) %>
                 </span>
                 <% if alarm_log.alarm.ignored %>
-                  <span class="ml-2 px-2 py-1 bg-red-100 text-red-700 text-sm rounded">
+                  <span class="ml-2 px-2 py-1 bg-red-200 text-red-800 text-sm rounded">
                     長すぎ
                   </span>
                 <% end %>
@@ -68,7 +68,7 @@
           記録機能を利用するにはログインしてください
         </h2>
         <%= link_to "ログイン", new_user_session_path, 
-            class: "inline-block px-8 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition text-lg font-semibold" %>
+            class: "inline-block px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-lg font-semibold" %>
       </div>
     </div>
   <% end %>

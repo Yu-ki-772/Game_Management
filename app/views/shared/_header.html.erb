@@ -1,8 +1,9 @@
-<header class="bg-gray-900 text-white">
+<header class="bg-emerald-700 text-white">
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between py-4">
-      <%= link_to root_path, class: "flex items-center text-white no-underline hover:text-gray-300 transition" do %>
-        <span class="text-2xl font-bold">Game Exit</span>
+      <%= link_to root_path, class: "flex items-center no-underline" do %>
+        <%# アイコンロゴ %>
+        <%= image_tag "logo_mark.png", class: "h-10" %>
       <% end %>
 
       <% if user_signed_in? %>
@@ -11,7 +12,7 @@
           <button 
             type="button" 
             data-action="dropdown#toggle click@window->dropdown#hide"
-            class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-gray-800 transition"
+            class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-emerald-600 transition"
           >
             <span><%= current_user.name %></span>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -29,13 +30,13 @@
             <div class="py-1">
               <%= link_to edit_user_registration_path, 
                   data: { action: "dropdown#toggle" },
-                  class: "block px-4 py-2 text-gray-700 hover:bg-gray-100 transition" do %>
+                  class: "block px-4 py-2 text-gray-700 hover:bg-emerald-50 transition" do %>
                 アカウント設定
               <% end %>
               <%= button_to destroy_user_session_path, 
                   method: :delete,
                   data: { action: "dropdown#toggle" },
-                  class: "block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition" do %>
+                  class: "block w-full text-left px-4 py-2 text-gray-700 hover:bg-emerald-50 transition" do %>
                 ログアウト
               <% end %>
             </div>
@@ -45,7 +46,7 @@
         <!-- 非ログイン時の表示 -->
         <div>
           <%= link_to 'ログイン', new_user_session_path, 
-              class: "px-4 py-2 bg-white text-gray-900 rounded hover:bg-gray-100 transition font-semibold" %>
+              class: "px-4 py-2 bg-white text-emerald-700 rounded hover:bg-emerald-50 transition font-semibold" %>
         </div>
       <% end %>
     </div>
