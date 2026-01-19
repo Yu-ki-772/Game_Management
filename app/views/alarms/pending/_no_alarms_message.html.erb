@@ -8,17 +8,17 @@
       </h2>
       
       <%= link_to "アラームを作成", new_alarm_path, 
-          class: "inline-block px-8 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition text-lg font-semibold" %>
+          class: "inline-block px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-lg font-semibold" %>
     </div>
   <% else %>
     <%# ログアウト時 %>
     <div class="max-w-md mx-auto">
       <h2 class="text-2xl font-bold text-gray-900 mb-4">
-        記録機能を利用するにはログインしてください
+        アラーム解除機能を利用するにはログインしてください
       </h2>
       
       <%= link_to "ログイン", new_user_session_path, 
-          class: "inline-block px-8 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition text-lg font-semibold" %>
+          class: "inline-block px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-lg font-semibold" %>
     </div>
   <% end %>
 </div>
