@@ -15,14 +15,14 @@ module ApplicationHelper
         description: "決めた時間にゲームをやめることをサポートします。※OGP画像はAIで生成したものです。",
         type: "website",
         url: ENV.fetch("APP_URL", "http://localhost:3000"),
-        image: image_url("ogp.png", only_path: false), # 絶対パスで設定
+        image: image_url("ogp.jpg", only_path: false), # 絶対パスで設定
         locale: "ja_JP"
       },
       twitter: {
         card: "summary_large_image",
         title: "ゲーム時間管理サービス",
         description: "決めた時間にゲームをやめることをサポートします。※OGP画像はAIで生成したものです。",
-        image: image_url("ogp.png", only_path: false) # 絶対パスで設定
+        image: image_url("ogp.jpg", only_path: false) # 絶対パスで設定
       }
     }
   end
