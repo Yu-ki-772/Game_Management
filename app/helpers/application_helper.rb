@@ -26,4 +26,18 @@ module ApplicationHelper
       }
     }
   end
+
+  # Xでシェアするボタン用
+  def x_share_url
+    base_url = "https://x.com/intent/tweet"
+
+    # シェアするもの
+    share_data = {
+      text: "ゲーム時間管理サービス",
+      url: ENV.fetch("APP_URL", "http://localhost:3000"),
+      hashtags: "ゲーム,時間管理,GameExit"
+    }
+
+    "#{base_url}?#{share_data.to_query}"
+  end
 end
