@@ -40,4 +40,13 @@ module ApplicationHelper
 
     "#{base_url}?#{share_data.to_query}"
   end
+
+  # サイドバーのメニュー用
+  def active_link_class(path)
+    if current_page?(path)
+      "block px-4 py-2 rounded transition bg-emerald-700"
+    else
+      "block px-4 py-2"
+    end
+  end
 end
