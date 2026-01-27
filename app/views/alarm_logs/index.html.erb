@@ -24,27 +24,34 @@
 
     <%# 記録一覧セクション %>
     <h2 class="text-2xl font-bold pb-4 border-b-2 border-emerald-500 mb-8">記録一覧</h2>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
-      <% @alarm_logs.each do |alarm_log| %>
-        <div class="bg-white rounded-lg shadow-md p-5 aspect-square flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-start mb-3">
-              <div>
-                <span class="text-2xl font-bold text-gray-900">
-                  <%= format_minutes_defer(alarm_log.minutes_to_unlock) %>
-                </span>
-                <% if alarm_log.alarm.ignored %>
-                  <span class="ml-2 px-2 py-1 bg-red-200 text-red-800 text-sm rounded">
-                    長すぎ
+    <div class="max-w-7xl mx-auto px-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
+        <% @alarm_logs.each do |alarm_log| %>
+          <div class="bg-white rounded-lg shadow-md p-5 aspect-square flex flex-col justify-between">
+            <%# 上部 %>
+            <div>
+              <div class="flex justify-between items-start mb-3">
+                <div>
+                  <span class="text-2xl font-bold text-gray-900">
+                    <%= format_minutes_defer(alarm_log.minutes_to_unlock) %>
                   </span>
-                <% end %>
+                  <% if alarm_log.alarm.ignored %>
+                    <span class="ml-2 px-2 py-1 bg-red-200 text-red-800 text-sm rounded">
+                      長すぎ
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+              <div class="text-sm text-gray-600">
+                <div class="flex items-start">
+                  <span class="font-semibold mr-2 whitespace-nowrap">ラベル:</span>
+                  <span class="truncate"><%= alarm_log.alarm.label %></span>
+                </div>
               </div>
             </div>
-            <div class="space-y-2 text-sm text-gray-600">
-              <div class="flex items-start">
-                <span class="font-semibold mr-2 whitespace-nowrap">ラベル:</span>
-                <span class="truncate"><%= alarm_log.alarm.label %></span>
-              </div>
+
+            <%# 下部 %>
+            <div class="space-y-2 text-sm text-gray-600 mt-auto pt-3 border-t border-gray-200">
               <div class="flex items-start">
                 <span class="font-semibold mr-2 whitespace-nowrap">予定:</span>
                 <span class="text-xs"><%= l(alarm_log.alarm.scheduled_at, format: :short) %></span>
@@ -55,9 +62,8 @@
               </div>
             </div>
           </div>
-        </div>
-      <% end %>
-    </div>
+        <% end %>
+      </div>
 
     <%# アラーム解除時のモーダルの表示 %>
     <% if params[:show_modal].present? %>

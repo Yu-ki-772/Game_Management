@@ -1,6 +1,11 @@
 <%# アラーム作成画面 %>
 <div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold pb-4 border-b-2 border-emerald-500 mb-8">アラームを作成</h1>
+  <div class="flex items-baseline gap-3 pb-4 border-b-2 border-emerald-500 mb-8">
+    <h1 class="text-3xl font-bold">アラームを作成</h1>
+    <span class="text-xs bg-green-200 text-green-800 px-3 py-1 rounded-full">
+      ※ 通知はメールで送信されます
+    </span>
+  </div>
   <div class="bg-white rounded-lg shadow-md p-6 max-w-2xl">
     <%= form_with model: @alarm, class: "space-y-6" do |f| %>
       
