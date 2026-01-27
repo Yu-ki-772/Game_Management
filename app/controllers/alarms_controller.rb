@@ -62,7 +62,8 @@ class AlarmsController < ApplicationController
     success, @alarm_log = @alarm.unlock_with_log
 
     if success
-      redirect_to alarm_logs_path, notice: "アラームを解除しました", status: :see_other
+      # モーダル表示用に@alarm_logのidを渡す。
+      redirect_to alarm_logs_path(show_modal: @alarm_log.id), status: :see_other
     else
       handle_unlock_failure
     end

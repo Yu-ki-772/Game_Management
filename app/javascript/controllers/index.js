@@ -10,3 +10,7 @@ application.register("hello", HelloController)
 // ヘッダのドロップダウン
 import Dropdown from '@stimulus-components/dropdown'
 application.register('dropdown', Dropdown)
+
+// アラーム解除時のモーダル表示用
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
