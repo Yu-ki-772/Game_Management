@@ -21,7 +21,7 @@
         <%= f.text_field :name, 
             autofocus: true, 
             autocomplete: "name",
-            class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" %>
+            class: "w-full px-3 py-2 border border-emerald-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent" %>
       </div>
 
       <div>
@@ -30,7 +30,7 @@
         <% end %>
         <%= f.email_field :email, 
             autocomplete: "email",
-            class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" %>
+            class: "w-full px-3 py-2 border border-emerald-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent" %>
       </div>
 
       <div>
@@ -40,7 +40,7 @@
         <% end %>
         <%= f.password_field :password, 
             autocomplete: "new-password",
-            class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" %>
+            class: "w-full px-3 py-2 border border-emerald-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent" %>
         <% if @minimum_password_length %>
           <span class="text-xs text-gray-500">(<%= @minimum_password_length %> 文字以上)</span>
         <% end %>
@@ -52,12 +52,12 @@
         <% end %>
         <%= f.password_field :password_confirmation, 
             autocomplete: "new-password",
-            class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" %>
+            class: "w-full px-3 py-2 border border-emerald-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent" %>
       </div>
 
       <div>
         <%= f.submit "Sign up", 
-            class: "w-full py-3 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900" %>
+            class: "w-full py-3 px-4 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500" %>
       </div>
     <% end %>
 
