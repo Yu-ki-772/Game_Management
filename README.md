@@ -1,7 +1,7 @@
 ## サービス概要
 「ゲームを長時間やってしまう」、「ゲーム仲間に上手く切り出せない」といった問題を解決するアプリです。
 ### <トップ画面>
-<img width="1904" height="908" alt="Image" src="https://github.com/user-attachments/assets/5306c1c1-b25d-43a4-8914-ef06379d0151" />
+<img width="1903" height="909" alt="Image" src="https://github.com/user-attachments/assets/f31ace4a-9f30-4a02-91a2-86e83e600178" />
 
 ## サービスの利用イメージ
 ゲームを切り上げたいときの心理的障壁が減り、自分の思うように時間管理ができるようになる。
