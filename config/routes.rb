@@ -13,7 +13,8 @@ Rails.application.routes.draw do
     end
   end
   resources :alarm_logs, only: %i[ index ]
-  resources :message_templates, only: [ :index ]
+
+  resources :message_templates, only: [ :index, :new, :create, :edit, :update, :destroy ]
 
   #==============================================================
   # ログイン認証

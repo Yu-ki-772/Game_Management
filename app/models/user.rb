@@ -8,4 +8,5 @@ class User < ApplicationRecord
   # アソシエーション
   has_many :alarms, dependent: :destroy
   has_many :alarm_logs, through: :alarms
+  has_many :message_templates, dependent: :destroy
 end
