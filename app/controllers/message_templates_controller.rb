@@ -8,8 +8,14 @@ class MessageTemplatesController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :index ]
 
   def index
-    # デフォルトデータと、自分で作成したもののみ取得
-    @message_templates = MessageTemplate.where(user_id: [ current_user.id, nil ])
+    if user_signed_in?
+      # デフォルトデータと、自分で作成したもののみ取得
+      @message_templates = MessageTemplate.where(user_id: [ current_user.id, nil ])
+
+    else
+      # デフォルトデータのみ取得
+      @message_templates = MessageTemplate.where(user_id: nil)
+    end
   end
 
   def new
