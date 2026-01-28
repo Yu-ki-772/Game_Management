@@ -7,8 +7,11 @@
         解除可能なアラームが登録されていません
       </h2>
       
-      <%= link_to "アラームを作成", new_alarm_path, 
-          class: "inline-block px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-lg font-semibold" %>
+      <%= link_to new_alarm_path, 
+                  class: "inline-flex px-8 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition text-lg font-semibold items-center gap-2" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+        アラームを作成
+      <% end %>
     </div>
   <% else %>
     <%# ログアウト時 %>
@@ -17,8 +20,12 @@
         アラーム解除機能を利用するにはログインしてください
       </h2>
       
-      <%= link_to "ログイン", new_user_session_path, 
-          class: "inline-block px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-lg font-semibold" %>
+      <%= link_to new_user_session_path, 
+          class: "inline-flex px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-lg font-semibold items-center gap-3" do %>
+        <span>ログイン</span>
+        <%# 矢印マーク %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M15 16l4 -4" /><path d="M15 8l4 4" /></svg>
+      <% end %>
     </div>
   <% end %>
 </div>
