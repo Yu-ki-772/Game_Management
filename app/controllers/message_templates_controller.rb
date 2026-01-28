@@ -9,7 +9,7 @@ class MessageTemplatesController < ApplicationController
 
   def index
     # デフォルトデータと、自分で作成したもののみ取得
-    @message_templates = MessageTemplate.where(user_id: [current_user.id, nil])
+    @message_templates = MessageTemplate.where(user_id: [ current_user.id, nil ])
   end
 
   def new
