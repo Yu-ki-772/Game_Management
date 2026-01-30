@@ -14,7 +14,15 @@ Rails.application.routes.draw do
   end
   resources :alarm_logs, only: %i[ index ]
 
-  resources :message_templates, only: [ :index, :new, :create, :edit, :update, :destroy ]
+  resources :message_templates, only: [ :index, :new, :create, :edit, :update, :destroy ] do
+    collection do
+      get :bookmarks
+    end
+  end
+  #=============================================================
+  # 補助リソース
+  #=============================================================
+  resources :bookmarks, only: %i[create destroy] # message_templatesのブックマーク機能用
 
   #==============================================================
   # ログイン認証

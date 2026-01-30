@@ -18,6 +18,11 @@ class MessageTemplatesController < ApplicationController
     end
   end
 
+  # ブックマークした定型文の一覧表示用
+  def bookmarks
+    @bookmarks_message_templates = current_user.bookmarks_message_templates.order(created_at: :desc)
+  end
+
   def new
     @message_template = MessageTemplate.new
   end
