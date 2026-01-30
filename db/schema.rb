@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_28_042558) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_29_042852) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -36,6 +36,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_28_042558) do
     t.index ["job_id"], name: "index_alarms_on_job_id"
     t.index ["scheduled_at"], name: "index_alarms_on_scheduled_at"
     t.index ["user_id"], name: "index_alarms_on_user_id"
+  end
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "message_template_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["message_template_id"], name: "index_bookmarks_on_message_template_id"
+    t.index ["user_id", "message_template_id"], name: "index_bookmarks_on_user_id_and_message_template_id", unique: true
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -154,5 +164,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_28_042558) do
 
   add_foreign_key "alarm_logs", "alarms"
   add_foreign_key "alarms", "users"
+  add_foreign_key "bookmarks", "message_templates"
+  add_foreign_key "bookmarks", "users"
   add_foreign_key "message_templates", "users"
 end

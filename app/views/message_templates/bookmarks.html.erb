@@ -1,0 +1,66 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center pb-4 border-b-2 border-emerald-500 mb-8">
+    <h1 class="text-3xl font-bold">定型文一覧</h1>
+    
+    <div class="flex items-center gap-3">
+      <%= link_to message_templates_path,
+                  class: "bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2.5 rounded-lg transition flex items-center gap-2" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-list"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l11 0" /><path d="M9 12l11 0" /><path d="M9 18l11 0" /><path d="M5 6l0 .01" /><path d="M5 12l0 .01" /><path d="M5 18l0 .01" /></svg>
+        すべての定型文
+      <% end %>
+      
+      <%= link_to new_message_template_path,
+                  class: "bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-2.5 rounded-lg transition flex items-center gap-2" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+        定型文を作成
+      <% end %>
+    </div>
+  </div>
+  
+
+  <div class="space-y-8">
+    <% @bookmarks_message_templates.group_by(&:reason).each do |reason, templates| %>
+      <section class="bg-white rounded-lg shadow-md p-6">
+        <div class="mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">
+            <%= reason %>
+          </h2>
+        </div>
+        
+        <ul class="space-y-3">
+          <% templates.each do |template| %>
+            <li class="px-4 py-3 bg-gray-100 rounded hover:bg-gray-200 transition">
+              <div class="flex items-start justify-between gap-4">
+                <p class="text-gray-900 flex-1">
+                  <%= template.template %>
+                </p>
+
+                <div class="flex items-center gap-2 shrink-0">
+                  <%# ブックマーク解除ボタン %>
+                  <%= button_to bookmark_path(current_user.bookmarks.find_by(message_template_id: template.id)),
+                                method: :delete,
+                                class: "px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded transition" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" /></svg>
+                  <% end %>
+
+                  <% if template.user_id.present? %>
+                    <%= link_to edit_message_template_path(template), 
+                                class: "px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold rounded transition" do %>
+                      編集
+                    <% end %>
+                    <%= button_to message_template_path(template), 
+                                  method: :delete,
+                                  data: { turbo_confirm: '本当に削除しますか?' },
+                                  class: "px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded transition" do %>
+                      削除
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </section>
+    <% end %>
+  </div>
+</div>

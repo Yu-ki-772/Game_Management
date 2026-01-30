@@ -2,11 +2,20 @@
   <div class="flex justify-between items-center pb-4 border-b-2 border-emerald-500 mb-8">
     <h1 class="text-3xl font-bold">定型文一覧</h1>
     
-    <%= link_to new_message_template_path, class: "bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-2.5 rounded-lg transition flex items-center gap-2" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-      定型文を作成
-    <% end %>
+    <div class="flex items-center gap-3">
+      <%# ブックマーク一覧へのリンク %>
+      <%= link_to bookmarks_message_templates_path, class: "bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-2.5 rounded-lg transition flex items-center gap-2" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" /></svg>
+        ブックマーク一覧
+      <% end %>
+      
+      <%= link_to new_message_template_path, class: "bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-2.5 rounded-lg transition flex items-center gap-2" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+        定型文を作成
+      <% end %>
+    </div>
   </div>
+  
   
   <div class="space-y-8">
     <% @message_templates.group_by(&:reason).each do |reason, templates| %>
@@ -19,28 +28,45 @@
         
         <ul class="space-y-3">
           <% templates.each do |template| %>
+            <%# 定型文に該当ユーザのブックマークレコードがあれば取得 %>
+            <% bookmark = current_user.bookmarks.find_by(message_template_id: template.id) %>
+
             <li class="px-4 py-3 bg-gray-100 rounded hover:bg-gray-200 transition">
               <div class="flex items-start justify-between gap-4">
-                <p class="text-gray-900">
+                <p class="text-gray-900 flex-1">
                   <%= template.template %>
                 </p>
-                
-                <%# user_idが存在する場合のみボタンを表示 %>
-                <% if template.user_id.present? %>
-                  <div class="flex items-center gap-2 shrink-0">
+
+                <div class="flex items-center gap-2 shrink-0">
+                  <% if bookmark %>
+                    <%# ブックマークボタン %>
+                    <%= button_to bookmark_path(bookmark), 
+                        method: :delete,
+                        class: "px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded transition" do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" /></svg>
+                    <% end %>
+                  <% else %>
+                    <%# ブックマーク解除ボタン %>
+                    <%= button_to bookmarks_path(message_template_id: template.id), 
+                        method: :post,
+                        class: "px-3 py-1.5 bg-gray-500 hover:bg-gray-600 text-white text-sm font-semibold rounded transition" do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" /></svg>
+                    <% end %>
+                  <% end %>
+
+                  <% if template.user_id.present? %>
                     <%= link_to edit_message_template_path(template), 
                         class: "px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold rounded transition" do %>
                       編集
                     <% end %>
-
                     <%= button_to message_template_path(template), 
                         method: :delete,
                         data: { turbo_confirm: '本当に削除しますか?' },
                         class: "px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded transition" do %>
                       削除
                     <% end %>
-                  </div>
-                <% end %>
+                  <% end %>
+                </div>
               </div>
             </li>
           <% end %>

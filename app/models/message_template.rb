@@ -1,5 +1,6 @@
 class MessageTemplate < ApplicationRecord
   belongs_to :user, optional: true
+  has_many :bookmarks, dependent: :destroy
 
   validates :reason, presence: true, length: { maximum: 255 }
   validates :template, presence: true, length: { maximum: 255 }
