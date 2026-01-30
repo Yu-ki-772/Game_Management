@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
   resources :message_templates, only: [ :index, :new, :create, :edit, :update, :destroy ] do
     collection do
-      get :bookmarks 
+      get :bookmarks
     end
   end
   #=============================================================
