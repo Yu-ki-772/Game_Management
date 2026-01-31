@@ -11,16 +11,25 @@ class MessageTemplatesController < ApplicationController
     if user_signed_in?
       # デフォルトデータと、自分で作成したもののみ取得
       @message_templates = MessageTemplate.where(user_id: [ current_user.id, nil ])
-
+      # 該当ユーザのブックマークの取得
+      @user_bookmarks = current_user.bookmarks
+                                    .where(message_template_id: @message_templates.ids)
+                                    .index_by(&:message_template_id)
     else
       # デフォルトデータのみ取得
       @message_templates = MessageTemplate.where(user_id: nil)
+
+      @user_bookmarks = {}
     end
   end
 
   # ブックマークした定型文の一覧表示用
   def bookmarks
     @bookmarks_message_templates = current_user.bookmarks_message_templates.order(created_at: :desc)
+    # 該当ユーザのブックマークの取得
+    @user_bookmarks = current_user.bookmarks
+                                  .where(message_template_id: @bookmarks_message_templates.ids)
+                                  .index_by(&:message_template_id)
   end
 
   def new
