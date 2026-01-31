@@ -28,9 +28,4 @@ class User < ApplicationRecord
   def unbookmark(message_template)
     bookmarks_message_templates.destroy(message_template)
   end
-
-  # 定型文がブックマークされているかの確認
-  def bookmark?(message_template)
-    bookmarks.exists?(message_template_id: message_template.id)
-  end
 end
