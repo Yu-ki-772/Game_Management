@@ -28,7 +28,7 @@ class Alarm < ApplicationRecord
   #========================================
   # publicメソッド
   #========================================
-  # （アラームを解除&記録の作成）用のメソッド
+  # （アラームをストップ&記録の作成）用のメソッド
   def unlock_with_log
     return [ false, nil ] if unlocked?
 
@@ -47,10 +47,10 @@ class Alarm < ApplicationRecord
     return [ false, alarm_log ] unless alarm_log.valid?
 
     transaction do
-      # 設定時刻よりも前に解除した場合、アラーム通知用のジョブをキャンセル
+      # 設定時刻よりも前にストップした場合、アラーム通知用のジョブをキャンセル
       cancel_existing_job if times_defer.negative?
 
-      # 解除済みに変更（コールバックが実行されない書き方）
+      # ストップ済みに変更（コールバックが実行されない書き方）
       update_column(:unlocked, true)
 
       alarm_log.save! # alarm_logのレコードを保存

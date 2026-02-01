@@ -1,4 +1,4 @@
-<%# 解除可能なアラーム一覧の表示用のパーシャル %>
+<%# ストップ可能なアラーム一覧の表示用のパーシャル %>
 <div class="max-w-7xl mx-auto px-3">
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
     <% alarms.each do |alarm| %>
@@ -17,7 +17,7 @@
           <%= button_to unlock_alarm_path(alarm),
               method: :patch,
               class: "px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-semibold text-center text-sm" do %>
-            解除
+            ストップ
           <% end %>
 
           <%= button_to alarm_path(alarm),
