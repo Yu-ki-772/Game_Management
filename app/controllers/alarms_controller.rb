@@ -22,7 +22,7 @@ class AlarmsController < ApplicationController
   def pending
     if user_signed_in?
       # ログインしている場合の処理
-      # まだ解除していないくて、かつ設定時間が２４時間前後のものに絞る
+      # まだストップしていないくて、かつ設定時間が２４時間前後のものに絞る
       @alarms = current_user.alarms.locked.near.order(scheduled_at: :asc)
     end
   end
@@ -57,7 +57,7 @@ class AlarmsController < ApplicationController
     end
   end
 
-  # アラームの解除の処理
+  # アラームのストップの処理
   def unlock
     success, @alarm_log = @alarm.unlock_with_log
 
@@ -93,11 +93,11 @@ class AlarmsController < ApplicationController
     params.require(:alarm).permit(:label, :scheduled_at)
   end
 
-  # アラーム解除失敗時の処理
+  # アラームストップ失敗時の処理
   # pendingページを再表示し、エラーメッセージを表示
   def handle_unlock_failure
     @alarms = current_user.alarms.locked.near.order(scheduled_at: :asc)
-    flash.now[:alert] = "アラームを解除できませんでした"
+    flash.now[:alert] = "アラームをストップできませんでした"
     render "alarms/pending", status: :unprocessable_entity
   end
 end

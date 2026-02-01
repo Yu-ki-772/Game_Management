@@ -65,7 +65,7 @@
         <% end %>
       </div>
 
-    <%# アラーム解除時のモーダルの表示 %>
+    <%# アラームストップ時のモーダルの表示 %>
     <% if params[:show_modal].present? %>
       <% alarm_log = AlarmLog.find_by(id: params[:show_modal]) %>
       <% if alarm_log && alarm_log.alarm.user == current_user %>

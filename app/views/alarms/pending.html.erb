@@ -1,6 +1,6 @@
-<%# アラーム解除画面 %>
+<%# アラームストップ画面 %>
 
-<%# アラーム解除時のバリデーションエラーの表示 %>
+<%# アラームストップ時のバリデーションエラーの表示 %>
 <% if @alarm_log&.errors&.any? %>
   <%= render 'shared/error_messages', object: @alarm_log %>
 <% end %>
@@ -8,7 +8,7 @@
 <div class="container mx-auto px-4 py-8">
   <div class="mb-8">
     <div class="flex justify-between items-center pb-4 border-b-2 border-emerald-500 mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">アラーム解除画面</h1>
+      <h1 class="text-3xl font-bold text-gray-900">アラームストップ画面</h1>
       <% if @alarms.present? %>
         <%= link_to new_alarm_path, 
                     class: "bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-2.5 rounded-lg transition flex items-center gap-2" do %>
@@ -23,10 +23,10 @@
     </div>
     
     <% if @alarms.present? %>
-      <%# 解除可能なアラームが存在する場合 %>
+      <%# ストップ可能なアラームが存在する場合 %>
       <%= render 'alarms/pending/alarm_list', alarms: @alarms %>
     <% else %>
-      <%# 解除可能なアラームが存在しない場合 %>
+      <%# ストップ可能なアラームが存在しない場合 %>
       <%= render 'alarms/pending/no_alarms_message' %>
     <% end %>
   </div>

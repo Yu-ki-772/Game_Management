@@ -1,10 +1,10 @@
-<%# 解除可能なアラームが一つもない場合にpending画面に表示するもの %>
+<%# ストップ可能なアラームが一つもない場合にpending画面に表示するもの %>
 <div class="text-center py-20">
   <% if user_signed_in? %>
     <%# ログイン時 %>
     <div class="max-w-md mx-auto">
       <h2 class="text-2xl font-bold text-gray-900 mb-4">
-        解除可能なアラームが登録されていません
+        ストップ可能なアラームが登録されていません
       </h2>
       
       <%= link_to new_alarm_path, 
@@ -17,7 +17,7 @@
     <%# ログアウト時 %>
     <div class="max-w-md mx-auto">
       <h2 class="text-2xl font-bold text-gray-900 mb-4">
-        アラーム解除機能を利用するにはログインしてください
+        アラームストップ機能を利用するにはログインしてください
       </h2>
       
       <%= link_to new_user_session_path, 
