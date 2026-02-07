@@ -1,6 +1,6 @@
 <div data-controller="modal" 
      data-modal-alarm-log-id-value="<%= alarm_log.id %>"
-     data-action="turbo:before-cache@window->modal#close"
+     data-action="turbo:before-cache@window->modal#beforeCache"
      class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none">
   
   <%# モーダルの外側を押したときに、モーダルが閉じる %>

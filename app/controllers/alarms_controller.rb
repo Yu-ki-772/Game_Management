@@ -63,7 +63,8 @@ class AlarmsController < ApplicationController
 
     if success
       # モーダル表示用に@alarm_logのidを渡す。
-      redirect_to alarm_logs_path(show_modal: @alarm_log.id), status: :see_other
+      flash[:alarm_log_id] = @alarm_log.id
+      redirect_to alarm_logs_path, status: :see_other
     else
       handle_unlock_failure
     end

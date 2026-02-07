@@ -4,10 +4,7 @@ export default class extends Controller {
   static values = { alarmLogId: String }
 
   connect() {
-    const params = new URLSearchParams(window.location.search)
-    if (params.get('show_modal') === this.alarmLogIdValue) {
-      this.open()
-    }
+    this.open()
   }
 
   // モーダルを開くときの処理
@@ -19,13 +16,13 @@ export default class extends Controller {
 
   // モーダルを閉じるときの処理
   close() {
-    const url = new URL(window.location)
-    url.searchParams.delete('show_modal')
-    window.history.replaceState({}, '', url)
-    
     this.element.classList.remove('opacity-100', 'pointer-events-auto')
     this.element.classList.add('opacity-0', 'pointer-events-none')
     document.body.classList.remove('overflow-hidden')
+  }
+
+  beforeCache() {
+    this.element.remove() // 「Turbo Drive」のキャッシュにモーダルが含まれないように削除
   }
 
   disconnect() {
