@@ -66,11 +66,10 @@
       </div>
 
     <%# アラームストップ時のモーダルの表示 %>
-    <% if params[:show_modal].present? %>
-      <% alarm_log = AlarmLog.find_by(id: params[:show_modal]) %>
-      <% if alarm_log && alarm_log.alarm.user == current_user %>
-        <%= render 'alarms/unlock_modal', alarm_log: alarm_log %>
-      <% end %>
+    <% if flash[:alarm_log_id] %>
+      <% alarm_log = AlarmLog.find(flash[:alarm_log_id]) %>
+      
+      <%= render 'alarms/unlock_modal', alarm_log: alarm_log %>
     <% end %>
 
   <% else %>
