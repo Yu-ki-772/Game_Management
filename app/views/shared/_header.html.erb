@@ -21,7 +21,7 @@
           <div data-controller="dropdown" class="relative">
             <button 
               type="button" 
-              data-action="dropdown#toggle click@window->dropdown#hide"
+              data-action="click->dropdown#toggle"
               class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-emerald-600 transition"
             >
               <span><%= current_user.name %></span>
@@ -32,20 +32,16 @@
             <div
               data-dropdown-target="menu"
               class="hidden transition transform origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
-              data-transition-enter-from="opacity-0 scale-95"
-              data-transition-enter-to="opacity-100 scale-100"
-              data-transition-leave-from="opacity-100 scale-100"
-              data-transition-leave-to="opacity-0 scale-95"
             >
               <div class="py-1">
                 <%= link_to edit_user_registration_path, 
-                    data: { action: "dropdown#toggle" },
+                    data: { action: "dropdown#close" },
                     class: "block px-4 py-2 text-gray-700 hover:bg-emerald-50 transition" do %>
                   アカウント設定
                 <% end %>
                 <%= button_to destroy_user_session_path, 
                     method: :delete,
-                    data: { action: "dropdown#toggle" },
+                    data: { action: "dropdown#close" },
                     class: "block w-full text-left px-4 py-2 text-gray-700 hover:bg-emerald-50 transition" do %>
                   ログアウト
                 <% end %>
