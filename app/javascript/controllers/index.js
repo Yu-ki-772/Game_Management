@@ -8,8 +8,8 @@ import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
 // ヘッダのドロップダウン
-import Dropdown from '@stimulus-components/dropdown'
-application.register('dropdown', Dropdown)
+import DropdownController from './dropdown_controller'
+application.register('dropdown', DropdownController)
 
 // アラームストップ時のモーダル表示用
 import ModalController from "./modal_controller"
