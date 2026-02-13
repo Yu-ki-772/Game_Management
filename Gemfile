@@ -71,6 +71,10 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
+  gem "rspec-rails", "~> 8.0", ">= 8.0.2"
+  gem "factory_bot_rails", "~> 6.5", ">= 6.5.1"
+  gem "faker", "~> 3.6"
+
   # N+1問題対策
   gem "bullet", "~> 8.1"
 end
@@ -84,6 +88,8 @@ end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "capybara"
-  gem "selenium-webdriver"
+  gem "capybara", "~> 3.40"
+  gem "selenium-webdriver", "~> 4.40"
+  gem "shoulda-matchers", "~> 7.0", ">= 7.0.1"
+  gem "simplecov", "~> 0.22.0", require: false
 end
