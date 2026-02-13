@@ -28,7 +28,8 @@ Rails.application.routes.draw do
   # ログイン認証
   #==============================================================
   devise_for :users, controllers: { registrations: "users/registrations",
-                                    omniauth_callbacks: "users/omniauth_callbacks" }
+                                    omniauth_callbacks: "users/omniauth_callbacks",
+                                    passwords: 'users/passwords' }
 
   #==============================================================
   # その他

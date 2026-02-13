@@ -24,15 +24,4 @@
         class: "block text-sm text-gray-600 hover:text-gray-900 transition font-medium" %>
   <% end %>
 
-  <%- if devise_mapping.omniauthable? %>
-    <div class="mt-6 pt-6 border-t border-gray-200">
-      <p class="text-sm text-gray-600 mb-3">または、以下でログイン</p>
-      <%- resource_class.omniauth_providers.each do |provider| %>
-        <%= button_to "#{OmniAuth::Utils.camelize(provider)}でログイン", 
-            omniauth_authorize_path(resource_name, provider), 
-            data: { turbo: false },
-            class: "w-full py-2 px-4 mb-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium text-gray-700 flex items-center justify-center" %>
-      <% end %>
-    </div>
-  <% end %>
 </div>
