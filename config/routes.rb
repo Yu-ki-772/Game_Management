@@ -27,8 +27,8 @@ Rails.application.routes.draw do
   #==============================================================
   # ログイン認証
   #==============================================================
-  # ※ユーザ情報用のコントローラのみカスタマイズバージョンを指定(users/registrations_controller.rb)
-  devise_for :users, controllers: { registrations: "users/registrations" }
+  devise_for :users, controllers: { registrations: "users/registrations",
+                                    omniauth_callbacks: "users/omniauth_callbacks" }
 
   #==============================================================
   # その他

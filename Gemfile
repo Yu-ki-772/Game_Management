@@ -48,6 +48,8 @@ gem "action_text-trix", "~> 2.1", ">= 2.1.16"
 # ユーザー認証
 gem "devise", "4.9.4"
 gem "devise-i18n", "~> 1.15"
+gem "omniauth-google-oauth2", "~> 1.2", ">= 1.2.1"
+gem "omniauth-rails_csrf_protection", "~> 2.0", ">= 2.0.1"
 
 # メール送信サービス
 gem "resend", "~> 1.0"
