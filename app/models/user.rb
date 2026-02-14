@@ -1,12 +1,16 @@
 class User < ApplicationRecord
   validates :name, presence: true
   validates :uid, presence: true, uniqueness: { scope: :provider }, if: -> { uid.present? }
+  validates :description, length: { maximum: 255 }
+  validate :avatar_content_type
+  validate :avatar_size
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: [ :google_oauth2 ]
 
+  has_one_attached :avatar # active_storage用
   #======================================================================================
   # アソシエーション
   #======================================================================================
@@ -32,6 +36,24 @@ class User < ApplicationRecord
   # uuid化用
   def self.create_unique_string
     SecureRandom.uuid
+  end
+
+  # バリデーション用
+  def avatar_content_type
+    if avatar.attached? && !avatar.content_type.in?(%w[image/jpeg image/png])
+      errors.add(:avatar, "：ファイル形式が、JPEG, PNG以外になってます。ファイル形式をご確認ください。")
+    end
+  end
+
+  # バリデーション用
+  def avatar_size
+    if avatar.attached? && avatar.blob.byte_size > 2.megabytes
+      errors.add(:avatar, "：2MB以下のファイルをアップロードしてください。")
+    end
+  end
+
+  def avatar_image?
+    avatar.attached? && avatar.content_type.in?(%w[image/jpeg image/png])
   end
 
   # 定型文のブックマークの作成
