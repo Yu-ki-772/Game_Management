@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   #=============================================================
   root "home#top"
 
+  resources :users, only: %i[show]
+
   resources :alarms, only: %i[index new create edit update destroy] do
     collection do
       get :pending
@@ -27,7 +29,7 @@ Rails.application.routes.draw do
   #==============================================================
   # ログイン認証
   #==============================================================
-  devise_for :users, controllers: { registrations: "users/registrations",
+  devise_for :users, path: 'auth', controllers: { registrations: "users/registrations",
                                     omniauth_callbacks: "users/omniauth_callbacks",
                                     passwords: "users/passwords" }
 

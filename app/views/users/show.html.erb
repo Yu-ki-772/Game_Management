@@ -1,0 +1,14 @@
+<p><%= @user.id %></p>
+<p>名前 : <%= @user.name %></p>
+<p><%= @user.email %></p>
+<p><%= @user.description %></p>
+
+<% if @user.avatar_image? %>
+  <div>
+    <%= image_tag @user.avatar.variant(resize_to_fill: [64, 64]), 
+                  class: "rounded-full w-16 h-16 object-cover border-2 border-gray-300" %>
+  </div>
+<% end %>
+
+
+<%= link_to "編集", edit_user_registration_path %>
