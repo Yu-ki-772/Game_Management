@@ -41,14 +41,14 @@ class User < ApplicationRecord
   # バリデーション用
   def avatar_content_type
     if avatar.attached? && !avatar.content_type.in?(%w[image/jpeg image/png])
-      errors.add(:avatar, '：ファイル形式が、JPEG, PNG以外になってます。ファイル形式をご確認ください。')
+      errors.add(:avatar, "：ファイル形式が、JPEG, PNG以外になってます。ファイル形式をご確認ください。")
     end
   end
 
   # バリデーション用
   def avatar_size
     if avatar.attached? && avatar.blob.byte_size > 2.megabytes
-      errors.add(:avatar, '：2MB以下のファイルをアップロードしてください。')
+      errors.add(:avatar, "：2MB以下のファイルをアップロードしてください。")
     end
   end
 
