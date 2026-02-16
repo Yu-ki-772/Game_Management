@@ -10,8 +10,8 @@ class UsersController < ApplicationController
     @search_count = @pagy.count # 検索結果の表示用
 
     # friendshipのstatusでの条件分岐用
-    user_ids = @users.map(&:id)
-    statuses = current_user.friendship_statuses_for(user_ids)
+    user_uuids = @users.map(&:id)
+    statuses = current_user.friendship_statuses_for(user_uuids)
     @pending_requests_hash = statuses[:pending_requests]
     @friendships_hash = statuses[:friendships]
   end

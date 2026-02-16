@@ -43,8 +43,8 @@
       <% @users.each do |user| %>
         <% next if user == current_user %>
         
-        <% pending_request_from_user = @pending_requests_hash[user.id] %>
-        <% existing_friendship = @friendships_hash[user.id] %>
+        <% pending_request_from_user = @pending_requests_hash[user.uuid] %>
+        <% existing_friendship = @friendships_hash[user.uuid] %>
         
         
         <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200">
@@ -81,7 +81,7 @@
                 <%= button_to "フレンド申請", 
                               friendships_path,
                               method: :post,
-                              params: { friend_id: user.id },
+                              params: { friend_uuid: user.uuid },
                               class: "px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
                                %>
               
@@ -90,7 +90,7 @@
                   <span class="px-4 py-2 bg-green-100 text-green-800 text-sm font-medium rounded-lg">
                     フレンドです
                   </span>
-                <% elsif existing_friendship&.user_id == current_user.id %>
+                <% elsif existing_friendship&.user_uuid == current_user.uuid %>
                   <span class="px-4 py-2 bg-blue-100 text-blue-800 text-sm font-medium rounded-lg">
                     申請済み
                   </span>

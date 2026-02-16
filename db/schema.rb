@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_14_131735) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_16_082702) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "pgcrypto"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
@@ -43,15 +44,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_14_131735) do
   end
 
   create_table "alarm_logs", force: :cascade do |t|
-    t.bigint "alarm_id", null: false
+    t.uuid "alarm_uuid", null: false
     t.datetime "created_at", null: false
     t.integer "minutes_to_unlock"
     t.datetime "unlocked_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["alarm_id"], name: "index_alarm_logs_on_alarm_id"
+    t.index ["alarm_uuid"], name: "index_alarm_logs_on_alarm_uuid"
   end
 
-  create_table "alarms", force: :cascade do |t|
+  create_table "alarms", primary_key: "uuid", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.boolean "ignored", default: false, null: false
     t.string "job_id"
@@ -60,31 +61,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_14_131735) do
     t.boolean "sent", default: false, null: false
     t.boolean "unlocked", default: false, null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
+    t.uuid "user_uuid", null: false
     t.index ["job_id"], name: "index_alarms_on_job_id"
     t.index ["scheduled_at"], name: "index_alarms_on_scheduled_at"
-    t.index ["user_id"], name: "index_alarms_on_user_id"
+    t.index ["user_uuid"], name: "index_alarms_on_user_uuid"
+    t.index ["uuid"], name: "index_alarms_on_uuid", unique: true
   end
 
   create_table "bookmarks", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "message_template_id", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
+    t.uuid "user_uuid"
     t.index ["message_template_id"], name: "index_bookmarks_on_message_template_id"
-    t.index ["user_id", "message_template_id"], name: "index_bookmarks_on_user_id_and_message_template_id", unique: true
-    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+    t.index ["user_uuid", "message_template_id"], name: "index_bookmarks_on_user_uuid_and_message_template_id", unique: true
+    t.index ["user_uuid"], name: "index_bookmarks_on_user_uuid"
   end
 
   create_table "friendships", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "friend_id", null: false
+    t.uuid "friend_uuid", null: false
     t.string "status", default: "pending", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
-    t.index ["friend_id"], name: "index_friendships_on_friend_id"
-    t.index ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true
-    t.index ["user_id"], name: "index_friendships_on_user_id"
+    t.uuid "user_uuid", null: false
+    t.index ["friend_uuid"], name: "index_friendships_on_friend_uuid"
+    t.index ["status"], name: "index_friendships_on_status"
+    t.index ["user_uuid", "friend_uuid"], name: "index_friendships_on_user_uuid_and_friend_uuid", unique: true
+    t.index ["user_uuid"], name: "index_friendships_on_user_uuid"
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -183,11 +186,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_14_131735) do
     t.string "reason", null: false
     t.string "template", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
-    t.index ["user_id"], name: "index_message_templates_on_user_id"
+    t.uuid "user_uuid"
+    t.index ["user_uuid"], name: "index_message_templates_on_user_uuid"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", primary_key: "uuid", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.string "description"
@@ -203,15 +206,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_14_131735) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["uuid"], name: "index_users_on_uuid", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "alarm_logs", "alarms"
-  add_foreign_key "alarms", "users"
+  add_foreign_key "alarm_logs", "alarms", column: "alarm_uuid", primary_key: "uuid"
+  add_foreign_key "alarms", "users", column: "user_uuid", primary_key: "uuid"
   add_foreign_key "bookmarks", "message_templates"
-  add_foreign_key "bookmarks", "users"
-  add_foreign_key "friendships", "users"
-  add_foreign_key "friendships", "users", column: "friend_id"
-  add_foreign_key "message_templates", "users"
+  add_foreign_key "bookmarks", "users", column: "user_uuid", primary_key: "uuid"
+  add_foreign_key "friendships", "users", column: "friend_uuid", primary_key: "uuid"
+  add_foreign_key "friendships", "users", column: "user_uuid", primary_key: "uuid"
+  add_foreign_key "message_templates", "users", column: "user_uuid", primary_key: "uuid"
 end

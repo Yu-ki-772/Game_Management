@@ -1,6 +1,6 @@
 class AlarmLog < ApplicationRecord
   # アソシエーション
-  belongs_to :alarm
+  belongs_to :alarm, primary_key: :uuid, foreign_key: :alarm_uuid
 
   # バリデーション
   validate :minutes_to_unlock_range

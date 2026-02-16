@@ -10,14 +10,14 @@ class MessageTemplatesController < ApplicationController
   def index
     if user_signed_in?
       # デフォルトデータと、自分で作成したもののみ取得
-      @message_templates = MessageTemplate.where(user_id: [ current_user.id, nil ])
+      @message_templates = MessageTemplate.where(user_uuid: [ current_user.uuid, nil ])
       # 該当ユーザのブックマークの取得
       @user_bookmarks = current_user.bookmarks
                                     .where(message_template_id: @message_templates.ids)
                                     .index_by(&:message_template_id)
     else
       # デフォルトデータのみ取得
-      @message_templates = MessageTemplate.where(user_id: nil)
+      @message_templates = MessageTemplate.where(user_uuid: nil)
 
       @user_bookmarks = {}
     end
@@ -73,7 +73,7 @@ class MessageTemplatesController < ApplicationController
   end
 
   def set_existing_reasons
-    @existing_reasons = MessageTemplate.existing_reasons(current_user.id)
+    @existing_reasons = MessageTemplate.existing_reasons(current_user.uuid)
   end
 
   # 許可するパラメータの定義

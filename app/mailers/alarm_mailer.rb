@@ -4,8 +4,8 @@ class AlarmMailer < ApplicationMailer
   #
   #   en.alarm_mailer.alarm_notification.subject
   #
-  def alarm_notification(alarm_id)
-    @alarm = Alarm.find_by(id: alarm_id)
+  def alarm_notification(alarm_uuid)
+    @alarm = Alarm.find_by(uuid: alarm_uuid)
 
     return unless @alarm
 

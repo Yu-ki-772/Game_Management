@@ -25,13 +25,13 @@
     <%= button_to "フレンド申請", 
                   friendships_path,
                   method: :post,
-                  params: { friend_id: @user.id } %>
+                  params: { friend_uuid: @user.uuid } %>
   <% else %>
     <% if @existing_friendship.accepted? %>
       <span>
         フレンドです
       </span>
-    <% elsif @existing_friendship.user_id == current_user.id %>
+    <% elsif @existing_friendship.user_uuid == current_user.uuid %>
       <span>
         申請済み
       </span>

@@ -1,6 +1,6 @@
 class Alarm < ApplicationRecord
-  belongs_to :user
-  has_one :alarm_log, dependent: :destroy
+  belongs_to :user, primary_key: :uuid, foreign_key: :user_uuid
+  has_one :alarm_log, primary_key: :uuid, foreign_key: :alarm_uuid, dependent: :destroy
 
   #=======================================
   # バリデーション
@@ -80,7 +80,7 @@ class Alarm < ApplicationRecord
     cancel_existing_job
 
     # ジョブの作成
-    job = AlarmNotificationJob.set(wait_until: scheduled_at).perform_later(id)
+    job = AlarmNotificationJob.set(wait_until: scheduled_at).perform_later(uuid)
 
     # alarmのjob_idを、active_jobのprovider_job_idにする
     update_column(:job_id, job.provider_job_id) if persisted?

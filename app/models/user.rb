@@ -18,14 +18,15 @@ class User < ApplicationRecord
   #======================================================================================
   # アソシエーション
   #======================================================================================
-  has_many :alarms, dependent: :destroy
+  has_many :alarms, primary_key: :uuid, foreign_key: :user_uuid, dependent: :destroy
   has_many :alarm_logs, through: :alarms
-  has_many :message_templates, dependent: :destroy
-  has_many :bookmarks, dependent: :destroy
-  has_many :friendships, dependent: :destroy
+  has_many :message_templates, primary_key: :uuid, foreign_key: :user_uuid, dependent: :destroy
+  has_many :bookmarks, primary_key: :uuid, foreign_key: :user_uuid, dependent: :destroy
+  has_many :friendships, primary_key: :uuid, foreign_key: :user_uuid, dependent: :destroy
   has_many :received_friendships,
               class_name: "Friendship",
-              foreign_key: "friend_id",
+              primary_key: :uuid,
+              foreign_key: :friend_uuid,
               dependent: :destroy
 
   # ブックマークした定型文
@@ -76,18 +77,18 @@ class User < ApplicationRecord
   end
 
   # friendshipのstatusの確認時に使うもの
-  def friendship_statuses_for(user_ids)
+  def friendship_statuses_for(user_uuids)
     {
-      pending_requests: received_friendships.pending.where(user_id: user_ids).index_by(&:user_id),
-      friendships: Friendship.between_user_and_ids(self, user_ids).index_by { |f|
-        f.user_id == id ? f.friend_id : f.user_id
+      pending_requests: received_friendships.pending.where(user_uuid: user_uuids).index_by(&:user_uuid),
+      friendships: Friendship.between_user_and_ids(self, user_uuids).index_by { |f|
+        f.user_uuid == id ? f.friend_uuid : f.user_uuid
       }
     }
   end
 
   # 対象ユーザからフレンドリクエストが来ているかの確認
   def pending_request_from?(other_user)
-    received_friendships.pending.find_by(user_id: other_user.id)
+    received_friendships.pending.find_by(user_uuid: other_user.uuid)
   end
 
   # 対象ユーザとのfriendshipデータの取得
