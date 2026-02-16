@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   root "home#top"
 
   resources :users, only: %i[index show]
-  resources :friendships, only: [:index, :create, :update, :destroy] do
+  resources :friendships, only: [ :index, :create, :update, :destroy ] do
     collection do
       get :pending
     end

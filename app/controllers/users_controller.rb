@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  
   def index
     @q = User.non_admin.excluding(current_user).ransack(search_params)
 
@@ -28,10 +27,10 @@ class UsersController < ApplicationController
   end
 
   private
-  
+
   def search_params
     return {} unless params[:q]
-    
+
     params.require(:q).permit(
       :name_cont,
       :name_eq

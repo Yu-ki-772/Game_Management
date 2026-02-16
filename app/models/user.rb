@@ -6,7 +6,7 @@ class User < ApplicationRecord
   validate :avatar_size
 
   scope :non_admin, -> { where(admin: false) } # 管理者ユーザかどうかの確認
-  
+
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -24,13 +24,13 @@ class User < ApplicationRecord
   has_many :bookmarks, dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :received_friendships,
-              class_name: 'Friendship',
-              foreign_key: 'friend_id',
+              class_name: "Friendship",
+              foreign_key: "friend_id",
               dependent: :destroy
 
   # ブックマークした定型文
   has_many :bookmarks_message_templates, through: :bookmarks, source: :message_template
-  
+
   #========================================================
   # publicメソッド
   #========================================================
@@ -67,20 +67,20 @@ class User < ApplicationRecord
 
   # ransackで検索可能なもの
   def self.ransackable_attributes(auth_object = nil)
-    ["name"]
+    [ "name" ]
   end
 
   # フレンド申請の送信（friendshipの作成）
   def send_friend_request(other_user)
-    friendships.create(friend: other_user, status: 'pending')
+    friendships.create(friend: other_user, status: "pending")
   end
 
   # friendshipのstatusの確認時に使うもの
   def friendship_statuses_for(user_ids)
     {
       pending_requests: received_friendships.pending.where(user_id: user_ids).index_by(&:user_id),
-      friendships: Friendship.between_user_and_ids(self, user_ids).index_by { |f| 
-        f.user_id == id ? f.friend_id : f.user_id 
+      friendships: Friendship.between_user_and_ids(self, user_ids).index_by { |f|
+        f.user_id == id ? f.friend_id : f.user_id
       }
     }
   end

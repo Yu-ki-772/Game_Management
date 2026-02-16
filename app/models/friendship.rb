@@ -1,8 +1,8 @@
 class Friendship < ApplicationRecord
   belongs_to :user
-  belongs_to :friend, class_name: 'User'
+  belongs_to :friend, class_name: "User"
 
-  enum :status, { pending: 'pending', accepted: 'accepted' }, default: :pending
+  enum :status, { pending: "pending", accepted: "accepted" }, default: :pending
 
   validates :user_id, uniqueness: { scope: :friend_id }
 
@@ -19,7 +19,7 @@ class Friendship < ApplicationRecord
   # friendshipの相手側のユーザを返す
   def partner(user)
     return nil unless accepted?
-   
+
     if user_id == user.id
       friend
     else
