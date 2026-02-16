@@ -30,7 +30,7 @@ class AddUserUuidToRelatedTables < ActiveRecord::Migration[8.1]
     end
 
     change_column_null :alarms, :user_uuid, false
-    
+
     change_column_null :friendships, :user_uuid, false
     change_column_null :friendships, :friend_uuid, false
   end
