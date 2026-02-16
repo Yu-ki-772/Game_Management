@@ -4,7 +4,12 @@ Rails.application.routes.draw do
   #=============================================================
   root "home#top"
 
-  resources :users, only: %i[show]
+  resources :users, only: %i[index show]
+  resources :friendships, only: [ :index, :create, :update, :destroy ] do
+    collection do
+      get :pending
+    end
+  end
 
   resources :alarms, only: %i[index new create edit update destroy] do
     collection do
