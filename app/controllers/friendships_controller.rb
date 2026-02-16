@@ -18,7 +18,7 @@ class FriendshipsController < ApplicationController
   end
 
   def create
-    friend = User.find(params[:friend_id])
+    friend = User.find(params[:friend_uuid])
 
     if current_user.send_friend_request(friend)
       flash[:notice] = "#{friend.name}さんにフレンド申請を送りました"
@@ -78,7 +78,7 @@ class FriendshipsController < ApplicationController
 
   def set_friendship_for_destroy
     @friendship = Friendship.find(params[:id])
-    unless @friendship.user_id == current_user.id || @friendship.friend_id == current_user.id
+    unless @friendship.user_uuid == current_user.uuid || @friendship.friend_uuid == current_user.uuid
       flash[:alert] = "この操作は許可されていません"
       redirect_to friendships_path
     end
@@ -89,15 +89,15 @@ class FriendshipsController < ApplicationController
 
   # フレンド関係を操作する権限があるかの確認用
   def authorize_friendship
-    # updateの場合は、申請を受け取った側（friend_id）であることを確認
+    # updateの場合は、申請を受け取った側（friend_uuid）であることを確認
     if action_name == "update"
-      unless @friendship.friend_id == current_user.id
+      unless @friendship.friend_uuid == current_user.uuid
         flash[:alert] = "この操作は許可されていません"
         redirect_to friendships_path
       end
     # destroyの場合は、申請した側または受け取った側であることを確認
     elsif action_name == "destroy"
-      unless @friendship.user_id == current_user.id || @friendship.friend_id == current_user.id
+      unless @friendship.user_uuid == current_user.uuid || @friendship.friend_uuid == current_user.uuid
         flash[:alert] = "この操作は許可されていません"
         redirect_to friendships_path
       end

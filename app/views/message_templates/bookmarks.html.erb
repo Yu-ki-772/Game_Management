@@ -42,7 +42,7 @@
                   <%# ブックマーク解除ボタン %>
                   <%= render 'unbookmark_button', message_template: template, bookmark: bookmark %>
 
-                  <% if template.user_id.present? %>
+                  <% if template.user_uuid.present? %>
                     <%= link_to edit_message_template_path(template), 
                                 class: "px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold rounded transition" do %>
                       編集
