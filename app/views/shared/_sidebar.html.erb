@@ -49,6 +49,24 @@
           </div>
         <% end %>
       </li>
+      <li>
+        <%= link_to friendships_path, 
+            class: active_link_class(friendships_path) do %>
+          フレンド
+        <% end %>
+      </li>
+      <li>
+        <%= link_to pending_friendships_path, 
+            class: active_link_class(pending_friendships_path) do %>
+          受信申請
+        <% end %>
+      </li>
+      <li>
+        <%= link_to users_path, 
+            class: active_link_class(users_path) do %>
+          ユーザ一覧
+        <% end %>
+      </li>
     </ul>
   </nav>
 </aside>
