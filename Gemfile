@@ -55,7 +55,7 @@ gem "omniauth-rails_csrf_protection", "~> 2.0", ">= 2.0.1"
 gem "resend", "~> 1.0"
 
 # バックグラウンドジョブの実装用
-gem "good_job", "~> 4.13", ">= 4.13.1"
+gem "good_job", "~> 4.13"
 
 # クラウドストレージ用
 gem "cloudinary", "~> 2.4", ">= 2.4.4"
