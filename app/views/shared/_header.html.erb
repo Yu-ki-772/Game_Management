@@ -1,65 +1,67 @@
-<header class="bg-emerald-700 text-white">
-  <div class="container mx-auto px-4">
-    <div class="flex items-center justify-between py-4">
-      <%= link_to root_path, class: "flex items-center no-underline" do %>
-        <%# アイコンロゴ %>
-        <%= image_tag "logo_mark.png", class: "h-10" %>
-      <% end %>
-      
-      <div class="flex items-center gap-6">
-        <%# Xでシェアするボタン %>
+<header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm" data-controller="mobile-menu">
+  <div class="container mx-auto px-4 max-w-7xl">
+    <div class="flex items-center justify-between h-16">
+      <div>
+        <%= link_to root_path, class: "flex items-center no-underline" do %>
+          <%# アイコンロゴ %>
+          <%= image_tag "logo_mark.png", class: "h-8" %>
+        <% end %>
+      </div>
+
+      <%# 右側: Xシェアボタン + ユーザーメニュー %>
+      <div class="flex items-center gap-3">
         <%= link_to x_share_url, 
             target: "_blank", 
             rel: "noopener noreferrer",
             title: "Xでシェア",
-            class: "hover:scale-105 transition" do %>
-          <%= image_tag "x_logo.png", class: "h-5" %>
+            class: "p-2 text-gray-400 hover:text-gray-600 transition" do %>
+          <%= image_tag "x_logo.png", class: "h-4 opacity-60" %>
         <% end %>
 
         <% if user_signed_in? %>
-          <!-- ログイン中の表示 -->
           <div data-controller="dropdown" class="relative">
             <button 
               type="button" 
               data-action="click->dropdown#toggle"
-              class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-emerald-600 transition"
+              class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 transition"
             >
               <% if current_user.avatar_image? %>
-                <div>
-                  <%= image_tag current_user.avatar.variant(resize_to_fill: [64, 64]), 
-                                class: "rounded-full w-10 h-10 object-cover border-2 border-gray-300" %>
-                </div>
+                <%= image_tag current_user.avatar.variant(resize_to_fill: [64, 64]), 
+                              class: "rounded-full w-9 h-9 object-cover border-2 border-gray-200" %>
               <% else %>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" /></svg>
-                    
-        
+                <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                  </svg>
+                </div>
               <% end %>
             </button>
+            <%# ドロップダウン %>
             <div
               data-dropdown-target="menu"
-              class="hidden transition transform origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+              class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-lg shadow-xl bg-white border border-gray-100 z-50 overflow-hidden"
             >
-              <div class="py-1">
+              <div class="divide-y divide-gray-100">
                 <%= link_to user_path(current_user), 
                     data: { action: "dropdown#close" },
-                    class: "block px-4 py-2 text-gray-700 hover:bg-emerald-50 transition" do %>
+                    class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition" do %>
                   プロフィール
                 <% end %>
                 <%= button_to destroy_user_session_path, 
                     method: :delete,
                     data: { action: "dropdown#close" },
-                    class: "block w-full text-left px-4 py-2 text-gray-700 hover:bg-emerald-50 transition" do %>
+                    class: "block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-200 transition" do %>
                   ログアウト
                 <% end %>
               </div>
             </div>
           </div>
         <% else %>
-          <!-- 非ログイン時の表示 -->
-          <div>
-            <%= link_to 'ログイン', new_user_session_path, 
-                class: "px-4 py-2 bg-white text-emerald-700 rounded hover:bg-emerald-50 transition font-semibold" %>
-          </div>
+          <%# 非ログイン時の表示 %>
+          <%= link_to 'ログイン', new_user_session_path, 
+              class: "px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-md hover:bg-emerald-700 transition" %>
         <% end %>
       </div>
     </div>

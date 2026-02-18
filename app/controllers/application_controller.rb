@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  before_action :set_pending_friendship_count
+
   include Pagy::Method # ページネーション用
 
   protected
@@ -14,5 +16,11 @@ class ApplicationController < ActionController::Base
     # サインアップ時にnameを許可
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :name ])
     devise_parameter_sanitizer.permit(:account_update, keys: [ :avatar, :name, :description ])
+  end
+
+  # フッタに表示する「受け取っているフレンド申請の数」を取得
+  def set_pending_friendship_count
+    return unless current_user
+    @pending_friendship_count = current_user.received_friendships.pending.count
   end
 end

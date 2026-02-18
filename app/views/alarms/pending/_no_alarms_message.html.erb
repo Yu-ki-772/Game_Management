@@ -1,31 +1,36 @@
 <%# ストップ可能なアラームが一つもない場合にpending画面に表示するもの %>
-<div class="text-center py-20">
-  <% if user_signed_in? %>
-    <%# ログイン時 %>
-    <div class="max-w-md mx-auto">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">
-        ストップ可能なアラームが登録されていません
+<div class="flex items-center justify-center py-20">
+  <div class="max-w-md mx-auto text-center">
+    <% if user_signed_in? %>
+
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">
+        ストップ可能なアラームがありません
       </h2>
-      
-      <%= link_to new_alarm_path, 
-                  class: "inline-flex px-8 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition text-lg font-semibold items-center gap-2" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+      <%= link_to new_alarm_path,
+          class: "inline-flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition text-sm font-semibold" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M12 5l0 14" /><path d="M5 12l14 0" />
+        </svg>
         アラームを作成
       <% end %>
-    </div>
-  <% else %>
-    <%# ログアウト時 %>
-    <div class="max-w-md mx-auto">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">
+
+    <% else %>
+
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">
         アラームストップ機能を利用するにはログインしてください
       </h2>
-      
-      <%= link_to new_user_session_path, 
-          class: "inline-flex px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-lg font-semibold items-center gap-3" do %>
+      <%= link_to new_user_session_path,
+          class: "inline-flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition text-sm font-semibold" do %>
         <span>ログイン</span>
-        <%# 矢印マーク %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M15 16l4 -4" /><path d="M15 8l4 4" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M5 12l14 0" /><path d="M15 16l4 -4" /><path d="M15 8l4 4" />
+        </svg>
       <% end %>
-    </div>
-  <% end %>
+
+    <% end %>
+  </div>
 </div>
