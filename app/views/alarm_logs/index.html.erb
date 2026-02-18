@@ -1,74 +1,116 @@
-<div class="container mx-auto px-4 py-8">
+<div class="max-w-7xl mx-auto px-4 py-8">
   <% if user_signed_in? %>
-    <%# ログイン時の表示 %>
     <%# 統計データセクション %>
-    <h1 class="text-2xl font-bold pb-4 border-b-2 border-emerald-500 mb-8">統計</h1>
-    <section class="bg-white rounded-lg shadow-md p-6 mb-8">
-      <div class="grid grid-cols-2 gap-4">
-        <div class="text-center">
-          <p class="text-gray-600 text-sm mb-1">記録の平均</p>
-          <p class="text-3xl font-bold text-gray-900">
-            <%# 記録の平均(分) %>
-            <%= format_minutes_defer(@alarm_logs.average(:minutes_to_unlock)&.round) %>
-          </p>
-        </div>
-        <div class="text-center">
-          <p class="text-gray-600 text-sm mb-1">記録数</p>
-          <p class="text-3xl font-bold text-gray-900">
-            <%# 記録の件数 %>
-            <%= @alarm_logs.count %>件
-          </p>
-        </div>
-      </div>
-    </section>
 
-    <%# 記録一覧セクション %>
-    <h2 class="text-2xl font-bold pb-4 border-b-2 border-emerald-500 mb-8">記録一覧</h2>
-    <div class="max-w-7xl mx-auto px-3">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
-        <% @alarm_logs.each do |alarm_log| %>
-          <div class="bg-white rounded-lg shadow-md p-5 aspect-square flex flex-col justify-between">
-            <%# 上部 %>
-            <div>
-              <div class="flex justify-between items-start mb-3">
-                <div>
-                  <span class="text-2xl font-bold text-gray-900">
+    <div class="pb-5 border-b border-gray-200 mb-8">
+      <h1 class="text-2xl font-bold text-gray-900">記録</h1>
+      <p class="text-sm text-gray-500 mt-1">ゲームをやめた記録の一覧です</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 mb-10">
+
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+        <p class="text-xs font-medium text-gray-500 mb-3">記録の平均</p>
+        <p class="text-3xl font-bold text-gray-900">
+          <%= format_minutes_defer(@alarm_logs.average(:minutes_to_unlock)&.round) %>
+        </p>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+        <p class="text-xs font-medium text-gray-500 mb-3">記録数</p>
+        <p class="text-3xl font-bold text-gray-900">
+          <%= @alarm_logs.count %><span class="text-lg font-medium text-gray-400 ml-0.5">件</span>
+        </p>
+      </div>
+
+    </div>
+
+    <%# 記録テーブル %>
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+
+      <%# テーブルヘッダー %>
+      <div class="px-5 py-4 border-b border-gray-100 bg-gray-50">
+        <h2 class="text-sm font-semibold text-gray-700">記録一覧</h2>
+      </div>
+
+      <%# デスクトップ: テーブル形式 %>
+      <div class="hidden sm:block">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-gray-100">
+              <th class="text-left text-xs font-medium text-gray-400 px-5 py-3">記録</th>
+              <th class="text-left text-xs font-medium text-gray-400 px-5 py-3">ラベル</th>
+              <th class="text-left text-xs font-medium text-gray-400 px-5 py-3">予定</th>
+              <th class="text-left text-xs font-medium text-gray-400 px-5 py-3">やめた時間</th>
+              <th class="px-5 py-3"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            <% @alarm_logs.each do |alarm_log| %>
+              <tr class="hover:bg-gray-50 transition">
+                <td class="px-5 py-3.5">
+                  <span class="text-base font-bold text-gray-900">
                     <%= format_minutes_defer(alarm_log.minutes_to_unlock) %>
                   </span>
+                </td>
+                <td class="px-5 py-3.5">
+                  <span class="text-sm text-gray-700"><%= alarm_log.alarm.label %></span>
+                </td>
+                <td class="px-5 py-3.5">
+                  <span class="text-xs text-gray-500"><%= l(alarm_log.alarm.scheduled_at, format: :short) %></span>
+                </td>
+                <td class="px-5 py-3.5">
+                  <span class="text-xs text-gray-500"><%= l(alarm_log.unlocked_at, format: :short) %></span>
+                </td>
+                <td class="px-5 py-3.5">
                   <% if alarm_log.alarm.ignored %>
-                    <span class="ml-2 px-2 py-1 bg-red-200 text-red-800 text-sm rounded">
+                    <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded border border-red-200">
                       長すぎ
                     </span>
                   <% end %>
-                </div>
-              </div>
-              <div class="text-sm text-gray-600">
-                <div class="flex items-start">
-                  <span class="font-semibold mr-2 whitespace-nowrap">ラベル:</span>
-                  <span class="truncate"><%= alarm_log.alarm.label %></span>
-                </div>
-              </div>
-            </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
 
-            <%# 下部 %>
-            <div class="space-y-2 text-sm text-gray-600 mt-auto pt-3 border-t border-gray-200">
-              <div class="flex items-start">
-                <span class="font-semibold mr-2 whitespace-nowrap">予定:</span>
-                <span class="text-xs"><%= l(alarm_log.alarm.scheduled_at, format: :short) %></span>
+      <%# モバイル: シンプルなリスト形式 %>
+      <div class="sm:hidden divide-y divide-gray-50">
+        <% @alarm_logs.each do |alarm_log| %>
+          <div class="px-5 py-4 flex items-center justify-between gap-4">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-base font-bold text-gray-900">
+                  <%= format_minutes_defer(alarm_log.minutes_to_unlock) %>
+                </span>
+                <% if alarm_log.alarm.ignored %>
+                  <span class="px-1.5 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded border border-red-200">
+                    長すぎ
+                  </span>
+                <% end %>
               </div>
-              <div class="flex items-start">
-                <span class="font-semibold mr-2 whitespace-nowrap">やめた時間:</span>
-                <span class="text-xs"><%= l(alarm_log.unlocked_at, format: :short) %></span>
-              </div>
+              <p class="text-sm text-gray-600 truncate"><%= alarm_log.alarm.label %></p>
+              <p class="text-xs text-gray-400 mt-0.5">
+                やめた時間 <%= l(alarm_log.unlocked_at, format: :short) %>
+              </p>
             </div>
           </div>
         <% end %>
       </div>
 
-    <%# アラームストップ時のモーダルの表示 %>
+      <%# 記録がない場合 %>
+      <% if @alarm_logs.empty? %>
+        <div class="text-center py-16 text-gray-400">
+          <p class="text-sm">まだ記録がありません</p>
+        </div>
+      <% end %>
+
+    </div>
+
+    <%# アラームストップ時のモーダル %>
     <% if flash[:alarm_log_id] %>
       <% alarm_log = AlarmLog.find(flash[:alarm_log_id]) %>
-      
       <%= render 'alarms/unlock_modal', alarm_log: alarm_log %>
     <% end %>
 
@@ -76,16 +118,17 @@
     <%# ログアウト時の表示 %>
     <div class="flex items-center justify-center min-h-[60vh]">
       <div class="max-w-md mx-auto text-center">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">
           記録機能を利用するにはログインしてください
         </h2>
-        <%= link_to new_user_session_path, 
-            class: "inline-flex px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-lg font-semibold items-center gap-3" do %>
-          
+        <%= link_to new_user_session_path,
+            class: "inline-flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition text-sm font-semibold" do %>
           <span>ログイン</span>
-          <%# 矢印マーク %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M15 16l4 -4" /><path d="M15 8l4 4" /></svg>
-        
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M5 12l14 0" /><path d="M15 16l4 -4" /><path d="M15 8l4 4" />
+          </svg>
         <% end %>
       </div>
     </div>
