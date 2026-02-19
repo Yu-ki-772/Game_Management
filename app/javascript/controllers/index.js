@@ -14,3 +14,7 @@ application.register('dropdown', DropdownController)
 // アラームストップ時のモーダル表示用
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
+
+// 検索機能用
+import SearchController from "./search_controller"
+application.register("search", SearchController)
