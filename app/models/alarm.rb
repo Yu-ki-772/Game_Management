@@ -1,6 +1,10 @@
 class Alarm < ApplicationRecord
-  belongs_to :user, primary_key: :uuid, foreign_key: :user_uuid
-  has_one :alarm_log, primary_key: :uuid, foreign_key: :alarm_uuid, dependent: :destroy
+  belongs_to :creator, foreign_key: "user_uuid", primary_key: "uuid", class_name: "User"
+  has_many :alarm_logs, primary_key: :uuid, foreign_key: :alarm_uuid, dependent: :destroy
+  has_many :alarm_memberships, foreign_key: "alarm_uuid", primary_key: "uuid", dependent: :destroy
+  has_many :members,
+           through: :alarm_memberships,
+           source: :user
 
   #=======================================
   # バリデーション
@@ -25,6 +29,15 @@ class Alarm < ApplicationRecord
   # 設定時間（24時間前後）で絞る
   scope :near, -> { where(scheduled_at: 24.hours.ago..24.hours.from_now) }
 
+  # alarm_membershipsテーブルに紐づくalarmだけを返すスコープ
+  scope :with_membership, -> { joins(:alarm_memberships).distinct }
+
+  scope :not_unlocked_by, ->(user) {
+    where.not(
+      uuid: AlarmLog.where(user_uuid: user.uuid).select(:alarm_uuid)
+    )
+  }
+
   #========================================
   # publicメソッド
   #========================================
@@ -33,31 +46,41 @@ class Alarm < ApplicationRecord
     return [ false, nil ] if unlocked?
 
     current_time = Time.current
-
     # 設定時刻と現在時刻の差
     times_defer = current_time - scheduled_at
 
-    # alarm_logのレコード作成
-    alarm_log = build_alarm_log(
+    alarm_log = alarm_logs.build(
       unlocked_at: current_time,
-      minutes_to_unlock: (times_defer / 60).round # 分に変換
+      minutes_to_unlock: (times_defer / 60).round,
+      user_uuid: user_uuid
     )
 
-    # バリデーションチェック
     return [ false, alarm_log ] unless alarm_log.valid?
 
     transaction do
-      # 設定時刻よりも前にストップした場合、アラーム通知用のジョブをキャンセル
       cancel_existing_job if times_defer.negative?
 
-      # ストップ済みに変更（コールバックが実行されない書き方）
-      update_column(:unlocked, true)
-
-      alarm_log.save! # alarm_logのレコードを保存
+      
+      update_column(:unlocked, true) # ストップ済みに変更（コールバックが実行されない書き方）
+      alarm_log.save!
     end
 
     [ true, alarm_log ]
   end
+
+  def belonging_to_membership?
+    alarm_memberships.exists?
+  end
+
+  # 作成者かどうかを判定する
+  def created_by?(user)
+    user_uuid == user.uuid
+  end
+
+  def accessible_by?(user)
+    created_by?(user) || alarm_memberships.any? { |m| m.user_uuid == user.uuid }
+  end
+  
 
   private
 

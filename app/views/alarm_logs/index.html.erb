@@ -1,14 +1,11 @@
 <div class="max-w-7xl mx-auto px-4 py-8">
   <% if user_signed_in? %>
-    <%# 統計データセクション %>
-
     <div class="pb-5 border-b border-gray-200 mb-8">
       <h1 class="text-2xl font-bold text-gray-900">記録</h1>
       <p class="text-sm text-gray-500 mt-1">ゲームをやめた記録の一覧です</p>
     </div>
 
     <div class="grid grid-cols-2 gap-3 mb-10">
-
       <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
         <p class="text-xs font-medium text-gray-500 mb-3">記録の平均</p>
         <p class="text-3xl font-bold text-gray-900">
@@ -22,13 +19,9 @@
           <%= @alarm_logs.count %><span class="text-lg font-medium text-gray-400 ml-0.5">件</span>
         </p>
       </div>
-
     </div>
 
-    <%# 記録テーブル %>
     <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-
-      <%# テーブルヘッダー %>
       <div class="px-5 py-4 border-b border-gray-100 bg-gray-50">
         <h2 class="text-sm font-semibold text-gray-700">記録一覧</h2>
       </div>
@@ -55,6 +48,11 @@
                 </td>
                 <td class="px-5 py-3.5">
                   <span class="text-sm text-gray-700"><%= alarm_log.alarm.label %></span>
+                  <% unless alarm_log.alarm.created_by?(current_user) %>
+                    <p class="text-xs text-indigo-400 mt-0.5">
+                      <%= truncate(alarm_log.alarm.creator.name, length: 11, omission: "...") %> さんのアラーム
+                    </p>
+                  <% end %>
                 </td>
                 <td class="px-5 py-3.5">
                   <span class="text-xs text-gray-500"><%= l(alarm_log.alarm.scheduled_at, format: :short) %></span>
@@ -63,7 +61,7 @@
                   <span class="text-xs text-gray-500"><%= l(alarm_log.unlocked_at, format: :short) %></span>
                 </td>
                 <td class="px-5 py-3.5">
-                  <% if alarm_log.alarm.ignored %>
+                  <% if alarm_log.ignored? %>
                     <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded border border-red-200">
                       長すぎ
                     </span>
@@ -84,13 +82,19 @@
                 <span class="text-base font-bold text-gray-900">
                   <%= format_minutes_defer(alarm_log.minutes_to_unlock) %>
                 </span>
-                <% if alarm_log.alarm.ignored %>
+                <% if alarm_log.ignored? %>
                   <span class="px-1.5 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded border border-red-200">
                     長すぎ
                   </span>
                 <% end %>
               </div>
               <p class="text-sm text-gray-600 truncate"><%= alarm_log.alarm.label %></p>
+              <%# 招待されたアラームの場合は作成者名を表示 %>
+              <% unless alarm_log.alarm.created_by?(current_user) %>
+                <p class="text-xs text-indigo-400 mt-0.5">
+                  <%= truncate(alarm_log.alarm.creator.name, length: 11, omission: "...") %> さんのアラーム
+                </p>
+              <% end %>
               <p class="text-xs text-gray-400 mt-0.5">
                 やめた時間 <%= l(alarm_log.unlocked_at, format: :short) %>
               </p>
@@ -115,7 +119,6 @@
     <% end %>
 
   <% else %>
-    <%# ログアウト時の表示 %>
     <div class="flex items-center justify-center min-h-[60vh]">
       <div class="max-w-md mx-auto text-center">
         <h2 class="text-2xl font-bold text-gray-900 mb-6">

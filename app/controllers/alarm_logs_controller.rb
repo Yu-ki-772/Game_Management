@@ -5,7 +5,9 @@ class AlarmLogsController < ApplicationController
   def index
     if user_signed_in?
       # ログインしている場合の処理
-      @alarm_logs = current_user.alarm_logs.includes(:alarm).order(unlocked_at: :desc)
+      @alarm_logs = AlarmLog.where(user_uuid: current_user.uuid)
+                            .includes(alarm: :creator)
+                            .order(unlocked_at: :desc)
     end
   end
 end

@@ -49,4 +49,16 @@ module AlarmsHelper
 
     "#{base_url}?#{share_data.to_query}"
   end
+
+  DISPLAY_MEMBERS_LIMIT = 3
+
+  # 表示するメンバーを上限人数に絞って返す
+  def alarm_display_members(alarm)
+    alarm.members.first(DISPLAY_MEMBERS_LIMIT)
+  end
+
+  # 表示しきれなかったメンバーの人数を返す
+  def alarm_hidden_members_count(alarm)
+    alarm.members.size - DISPLAY_MEMBERS_LIMIT
+  end
 end

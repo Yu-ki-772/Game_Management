@@ -2,10 +2,7 @@ class AlarmsController < ApplicationController
   #=================================================
   # フィルタ設定
   #=================================================
-  # indexとpendingのみログイン前でも許可
   skip_before_action :authenticate_user!, only: [ :index, :pending ]
-
-  # 対象アラームをセット
   before_action :set_alarm, only: [ :edit, :update, :unlock, :destroy ]
 
   #=================================================
@@ -13,17 +10,35 @@ class AlarmsController < ApplicationController
   #=================================================
   def index
     if user_signed_in?
-      # ログインしている場合の処理
-      # 未送信でかつ未来のものに絞る
-      @alarms = current_user.alarms.unsent.future.locked.order(scheduled_at: :asc)
+      @alarms = current_user.alarms.unsent.future.locked
+                            .includes(
+                              :alarm_memberships,
+                              creator: { avatar_attachment: :blob },
+                              members: { avatar_attachment: :blob }
+                            )
+                            .order(scheduled_at: :asc)
+      
+
+      @invited_alarms = current_user.invited_alarms
+                                    .unsent
+                                    .future
+                                    .locked
+                                    .not_unlocked_by(current_user)
+                                    .includes(
+                                      :alarm_memberships,
+                                      creator: { avatar_attachment: :blob },
+                                      members: { avatar_attachment: :blob }
+                                    )
+                                    .order(scheduled_at: :asc)
     end
   end
 
   def pending
     if user_signed_in?
-      # ログインしている場合の処理
-      # まだストップしていないくて、かつ設定時間が２４時間前後のものに絞る
+      # pending画面はアバターもメンバーも表示しないため、includesは不要
       @alarms = current_user.alarms.locked.near.order(scheduled_at: :asc)
+      
+      @invited_alarm_memberships = pending_invited_alarm_memberships
     end
   end
 
@@ -84,20 +99,39 @@ class AlarmsController < ApplicationController
   # privateメソッド
   #=================================================
 
-  # 現在のユーザのアラームから対象を取得
   def set_alarm
     @alarm = current_user.alarms.find(params[:id])
   end
 
-  # 許可するパラメータの定義
   def alarm_params
     params.require(:alarm).permit(:label, :scheduled_at)
   end
 
-  # アラームストップ失敗時の処理
-  # pendingページを再表示し、エラーメッセージを表示
+  # pendingとhandle_unlock_failureの両方で同じ招待アラームの取得処理が必要なため、
+  # メソッドとして切り出すことで重複を避ける。
+  # { alarm_uuid => membership } というHashを返すことで、
+  # ビュー側がalarm.uuidをキーにO(1)でmembershipを取得できる。
+  def pending_invited_alarm_memberships
+    current_user.alarm_memberships
+                .not_unlocked_by(current_user)
+                .joins(:alarm)
+                .merge(Alarm.locked.near)
+                .eager_load(alarm: { creator: { avatar_attachment: :blob } })
+                .order("alarms.scheduled_at ASC")
+                .index_by(&:alarm_uuid)
+  end
+
   def handle_unlock_failure
-    @alarms = current_user.alarms.locked.near.order(scheduled_at: :asc)
+    @alarms = current_user.alarms.locked.near
+                          .includes(
+                            :alarm_memberships,
+                            creator: { avatar_attachment: :blob },
+                            members: { avatar_attachment: :blob }
+                          ).
+                          order(scheduled_at: :asc)
+    
+    @invited_alarm_memberships = pending_invited_alarm_memberships
+
     flash.now[:alert] = "アラームをストップできませんでした"
     render "alarms/pending", status: :unprocessable_entity
   end
