@@ -1,16 +1,9 @@
 <div class="max-w-7xl mx-auto px-4 py-8">
 
-  <%#
-    ページヘッダー: スマホでは縦並び(flex-col)、
-    md以上で横並び(md:flex-row)に切り替える。
-  %>
+  <%# ページヘッダー %>
   <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between pb-5 border-b border-gray-200 mb-8">
     <h1 class="text-2xl font-bold text-gray-900">定型文一覧</h1>
 
-    <%#
-      ボタン群: スマホでは横並びのまま幅いっぱいに伸ばす。
-      justify-stretch で両ボタンが均等幅になり見た目がきれいに揃う。
-    %>
     <div class="flex items-center gap-3">
       <% if user_signed_in? %>
         <%= link_to bookmarks_message_templates_path,
@@ -19,7 +12,6 @@
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" />
           </svg>
-          <%# スマホでは短縮表示してレイアウト崩れを防ぐ %>
           <span class="hidden sm:inline">ブックマーク一覧</span>
           <span class="sm:hidden">ブックマーク</span>
         <% end %>
@@ -37,66 +29,19 @@
     </div>
   </div>
 
+  <%# Turbo Frame %>
+  <%= turbo_frame_tag "message_templates_list" do %>
+    <%# 検索フォーム %>
+    <%= render 'search_form',
+        q: @q,
+        url: message_templates_path,
+        turbo_frame: "message_templates_list",
+        available_reasons: @available_reasons %>
 
-  <div class="space-y-6">
-    <% @message_templates.group_by(&:reason).each do |reason, templates| %>
-      <section class="bg-white rounded-xl shadow-sm border border-gray-100">
-
-        <div class="px-4 md:px-6 py-4 border-b border-gray-100 bg-gray-50 rounded-t-xl">
-          <div class="flex items-center gap-3">
-            <span class="w-1 h-5 bg-emerald-500 rounded-full shrink-0"></span>
-            <h2 class="text-base font-semibold text-gray-800">
-              <%= reason %>
-            </h2>
-          </div>
-        </div>
-
-        <ul class="divide-y divide-gray-50 px-2 py-2">
-          <% templates.each do |template| %>
-            <% bookmark = @user_bookmarks[template.id] %>
-
-            <li class="px-3 md:px-4 py-3 rounded-lg hover:bg-emerald-50 transition group">
-              <%#
-                テンプレート本文とボタン群: スマホでは縦積み(flex-col)、
-                md以上で横並び(md:flex-row)に。本文が長くてもボタンが
-                押しつぶされなくなる。
-              %>
-              <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-4">
-                <p class="text-gray-800 flex-1 text-sm leading-relaxed">
-                  <%= template.template %>
-                </p>
-
-                <%#
-                  ボタン群: スマホでは右寄せ(justify-end)にして
-                  本文との区別をつける。
-                %>
-                <div class="flex items-center gap-2 shrink-0 justify-end md:justify-start">
-                  <% if user_signed_in? %>
-                    <% if bookmark %>
-                      <%= render 'unbookmark_button', message_template: template, bookmark: bookmark %>
-                    <% else %>
-                      <%= render 'bookmark_button', message_template: template %>
-                    <% end %>
-
-                    <% if template.user_uuid.present? %>
-                      <%= link_to edit_message_template_path(template),
-                          class: "px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-md border border-emerald-200 transition" do %>
-                        編集
-                      <% end %>
-                      <%= button_to message_template_path(template),
-                          method: :delete,
-                          data: { turbo_confirm: '本当に削除しますか?' },
-                          class: "px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold rounded-md border border-red-200 transition" do %>
-                        削除
-                      <% end %>
-                    <% end %>
-                  <% end %>
-                </div>
-              </div>
-            </li>
-          <% end %>
-        </ul>
-      </section>
-    <% end %>
-  </div>
+    <%= render 'templates_list',
+        message_templates: @message_templates,
+        user_bookmarks: @user_bookmarks,
+        empty_message: "定型文が見つかりませんでした",
+        empty_description: "検索条件を変更してお試しください" %>
+  <% end %>
 </div>

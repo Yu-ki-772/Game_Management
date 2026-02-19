@@ -1,6 +1,6 @@
 <div class="max-w-7xl mx-auto px-4 py-8">
 
-  <%# ページヘッダー: スマホでは縦並び、md以上で横並び %>
+  <%# ページヘッダー %>
   <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between pb-5 border-b border-gray-200 mb-8">
     <h1 class="text-2xl font-bold text-gray-900">ブックマーク一覧</h1>
 
@@ -28,52 +28,19 @@
     </div>
   </div>
 
+  <%# Turbo Frame %>
+  <%= turbo_frame_tag "bookmarks_list" do %>
+    <%# 検索フォーム %>
+    <%= render 'search_form',
+        q: @q,
+        url: bookmarks_message_templates_path,
+        turbo_frame: "bookmarks_list",
+        available_reasons: @available_reasons %>
 
-  <div class="space-y-6">
-    <% @bookmarks_message_templates.group_by(&:reason).each do |reason, templates| %>
-      <section class="bg-white rounded-xl shadow-sm border border-gray-100">
-
-        <div class="px-4 md:px-6 py-4 border-b border-gray-100 bg-gray-50 rounded-t-xl">
-          <div class="flex items-center gap-3">
-            <span class="w-1 h-5 bg-emerald-500 rounded-full shrink-0"></span>
-            <h2 class="text-base font-semibold text-gray-800">
-              <%= reason %>
-            </h2>
-          </div>
-        </div>
-
-        <ul class="divide-y divide-gray-50 px-2 py-2">
-          <% templates.each do |template| %>
-            <% bookmark = @user_bookmarks[template.id] %>
-
-            <li class="px-3 md:px-4 py-3 rounded-lg hover:bg-emerald-50 transition group">
-              <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-4">
-                <p class="text-gray-800 flex-1 text-sm leading-relaxed">
-                  <%= template.template %>
-                </p>
-
-                <div class="flex items-center gap-2 shrink-0 justify-end md:justify-start">
-                  <%# ブックマーク解除ボタン %>
-                  <%= render 'unbookmark_button', message_template: template, bookmark: bookmark %>
-
-                  <% if template.user_uuid.present? %>
-                    <%= link_to edit_message_template_path(template),
-                        class: "px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-md border border-emerald-200 transition" do %>
-                      編集
-                    <% end %>
-                    <%= button_to message_template_path(template),
-                        method: :delete,
-                        data: { turbo_confirm: '本当に削除しますか?' },
-                        class: "px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold rounded-md border border-red-200 transition" do %>
-                      削除
-                    <% end %>
-                  <% end %>
-                </div>
-              </div>
-            </li>
-          <% end %>
-        </ul>
-      </section>
-    <% end %>
-  </div>
+    <%= render 'templates_list',
+        message_templates: @bookmarks_message_templates,
+        user_bookmarks: @user_bookmarks,
+        empty_message: @empty_message,
+        empty_description: @empty_description %>
+  <% end %>
 </div>

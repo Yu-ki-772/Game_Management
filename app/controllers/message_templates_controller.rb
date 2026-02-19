@@ -8,28 +8,49 @@ class MessageTemplatesController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :index ]
 
   def index
-    if user_signed_in?
+    # 基本となるクエリ
+    base_query = if user_signed_in?
       # デフォルトデータと、自分で作成したもののみ取得
-      @message_templates = MessageTemplate.where(user_uuid: [ current_user.uuid, nil ])
-      # 該当ユーザのブックマークの取得
+      MessageTemplate.where(user_uuid: [ current_user.uuid, nil ])
+    else
+      # デフォルトデータのみ取得
+      MessageTemplate.where(user_uuid: nil)
+    end
+
+    # 検索
+    @q = base_query.ransack(search_params)
+    @message_templates = @q.result.order(reason: :asc, created_at: :desc)
+
+    @available_reasons = base_query.distinct.pluck(:reason).sort
+
+    # 該当ユーザのブックマークの取得
+    if user_signed_in?
       @user_bookmarks = current_user.bookmarks
                                     .where(message_template_id: @message_templates.ids)
                                     .index_by(&:message_template_id)
     else
-      # デフォルトデータのみ取得
-      @message_templates = MessageTemplate.where(user_uuid: nil)
-
       @user_bookmarks = {}
     end
   end
 
   # ブックマークした定型文の一覧表示用
   def bookmarks
-    @bookmarks_message_templates = current_user.bookmarks_message_templates.order(created_at: :desc)
+    # 基本クエリ: ブックマーク済みの定型文
+    base_query = current_user.bookmarks_message_templates
+
+    # 検索
+    @q = base_query.ransack(search_params)
+    @bookmarks_message_templates = @q.result.order(created_at: :desc)
+
+    @available_reasons = base_query.distinct.pluck(:reason).sort
+
     # 該当ユーザのブックマークの取得
     @user_bookmarks = current_user.bookmarks
                                   .where(message_template_id: @bookmarks_message_templates.ids)
                                   .index_by(&:message_template_id)
+
+    @empty_message = params[:q].present? ? "ブックマークが見つかりませんでした" : "まだブックマークがありません"
+    @empty_description = params[:q].present? ? "検索条件を変更してお試しください" : "定型文一覧からブックマークを追加してみましょう"
   end
 
   def new
@@ -79,5 +100,15 @@ class MessageTemplatesController < ApplicationController
   # 許可するパラメータの定義
   def message_template_params
     params.require(:message_template).permit(:reason, :template)
+  end
+
+  # 検索パラメータ
+  def search_params
+    return {} unless params[:q]
+
+    params.require(:q).permit(
+      :template_or_reason_cont,  # テキスト検索（本文 or カテゴリー）
+      :reason_eq,       # カテゴリーでの完全一致検索
+    )
   end
 end
