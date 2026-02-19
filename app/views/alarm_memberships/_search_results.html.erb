@@ -1,0 +1,30 @@
+<%= turbo_frame_tag "alarm_membership_search_#{alarm.uuid}" do %>
+  <% if users.any? %>
+    <ul class="divide-y">
+      <% users.each do |user| %>
+        <li class="flex items-center justify-between py-2">
+          <div class="flex items-center gap-2">
+            <% if user.avatar.attached? %>
+              <%= image_tag user.avatar, class: "w-8 h-8 rounded-full object-cover" %>
+            <% else %>
+              <span class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                </svg>
+              </span>
+            <% end %>
+            <span class="text-sm"><%= truncate(user.name, length: 11, omission: "...") %></span>
+          </div>
+
+          <% membership = invited_memberships_hash[user.uuid] %>
+          <%= render "alarm_memberships/invite_button",
+                     alarm: alarm,
+                     user: user,
+                     membership: membership %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-sm text-gray-400 py-2">ユーザーが見つかりませんでした</p>
+  <% end %>
+<% end %>

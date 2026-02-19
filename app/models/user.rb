@@ -5,7 +5,7 @@ class User < ApplicationRecord
   validate :avatar_content_type
   validate :avatar_size
 
-  scope :non_admin, -> { where(admin: false) } # 管理者ユーザかどうかの確認
+
 
 
   # Include default devise modules. Others available are:
@@ -28,9 +28,33 @@ class User < ApplicationRecord
               primary_key: :uuid,
               foreign_key: :friend_uuid,
               dependent: :destroy
+  has_many :alarm_memberships, foreign_key: "user_uuid", primary_key: "uuid"
+  has_many :invited_alarms,
+           through: :alarm_memberships,
+           source: :alarm
 
   # ブックマークした定型文
   has_many :bookmarks_message_templates, through: :bookmarks, source: :message_template
+
+  scope :non_admin, -> { where(admin: false) } # 管理者ユーザかどうかの確認
+
+  # フレンドを優先的に表示させるためのスコープ
+  scope :friends_first, ->(user) {
+    joins(
+      ActiveRecord::Base.sanitize_sql([
+        "LEFT JOIN friendships ON (
+          (friendships.friend_uuid = users.uuid AND friendships.user_uuid = ?)
+          OR
+          (friendships.user_uuid = users.uuid AND friendships.friend_uuid = ?)
+        ) AND friendships.status = ?",
+        user.uuid,
+        user.uuid,
+        Friendship.statuses[:accepted]
+      ])
+    ).order(
+      Arel.sql("CASE WHEN friendships.id IS NOT NULL THEN 0 ELSE 1 END ASC, users.name ASC")
+    )
+  }
 
   #========================================================
   # publicメソッド

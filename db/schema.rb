@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_16_082702) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_18_224218) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -19,7 +19,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_082702) do
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.string "name", null: false
-    t.bigint "record_id", null: false
+    t.uuid "record_id", null: false
     t.string "record_type", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
@@ -49,12 +49,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_082702) do
     t.integer "minutes_to_unlock"
     t.datetime "unlocked_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "user_uuid"
     t.index ["alarm_uuid"], name: "index_alarm_logs_on_alarm_uuid"
+    t.index ["user_uuid"], name: "index_alarm_logs_on_user_uuid"
+  end
+
+  create_table "alarm_memberships", force: :cascade do |t|
+    t.uuid "alarm_uuid", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_uuid", null: false
+    t.index ["alarm_uuid"], name: "index_alarm_memberships_on_alarm_uuid"
+    t.index ["user_uuid"], name: "index_alarm_memberships_on_user_uuid"
   end
 
   create_table "alarms", primary_key: "uuid", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.boolean "ignored", default: false, null: false
     t.string "job_id"
     t.string "label", default: "アラーム", null: false
     t.datetime "scheduled_at", null: false
@@ -212,6 +222,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_082702) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "alarm_logs", "alarms", column: "alarm_uuid", primary_key: "uuid"
+  add_foreign_key "alarm_logs", "users", column: "user_uuid", primary_key: "uuid"
+  add_foreign_key "alarm_memberships", "alarms", column: "alarm_uuid", primary_key: "uuid"
+  add_foreign_key "alarm_memberships", "users", column: "user_uuid", primary_key: "uuid"
   add_foreign_key "alarms", "users", column: "user_uuid", primary_key: "uuid"
   add_foreign_key "bookmarks", "message_templates"
   add_foreign_key "bookmarks", "users", column: "user_uuid", primary_key: "uuid"

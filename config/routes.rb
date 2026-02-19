@@ -18,6 +18,15 @@ Rails.application.routes.draw do
     member do
       patch :unlock
     end
+    resources :alarm_memberships, only: [ :create, :destroy ] do
+      collection do
+        # アラームに招待するユーザーを検索する用
+        get :search_users
+      end
+      member do
+        patch :unlock
+      end
+    end
   end
   resources :alarm_logs, only: %i[ index ]
 

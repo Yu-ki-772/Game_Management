@@ -1,0 +1,27 @@
+<div data-controller="dropdown" class="relative inline-block">
+  <button data-action="click->dropdown#toggle"
+          class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-md border border-indigo-200 transition">
+    招待
+  </button>
+
+  <div data-dropdown-target="menu"
+       class="hidden absolute right-0 z-10 w-72 bg-white border rounded shadow-lg p-3">
+
+    <%= form_with url: search_users_alarm_alarm_memberships_path(alarm),
+                  method: :get,
+                  data: {
+                    turbo_frame: "alarm_membership_search_#{alarm.uuid}",
+                    dropdown_target: "form"
+                  } do |f| %>
+      <%= f.search_field :q_name_cont,
+                         placeholder: "名前で検索",
+                         data: { action: "input->dropdown#search" },
+                         class: "w-full border border-gray-200 rounded px-2 py-1 text-sm mb-2 focus:outline-none focus:border-indigo-300",
+                         name: "q[name_cont]" %>
+    <% end %>
+
+    <%= turbo_frame_tag "alarm_membership_search_#{alarm.uuid}" do %>
+    <% end %>
+
+  </div>
+</div>
