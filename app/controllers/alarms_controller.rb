@@ -17,7 +17,7 @@ class AlarmsController < ApplicationController
                               members: { avatar_attachment: :blob }
                             )
                             .order(scheduled_at: :asc)
-      
+
 
       @invited_alarms = current_user.invited_alarms
                                     .unsent
@@ -37,7 +37,7 @@ class AlarmsController < ApplicationController
     if user_signed_in?
       # pending画面はアバターもメンバーも表示しないため、includesは不要
       @alarms = current_user.alarms.locked.near.order(scheduled_at: :asc)
-      
+
       @invited_alarm_memberships = pending_invited_alarm_memberships
     end
   end
@@ -129,7 +129,7 @@ class AlarmsController < ApplicationController
                             members: { avatar_attachment: :blob }
                           ).
                           order(scheduled_at: :asc)
-    
+
     @invited_alarm_memberships = pending_invited_alarm_memberships
 
     flash.now[:alert] = "アラームをストップできませんでした"

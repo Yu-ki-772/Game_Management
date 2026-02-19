@@ -1,5 +1,4 @@
 class AlarmMailer < ApplicationMailer
-
   # 作成者への通知
   def alarm_notification(alarm_uuid)
     @alarm = Alarm.find_by(uuid: alarm_uuid)

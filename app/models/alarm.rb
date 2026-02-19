@@ -60,7 +60,7 @@ class Alarm < ApplicationRecord
     transaction do
       cancel_existing_job if times_defer.negative?
 
-      
+
       update_column(:unlocked, true) # ストップ済みに変更（コールバックが実行されない書き方）
       alarm_log.save!
     end
@@ -80,7 +80,7 @@ class Alarm < ApplicationRecord
   def accessible_by?(user)
     created_by?(user) || alarm_memberships.any? { |m| m.user_uuid == user.uuid }
   end
-  
+
 
   private
 

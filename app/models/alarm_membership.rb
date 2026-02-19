@@ -13,7 +13,7 @@ class AlarmMembership < ApplicationRecord
   def unlocked?
     alarm.alarm_logs.exists?(user_uuid: user_uuid)
   end
-  
+
   def unlock
     return false if unlocked?
 

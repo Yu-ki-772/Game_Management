@@ -61,7 +61,7 @@ class AlarmMembershipsController < ApplicationController
     alarm_log = @membership.unlock
 
     if alarm_log
-      
+
       flash[:alarm_log_id] = alarm_log.id if alarm_log
       redirect_to alarm_logs_path, notice: "アラームをストップしました", status: :see_other
     else

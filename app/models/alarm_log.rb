@@ -16,7 +16,7 @@ class AlarmLog < ApplicationRecord
 
   private
 
-  
+
   # アラームのストップは、設定時間から1440分(24時間)前後の場合のみ受け付ける
   def minutes_to_unlock_range
     if minutes_to_unlock < -1440 || minutes_to_unlock > 1440

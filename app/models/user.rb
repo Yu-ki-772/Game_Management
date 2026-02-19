@@ -5,7 +5,7 @@ class User < ApplicationRecord
   validate :avatar_content_type
   validate :avatar_size
 
-  
+
 
 
   # Include default devise modules. Others available are:
@@ -55,7 +55,7 @@ class User < ApplicationRecord
       Arel.sql("CASE WHEN friendships.id IS NOT NULL THEN 0 ELSE 1 END ASC, users.name ASC")
     )
   }
-  
+
   #========================================================
   # publicメソッド
   #========================================================
