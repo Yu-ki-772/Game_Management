@@ -14,7 +14,7 @@ class MessageTemplate < ApplicationRecord
 
   # Ransackで検索可能な属性
   def self.ransackable_attributes(auth_object = nil)
-    ["reason", "template"]
+    [ "reason", "template" ]
   end
 
   def self.ransackable_associations(auth_object = nil)

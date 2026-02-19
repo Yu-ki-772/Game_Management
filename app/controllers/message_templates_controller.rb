@@ -20,7 +20,7 @@ class MessageTemplatesController < ApplicationController
     # 検索
     @q = base_query.ransack(search_params)
     @message_templates = @q.result.order(reason: :asc, created_at: :desc)
-    
+
     @available_reasons = base_query.distinct.pluck(:reason).sort
 
     # 該当ユーザのブックマークの取得
@@ -41,7 +41,7 @@ class MessageTemplatesController < ApplicationController
     # 検索
     @q = base_query.ransack(search_params)
     @bookmarks_message_templates = @q.result.order(created_at: :desc)
-    
+
     @available_reasons = base_query.distinct.pluck(:reason).sort
 
     # 該当ユーザのブックマークの取得
