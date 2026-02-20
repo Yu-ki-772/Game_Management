@@ -101,6 +101,9 @@ Rails.application.configure do
     # ジョブが終了した後もジョブ記録を保持
     preserve_job_records: true,
 
+    # 7日以上経過した完了済みジョブ記録を自動削除
+    cleanup_preserved_jobs_before_seconds_ago: 7.days,
+
     # エラーハンドリング
     on_thread_error: ->(exception) { Rails.error.report(exception) },
 
