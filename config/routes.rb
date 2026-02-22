@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :alarms, only: %i[index new create edit update destroy] do
     collection do
       get :pending
+      get :calendar
     end
     member do
       patch :unlock

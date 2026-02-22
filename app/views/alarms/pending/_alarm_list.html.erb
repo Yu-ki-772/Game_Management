@@ -1,51 +1,139 @@
-<%# ストップ可能なアラーム一覧の表示用のパーシャル %>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-  <% alarms.each do |alarm| %>
-    <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-6 flex flex-col gap-4 hover:shadow-md hover:border-emerald-100 transition">
-      <div>
-        <p class="text-2xl font-bold text-gray-900 mb-1">
-          <%= l(alarm.scheduled_at, format: :short) %>
-        </p>
-        <p class="text-sm text-gray-500 truncate"><%= alarm.label %></p>
-      </div>
+<%# 自分が作成したアラーム %>
+<% if alarms.any? %>
+  <div class="mb-8">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">作成したアラーム</h2>
+    
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm divide-y divide-gray-50">
+      <% alarms.each do |alarm| %>
+        <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          
+          <!-- 日時とラベル -->
+          <div class="flex items-start gap-4 flex-1 min-w-0">
+            
+            <!-- 日時表示 -->
+            <div class="flex flex-col gap-0.5 shrink-0">
+              <span class="text-xs text-gray-500 font-medium whitespace-nowrap">
+                <%= alarm.scheduled_at.strftime("%m/%d") %>
+                <span class="text-[10px]">(<%= %w[日 月 火 水 木 金 土][alarm.scheduled_at.wday] %>)</span>
+              </span>
+              
+              <span class="text-sm font-bold text-gray-900 whitespace-nowrap">
+                <% if alarm.started_at.present? %>
+                  <%= alarm.started_at.strftime("%H:%M") %>
+                  <span class="text-xs text-gray-400 mx-0.5">-</span>
+                  <%= alarm.scheduled_at.strftime("%H:%M") %>
+                <% else %>
+                  <%= alarm.scheduled_at.strftime("%H:%M") %>
+                <% end %>
+              </span>
+            </div>
 
-      <%= button_to unlock_alarm_path(alarm),
-          method: :patch,
-          class: "w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-lg transition" do %>
-        ストップ
-      <% end %>
+            <!-- ラベルとメンバー -->
+            <div class="flex-1 min-w-0">
+              <span class="text-sm text-gray-700 font-medium"><%= alarm.label %></span>
 
-      <%= button_to alarm_path(alarm),
-          method: :delete,
-          data: { turbo_confirm: '本当に削除しますか?' },
-          class: "w-full py-1.5 text-xs text-gray-400 hover:text-red-500 transition text-center" do %>
-        削除
+              <% if alarm.alarm_memberships.any? %>
+                <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <span class="inline-flex items-center gap-1.5 text-xs text-gray-400">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                    </svg>
+                    <span><%= alarm.alarm_memberships.size + 1 %>人</span>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- アクションボタン -->
+          <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+            <%= button_to 'ストップ',
+                unlock_alarm_path(alarm),
+                method: :patch,
+                class: "px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg transition" %>
+            
+          </div>
+        </div>
       <% end %>
     </div>
-  <% end %>
+  </div>
+<% end %>
 
-    <%# 招待されたアラーム %>
-    <% invited_alarm_memberships.each do |alarm_uuid, membership| %>
-      <% alarm = membership.alarm %>
-      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-6 flex flex-col gap-4 hover:shadow-md hover:border-indigo-100 transition">
-        <div>
-          <p class="text-2xl font-bold text-gray-900 mb-1">
-            <%= l(alarm.scheduled_at, format: :short) %>
-          </p>
-          <p class="text-sm text-gray-500 truncate"><%= alarm.label %></p>
-          <%# 誰のアラームかを明示することで、自分のアラームとの区別がつく %>
-          <p class="text-xs text-indigo-400 mt-1">
-            <%= truncate(alarm.creator.name, length: 11, omission: "...") %> さんのアラーム
-          </p>
+<%# 招待されたアラーム %>
+<% if invited_alarm_memberships.any? %>
+  <div>
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">招待されたアラーム</h2>
+    
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm divide-y divide-gray-50">
+      <% invited_alarm_memberships.values.each do |membership| %>
+        <% alarm = membership.alarm %>
+        
+        <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          
+          <!-- 日時とラベル -->
+          <div class="flex items-start gap-4 flex-1 min-w-0">
+            
+            <!-- 日時表示 -->
+            <div class="flex flex-col gap-0.5 shrink-0">
+              <span class="text-xs text-gray-500 font-medium whitespace-nowrap">
+                <%= alarm.scheduled_at.strftime("%m/%d") %>
+                <span class="text-[10px]">(<%= %w[日 月 火 水 木 金 土][alarm.scheduled_at.wday] %>)</span>
+              </span>
+              
+              <span class="text-sm font-bold text-gray-900 whitespace-nowrap">
+                <% if alarm.started_at.present? %>
+                  <%= alarm.started_at.strftime("%H:%M") %>
+                  <span class="text-xs text-gray-400 mx-0.5">-</span>
+                  <%= alarm.scheduled_at.strftime("%H:%M") %>
+                <% else %>
+                  <%= alarm.scheduled_at.strftime("%H:%M") %>
+                <% end %>
+              </span>
+            </div>
+
+            <!-- ラベルと作成者 -->
+            <div class="flex-1 min-w-0">
+              <span class="text-sm text-gray-700 font-medium"><%= alarm.label %></span>
+
+              <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span class="inline-flex items-center gap-1.5 text-xs text-gray-400">
+                  作成者:
+                  <% if alarm.creator.avatar.attached? %>
+                    <%= image_tag alarm.creator.avatar, class: "w-4 h-4 rounded-full object-cover" %>
+                  <% else %>
+                    <span class="w-4 h-4 rounded-full bg-gray-100 flex items-center justify-center">
+                      <svg class="w-2.5 h-2.5 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                      </svg>
+                    </span>
+                  <% end %>
+                  <span class="font-medium text-gray-600">
+                    <%= truncate(alarm.creator.name, length: 15, omission: "...") %>
+                  </span>
+                </span>
+
+                <% if alarm.alarm_memberships.size > 1 %>
+                  <span class="w-px h-3 bg-gray-300"></span>
+                  <span class="text-xs text-gray-400">
+                    <svg class="w-4 h-4 inline" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                    </svg>
+                    <%= alarm.alarm_memberships.size + 1 %>人
+                  </span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <!-- ストップボタン -->
+          <div class="shrink-0 self-end sm:self-auto">
+            <%= button_to 'ストップ',
+                unlock_alarm_alarm_membership_path(alarm, membership),
+                method: :patch,
+                class: "px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition" %>
+          </div>
         </div>
-
-        <%# メンバーとしてのストップボタン。 %>
-        <%= button_to unlock_alarm_alarm_membership_path(alarm, membership),
-            method: :patch,
-            class: "w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition" do %>
-          ストップ
-        <% end %>
-      </div>
-    <% end %>
-
-</div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -12,6 +12,7 @@ class Alarm < ApplicationRecord
   validates :label, presence: true, length: { maximum: 255 }
   validates :scheduled_at, presence: true
   validate :scheduled_at_must_be_in_the_future
+  validate :started_at_must_be_before_scheduled_at, if: :started_at?
 
   #=======================================
   # コールバック
@@ -31,12 +32,34 @@ class Alarm < ApplicationRecord
 
   # alarm_membershipsテーブルに紐づくalarmだけを返すスコープ
   scope :with_membership, -> { joins(:alarm_memberships).distinct }
-
   scope :not_unlocked_by, ->(user) {
     where.not(
       uuid: AlarmLog.where(user_uuid: user.uuid).select(:alarm_uuid)
     )
   }
+
+  # カレンダーへの表示用のスコープ
+  # started_atがある場合はそれを、ない場合はscheduled_atを期間判定に使用
+  scope :in_period, ->(start_date, end_date) {
+    where(started_at: ..end_date)
+      .where("scheduled_at >= ?", start_date)
+      .or(
+        where(started_at: nil)
+          .where(scheduled_at: start_date..end_date)
+      )
+  }
+
+  def start_time
+    started_at || scheduled_at
+  end
+
+  def time_text
+    if started_at.present?
+      "#{started_at.strftime('%H:%M')} - #{scheduled_at.strftime('%H:%M')}"
+    else
+      scheduled_at.strftime("%H:%M")
+    end
+  end
 
   #========================================
   # publicメソッド
@@ -59,7 +82,6 @@ class Alarm < ApplicationRecord
 
     transaction do
       cancel_existing_job if times_defer.negative?
-
 
       update_column(:unlocked, true) # ストップ済みに変更（コールバックが実行されない書き方）
       alarm_log.save!
@@ -94,6 +116,15 @@ class Alarm < ApplicationRecord
 
     if scheduled_at <= Time.current
       errors.add(:scheduled_at, "は未来の日時を指定してください")
+    end
+  end
+
+  # 開始時間が鳴る時間よりも前の場合のみ許可
+  def started_at_must_be_before_scheduled_at
+    return if scheduled_at.blank?
+
+    if started_at >= scheduled_at
+      errors.add(:started_at, "はアラーム時刻より前である必要があります")
     end
   end
 
