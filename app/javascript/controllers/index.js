@@ -18,3 +18,7 @@ application.register("modal", ModalController)
 // 検索機能用
 import SearchController from "./search_controller"
 application.register("search", SearchController)
+
+// クリップボードにコピー用
+import ClipboardController from "./clipboard_controller"
+application.register("clipboard", ClipboardController)
