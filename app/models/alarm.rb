@@ -52,7 +52,7 @@ class Alarm < ApplicationRecord
   def start_time
     started_at || scheduled_at
   end
-  
+
   def time_text
     if started_at.present?
       "#{started_at.strftime('%H:%M')} - #{scheduled_at.strftime('%H:%M')}"
@@ -64,7 +64,7 @@ class Alarm < ApplicationRecord
   #========================================
   # publicメソッド
   #========================================
-   # （アラームをストップ&記録の作成）用のメソッド
+  # （アラームをストップ&記録の作成）用のメソッド
   def unlock_with_log
     return [ false, nil ] if unlocked?
 

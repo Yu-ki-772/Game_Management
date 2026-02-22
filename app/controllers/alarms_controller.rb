@@ -34,14 +34,14 @@ class AlarmsController < ApplicationController
   # カレンダー
   def calendar
     return redirect_to new_user_session_path unless user_signed_in?
-    
+
     # 現在の日付から表示する月を取得（デフォルトは今月）
     @start_date = Date.today
-    
+
     # カレンダー表示用の期間を計算（カレンダーグリッド全体）
     start_of_calendar = @start_date.beginning_of_month.beginning_of_week(:sunday)
     end_of_calendar = @start_date.end_of_month.end_of_week(:sunday)
-    
+
     # 自分が作成したアラーム
     @my_alarms = current_user.alarms
                             .locked
@@ -50,7 +50,7 @@ class AlarmsController < ApplicationController
                               :alarm_memberships
                             )
                             .order(Arel.sql("COALESCE(started_at, scheduled_at) ASC"))
-    
+
     # 招待されたアラーム
     @invited_alarms = current_user.invited_alarms
                                   .locked
@@ -59,10 +59,10 @@ class AlarmsController < ApplicationController
                                     :alarm_memberships
                                   )
                                   .order(Arel.sql("COALESCE(started_at, scheduled_at) ASC"))
-    
+
     # 全アラームを結合してstart_timeでソート
     @alarms = (@my_alarms + @invited_alarms).sort_by(&:start_time)
-    
+
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -82,21 +82,21 @@ class AlarmsController < ApplicationController
   #=================================================
   def new
     @alarm = current_user.alarms.build
-    
+
     now = Time.current.change(sec: 0)
-    
+
     # デフォルトは1時間後
     @alarm.scheduled_at = now + 1.hour
-    
+
     # カレンダーから未来の日付が渡された場合は上書き
     if params[:date].present?
       selected_date = Date.parse(params[:date]) rescue nil
-      
+
       if selected_date && selected_date > Date.today
         @alarm.scheduled_at = selected_date.to_time.change(hour: now.hour, min: now.min)
       end
     end
-    
+
     # 作成画面に入ったときに、started_atがscheduled_atの1時間前にする
     @alarm.started_at = @alarm.scheduled_at - 1.hour
   end
@@ -168,7 +168,7 @@ class AlarmsController < ApplicationController
                 .not_unlocked_by(current_user)
                 .joins(:alarm)
                 .merge(Alarm.locked.near)
-                .eager_load(alarm: [:alarm_memberships, { creator: { avatar_attachment: :blob } }])
+                .eager_load(alarm: [ :alarm_memberships, { creator: { avatar_attachment: :blob } } ])
                 .order("alarms.scheduled_at ASC")
                 .index_by(&:alarm_uuid)
   end
