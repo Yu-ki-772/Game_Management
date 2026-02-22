@@ -1,12 +1,38 @@
 <%# アラーム作成画面 %>
 <div class="max-w-7xl mx-auto px-4 py-8">
 
+  <%# カレンダーに戻るリンク %>
+  <% if params[:date].present? %>
+    <div class="mb-4">
+      <%= link_to calendar_alarms_path, 
+          class: "inline-flex items-center text-sm text-gray-600 hover:text-gray-900" do %>
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        カレンダーに戻る
+      <% end %>
+    </div>
+  <% end %>
+
   <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3 pb-5 border-b border-gray-200 mb-8">
     <h1 class="text-2xl font-bold text-gray-900">アラームを作成</h1>
     <span class="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full self-start sm:self-auto">
       通知はメールで送信されます
     </span>
   </div>
+
+  <% if params[:date].present? %>
+    <div class="mb-6 max-w-2xl">
+      <div class="flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 px-4 py-3 rounded-lg border border-emerald-200">
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        <span>
+          <%= Date.parse(params[:date]).strftime("%Y年%m月%d日") %>のアラームを作成します（時刻は調整できます）
+        </span>
+      </div>
+    </div>
+  <% end %>
 
   <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-2xl">
     <%= form_with model: @alarm, class: "space-y-6" do |f| %>
@@ -26,19 +52,41 @@
             class: "w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
       </div>
 
+      <%# 開始時刻フィールド %>
+      <div>
+        <%= f.label :started_at, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+          開始時刻
+          <span class="text-xs font-normal text-gray-500 ml-1">(任意)</span>
+        <% end %>
+        <%= f.datetime_field :started_at,
+            class: "w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
+        
+        <%# ヒントメッセージ %>
+        <% if params[:date].present? %>
+          <p class="text-xs text-gray-500 mt-1.5 ml-1">
+            アラームが有効になる開始時刻（省略可）
+          </p>
+        <% else %>
+          <p class="text-xs text-gray-500 mt-1.5 ml-1">
+            アラームが有効になる開始時刻を設定できます（省略可）
+          </p>
+        <% end %>
+      </div>
+
+      <%# アラーム日時フィールド %>
       <div>
         <%= f.label :scheduled_at, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
-          日時 <span class="text-red-500">*</span>
+          アラーム日時 <span class="text-red-500">*</span>
         <% end %>
         <%= f.datetime_field :scheduled_at,
             class: "w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
-        <p class="text-xs text-gray-400 mt-1.5 ml-1">未来の日時のみ指定できます</p>
+          <p class="text-xs text-gray-400 mt-1.5 ml-1">アラームが鳴る日時（未来の日時のみ指定可能）</p>
       </div>
-
       <div class="flex items-center gap-3 pt-2">
         <%= f.submit 'アラームを作成',
             class: "px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition cursor-pointer" %>
-        <%= link_to 'キャンセル', alarms_path,
+        <%= link_to 'キャンセル', 
+            params[:date].present? ? calendar_alarms_path : alarms_path,
             class: "px-5 py-2 bg-white hover:bg-gray-50 text-gray-600 text-sm font-semibold rounded-lg border border-gray-200 transition" %>
       </div>
 

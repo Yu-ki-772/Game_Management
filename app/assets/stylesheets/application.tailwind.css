@@ -1,1 +1,75 @@
 @import "tailwindcss";
+
+.simple-calendar,
+.simple-calendar table {
+  display: table !important;
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+}
+
+.simple-calendar thead {
+  display: table-header-group !important;
+}
+
+.simple-calendar thead tr,
+.simple-calendar tbody tr {
+  display: table-row !important;
+}
+
+.simple-calendar thead th,
+.simple-calendar tbody td {
+  display: table-cell !important;
+  width: 14.28%; /* 100% / 7日 */
+}
+
+.simple-calendar tbody td {
+  border: 1px solid rgb(229 231 235);
+  vertical-align: top;
+}
+
+.simple-calendar .wday-0 {
+  background-color: rgb(254 242 242); /* 日曜日 */
+}
+
+.simple-calendar .wday-6 {
+  background-color: rgb(239 246 255); /* 土曜日 */
+}
+
+.simple-calendar .today {
+  background-color: rgb(236 253 245); /* 今日 */
+}
+
+.simple-calendar .prev-month,
+.simple-calendar .next-month {
+  background-color: rgb(249 250 251);
+  opacity: 0.6;
+}
+
+.simple-calendar .prev-month span:first-child,
+.simple-calendar .next-month span:first-child {
+  color: rgb(156 163 175);
+}
+
+
+.simple-calendar tbody td {
+  height: 100px;
+}
+
+@media (max-width: 768px) {
+  .simple-calendar tbody td {
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .simple-calendar tbody td {
+    height: 70px;
+  }
+}
+
+@media (min-width: 769px) {
+  .simple-calendar tbody td {
+    height: 120px;
+  }
+}

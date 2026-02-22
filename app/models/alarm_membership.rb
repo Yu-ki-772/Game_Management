@@ -20,7 +20,7 @@ class AlarmMembership < ApplicationRecord
     current_time = Time.current
     times_defer = current_time - alarm.scheduled_at
 
-    alarm.alarm_logs.create!(
+    alarm_log = alarm.alarm_logs.create!(
       unlocked_at: current_time,
       minutes_to_unlock: (times_defer / 60).round,
       user_uuid: user_uuid

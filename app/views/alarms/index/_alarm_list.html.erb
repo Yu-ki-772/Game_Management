@@ -6,9 +6,24 @@
 
       <div class="flex sm:items-center gap-4 flex-1 min-w-0">
 
-        <span class="text-sm font-bold text-gray-900 whitespace-nowrap">
-          <%= l(alarm.scheduled_at, format: :short) %>
-        </span>
+        <div class="flex flex-col gap-0.5 shrink-0">
+          <%# 日付 %>
+          <span class="text-xs text-gray-500 font-medium whitespace-nowrap">
+            <%= alarm.scheduled_at.strftime("%m/%d") %>
+            <span class="text-[10px]">(<%= %w[日 月 火 水 木 金 土][alarm.scheduled_at.wday] %>)</span>
+          </span>
+          
+          <%# 時刻（開始時刻がある場合は範囲表示） %>
+          <span class="text-sm font-bold text-gray-900 whitespace-nowrap">
+            <% if alarm.started_at.present? %>
+              <%= alarm.started_at.strftime("%H:%M") %>
+              <span class="text-xs text-gray-400 mx-0.5">-</span>
+              <%= alarm.scheduled_at.strftime("%H:%M") %>
+            <% else %>
+              <%= alarm.scheduled_at.strftime("%H:%M") %>
+            <% end %>
+          </span>
+        </div>
 
         <div class="flex-1 min-w-0">
           <span class="text-sm text-gray-700"><%= alarm.label %></span>
