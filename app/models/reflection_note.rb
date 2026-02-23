@@ -58,4 +58,15 @@ class ReflectionNote < ApplicationRecord
     # 新規タグを既存タグに追加
     self.tags = tags_to_assign
   end
+
+  #------------------------------
+  # Ransack（検索） 許可設定
+  #------------------------------
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[title body reflection_type]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[tags]
+  end
 end
