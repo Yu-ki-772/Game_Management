@@ -1,0 +1,10 @@
+ja:
+  common:
+    all: "すべて"
+  periods:
+    all:           "すべて"
+    this_week:     "今週"
+    this_month:    "今月"
+    last_3_months: "3か月"
+    last_6_months: "半年"
+    last_year:     "1年間"

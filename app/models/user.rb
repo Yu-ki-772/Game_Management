@@ -36,6 +36,10 @@ class User < ApplicationRecord
   # ブックマークした定型文
   has_many :bookmarks_message_templates, through: :bookmarks, source: :message_template
 
+  has_many :reflection_notes, foreign_key: :user_uuid, primary_key: :uuid, dependent: :destroy
+
+  has_many :tags,             foreign_key: :user_uuid, primary_key: :uuid, dependent: :destroy
+
   scope :non_admin, -> { where(admin: false) } # 管理者ユーザかどうかの確認
 
   # フレンドを優先的に表示させるためのスコープ
@@ -128,5 +132,10 @@ class User < ApplicationRecord
   # 定型文のブックマークの削除
   def unbookmark(message_template)
     bookmarks_message_templates.destroy(message_template)
+  end
+
+  # reflection_noteのフォームのdatalist用
+  def existing_tags
+    tags.order(:name)
   end
 end
