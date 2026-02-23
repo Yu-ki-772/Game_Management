@@ -1,0 +1,7 @@
+ja:
+  enums:
+    reflection_note:
+      reflection_type:
+        success:     "成功"
+        improvement: "要改善"
+        hypothesis:  "疑問・仮説"

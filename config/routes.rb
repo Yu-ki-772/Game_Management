@@ -36,6 +36,8 @@ Rails.application.routes.draw do
       get :bookmarks
     end
   end
+
+  resources :reflection_notes, only: %i[index new create edit update destroy]
   #=============================================================
   # 補助リソース
   #=============================================================
