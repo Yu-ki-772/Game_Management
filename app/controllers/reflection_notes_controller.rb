@@ -3,14 +3,14 @@ class ReflectionNotesController < ApplicationController
   before_action :set_reflection_note, only: %i[edit update destroy]
 
   def index
-    @reflection_notes = current_user.reflection_notes
+    base_query = current_user.reflection_notes
 
-    @reflection_notes = @reflection_notes.by_type(params[:reflection_type]) if params[:reflection_type].present?
-    @reflection_notes = @reflection_notes.joins(:tags).where(tags: { id: params[:tag_id] }) if params[:tag_id].present?
-    @reflection_notes = @reflection_notes.by_period(params[:period]) if params[:period].present?
+    base_query = base_query.by_period(params[:period]) if params[:period].present?
 
-    @reflection_notes = @reflection_notes.includes(:tags).order(created_at: :desc)
-    @all_tags = current_user.tags.order(created_at: :desc).limit(7)
+    @q = base_query.ransack(search_params)
+    @reflection_notes = @q.result.includes(:tags).order(created_at: :desc)
+
+    @all_tags = current_user.tags.order(:name)
   end
 
   def new
@@ -63,5 +63,22 @@ class ReflectionNotesController < ApplicationController
 
   def reflection_note_params
     params.require(:reflection_note).permit(:title, :body, :reflection_type)
+  end
+
+  def search_params
+    return {} unless params[:q]
+
+    permitted = params.require(:q).permit(
+      :title_or_body_cont,
+      :reflection_type_eq,
+      :tags_id_eq
+    )
+
+    # 検索文字列が長すぎる場合は無視
+    if permitted[:title_or_body_cont].to_s.length > 100
+      permitted[:title_or_body_cont] = nil
+    end
+
+    permitted
   end
 end

@@ -5,4 +5,15 @@ class Tag < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 18 }
   validates :name, uniqueness: { scope: :user_uuid }
+
+  #------------------------------
+  # Ransack（検索） 許可設定
+  #------------------------------
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[id]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[reflection_notes]
+  end
 end
