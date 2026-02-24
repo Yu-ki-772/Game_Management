@@ -17,13 +17,13 @@ test:
 production:
   primary:
     <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
+    url: <%= ENV['NEON_DATABASE_URL'] %>
   cable:
     <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
+    url: <%= ENV['NEON_DATABASE_URL'] %>
   queue:
     <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
+    url: <%= ENV['NEON_DATABASE_URL'] %>
   cache:
     <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
+    url: <%= ENV['NEON_DATABASE_URL'] %>
