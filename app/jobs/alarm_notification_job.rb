@@ -21,7 +21,7 @@ class AlarmNotificationJob < ApplicationJob
         membership.user_uuid == alarm.user_uuid
       )
     end
-    
+
     alarm.update_column(:sent, true)
   end
 end
