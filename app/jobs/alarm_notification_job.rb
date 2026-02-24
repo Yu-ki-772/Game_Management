@@ -7,24 +7,19 @@ class AlarmNotificationJob < ApplicationJob
     alarm = Alarm.find_by(uuid: alarm_uuid)
     return unless alarm
 
-    # 全メンバー（作成者含む）のうち、まだアンロックしていない人を絞り込む
     unlocked_user_uuids = alarm.alarm_logs.pluck(:user_uuid)
 
     unnotified_memberships = alarm.alarm_memberships
                                   .where.not(user_uuid: unlocked_user_uuids)
-                                  .includes(:user)
 
-    # アンロック済みメンバーが全員の場合は通知不要なので終了
     return if unnotified_memberships.empty?
 
     unnotified_memberships.each do |membership|
-      if membership.user_uuid == alarm.user_uuid
-        # 作成者向けのメール
-        AlarmMailer.alarm_notification(alarm_uuid).deliver_now
-      else
-        # 招待メンバー向けのメール
-        AlarmMailer.member_alarm_notification(alarm_uuid, membership.user_uuid).deliver_now
-      end
+      AlarmMemberNotificationJob.perform_later(
+        alarm_uuid,
+        membership.user_uuid,
+        membership.user_uuid == alarm.user_uuid
+      )
     end
 
     alarm.update_column(:sent, true)
