@@ -27,10 +27,18 @@
 
     <%# 記録内容 %>
     <div class="bg-gray-50 rounded-lg px-4 py-4 mb-6">
-      <p class="text-xs text-gray-500 mb-1">記録</p>
+      <p class="text-xs text-gray-500 mb-1">終了予定時刻との時間差</p>
       <p class="text-3xl font-bold text-gray-900">
         <%= format_minutes_defer(alarm_log.minutes_to_unlock) %>
       </p>
+
+      <%# play_durationが存在する場合のみ表示 %>
+      <% if alarm_log.play_duration.present? %>
+        <p class="text-xs text-gray-500 mt-3 mb-1">プレイ時間</p>
+        <p class="text-3xl font-bold text-gray-900">
+          <%= format_play_duration(alarm_log.play_duration) %>
+        </p>
+      <% end %>
     </div>
 
     <%# シェアボタン %>

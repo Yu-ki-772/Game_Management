@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_22_090915) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_23_123306) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -46,6 +46,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_22_090915) do
     t.uuid "alarm_uuid", null: false
     t.datetime "created_at", null: false
     t.integer "minutes_to_unlock"
+    t.integer "play_duration"
     t.datetime "unlocked_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_uuid"
@@ -66,6 +67,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_22_090915) do
     t.datetime "created_at", null: false
     t.string "job_id"
     t.string "label", default: "アラーム", null: false
+    t.string "reminder_job_id"
+    t.integer "reminder_minutes"
     t.datetime "scheduled_at", null: false
     t.boolean "sent", default: false, null: false
     t.datetime "started_at"
