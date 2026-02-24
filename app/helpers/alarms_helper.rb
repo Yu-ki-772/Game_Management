@@ -80,7 +80,7 @@ module AlarmsHelper
   # リマインダーの設定表示用
   def reminder_label(alarm)
     return nil if alarm.reminder_minutes.blank?
-    
+
     if alarm.reminder_minutes >= 60
       "#{alarm.reminder_minutes / 60}時間前にリマインダー"
     else
