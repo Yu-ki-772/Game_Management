@@ -81,6 +81,10 @@ class Alarm < ApplicationRecord
     created_by?(user) || alarm_memberships.any? { |m| m.user_uuid == user.uuid }
   end
 
+  def cancel_existing_job
+    cancel_job(job_id, :job_id)
+    cancel_job(reminder_job_id, :reminder_job_id)
+  end
 
   private
 
@@ -126,11 +130,6 @@ class Alarm < ApplicationRecord
       .perform_later(uuid)
 
     update_column(:reminder_job_id, reminder_job.provider_job_id) if persisted?
-  end
-
-  def cancel_existing_job
-    cancel_job(job_id, :job_id)
-    cancel_job(reminder_job_id, :reminder_job_id)
   end
 
   def cancel_job(id, column)
