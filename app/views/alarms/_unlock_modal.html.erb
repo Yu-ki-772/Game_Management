@@ -25,6 +25,23 @@
       アラームをストップしました！
     </h2>
 
+    <%# 終了予定時刻に対する時間に応じたメッセージ %>
+    <% if alarm_log.minutes_to_unlock < 0 %>
+      <p class="text-sm text-emerald-600 font-medium mb-5">
+        🎉 早めに離脱できたね！おめでとう！
+      </p>
+    <% elsif alarm_log.minutes_to_unlock.between?(1, 60) %>
+      <p class="text-sm text-amber-500 font-medium mb-5">
+        ⏰ 少し遅くなっちゃったね。次は早めに離脱しよう！
+      </p>
+    <% elsif alarm_log.minutes_to_unlock > 60 %>
+      <p class="text-sm text-red-500 font-medium mb-5">
+        😓 だいぶ遅くなっちゃったね。次こそ早めに切り上げよう！
+      </p>
+    <% else %>
+      <div class="mb-5"></div><%# タイトル下のスペース調整 %>
+    <% end %>
+
     <%# 記録内容 %>
     <div class="bg-gray-50 rounded-lg px-4 py-4 mb-6">
       <p class="text-xs text-gray-500 mb-1">終了予定時刻との時間差</p>
