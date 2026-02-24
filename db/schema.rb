@@ -67,7 +67,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_083749) do
     t.datetime "created_at", null: false
     t.string "job_id"
     t.string "label", default: "アラーム", null: false
-    t.string "pre_notification_job_id"
+    t.string "reminder_job_id"
     t.integer "reminder_minutes"
     t.datetime "scheduled_at", null: false
     t.boolean "sent", default: false, null: false
