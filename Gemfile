@@ -47,7 +47,7 @@ gem "action_text-trix", "~> 2.1", ">= 2.1.16"
 
 # ユーザー認証
 gem "devise", "5.0.2"
-gem "devise-i18n", "~> 1.15"
+gem "devise-i18n", "~> 1.16"
 gem "omniauth-google-oauth2", "~> 1.2", ">= 1.2.1"
 gem "omniauth-rails_csrf_protection", "~> 2.0", ">= 2.0.1"
 
