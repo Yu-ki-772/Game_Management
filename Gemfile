@@ -103,7 +103,7 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara", "~> 3.40"
-  gem "selenium-webdriver", "~> 4.40"
+  gem "selenium-webdriver", "~> 4.41"
   gem "shoulda-matchers", "~> 7.0", ">= 7.0.1"
   gem "simplecov", "~> 0.22.0", require: false
 end
