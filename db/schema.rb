@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_23_123306) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_24_083749) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -67,7 +67,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_23_123306) do
     t.datetime "created_at", null: false
     t.string "job_id"
     t.string "label", default: "アラーム", null: false
-    t.string "reminder_job_id"
+    t.string "pre_notification_job_id"
     t.integer "reminder_minutes"
     t.datetime "scheduled_at", null: false
     t.boolean "sent", default: false, null: false
@@ -237,12 +237,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_23_123306) do
     t.string "description"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.integer "failed_attempts", default: 0, null: false
+    t.datetime "locked_at"
     t.string "name", null: false
     t.string "provider"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
     t.string "uid"
+    t.string "unlock_token"
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
