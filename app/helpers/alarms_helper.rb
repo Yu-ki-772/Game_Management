@@ -1,5 +1,5 @@
 module AlarmsHelper
-  # モーダルでの表示用
+  # モーダル・一覧画面での表示用
   def format_minutes_defer(minutes)
     return if minutes.nil?
 
@@ -35,14 +35,29 @@ module AlarmsHelper
     end
   end
 
+  # プレイ時間の表示
+  def format_play_duration(minutes)
+    return "#{minutes}分" if minutes <= 60
+
+    hours = minutes / 60    # 時間（切り捨て）
+    mins  = minutes % 60    # 残りの分
+
+    if mins.zero?
+      "#{hours}時間"
+    else
+      "#{hours}時間#{mins}分"
+    end
+  end
+
   # Xでのalarm_logの共有用
   def x_share_url_for_alarm_log(alarm_log)
     base_url = "https://x.com/intent/tweet"
 
     log = format_minutes_defer_for_share(alarm_log.minutes_to_unlock)
+    play_duration = format_play_duration(alarm_log.play_duration)
 
     share_data = {
-      text: "目標時間に対し、#{log}ゲームを終了しました！",
+      text: "目標時間から#{log}ゲームを終了。 プレイ時間: #{play_duration}",
       url: ENV.fetch("APP_URL", "http://localhost:3000"),
       hashtags: "ゲーム,時間管理,GameExit"
     }
@@ -60,5 +75,16 @@ module AlarmsHelper
   # 表示しきれなかったメンバーの人数を返す
   def alarm_hidden_members_count(alarm)
     alarm.members.size - DISPLAY_MEMBERS_LIMIT
+  end
+
+  # リマインダーの設定表示用
+  def reminder_label(alarm)
+    return nil if alarm.reminder_minutes.blank?
+
+    if alarm.reminder_minutes >= 60
+      "#{alarm.reminder_minutes / 60}時間前にリマインダー"
+    else
+      "#{alarm.reminder_minutes}分前にリマインダー"
+    end
   end
 end

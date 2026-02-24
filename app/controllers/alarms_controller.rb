@@ -126,12 +126,20 @@ class AlarmsController < ApplicationController
 
   # アラームのストップの処理
   def unlock
-    success, @alarm_log = @alarm.unlock_with_log
+    membership = @alarm.alarm_memberships.find_by(user_uuid: current_user.uuid)
 
-    if success
-      # モーダル表示用に@alarm_logのidを渡す。
-      flash[:alarm_log_id] = @alarm_log.id
-      redirect_to alarm_logs_path, status: :see_other
+    # メンバーシップが存在しない場合
+    if membership.nil?
+      flash.now[:alert] = "アラームをストップできませんでした"
+      render "alarms/pending", status: :unprocessable_entity
+      return
+    end
+
+    alarm_log = membership.unlock
+
+    if alarm_log
+      flash[:alarm_log_id] = alarm_log.id
+      redirect_to alarm_logs_path, notice: "アラームをストップしました", status: :see_other
     else
       handle_unlock_failure
     end
@@ -156,7 +164,7 @@ class AlarmsController < ApplicationController
   end
 
   def alarm_params
-    params.require(:alarm).permit(:label, :scheduled_at, :started_at)
+    params.require(:alarm).permit(:label, :scheduled_at, :started_at, :reminder_minutes)
   end
 
   # pendingとhandle_unlock_failureの両方で同じ招待アラームの取得処理が必要なため、

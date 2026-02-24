@@ -1,4 +1,4 @@
-class AlarmNotificationJob < ApplicationJob
+class AlarmReminderJob < ApplicationJob
   queue_as :default
 
   retry_on Net::OpenTimeout, Net::ReadTimeout, wait: 5.seconds, attempts: 5
@@ -14,19 +14,18 @@ class AlarmNotificationJob < ApplicationJob
                                   .where.not(user_uuid: unlocked_user_uuids)
                                   .includes(:user)
 
-    # アンロック済みメンバーが全員の場合は通知不要なので終了
     return if unnotified_memberships.empty?
+
+    minutes_until_alarm = ((alarm.scheduled_at - Time.current) / 60).round
 
     unnotified_memberships.each do |membership|
       if membership.user_uuid == alarm.user_uuid
-        # 作成者向けのメール
-        AlarmMailer.alarm_notification(alarm_uuid).deliver_now
+        # 作成者向けのリマインダー
+        AlarmMailer.alarm_reminder(alarm_uuid, minutes_until_alarm).deliver_now
       else
-        # 招待メンバー向けのメール
-        AlarmMailer.member_alarm_notification(alarm_uuid, membership.user_uuid).deliver_now
+        # 招待メンバー向けのリマインダー
+        AlarmMailer.member_alarm_reminder(alarm_uuid, membership.user_uuid, minutes_until_alarm).deliver_now
       end
     end
-
-    alarm.update_column(:sent, true)
   end
 end

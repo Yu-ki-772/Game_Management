@@ -19,6 +19,7 @@ class Alarm < ApplicationRecord
   #=======================================
   after_commit :schedule_notification_job, on: [ :create, :update ]
   after_commit :cancel_existing_job, on: :destroy
+  after_create :add_creator_to_memberships
 
   #=======================================
   # スコープ
@@ -65,30 +66,7 @@ class Alarm < ApplicationRecord
   # publicメソッド
   #========================================
   # （アラームをストップ&記録の作成）用のメソッド
-  def unlock_with_log
-    return [ false, nil ] if unlocked?
 
-    current_time = Time.current
-    # 設定時刻と現在時刻の差
-    times_defer = current_time - scheduled_at
-
-    alarm_log = alarm_logs.build(
-      unlocked_at: current_time,
-      minutes_to_unlock: (times_defer / 60).round,
-      user_uuid: user_uuid
-    )
-
-    return [ false, alarm_log ] unless alarm_log.valid?
-
-    transaction do
-      cancel_existing_job if times_defer.negative?
-
-      update_column(:unlocked, true) # ストップ済みに変更（コールバックが実行されない書き方）
-      alarm_log.save!
-    end
-
-    [ true, alarm_log ]
-  end
 
   def belonging_to_membership?
     alarm_memberships.exists?
@@ -130,24 +108,40 @@ class Alarm < ApplicationRecord
 
   # ジョブのスケジューリング
   def schedule_notification_job
-    # 同idの既存のジョブがあれば削除
     cancel_existing_job
 
-    # ジョブの作成
+    # 本番通知
     job = AlarmNotificationJob.set(wait_until: scheduled_at).perform_later(uuid)
-
-    # alarmのjob_idを、active_jobのprovider_job_idにする
     update_column(:job_id, job.provider_job_id) if persisted?
+
+    # リマインダー通知（reminder_minutesが設定されている場合のみ）
+    schedule_alarm_reminder_job
   end
 
-  # ジョブの削除
+  def schedule_alarm_reminder_job
+    return if reminder_minutes.blank?
+
+    reminder_job = AlarmReminderJob
+      .set(wait_until: scheduled_at - reminder_minutes.minutes)
+      .perform_later(uuid)
+
+    update_column(:reminder_job_id, reminder_job.provider_job_id) if persisted?
+  end
+
   def cancel_existing_job
-    return if job_id.blank?
+    cancel_job(job_id, :job_id)
+    cancel_job(reminder_job_id, :reminder_job_id)
+  end
 
-    # good_jobからjobを削除
-    GoodJob::Job.find_by(id: job_id)&.destroy
+  def cancel_job(id, column)
+    return if id.blank?
 
-    # 保存済みの場合のみjob_idをクリア
-    update_column(:job_id, nil) if persisted?
+    GoodJob::Job.find_by(id: id)&.destroy
+    update_column(column, nil) if persisted?
+  end
+
+  # alarmの作成者をメンバーシップに追加
+  def add_creator_to_memberships
+    alarm_memberships.create!(user_uuid: user_uuid)
   end
 end

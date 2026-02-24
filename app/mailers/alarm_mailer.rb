@@ -25,4 +25,15 @@ class AlarmMailer < ApplicationMailer
       subject: @alarm.label
     )
   end
+
+  def alarm_reminder(alarm_uuid, minutes_until_alarm)
+    @alarm = Alarm.find_by(uuid: alarm_uuid)
+    mail(to: @alarm.creator.email, subject: "【#{@alarm.reminder_minutes}分前】#{@alarm.label}")
+  end
+
+  def member_alarm_reminder(alarm_uuid, member_uuid, minutes_until_alarm)
+    @alarm = Alarm.find_by(uuid: alarm_uuid)
+    @member = User.find_by(uuid: member_uuid)
+    mail(to: @member.email, subject: "【#{@alarm.reminder_minutes}分前】#{@alarm.label}")
+  end
 end

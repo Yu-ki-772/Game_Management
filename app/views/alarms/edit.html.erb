@@ -47,6 +47,17 @@
         <p class="text-xs text-gray-400 mt-1.5 ml-1">アラームが鳴る日時（未来の日時のみ指定可能）</p>
       </div>
 
+      <div>
+        <%= f.label :reminder_minutes, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+          事前リマインダー
+          <span class="text-xs font-normal text-gray-500 ml-1">(任意)</span>
+        <% end %>
+        <%= f.select :reminder_minutes,
+            [['なし', nil], ['5分前', 5], ['10分前', 10], ['15分前', 15], ['30分前', 30], ['1時間前', 60]],
+            { include_blank: false },
+            class: "w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
+      </div>
+
       <div class="flex items-center gap-3 pt-2">
         <%= f.submit '更新',
             class: "px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition cursor-pointer" %>
