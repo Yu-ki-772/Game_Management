@@ -82,8 +82,8 @@ class Alarm < ApplicationRecord
   end
 
   def cancel_existing_job
-    cancel_job(self[:job_id], :job_id)
-    cancel_job(self[:reminder_job_id], :reminder_job_id)
+    cancel_job(job_id, :job_id)
+    cancel_job(reminder_job_id, :reminder_job_id)
   end
 
   private
