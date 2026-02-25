@@ -97,6 +97,9 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
+  config.hosts << "game-exit.com"
+  config.hosts << "www.game-exit.com"
+
   # good_jobの設定
   config.good_job = {
     # ジョブが終了した後もジョブ記録を保持
