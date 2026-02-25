@@ -43,13 +43,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super
   end
 
-  # ominiauth用
-  def update_resource(resource, params)
-    return super if params["password"].present?
-
-    resource.update_without_password(params.except("current_password"))
-  end
-
   protected
   #=======================================================
   # protectedメソッド
@@ -75,7 +68,27 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_resource(resource, params)
-    resource.update_without_password(params)
+    
+
+    # アバターが添付されている場合のみリサイズ処理を行う
+    if params[:avatar].present?
+      resized_image = ImageProcessing::Vips
+                  .source(params[:avatar])  
+                  .resize_to_fill(200, 200) 
+                  .call
+
+      resource.avatar.attach(
+        io: resized_image,
+        filename: params[:avatar].original_filename,
+        content_type: params[:avatar].content_type
+      )
+
+      params = params.except(:avatar)
+    end
+
+    return super if params["password"].present?
+
+    resource.update_without_password(params.except("current_password"))
   end
 
   private
