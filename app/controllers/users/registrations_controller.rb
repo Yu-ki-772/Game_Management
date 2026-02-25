@@ -68,13 +68,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_resource(resource, params)
-    
-
     # アバターが添付されている場合のみリサイズ処理を行う
     if params[:avatar].present?
       resized_image = ImageProcessing::Vips
-                  .source(params[:avatar])  
-                  .resize_to_fill(200, 200) 
+                  .source(params[:avatar])
+                  .resize_to_fill(200, 200)
                   .call
 
       resource.avatar.attach(
