@@ -1,10 +1,18 @@
 Rails.application.routes.draw do
+  root "home#top"
+
+  #==============================================================
+  # ユーザ関連
+  #==============================================================
+  devise_for :users, controllers: { registrations: "users/registrations",
+                                    omniauth_callbacks: "users/omniauth_callbacks",
+                                    passwords: "users/passwords" }
+
+  resources :users, only: %i[index show]
+  
   #=============================================================
   # メインリソース
   #=============================================================
-  root "home#top"
-
-  resources :users, only: %i[index show]
   resources :friendships, only: [ :index, :create, :update, :destroy ] do
     collection do
       get :pending
@@ -43,12 +51,6 @@ Rails.application.routes.draw do
   #=============================================================
   resources :bookmarks, only: %i[create destroy] # message_templatesのブックマーク機能用
 
-  #==============================================================
-  # ログイン認証
-  #==============================================================
-  devise_for :users, path: "auth", controllers: { registrations: "users/registrations",
-                                    omniauth_callbacks: "users/omniauth_callbacks",
-                                    passwords: "users/passwords" }
 
   #==============================================================
   # その他
