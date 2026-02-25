@@ -34,5 +34,8 @@ module Myapp
 
     # active_jobのキューアダプターをgood_jobに設定
     config.active_job.queue_adapter = :good_job
+
+    # アップロード時にリサイズして保存する設計のため無効化
+    config.active_storage.track_variants = false
   end
 end

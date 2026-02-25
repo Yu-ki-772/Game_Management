@@ -10,7 +10,7 @@
     <div class="flex items-center gap-5 mb-6">
       <div class="shrink-0">
         <% if @user.avatar_image? %>
-          <%= image_tag @user.avatar.variant(resize_to_fill: [80, 80]),
+          <%= image_tag @user.avatar,
               class: "w-20 h-20 rounded-full object-cover border border-gray-200" %>
         <% else %>
           <div class="w-20 h-20 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center">
