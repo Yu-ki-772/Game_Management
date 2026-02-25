@@ -9,7 +9,7 @@ Rails.application.routes.draw do
                                     passwords: "users/passwords" }
 
   resources :users, only: %i[index show]
-  
+
   #=============================================================
   # メインリソース
   #=============================================================
