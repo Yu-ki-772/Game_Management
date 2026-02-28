@@ -1,5 +1,4 @@
 module PushNotifiable
-
   private
 
   def send_push_notification(user, payload)
@@ -13,9 +12,9 @@ module PushNotifiable
         p256dh:   subscription.p256dh,
         auth:     subscription.auth,
         vapid: {
-          subject:     ENV['VAPID_SUBJECT'],
-          public_key:  ENV['VAPID_PUBLIC_KEY'],
-          private_key: ENV['VAPID_PRIVATE_KEY']
+          subject:     ENV["VAPID_SUBJECT"],
+          public_key:  ENV["VAPID_PUBLIC_KEY"],
+          private_key: ENV["VAPID_PRIVATE_KEY"]
         }
       )
     rescue WebPush::ExpiredSubscription
