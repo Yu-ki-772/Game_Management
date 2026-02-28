@@ -12,6 +12,15 @@ class AlarmMemberNotificationJob < ApplicationJob
 
     return if alarm.alarm_logs.exists?(user_uuid: user_uuid)
 
+    membership = alarm.alarm_memberships.find_by(user_uuid: user_uuid)
+    return unless membership
+
+    # 通知済みかどうかのチェック
+    return if membership.notified?
+
+    # メール・プッシュ通知より先に送信済みとして記録（エラー時のリトライによる二重送信対策）
+    membership.update!(notified: true)
+
     if is_creator
       AlarmMailer.alarm_notification(alarm_uuid).deliver_now
     else
@@ -28,10 +37,10 @@ class AlarmMemberNotificationJob < ApplicationJob
 
   # プッシュ通知で届けるもの
   def build_alarm_payload(alarm)
-      {
-        title: "⏰ アラーム",
-        body:  "ゲーム終了の時間になりました",
-        icon:  "/icon-192x192.png"
-      }
+    {
+      title: "⏰ アラーム",
+      body:  "ゲーム終了の時間になりました",
+      icon:  "/icon-192x192.png"
+    }
   end
 end

@@ -12,6 +12,15 @@ class AlarmMemberReminderJob < ApplicationJob
 
     return if alarm.alarm_logs.exists?(user_uuid: user_uuid)
 
+    membership = alarm.alarm_memberships.find_by(user_uuid: user_uuid)
+    return unless membership
+
+    # 通知済みかどうかのチェック
+    return if membership.reminder_notified?
+
+    # メール・プッシュ通知より先に送信済みとして記録（エラー時のリトライによる二重送信対策）
+    membership.update!(reminder_notified: true)
+
     if is_creator
       AlarmMailer.alarm_reminder(alarm_uuid, minutes_until_alarm).deliver_now
     else
@@ -30,7 +39,6 @@ class AlarmMemberReminderJob < ApplicationJob
   def build_reminder_payload(alarm, minutes_until_alarm)
     {
       title: "🔔 #{minutes_until_alarm}分後にアラーム",
-      # title ではなく label が正しいカラム名
       body:  "ゲーム終了の時間まであと#{minutes_until_alarm}分です",
       icon:  "/icon-192x192.png"
     }
