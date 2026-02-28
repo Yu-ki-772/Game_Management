@@ -7,6 +7,8 @@ class AlarmNotificationJob < ApplicationJob
     alarm = Alarm.find_by(uuid: alarm_uuid)
     return unless alarm
 
+    return if alarm.sent?
+
     unlocked_user_uuids = alarm.alarm_logs.pluck(:user_uuid)
 
     unnotified_memberships = alarm.alarm_memberships

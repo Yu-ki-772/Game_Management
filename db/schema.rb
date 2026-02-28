@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_074852) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_28_112626) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,6 +57,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_074852) do
   create_table "alarm_memberships", force: :cascade do |t|
     t.uuid "alarm_uuid", null: false
     t.datetime "created_at", null: false
+    t.boolean "notified", default: false, null: false
+    t.boolean "notified_at"
+    t.boolean "reminder_notified", default: false, null: false
+    t.boolean "reminder_notified_at"
     t.datetime "updated_at", null: false
     t.uuid "user_uuid", null: false
     t.index ["alarm_uuid"], name: "index_alarm_memberships_on_alarm_uuid"
