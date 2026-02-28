@@ -22,3 +22,11 @@ application.register("search", SearchController)
 // クリップボードにコピー用
 import ClipboardController from "./clipboard_controller"
 application.register("clipboard", ClipboardController)
+
+// プッシュ通知の購読処理用
+import PushNotificationController from "./push_notification_controller"
+application.register("push-notification", PushNotificationController)
+
+// PWAホーム画面追加の案内モーダル用
+import PwaInstallController from "./pwa_install_controller"
+application.register("pwa-install", PwaInstallController)

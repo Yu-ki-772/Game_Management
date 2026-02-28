@@ -39,6 +39,7 @@ class User < ApplicationRecord
   has_many :reflection_notes, foreign_key: :user_uuid, primary_key: :uuid, dependent: :destroy
 
   has_many :tags,             foreign_key: :user_uuid, primary_key: :uuid, dependent: :destroy
+  has_many :web_push_subscriptions, foreign_key: :user_uuid, primary_key: :uuid, dependent: :destroy
 
   scope :non_admin, -> { where(admin: false) } # 管理者ユーザかどうかの確認
 
