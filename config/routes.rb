@@ -54,6 +54,14 @@ Rails.application.routes.draw do
   #=============================================================
   resources :bookmarks, only: %i[create destroy] # message_templatesのブックマーク機能用
 
+  resource :notification_setting, only: %i[show]
+
+  # プッシュ通知の購読管理
+  resources :web_push_subscriptions, only: %i[create] do
+    collection do
+      delete :destroy # endpoint を受け取って削除する用のエンドポイント
+    end
+  end
 
   #==============================================================
   # その他

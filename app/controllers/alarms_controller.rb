@@ -105,6 +105,7 @@ class AlarmsController < ApplicationController
     @alarm = current_user.alarms.new(alarm_params)
 
     if @alarm.save
+      check_pwa_install_prompt
       redirect_to alarms_path, notice: "アラームを作成しました", status: :see_other
     else
       flash.now[:alert] = "アラームを作成できませんでした"
@@ -194,5 +195,13 @@ class AlarmsController < ApplicationController
 
     flash.now[:alert] = "アラームをストップできませんでした"
     render "alarms/pending", status: :unprocessable_entity
+  end
+
+  # インストール（ホーム画面に追加）用のプロンプトの表示
+  def check_pwa_install_prompt
+    return if current_user.pwa_install_prompted
+
+    flash[:show_pwa_install_prompt] = true
+    current_user.update!(pwa_install_prompted: true)
   end
 end

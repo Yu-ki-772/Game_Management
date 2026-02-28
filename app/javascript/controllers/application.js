@@ -6,4 +6,9 @@ const application = Application.start()
 application.debug = false
 window.Stimulus   = application
 
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault()
+  window.deferredInstallPrompt = event
+})
+
 export { application }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_25_021243) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_074852) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -241,6 +241,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_25_021243) do
     t.datetime "locked_at"
     t.string "name", null: false
     t.string "provider"
+    t.boolean "pwa_install_prompted", default: false, null: false
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
@@ -251,6 +252,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_25_021243) do
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uuid"], name: "index_users_on_uuid", unique: true
+  end
+
+  create_table "web_push_subscriptions", force: :cascade do |t|
+    t.text "auth", null: false
+    t.datetime "created_at", null: false
+    t.text "endpoint", null: false
+    t.text "p256dh", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_uuid", null: false
+    t.index ["endpoint"], name: "index_web_push_subscriptions_on_endpoint", unique: true
+    t.index ["user_uuid"], name: "index_web_push_subscriptions_on_user_uuid"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -269,4 +281,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_25_021243) do
   add_foreign_key "reflection_note_tags", "tags"
   add_foreign_key "reflection_notes", "users", column: "user_uuid", primary_key: "uuid"
   add_foreign_key "tags", "users", column: "user_uuid", primary_key: "uuid"
+  add_foreign_key "web_push_subscriptions", "users", column: "user_uuid", primary_key: "uuid"
 end

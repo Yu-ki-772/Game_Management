@@ -44,6 +44,8 @@ gem "image_processing", "~> 1.2"
 
 gem "action_text-trix", "~> 2.1", ">= 2.1.16"
 
+# プッシュ通知
+gem 'web-push', '~> 3.1'
 
 # ユーザー認証
 gem "devise", "5.0.2"

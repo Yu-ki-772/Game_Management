@@ -5,6 +5,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user = User.from_omniauth(request.env["omniauth.auth"])
 
     if @user.persisted?
+      # 新しく連携したとき
+      if @user.previously_new_record?
+        flash[:show_push_notification_modal] = true
+      end
+
       sign_in_and_redirect @user, event: :authentication
       set_flash_message(:notice, :success, kind: "Google") if is_navigational_format?
     else
