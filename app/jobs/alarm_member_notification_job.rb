@@ -4,9 +4,8 @@ class AlarmMemberNotificationJob < ApplicationJob
   queue_as :default
 
   retry_on Net::OpenTimeout, Net::ReadTimeout, wait: 5.seconds, attempts: 5
-  retry_on Resend::Error::RateLimitExceededError, wait: 5.seconds, attempts: 3
 
-  def perform(alarm_uuid, user_uuid, is_creator)
+  def perform(alarm_uuid, user_uuid)
     alarm = Alarm.find_by(uuid: alarm_uuid)
     return unless alarm
 
@@ -20,12 +19,6 @@ class AlarmMemberNotificationJob < ApplicationJob
 
     # メール・プッシュ通知より先に送信済みとして記録（エラー時のリトライによる二重送信対策）
     membership.update!(notified: true)
-
-    if is_creator
-      AlarmMailer.alarm_notification(alarm_uuid).deliver_now
-    else
-      AlarmMailer.member_alarm_notification(alarm_uuid, user_uuid).deliver_now
-    end
 
     user = User.find_by(uuid: user_uuid)
     return unless user
