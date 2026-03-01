@@ -34,7 +34,7 @@ class AlarmsController < ApplicationController
     # カレンダー表示用の期間を計算（カレンダーグリッド全体）
     start_of_calendar = @start_date.beginning_of_month.beginning_of_week(:sunday)
     end_of_calendar = @start_date.end_of_month.end_of_week(:sunday)
-    
+
     memberships = current_user.alarm_memberships
                               .joins(:alarm)
                               .merge(
@@ -43,7 +43,7 @@ class AlarmsController < ApplicationController
                               .includes(
                                 alarm: :alarm_memberships
                               )
-                              
+
     @alarms = memberships.map(&:alarm)
                         .uniq(&:uuid)
                         .sort_by(&:start_time)
@@ -162,7 +162,7 @@ class AlarmsController < ApplicationController
                 .merge(Alarm.locked.near)
                 .includes(
                   :user,
-                  alarm: [:alarm_memberships, { members: :avatar_attachment }, { creator: :avatar_attachment }]
+                  alarm: [ :alarm_memberships, { members: :avatar_attachment }, { creator: :avatar_attachment } ]
                 )
                 .order("alarms.scheduled_at ASC")
                 .index_by(&:alarm_uuid)
