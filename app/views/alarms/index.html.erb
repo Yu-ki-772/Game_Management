@@ -15,16 +15,10 @@
     <% end %>
   </div>
 
-  <% if @alarms.present? %>
-    <h2>自分のアラーム</h2>
-    <%= render 'alarms/index/alarm_list', alarms: @alarms %>
+  <% if @memberships.present? %>
+    <%= render 'alarms/index/alarm_list', memberships: @memberships %>
   <% else %>
     <%= render 'alarms/index/no_alarms_message' %>
-  <% end %>
-
-  <% if @invited_alarms.present? %>
-    <h2>招待されたアラーム</h2>
-    <%= render "alarms/index/alarm_list", alarms: @invited_alarms %>
   <% end %>
 
 </div>

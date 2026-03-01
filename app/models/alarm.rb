@@ -13,6 +13,7 @@ class Alarm < ApplicationRecord
   validates :scheduled_at, presence: true
   validate :scheduled_at_must_be_in_the_future
   validate :started_at_must_be_before_scheduled_at, if: :started_at?
+  validate :started_at_within_allowed_range
 
   #=======================================
   # コールバック
@@ -107,6 +108,17 @@ class Alarm < ApplicationRecord
 
     if started_at >= scheduled_at
       errors.add(:started_at, "はアラーム時刻より前である必要があります")
+    end
+  end
+
+  # started_atが現在時刻から7時間以上前の場合は許可しない
+  def started_at_within_allowed_range
+    return if started_at.blank?
+
+    earliest_allowed = 7.hours.ago
+
+    if started_at < earliest_allowed
+      errors.add(:started_at, message: "は現在時刻から7時間以上前に設定できません")
     end
   end
 

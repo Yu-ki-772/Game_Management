@@ -67,14 +67,19 @@ module AlarmsHelper
 
   DISPLAY_MEMBERS_LIMIT = 3
 
+  # 作成者を除いたメンバーリストを返す
+  def non_creator_members(alarm)
+    alarm.members.reject { |member| member.uuid == alarm.creator.uuid }
+  end
+
   # 表示するメンバーを上限人数に絞って返す
   def alarm_display_members(alarm)
-    alarm.members.first(DISPLAY_MEMBERS_LIMIT)
+    non_creator_members(alarm).first(DISPLAY_MEMBERS_LIMIT)
   end
 
   # 表示しきれなかったメンバーの人数を返す
   def alarm_hidden_members_count(alarm)
-    alarm.members.size - DISPLAY_MEMBERS_LIMIT
+    non_creator_members(alarm).size - DISPLAY_MEMBERS_LIMIT
   end
 
   # リマインダーの設定表示用

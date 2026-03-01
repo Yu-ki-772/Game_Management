@@ -24,9 +24,7 @@
               title: "アラームを編集",
               data: { turbo_frame: "_top" },
               class: "block p-1.5 sm:p-2 rounded border-l-2 overflow-hidden transition-all hover:opacity-80 active:scale-95 bg-emerald-100 border-emerald-500 text-emerald-900" do %>
-              
 
-              
               <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-emerald-700">
                 <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -34,12 +32,12 @@
                 <span><%= alarm.time_text %></span>
               </div>
               
-              <% if alarm.alarm_memberships.any? %>
+              <% if alarm.alarm_memberships.size > 1 %>
                 <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-emerald-600 mt-0.5">
                   <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
                   </svg>
-                  <span><%= alarm.alarm_memberships.size + 1 %>人</span>
+                  <span><%= alarm.alarm_memberships.size %>人</span>
                 </div>
               <% end %>
             <% end %>
@@ -56,12 +54,12 @@
                 <span><%= alarm.time_text %></span>
               </div>
               
-              <% if alarm.alarm_memberships.any? %>
+              <% if alarm.alarm_memberships.size > 1 %>
                 <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-indigo-600 mt-0.5">
                   <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
                   </svg>
-                  <span><%= alarm.alarm_memberships.size + 1 %>人</span>
+                  <span><%= alarm.alarm_memberships.size %>人</span>
                 </div>
               <% end %>
             </div>
@@ -78,12 +76,12 @@
                 <span><%= alarm.time_text %></span>
               </div>
               
-              <% if alarm.alarm_memberships.any? %>
+              <% if alarm.alarm_memberships.size > 1 %>
                 <div class="flex items-center gap-1 text-[9px] sm:text-[11px] mt-0.5">
                   <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
                   </svg>
-                  <span><%= alarm.alarm_memberships.size + 1 %>人</span>
+                  <span><%= alarm.alarm_memberships.size %>人</span>
                 </div>
               <% end %>
             </div>
