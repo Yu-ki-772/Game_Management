@@ -17,12 +17,7 @@ class AlarmReminderJob < ApplicationJob
     minutes_until_alarm = ((alarm.scheduled_at - Time.current) / 60).round
 
     unnotified_memberships.each do |membership|
-      AlarmMemberReminderJob.perform_later(
-        alarm_uuid,
-        membership.user_uuid,
-        membership.user_uuid == alarm.user_uuid,
-        minutes_until_alarm
-      )
+      AlarmMemberReminderJob.perform_later(alarm_uuid, membership.user_uuid, minutes_until_alarm)
     end
   end
 end

@@ -17,11 +17,7 @@ class AlarmNotificationJob < ApplicationJob
     return if unnotified_memberships.empty?
 
     unnotified_memberships.each do |membership|
-      AlarmMemberNotificationJob.perform_later(
-        alarm_uuid,
-        membership.user_uuid,
-        membership.user_uuid == alarm.user_uuid
-      )
+      AlarmMemberNotificationJob.perform_later(alarm_uuid, membership.user_uuid)
     end
 
     alarm.update_column(:sent, true)
