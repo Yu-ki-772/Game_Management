@@ -26,10 +26,10 @@
     一日以上先または一日以上前のアラームは表示されません
   </p>
 
-  <% if @alarms.present? || @invited_alarm_memberships.present? %>
+  <% if @alarm_memberships.present? %>
     <%= render 'alarms/pending/alarm_list',
            alarms: @alarms,
-           invited_alarm_memberships: @invited_alarm_memberships %>
+           alarm_memberships: @alarm_memberships %>
   <% else %>
     <%= render 'alarms/pending/no_alarms_message' %>
   <% end %>

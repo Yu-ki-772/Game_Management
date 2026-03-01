@@ -1,6 +1,7 @@
 <%# アラーム一覧の表示用のパーシャル %>
 <div class="bg-white rounded-xl border border-gray-100 shadow-sm divide-y divide-gray-50">
-  <% alarms.each do |alarm| %>
+  <% memberships.each do |membership| %>
+    <% alarm = membership.alarm %>
 
     <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
 
@@ -26,7 +27,7 @@
         </div>
 
         <div class="flex-1 min-w-0">
-          <span class="text-sm text-gray-700"><%= alarm.label %></span>
+          <span class="text-sm text-gray-700"><%= truncate(alarm.label, length: 10) %></span>
 
           <%# リマインダー設定の表示 %>
           <% if alarm.reminder_minutes.present? %>
@@ -55,13 +56,13 @@
                     </svg>
                   </span>
                 <% end %>
-                
+
                 <span class="font-medium text-gray-600">
                   <%= truncate(alarm.creator.name, length: 11, omission: "...") %>
                 </span>
               </span>
 
-              <% if alarm.members.any? %>
+              <% if alarm_display_members(alarm).any? %>
                 <span class="w-px h-3 bg-gray-300"></span>
                 <span class="text-xs text-gray-400">メンバー:</span>
 

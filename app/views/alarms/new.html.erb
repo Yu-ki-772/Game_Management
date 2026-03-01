@@ -1,6 +1,9 @@
 <%# アラーム作成画面 %>
 <div class="max-w-7xl mx-auto px-4 py-8">
 
+  <%# ナビゲーション %>
+  <%= render 'alarms/navigation' %>
+
   <%# カレンダーに戻るリンク %>
   <% if params[:date].present? %>
     <div class="mb-4">

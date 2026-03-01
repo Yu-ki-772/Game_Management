@@ -10,24 +10,17 @@ class AlarmsController < ApplicationController
   #=================================================
   def index
     if user_signed_in?
-      @alarms = current_user.alarms.unsent.future.locked
-                            .includes(
-                              creator: { avatar_attachment: :blob },
-                              members: { avatar_attachment: :blob }
-                            )
-                            .order(scheduled_at: :asc)
-
-
-      @invited_alarms = current_user.invited_alarms
-                                    .unsent
-                                    .future
-                                    .locked
-                                    .not_unlocked_by(current_user)
-                                    .includes(
-                                      creator: { avatar_attachment: :blob },
-                                      members: { avatar_attachment: :blob }
-                                    )
-                                    .order(scheduled_at: :asc)
+      @memberships = current_user.alarm_memberships
+                               .joins(:alarm)
+                               .merge(Alarm.unsent.future.locked)
+                               .includes(
+                                 alarm: [
+                                   { creator: { avatar_attachment: :blob } },
+                                   { members: { avatar_attachment: :blob } },
+                                   :alarm_memberships
+                                 ]
+                               )
+                               .order("alarms.scheduled_at asc")
     end
   end
 
@@ -42,26 +35,18 @@ class AlarmsController < ApplicationController
     start_of_calendar = @start_date.beginning_of_month.beginning_of_week(:sunday)
     end_of_calendar = @start_date.end_of_month.end_of_week(:sunday)
 
-    # 自分が作成したアラーム
-    @my_alarms = current_user.alarms
-                            .locked
-                            .in_period(start_of_calendar, end_of_calendar)
-                            .includes(
-                              :alarm_memberships
-                            )
-                            .order(Arel.sql("COALESCE(started_at, scheduled_at) ASC"))
+    memberships = current_user.alarm_memberships
+                              .joins(:alarm)
+                              .merge(
+                                Alarm.locked.in_period(start_of_calendar, end_of_calendar)
+                              )
+                              .includes(
+                                alarm: :alarm_memberships
+                              )
 
-    # 招待されたアラーム
-    @invited_alarms = current_user.invited_alarms
-                                  .locked
-                                  .in_period(start_of_calendar, end_of_calendar)
-                                  .includes(
-                                    :alarm_memberships
-                                  )
-                                  .order(Arel.sql("COALESCE(started_at, scheduled_at) ASC"))
-
-    # 全アラームを結合してstart_timeでソート
-    @alarms = (@my_alarms + @invited_alarms).sort_by(&:start_time)
+    @alarms = memberships.map(&:alarm)
+                        .uniq(&:uuid)
+                        .sort_by(&:start_time)
 
     respond_to do |format|
       format.html
@@ -71,9 +56,7 @@ class AlarmsController < ApplicationController
 
   def pending
     if user_signed_in?
-      @alarms = current_user.alarms.locked.near.includes(:alarm_memberships).order(scheduled_at: :asc)
-
-      @invited_alarm_memberships = pending_invited_alarm_memberships
+      @alarm_memberships = pending_alarm_memberships
     end
   end
 
@@ -172,12 +155,15 @@ class AlarmsController < ApplicationController
   # メソッドとして切り出すことで重複を避ける。
   # { alarm_uuid => membership } というHashを返すことで、
   # ビュー側がalarm.uuidをキーにO(1)でmembershipを取得できる。
-  def pending_invited_alarm_memberships
+  def pending_alarm_memberships
     current_user.alarm_memberships
                 .not_unlocked_by(current_user)
                 .joins(:alarm)
                 .merge(Alarm.locked.near)
-                .eager_load(alarm: [ :alarm_memberships, { creator: { avatar_attachment: :blob } } ])
+                .includes(
+                  :user,
+                  alarm: [ :alarm_memberships, { members: :avatar_attachment }, { creator: :avatar_attachment } ]
+                )
                 .order("alarms.scheduled_at ASC")
                 .index_by(&:alarm_uuid)
   end
@@ -191,7 +177,7 @@ class AlarmsController < ApplicationController
                           ).
                           order(scheduled_at: :asc)
 
-    @invited_alarm_memberships = pending_invited_alarm_memberships
+    @alarm_memberships = pending_alarm_memberships
 
     flash.now[:alert] = "アラームをストップできませんでした"
     render "alarms/pending", status: :unprocessable_entity
