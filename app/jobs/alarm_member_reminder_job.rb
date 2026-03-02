@@ -31,7 +31,7 @@ class AlarmMemberReminderJob < ApplicationJob
   # プッシュ通知で届けるもの
   def build_reminder_payload(alarm, minutes_until_alarm)
     {
-      title: "🔔 #{minutes_until_alarm}分後にアラーム",
+      title: "🔔 #{minutes_until_alarm}分後にゲーム終了",
       body:  "ゲーム終了の時間まであと#{minutes_until_alarm}分です",
       icon:  "/icon-192x192.png"
     }
