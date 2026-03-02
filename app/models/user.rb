@@ -61,6 +61,22 @@ class User < ApplicationRecord
     )
   }
 
+  # フレンドのみに絞込
+  scope :friends_with, ->(user) {
+    # 「自分が申請した」フレンドのuuidをサブクエリで取得する。
+    sent_friend_uuids = Friendship.accepted
+                                  .where(user_uuid: user.uuid)
+                                  .select(:friend_uuid)
+
+    # 「相手から申請された」フレンドのuuidをサブクエリで取得する。
+    received_friend_uuids = Friendship.accepted
+                                      .where(friend_uuid: user.uuid)
+                                      .select(:user_uuid)
+
+    # 両方のサブクエリをORでつなぎ、どちらの方向のフレンドも拾う。
+    where(uuid: sent_friend_uuids).or(where(uuid: received_friend_uuids))
+  }
+
   #========================================================
   # publicメソッド
   #========================================================

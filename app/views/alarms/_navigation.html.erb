@@ -26,6 +26,13 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
       </svg>
       <span>未解除</span>
+
+      <%# 時間（scheduled_at）を過ぎた未解除アラームが存在する場合のみバッジを表示する %>
+      <% if @overdue_alarm_count&.positive? %>
+        <span class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
+          <%= @overdue_alarm_count > 9 ? "9+" : @overdue_alarm_count %>
+        </span>
+      <% end %>
     </div>
   <% end %>
 </nav>

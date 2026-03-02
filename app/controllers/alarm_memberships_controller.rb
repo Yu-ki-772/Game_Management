@@ -8,8 +8,7 @@ class AlarmMembershipsController < ApplicationController
 
     @users = @q.result
                 .with_attached_avatar
-                .where.not(uuid: @alarm.user_uuid)
-                .friends_first(current_user)
+                .friends_with(current_user)
                 .limit(5)
 
     memberships = @alarm.alarm_memberships.where(user_uuid: @users.map(&:uuid))
