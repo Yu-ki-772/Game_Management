@@ -30,3 +30,7 @@ application.register("push-notification", PushNotificationController)
 // PWAホーム画面追加の案内モーダル用
 import PwaInstallController from "./pwa_install_controller"
 application.register("pwa-install", PwaInstallController)
+
+// ダークモード・ライトモードの切り替えボタン用
+import ThemeController from "./theme_controller"
+application.register("theme", ThemeController)

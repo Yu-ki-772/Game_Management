@@ -1,0 +1,42 @@
+<%# app/views/shared/_friendships_navigation.html.erb %>
+<nav class="mb-4 sm:mb-6 bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-1 sm:p-2 flex gap-1 sm:gap-2 overflow-x-auto">
+  <%= link_to friendships_path,
+      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(friendships_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}" do %>
+    <div class="flex items-center gap-1 sm:gap-2">
+      <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+      </svg>
+      <span>フレンド</span>
+    </div>
+  <% end %>
+
+  <%= link_to pending_friendships_path,
+      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(pending_friendships_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}" do %>
+    <div class="flex items-center gap-1 sm:gap-2">
+      <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+      </svg>
+      <span>受信申請</span>
+      <% if @pending_friendship_count&.positive? %>
+        <span class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
+          <%= @pending_friendship_count > 9 ? "9+" : @pending_friendship_count %>
+        </span>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= link_to users_path,
+      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(users_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}" do %>
+    <div class="flex items-center gap-1 sm:gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+        <path d="M16 19h6" />
+        <path d="M19 16v6" />
+        <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+      </svg>
+      <span>ユーザ検索</span>
+    </div>
+  <% end %>
+</nav>

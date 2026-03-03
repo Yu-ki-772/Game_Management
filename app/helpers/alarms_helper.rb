@@ -1,3 +1,4 @@
+# app/helpers/alarms_helper.rb
 module AlarmsHelper
   # モーダル・一覧画面での表示用
   def format_minutes_defer(minutes)

@@ -12,9 +12,6 @@ class FriendshipsController < ApplicationController
     sent_friendships = current_user.friendships.accepted.includes(friend: { avatar_attachment: :blob })
     received_friendships = current_user.received_friendships.accepted.includes(user: { avatar_attachment: :blob })
     @friends = sent_friendships + received_friendships
-
-    # 受け取っているフレンド申請の数
-    @pending_count = current_user.received_friendships.pending.count
   end
 
   def create

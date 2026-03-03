@@ -1,3 +1,4 @@
+<%# app/views/bookmarks/create.turbo_stream.erb %>
 <%# ブックマークボタン用 %>
 <%= turbo_stream.replace "bookmark_button_#{@message_template.id}" do %>
   <%= render 'message_templates/unbookmark_button', message_template: @message_template, bookmark: @bookmark %>

@@ -1,12 +1,13 @@
+<%# app/views/shared/_pwa_install_prompt.html.erb %>
 <div id="pwa-install-modal"
      data-controller="pwa-install"
      class="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
 
-  <div class="bg-white rounded-lg shadow-xl p-6 w-80 max-w-full mx-4">
-    <h2 class="text-lg font-semibold text-gray-800 mb-2">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-80 max-w-full mx-4">
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
       アラーム通知をより確実に受け取るために
     </h2>
-    <p class="text-sm text-gray-600 mb-6">
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
       ホーム画面に追加しておくと、アプリを開いていないときでも
       アラームの通知が届くようになります。
     </p>
@@ -15,20 +16,24 @@
         JavaScriptで表示・非表示を切り替え。 %>
     <button id="pwa-install-btn"
             data-action="click->pwa-install#install"
-            class="hidden w-full px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition mb-2">
+            class="hidden w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition mb-2">
       ホーム画面に追加する
     </button>
 
     <%# Safari等、beforeinstallprompt が使えないブラウザ向けの手順案内。
         JavaScriptで表示・非表示を切り替え。 %>
     <div id="pwa-manual-guide" class="hidden mb-4">
-      <p class="text-sm text-gray-600 mb-2">iPhoneの場合：Safariの共有ボタン →「ホーム画面に追加」</p>
-      <p class="text-sm text-gray-600 mb-2">Androidの場合：Chromeのメニュー →「ホーム画面に追加」</p>
-      <p class="text-sm text-gray-600">PCの場合：アドレスバー右端のアイコン →「ホーム画面に追加」</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">iPhoneの場合：Safariの共有ボタン →「ホーム画面に追加」</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Androidの場合：Chromeのメニュー →「ホーム画面に追加」</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400">PCの場合：アドレスバー右端のアイコン →「ホーム画面に追加」</p>
     </div>
 
     <button data-action="click->pwa-install#close"
-            class="w-full px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition">
+            class="w-full px-4 py-2
+                   bg-gray-100 dark:bg-gray-700
+                   hover:bg-gray-200 dark:hover:bg-gray-600
+                   text-gray-700 dark:text-gray-300
+                   text-sm font-medium rounded-lg transition">
       後で
     </button>
   </div>

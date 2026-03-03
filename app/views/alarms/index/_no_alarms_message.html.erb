@@ -1,9 +1,8 @@
-<%# アラームが一つもない場合にindex画面に表示するもの %>
+<%# app/views/alarms/index/_no_alarms_message.html.erb %>
 <div class="flex items-center justify-center py-20">
   <div class="max-w-md mx-auto text-center">
     <% if user_signed_in? %>
-
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
         アラームが登録されていません
       </h2>
       <%= link_to new_alarm_path,
@@ -15,10 +14,9 @@
         </svg>
         アラームを作成
       <% end %>
-
     <% else %>
       <%# ログアウト時 %>
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
         アラーム機能を利用するにはログインしてください
       </h2>
       <%= link_to new_user_session_path,
@@ -30,7 +28,6 @@
           <path d="M5 12l14 0" /><path d="M15 16l4 -4" /><path d="M15 8l4 4" />
         </svg>
       <% end %>
-
     <% end %>
   </div>
 </div>

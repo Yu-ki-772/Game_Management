@@ -1,14 +1,17 @@
+<%# app/views/reflection_notes/_form.html.erb %>
 <%# ================================================================ %>
 <%# バリデーションエラー                                               %>
 <%# ================================================================ %>
 <% if reflection_note.errors.any? %>
-  <div class="bg-red-50 border border-red-300 rounded-lg p-4 mb-6">
-    <p class="text-sm font-semibold text-red-700 mb-2">
+  <div class="bg-red-50 dark:bg-red-900/30
+              border border-red-300 dark:border-red-800
+              rounded-lg p-4 mb-6">
+    <p class="text-sm font-semibold text-red-700 dark:text-red-400 mb-2">
       <%= reflection_note.errors.count %>件のエラーがあります
     </p>
     <ul class="list-disc list-inside space-y-1">
       <% reflection_note.errors.full_messages.each do |msg| %>
-        <li class="text-sm text-red-600"><%= msg %></li>
+        <li class="text-sm text-red-600 dark:text-red-400"><%= msg %></li>
       <% end %>
     </ul>
   </div>
@@ -17,7 +20,7 @@
 <%# --- reflection_type --------------------------------------------- %>
 <div class="mb-5">
   <%= f.label :reflection_type, "種別",
-        class: "block text-sm font-medium text-gray-700 mb-1" %>
+        class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
   <%= f.select :reflection_type,
         options_for_select(
           ReflectionNote.reflection_types.keys.map do |key|
@@ -26,47 +29,51 @@
           reflection_note.reflection_type
         ),
         { include_blank: "選択してください" },
-        class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white
-                focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400" %>
+        class: "w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm
+                bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400" %>
 </div>
 
 <%# --- タイトル ---------------------------------------------------- %>
 <div class="mb-5">
   <%= f.label :title, "タイトル",
-        class: "block text-sm font-medium text-gray-700 mb-1" %>
+        class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
   <%= f.text_field :title,
-        class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
-                focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400
-                placeholder-gray-400",
+        class: "w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm
+                bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400
+                placeholder-gray-400 dark:placeholder-gray-500",
         placeholder: "タイトルを入力（任意・最大255文字）" %>
 </div>
 
 <%# --- 本文 -------------------------------------------------------- %>
 <div class="mb-5">
   <%= f.label :body, "本文",
-        class: "block text-sm font-medium text-gray-700 mb-1" %>
+        class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
   <%= f.text_area :body,
         rows: 8,
-        class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
-                focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400
-                placeholder-gray-400 resize-y",
+        class: "w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm
+                bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400
+                placeholder-gray-400 dark:placeholder-gray-500 resize-y",
         placeholder: "振り返りの内容を入力（必須・最大3000文字）" %>
 </div>
 
-
-
 <%# --- タグ -------------------------------------------------------- %>
 <div class="mb-7">
-  <p class="block text-sm font-medium text-gray-700 mb-2">タグ（複数選択可）</p>
+  <p class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">タグ（複数選択可）</p>
 
   <% if existing_tags.any? %>
     <div class="flex flex-wrap gap-2 mb-3">
       <% existing_tags.each do |tag| %>
         <label class="inline-flex items-center gap-1.5 cursor-pointer
-                      border border-gray-300 rounded-full px-3 py-1
-                      text-sm text-gray-600 hover:border-indigo-400 hover:text-indigo-600
-                      has-[:checked]:bg-indigo-600 has-[:checked]:text-white
-                      has-[:checked]:border-indigo-600 transition-colors">
+                      border border-gray-300 dark:border-gray-600
+                      rounded-full px-3 py-1
+                      text-sm text-gray-600 dark:text-gray-400
+                      hover:border-emerald-400 hover:text-emerald-600
+                      dark:hover:border-emerald-500 dark:hover:text-emerald-400
+                      has-[:checked]:bg-emerald-600 has-[:checked]:text-white
+                      has-[:checked]:border-emerald-600 transition-colors">
           <%= check_box_tag "tag_ids[]", tag.id,
                 reflection_note.tags.include?(tag),
                 class: "sr-only" %>
@@ -79,12 +86,13 @@
   <%# 新規タグの入力（カンマ区切りで複数指定） %>
   <%= text_field_tag :new_tag_names,
         nil,
-        class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
-                focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400
-                placeholder-gray-400",
+        class: "w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm
+                bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400
+                placeholder-gray-400 dark:placeholder-gray-500",
         placeholder: "新しいタグをカンマ(,)区切りで入力",
         autocomplete: "off" %>
-  <p class="mt-1.5 text-xs text-gray-400">
+  <p class="mt-1.5 text-xs text-gray-400 dark:text-gray-500">
     既存タグはクリックで選択 / 新規タグはカンマ(,)区切りで複数入力できます（各タグ最大18文字）
   </p>
 </div>

@@ -24,6 +24,9 @@ module Myapp
     # タイムゾーンを日本時間に設定
     config.time_zone = "Tokyo"
 
+    # simple_calenderの最初の曜日が「日」になるように
+    config.beginning_of_week = :sunday
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
