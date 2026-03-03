@@ -1,3 +1,4 @@
+<%# app/views/devise/unlocks/new.html.erb %>
 <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
   <div class="w-full max-w-md">
 
@@ -28,15 +29,17 @@
           <div>
             <%= f.submit "解除メールを送信する",
                 class: "w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700
-                        dark:bg-emerald-600 dark:hover:bg-emerald-500
+                        dark:hover:bg-emerald-500
                         text-white text-sm font-semibold rounded-lg
                         transition cursor-pointer" %>
           </div>
         </div>
       <% end %>
-    </div>
 
-    <%= render "devise/shared/links" %>
+      <div class="pt-6 mt-6 border-t border-gray-100 dark:border-gray-700">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
 
   </div>
 </div>
