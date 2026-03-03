@@ -1,15 +1,14 @@
 <%# app/views/shared/_pwa_install_prompt.html.erb %>
 <div id="pwa-install-modal"
      data-controller="pwa-install"
-     class="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+     class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 dark:bg-black/50">
 
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-80 max-w-full mx-4">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-90 max-w-full mx-4">
     <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
       アラーム通知をより確実に受け取るために
     </h2>
     <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-      ホーム画面に追加しておくと、アプリを開いていないときでも
-      アラームの通知が届くようになります。
+      ホーム画面に追加しておくと、アプリを開いていないときでもアラームの通知が届くようになります。
     </p>
 
     <%# beforeinstallprompt が使えるブラウザ（Chrome・Edge等）向け。
