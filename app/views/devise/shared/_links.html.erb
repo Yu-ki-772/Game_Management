@@ -5,7 +5,7 @@
     <%= link_to "ログイン", new_session_path(resource_name),
         class: "block text-sm text-emerald-600 dark:text-emerald-400
                 hover:text-emerald-700 dark:hover:text-emerald-300
-                font-medium transition" %>
+                font-medium transition mt-6" %>
   <% end %>
 
   <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
