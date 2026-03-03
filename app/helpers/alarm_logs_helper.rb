@@ -1,3 +1,4 @@
+# app/helpers/alarm_logs_helper.rb
 module AlarmLogsHelper
   # 記録画面の分数用のフォーマット
   def format_minutes_defer(minutes)

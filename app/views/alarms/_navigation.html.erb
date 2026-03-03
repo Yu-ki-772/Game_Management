@@ -1,6 +1,7 @@
-<nav class="mb-4 sm:mb-6 bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-1 sm:p-2 flex gap-1 sm:gap-2 overflow-x-auto">
-  <%= link_to alarms_path, 
-      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(alarms_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
+<%# app/views/alarms/_navigation.html.erb %>
+<nav class="mb-4 sm:mb-6 bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-1 sm:p-2 flex gap-1 sm:gap-2 overflow-x-auto">
+  <%= link_to alarms_path,
+      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(alarms_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}" do %>
     <div class="flex items-center gap-1 sm:gap-2">
       <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
@@ -8,9 +9,9 @@
       <span>一覧</span>
     </div>
   <% end %>
-  
+
   <%= link_to calendar_alarms_path,
-      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(calendar_alarms_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
+      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(calendar_alarms_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}" do %>
     <div class="flex items-center gap-1 sm:gap-2">
       <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -18,9 +19,9 @@
       <span>カレンダー</span>
     </div>
   <% end %>
-  
+
   <%= link_to pending_alarms_path,
-      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(pending_alarms_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
+      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(pending_alarms_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}" do %>
     <div class="flex items-center gap-1 sm:gap-2">
       <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>

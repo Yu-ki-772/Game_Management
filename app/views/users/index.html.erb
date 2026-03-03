@@ -1,62 +1,72 @@
+<%# app/views/users/index.html.erb %>
 <div class="max-w-7xl mx-auto px-4 py-8">
 
-  <div class="pb-5 border-b border-gray-200 mb-8">
-    <h1 class="text-2xl font-bold text-gray-900">ユーザー一覧</h1>
+  <%= render 'shared/friendships_navigation' %>
+
+  <div class="pb-5 border-b border-gray-200 dark:border-gray-700 mb-8">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">ユーザー検索</h1>
   </div>
 
   <%# 検索フォーム %>
   <%= search_form_for @q, url: users_path, method: :get,
-      html: { class: "bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6" } do |f| %>
+      html: { class: "bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-6" } do |f| %>
     <div class="flex flex-col sm:flex-row gap-3">
       <div class="flex-1">
-        <%= f.label :name_cont, "ユーザネーム", class: "block text-sm font-semibold text-gray-700 mb-2" %>
         <%= f.search_field :name_cont,
-            placeholder: '例: 山田太郎',
-            class: "w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
+            placeholder: 'ユーザネームを検索...',
+            autofocus: true,
+            class: "w-full px-4 py-2
+                    border border-gray-200 dark:border-gray-600 rounded-lg text-sm
+                    bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                    placeholder-gray-400 dark:placeholder-gray-500
+                    focus:outline-none focus:ring-1 focus:ring-emerald-500
+                    focus:ring-offset-0 focus:border-emerald-500 transition" %>
       </div>
       <div class="flex items-end gap-2">
         <%= f.submit "検索",
             class: "px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition cursor-pointer" %>
         <%= link_to "クリア", users_path,
-            class: "px-5 py-2 bg-white hover:bg-gray-50 text-gray-600 text-sm font-semibold rounded-lg border border-gray-200 transition" %>
+            class: "px-5 py-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
+                    text-gray-600 dark:text-gray-300 text-sm font-semibold rounded-lg
+                    border border-gray-200 dark:border-gray-600 transition" %>
       </div>
     </div>
   <% end %>
 
   <%# 検索結果件数 %>
   <% if params[:q].present? %>
-    <p class="text-sm text-gray-500 mb-4">
-      検索結果: <span class="font-semibold text-gray-700"><%= @search_count %></span> 件
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+      検索結果: <span class="font-semibold text-gray-700 dark:text-gray-300"><%= @search_count %></span> 件
     </p>
   <% end %>
 
   <%# ページネーション（上） %>
-  <div class="mb-4">
+  <div class="flex justify-center mb-6">
     <%== @pagy.series_nav %>
   </div>
 
   <%# ユーザーリスト %>
-  <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
     <% if @users.any? %>
-      <ul class="divide-y divide-gray-50">
+      <ul class="divide-y divide-gray-50 dark:divide-gray-700">
         <% @users.each do |user| %>
           <% next if user == current_user %>
           <% pending_request_from_user = @pending_requests_hash[user.uuid] %>
           <% existing_friendship = @friendships_hash[user.uuid] %>
 
-          <li class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition">
+          <li class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
 
             <%# アバター + 名前 %>
             <%= link_to user_path(user), class: "flex items-center gap-4 flex-1 min-w-0" do %>
               <div class="shrink-0">
                 <% if user.avatar.attached? %>
                   <%= image_tag user.avatar,
-                      class: "w-12 h-12 rounded-full object-cover border border-gray-200" %>
+                      class: "w-12 h-12 rounded-full object-cover border border-gray-200 dark:border-gray-600" %>
                 <% else %>
-                  <div class="w-12 h-12 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center">
+                  <div class="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                         class="text-gray-400">
+                         class="text-gray-400 dark:text-gray-500">
                       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                       <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
                       <path d="M9 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
@@ -65,7 +75,7 @@
                   </div>
                 <% end %>
               </div>
-              <span class="text-sm font-semibold text-gray-900 truncate"><%= user.name %></span>
+              <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate"><%= user.name %></span>
             <% end %>
 
             <%# フレンド関連ボタン %>
@@ -82,17 +92,30 @@
                 <%= button_to friendships_path,
                     method: :post,
                     params: { friend_uuid: user.uuid },
-                    class: "px-4 py-1.5 bg-white hover:bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-md border border-emerald-200 transition" do %>
+                    class: "px-4 py-1.5
+                            bg-white dark:bg-gray-700
+                            hover:bg-emerald-50 dark:hover:bg-emerald-900/30
+                            text-emerald-700 dark:text-emerald-400
+                            text-xs font-semibold rounded-md
+                            border border-emerald-200 dark:border-emerald-800 transition" do %>
                   フレンド申請
                 <% end %>
 
               <% else %>
                 <% if existing_friendship&.accepted? %>
-                  <span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-md border border-emerald-200">
+                  <span class="px-3 py-1.5
+                               bg-emerald-50 dark:bg-emerald-900/30
+                               text-emerald-700 dark:text-emerald-400
+                               text-xs font-medium rounded-md
+                               border border-emerald-200 dark:border-emerald-800">
                     フレンドです
                   </span>
                 <% elsif existing_friendship&.user_uuid == current_user.uuid %>
-                  <span class="px-3 py-1.5 bg-gray-50 text-gray-500 text-xs font-medium rounded-md border border-gray-200">
+                  <span class="px-3 py-1.5
+                               bg-gray-50 dark:bg-gray-700
+                               text-gray-500 dark:text-gray-400
+                               text-xs font-medium rounded-md
+                               border border-gray-200 dark:border-gray-600">
                     申請済み
                   </span>
                 <% end %>
@@ -105,13 +128,13 @@
 
     <% else %>
       <div class="text-center py-16">
-        <p class="text-sm text-gray-400">検索条件に一致するユーザーが見つかりませんでした</p>
+        <p class="text-sm text-gray-400 dark:text-gray-500">検索条件に一致するユーザーが見つかりませんでした</p>
       </div>
     <% end %>
   </div>
 
   <%# ページネーション（下） %>
-  <div class="mt-6">
+  <div class="flex justify-center mt-6">
     <%== @pagy.series_nav %>
   </div>
 

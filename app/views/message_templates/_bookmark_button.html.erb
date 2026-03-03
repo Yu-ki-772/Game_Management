@@ -1,8 +1,13 @@
-<%# ブックマークボタン %>
+<%# app/views/message_templates/_bookmark_button.html.erb %>
 <div id="bookmark_button_<%= message_template.id %>">
   <%= button_to bookmarks_path(message_template_id: message_template.id),
       method: :post,
-      class: "px-3 py-1.5 bg-white hover:bg-amber-50 text-amber-500 text-xs font-semibold rounded-md border border-amber-300 transition" do %>
+      class: "px-3 py-1.5
+              bg-white dark:bg-gray-700
+              hover:bg-amber-50 dark:hover:bg-amber-900/30
+              text-amber-500 dark:text-amber-400
+              text-xs font-semibold rounded-md
+              border border-amber-300 dark:border-amber-700 transition" do %>
     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>

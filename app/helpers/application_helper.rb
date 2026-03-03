@@ -1,3 +1,4 @@
+# app/helpers/application_helper.rb
 module ApplicationHelper
   def default_meta_tags
     {
@@ -37,7 +38,6 @@ module ApplicationHelper
       url: ENV.fetch("APP_URL", "http://localhost:3000"),
       hashtags: "ゲーム,時間管理,GameExit"
     }
-
     "#{base_url}?#{share_data.to_query}"
   end
 
@@ -45,7 +45,7 @@ module ApplicationHelper
     if current_page?(path)
       "#{active_state_classes} px-3 py-2 rounded-md text-sm font-medium"
     else
-      "text-gray-700 hover:bg-gray-100 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition"
+      "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-sm font-medium transition"
     end
   end
 
@@ -57,7 +57,7 @@ module ApplicationHelper
     if is_active
       "#{base} #{active_state_classes}"
     else
-      "#{base} text-gray-700 hover:bg-gray-100 hover:text-emerald-600"
+      "#{base} text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-emerald-600 dark:hover:text-emerald-400"
     end
   end
 
@@ -65,17 +65,17 @@ module ApplicationHelper
   def dropdown_item_class(path)
     base = "block px-4 py-2 text-sm"
 
-  if current_page?(path)
-    "#{base} #{active_state_classes} font-medium"
-  else
-    "#{base} text-gray-700 hover:bg-gray-50 transition"
-  end
+    if current_page?(path)
+      "#{base} #{active_state_classes} font-medium"
+    else
+      "#{base} text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+    end
   end
 
   private
 
   # メニューのアクティブ状態のカラークラスを一元管理
   def active_state_classes
-    "text-emerald-600 bg-emerald-50"
+    "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30"
   end
 end

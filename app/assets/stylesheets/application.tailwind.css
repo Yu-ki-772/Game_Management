@@ -1,4 +1,27 @@
 @import "tailwindcss";
+@import "./pagy-tailwind.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* simple-calendar 専用トークン（ライトモードのデフォルト値） */
+  --cal-border:         rgb(229 231 235);
+  --cal-sunday-bg:      rgb(254 242 242);
+  --cal-saturday-bg:    rgb(239 246 255);
+  --cal-today-bg:       rgb(236 253 245);
+  --cal-othermonth-bg:  rgb(249 250 251);
+  --cal-othermonth-text: rgb(156 163 175);
+}
+
+/* .dark クラスが html 要素に付いたとき、変数の値を差し替える */
+.dark {
+  --cal-border:         rgb(55 65 81);
+  --cal-sunday-bg:      rgb(69 26 26);
+  --cal-saturday-bg:    rgb(23 37 84);
+  --cal-today-bg:       rgb(20 61 43);
+  --cal-othermonth-bg:  rgb(31 41 55);
+  --cal-othermonth-text: rgb(107 114 128);
+}
 
 .simple-calendar,
 .simple-calendar table {
@@ -8,68 +31,56 @@
   border-collapse: collapse !important;
 }
 
-.simple-calendar thead {
-  display: table-header-group !important;
-}
+.simple-calendar thead { display: table-header-group !important; }
 
 .simple-calendar thead tr,
-.simple-calendar tbody tr {
-  display: table-row !important;
-}
+.simple-calendar tbody tr { display: table-row !important; }
 
 .simple-calendar thead th,
 .simple-calendar tbody td {
   display: table-cell !important;
-  width: 14.28%; /* 100% / 7日 */
+  width: 14.28%;
 }
 
 .simple-calendar tbody td {
-  border: 1px solid rgb(229 231 235);
+  border: 1px solid var(--cal-border); /* ← ハードコードやめて var() に */
   vertical-align: top;
+  height: 100px;
+  /* テーマ切り替え時の色変化をなめらかに */
+  transition: background-color 0.2s ease;
 }
 
-.simple-calendar .wday-0 {
-  background-color: rgb(254 242 242); /* 日曜日 */
-}
-
-.simple-calendar .wday-6 {
-  background-color: rgb(239 246 255); /* 土曜日 */
-}
-
-.simple-calendar .today {
-  background-color: rgb(236 253 245); /* 今日 */
-}
+.simple-calendar .wday-0 { background-color: var(--cal-sunday-bg); }
+.simple-calendar .wday-6 { background-color: var(--cal-saturday-bg); }
+.simple-calendar .today  { background-color: var(--cal-today-bg); }
 
 .simple-calendar .prev-month,
 .simple-calendar .next-month {
-  background-color: rgb(249 250 251);
+  background-color: var(--cal-othermonth-bg);
   opacity: 0.6;
 }
 
 .simple-calendar .prev-month span:first-child,
 .simple-calendar .next-month span:first-child {
-  color: rgb(156 163 175);
+  color: var(--cal-othermonth-text);
 }
 
+/* レスポンシブ（色に無関係なのでそのまま） */
+@media (max-width: 480px) { .simple-calendar tbody td { height: 70px; } }
+@media (max-width: 768px) { .simple-calendar tbody td { height: 80px; } }
+@media (min-width: 769px) { .simple-calendar tbody td { height: 120px; } }
 
-.simple-calendar tbody td {
-  height: 100px;
+/* 定型文一覧のクリップボードにコピーするボタン用 */
+.clipboard-success {
+  @apply bg-green-50 text-green-700 border-green-200;
+}
+.dark .clipboard-success {
+  @apply bg-green-900/30 text-green-400 border-green-800;
 }
 
-@media (max-width: 768px) {
-  .simple-calendar tbody td {
-    height: 80px;
-  }
+.clipboard-error {
+  @apply bg-red-50 text-red-700 border-red-200;
 }
-
-@media (max-width: 480px) {
-  .simple-calendar tbody td {
-    height: 70px;
-  }
-}
-
-@media (min-width: 769px) {
-  .simple-calendar tbody td {
-    height: 120px;
-  }
+.dark .clipboard-error {
+  @apply bg-red-900/30 text-red-400 border-red-800;
 }

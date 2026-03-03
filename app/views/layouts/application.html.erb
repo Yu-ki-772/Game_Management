@@ -1,3 +1,4 @@
+<%# app/views/layouts/application.html.erb %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -5,13 +6,20 @@
     <%= display_meta_tags(default_meta_tags) %>
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Game Exit">
     <meta name="application-name" content="Game Exit">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <script>
+      (function() {
+        var saved = localStorage.getItem("theme");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var isDark = saved === "dark" || (saved !== "light" && prefersDark);
+        if (isDark) document.documentElement.classList.add("dark");
+      })();
+    </script>
 
     <%= yield :head %>
 
@@ -24,23 +32,32 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
+  <body
+    data-controller="theme"
+    class="bg-gray-50 dark:bg-gray-900 flex flex-col min-h-screen transition-colors duration-200">
 
-  <body class="bg-gray-50 flex flex-col min-h-screen">
-    <%# ヘッダ %>
     <%= render 'shared/header' %>
-    
-    <%# メインコンテンツ %>
+
     <main class="container mx-auto px-4 py-6 max-w-7xl pb-24 flex-1">
-      <%# フラッシュメッセージ %>
       <% if notice %>
-        <div class="mb-4 rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3" role="alert">
-          <p class="text-xs text-emerald-700"><%= notice %></p>
+        <div class="mb-4 rounded-lg px-4 py-3
+                    bg-emerald-50 border border-emerald-200
+                    dark:bg-emerald-950 dark:border-emerald-800"
+             role="alert">
+          <p class="text-xs text-emerald-700 dark:text-emerald-300">
+            <%= notice %>
+          </p>
         </div>
       <% end %>
 
       <% if alert %>
-        <div class="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3" role="alert">
-          <p class="text-xs text-red-600"><%= alert %></p>
+        <div class="mb-4 rounded-lg px-4 py-3
+                    bg-red-50 border border-red-200
+                    dark:bg-red-950 dark:border-red-800"
+             role="alert">
+          <p class="text-xs text-red-600 dark:text-red-400">
+            <%= alert %>
+          </p>
         </div>
       <% end %>
 
@@ -50,6 +67,6 @@
     <%= render 'shared/footer' %>
 
     <%= render "shared/pwa_install_prompt" if flash[:show_pwa_install_prompt] %>
-    <%= render "shared/push_notification_modal" if flash[:show_push_notification_modal] %>
+    <%= render "shared/push_notification_prompt" if flash[:show_push_notification_modal] %>
   </body>
 </html>

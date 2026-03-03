@@ -1,9 +1,10 @@
+<%# app/views/alarms/calendar.html.erb %>
 <div class="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
   <%= render 'alarms/navigation' %>
 
   <div class="mb-4 sm:mb-6">
-    <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">アラームカレンダー</h1>
-    <p class="text-xs sm:text-sm text-gray-600">登録されたアラームを確認できます</p>
+    <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1 sm:mb-2">アラームカレンダー</h1>
+    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">登録されたアラームを確認できます</p>
   </div>
 
   <%= turbo_frame_tag "calendar" do %>
@@ -12,28 +13,31 @@
           attribute: :start_time,
           start_date: @start_date
         ) do |date, alarms_on_date| %>
-      
+
       <div class="flex flex-col gap-0.5 flex-1 overflow-hidden">
         <% visible_alarms = alarms_on_date.first(3) %>
         <% remaining_count = alarms_on_date.size - 3 %>
-        
+
         <% visible_alarms.each do |alarm| %>
           <%# 自分が作成した未来のアラーム：編集可能 %>
           <% if alarm.created_by?(current_user) && alarm.scheduled_at > Time.current %>
             <%= link_to edit_alarm_path(alarm),
               title: "アラームを編集",
               data: { turbo_frame: "_top" },
-              class: "block p-1.5 sm:p-2 rounded border-l-2 overflow-hidden transition-all hover:opacity-80 active:scale-95 bg-emerald-100 border-emerald-500 text-emerald-900" do %>
+              class: "block p-1.5 sm:p-2 rounded border-l-2 overflow-hidden transition-all hover:opacity-80 active:scale-95
+                      bg-emerald-100 dark:bg-emerald-900/40
+                      border-emerald-500 dark:border-emerald-600
+                      text-emerald-900 dark:text-emerald-100" do %>
 
-              <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-emerald-700">
+              <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-emerald-700 dark:text-emerald-300">
                 <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <span><%= alarm.time_text %></span>
               </div>
-              
+
               <% if alarm.alarm_memberships.size > 1 %>
-                <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-emerald-600 mt-0.5">
+                <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5">
                   <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
                   </svg>
@@ -41,21 +45,24 @@
                 </div>
               <% end %>
             <% end %>
-            
+
           <%# 招待されたアラーム：クリック不可 %>
           <% elsif !alarm.created_by?(current_user) %>
             <div title="招待されたアラームです"
-                 class="block p-1.5 sm:p-2 rounded border-l-2 overflow-hidden cursor-default bg-indigo-100 border-indigo-500 text-indigo-900">
-              
-              <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-indigo-700">
+                 class="block p-1.5 sm:p-2 rounded border-l-2 overflow-hidden cursor-default
+                        bg-indigo-100 dark:bg-indigo-900/40
+                        border-indigo-500 dark:border-indigo-600
+                        text-indigo-900 dark:text-indigo-100">
+
+              <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-indigo-700 dark:text-indigo-300">
                 <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <span><%= alarm.time_text %></span>
               </div>
-              
+
               <% if alarm.alarm_memberships.size > 1 %>
-                <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-indigo-600 mt-0.5">
+                <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-indigo-600 dark:text-indigo-400 mt-0.5">
                   <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
                   </svg>
@@ -63,19 +70,22 @@
                 </div>
               <% end %>
             </div>
-            
-          <%# 過去のアラーム：クリック不可 %>
+
           <% else %>
+            <%# 過去のアラーム：クリック不可 %>
             <div title="過去のアラームは編集できません"
-                 class="block p-1.5 sm:p-2 rounded border-l-2 overflow-hidden cursor-not-allowed opacity-50 bg-gray-200 border-gray-400 text-gray-700">
-              
+                 class="block p-1.5 sm:p-2 rounded border-l-2 overflow-hidden cursor-not-allowed opacity-50
+                        bg-gray-200 dark:bg-gray-700
+                        border-gray-400 dark:border-gray-500
+                        text-gray-700 dark:text-gray-400">
+
               <div class="flex items-center gap-1 text-[9px] sm:text-[11px]">
                 <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <span><%= alarm.time_text %></span>
               </div>
-              
+
               <% if alarm.alarm_memberships.size > 1 %>
                 <div class="flex items-center gap-1 text-[9px] sm:text-[11px] mt-0.5">
                   <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -87,9 +97,9 @@
             </div>
           <% end %>
         <% end %>
-        
+
         <% if remaining_count > 0 %>
-          <div class="text-[9px] sm:text-[11px] text-gray-500 text-center py-0.5 font-medium">
+          <div class="text-[9px] sm:text-[11px] text-gray-500 dark:text-gray-400 text-center py-0.5 font-medium">
             +<%= remaining_count %>件
           </div>
         <% end %>

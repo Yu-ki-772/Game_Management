@@ -1,22 +1,23 @@
+<%# app/views/users/show.html.erb %>
 <div class="max-w-7xl mx-auto px-4 py-8">
 
-  <div class="pb-5 border-b border-gray-200 mb-8">
-    <h1 class="text-2xl font-bold text-gray-900">プロフィール</h1>
+  <div class="pb-5 border-b border-gray-200 dark:border-gray-700 mb-8">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">プロフィール</h1>
   </div>
 
-  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-lg">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 max-w-lg">
 
     <%# アバター + 名前 %>
     <div class="flex items-center gap-5 mb-6">
       <div class="shrink-0">
         <% if @user.avatar_image? %>
           <%= image_tag @user.avatar,
-              class: "w-20 h-20 rounded-full object-cover border border-gray-200" %>
+              class: "w-20 h-20 rounded-full object-cover border border-gray-200 dark:border-gray-600" %>
         <% else %>
-          <div class="w-20 h-20 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center">
+          <div class="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                 class="text-gray-400">
+                 class="text-gray-400 dark:text-gray-500">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
               <path d="M9 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
@@ -27,25 +28,30 @@
       </div>
 
       <div class="flex-1 min-w-0">
-        <p class="text-lg font-bold text-gray-900 truncate"><%= @user.name %></p>
+        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 truncate"><%= @user.name %></p>
         <% if @user == current_user %>
-          <p class="text-sm text-gray-400 truncate"><%= @user.email %></p>
+          <p class="text-sm text-gray-400 dark:text-gray-500 truncate"><%= @user.email %></p>
         <% end %>
       </div>
     </div>
 
     <%# 自己紹介 %>
     <% if @user.description.present? %>
-      <div class="bg-gray-50 rounded-lg px-4 py-3 mb-6">
-        <p class="text-sm text-gray-700 leading-relaxed"><%= @user.description %></p>
+      <div class="bg-gray-50 dark:bg-gray-700 rounded-lg px-4 py-3 mb-6">
+        <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed"><%= @user.description %></p>
       </div>
     <% end %>
 
     <%# アクションボタン等 %>
-    <div class="pt-4 border-t border-gray-100">
+    <div class="pt-4 border-t border-gray-100 dark:border-gray-700">
       <% if @user == current_user %>
         <%= link_to edit_user_registration_path,
-            class: "inline-flex items-center gap-2 px-5 py-2 bg-white hover:bg-gray-50 text-gray-600 text-sm font-semibold rounded-lg border border-gray-200 transition" do %>
+            class: "inline-flex items-center gap-2 px-5 py-2
+                    bg-white dark:bg-gray-700
+                    hover:bg-gray-50 dark:hover:bg-gray-600
+                    text-gray-600 dark:text-gray-300
+                    text-sm font-semibold rounded-lg
+                    border border-gray-200 dark:border-gray-600 transition" do %>
           編集
         <% end %>
 
@@ -62,17 +68,30 @@
           <%= button_to friendships_path,
               method: :post,
               params: { friend_uuid: @user.uuid },
-              class: "px-4 py-1.5 bg-white hover:bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-md border border-emerald-200 transition" do %>
+              class: "px-4 py-1.5
+                      bg-white dark:bg-gray-700
+                      hover:bg-emerald-50 dark:hover:bg-emerald-900/30
+                      text-emerald-700 dark:text-emerald-400
+                      text-xs font-semibold rounded-md
+                      border border-emerald-200 dark:border-emerald-800 transition" do %>
             フレンド申請
           <% end %>
 
         <% else %>
           <% if @existing_friendship.accepted? %>
-            <span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-md border border-emerald-200">
+            <span class="px-3 py-1.5
+                         bg-emerald-50 dark:bg-emerald-900/30
+                         text-emerald-700 dark:text-emerald-400
+                         text-xs font-medium rounded-md
+                         border border-emerald-200 dark:border-emerald-800">
               フレンドです
             </span>
           <% elsif @existing_friendship.user_uuid == current_user.uuid %>
-            <span class="px-3 py-1.5 bg-gray-50 text-gray-500 text-xs font-medium rounded-md border border-gray-200">
+            <span class="px-3 py-1.5
+                         bg-gray-50 dark:bg-gray-700
+                         text-gray-500 dark:text-gray-400
+                         text-xs font-medium rounded-md
+                         border border-gray-200 dark:border-gray-600">
               申請済み
             </span>
           <% end %>

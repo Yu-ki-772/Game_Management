@@ -1,14 +1,13 @@
-<%# アラーム作成画面 %>
+<%# app/views/alarms/new.html.erb %>
 <div class="max-w-7xl mx-auto px-4 py-8">
-
   <%# ナビゲーション %>
   <%= render 'alarms/navigation' %>
 
   <%# カレンダーに戻るリンク %>
   <% if params[:date].present? %>
     <div class="mb-4">
-      <%= link_to calendar_alarms_path, 
-          class: "inline-flex items-center text-sm text-gray-600 hover:text-gray-900" do %>
+      <%= link_to calendar_alarms_path,
+          class: "inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200" do %>
         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
@@ -17,13 +16,13 @@
     </div>
   <% end %>
 
-  <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3 pb-5 border-b border-gray-200 mb-8">
-    <h1 class="text-2xl font-bold text-gray-900">アラームを作成</h1>
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3 pb-5 border-b border-gray-200 dark:border-gray-700 mb-8">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">アラームを作成</h1>
   </div>
 
   <% if params[:date].present? %>
     <div class="mb-6 max-w-2xl">
-      <div class="flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 px-4 py-3 rounded-lg border border-emerald-200">
+      <div class="flex items-center gap-2 text-sm text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 rounded-lg border border-emerald-200 dark:border-emerald-800">
         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
         </svg>
@@ -34,40 +33,43 @@
     </div>
   <% end %>
 
-  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-2xl">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 max-w-2xl">
     <%= form_with model: @alarm, class: "space-y-6" do |f| %>
 
-      <p class="text-sm text-gray-500">
+      <p class="text-sm text-gray-500 dark:text-gray-400">
         <span class="text-red-500">*</span> は必須項目です
       </p>
 
       <%= render 'shared/error_messages', object: f.object %>
 
       <div>
-        <%= f.label :label, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+        <%= f.label :label, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2" do %>
           ラベル <span class="text-red-500">*</span>
         <% end %>
         <%= f.text_field :label,
             placeholder: 'アラーム',
-            class: "w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
+            class: "w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm
+                    bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                    placeholder-gray-400 dark:placeholder-gray-500
+                    focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
       </div>
 
       <%# 開始時刻フィールド %>
       <div>
-        <%= f.label :started_at, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+        <%= f.label :started_at, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2" do %>
           開始時刻
-          <span class="text-xs font-normal text-gray-500 ml-1">(任意)</span>
+          <span class="text-xs font-normal text-gray-500 dark:text-gray-400 ml-1">(任意)</span>
         <% end %>
         <%= f.datetime_field :started_at,
-            class: "w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
-        
-        <%# ヒントメッセージ %>
+            class: "w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm
+                    bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                    focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
         <% if params[:date].present? %>
-          <p class="text-xs text-gray-500 mt-1.5 ml-1">
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1.5 ml-1">
             アラームが有効になる開始時刻（省略可）
           </p>
         <% else %>
-          <p class="text-xs text-gray-500 mt-1.5 ml-1">
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1.5 ml-1">
             アラームが有効になる開始時刻を設定できます（省略可）
           </p>
         <% end %>
@@ -75,32 +77,38 @@
 
       <%# アラーム日時フィールド %>
       <div>
-        <%= f.label :scheduled_at, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+        <%= f.label :scheduled_at, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2" do %>
           アラーム日時 <span class="text-red-500">*</span>
         <% end %>
         <%= f.datetime_field :scheduled_at,
-            class: "w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
-          <p class="text-xs text-gray-400 mt-1.5 ml-1">アラームが鳴る日時（未来の日時のみ指定可能）</p>
+            class: "w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm
+                    bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                    focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
+        <p class="text-xs text-gray-400 dark:text-gray-500 mt-1.5 ml-1">アラームが鳴る日時（未来の日時のみ指定可能）</p>
       </div>
 
       <%# リマインダー設定 %>
       <div>
-        <%= f.label :reminder_minutes, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+        <%= f.label :reminder_minutes, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2" do %>
           事前リマインダー
-          <span class="text-xs font-normal text-gray-500 ml-1">(任意)</span>
+          <span class="text-xs font-normal text-gray-500 dark:text-gray-400 ml-1">(任意)</span>
         <% end %>
         <%= f.select :reminder_minutes,
             [['なし', nil], ['5分前', 5], ['10分前', 10], ['15分前', 15], ['30分前', 30], ['1時間前', 60]],
             { include_blank: false },
-            class: "w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
+            class: "w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm
+                    bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                    focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
       </div>
-      
+
       <div class="flex items-center gap-3 pt-2">
         <%= f.submit 'アラームを作成',
             class: "px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition cursor-pointer" %>
-        <%= link_to 'キャンセル', 
+        <%= link_to 'キャンセル',
             params[:date].present? ? calendar_alarms_path : alarms_path,
-            class: "px-5 py-2 bg-white hover:bg-gray-50 text-gray-600 text-sm font-semibold rounded-lg border border-gray-200 transition" %>
+            class: "px-5 py-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
+                    text-gray-600 dark:text-gray-300 text-sm font-semibold rounded-lg
+                    border border-gray-200 dark:border-gray-600 transition" %>
       </div>
 
     <% end %>

@@ -1,11 +1,20 @@
+<%# app/views/alarm_memberships/_invite_dropdown.html.erb %>
 <div data-controller="dropdown" class="relative inline-block">
   <button data-action="click->dropdown#toggle"
-          class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-md border border-indigo-200 transition">
+          class="px-3 py-1.5
+                 bg-indigo-100 dark:bg-indigo-800/60
+                 hover:bg-indigo-200 dark:hover:bg-indigo-700
+                 text-indigo-700 dark:text-indigo-300
+                 text-xs font-semibold rounded-md
+                 border border-indigo-300 dark:border-indigo-600 transition">
     招待
   </button>
 
   <div data-dropdown-target="menu"
-       class="hidden absolute right-0 z-10 w-72 bg-white border rounded shadow-lg p-3">
+       class="hidden absolute right-0 z-10 w-72
+              bg-white dark:bg-gray-800
+              border border-gray-200 dark:border-gray-700
+              rounded shadow-lg p-3">
 
     <%= form_with url: search_users_alarm_alarm_memberships_path(alarm),
                   method: :get,
@@ -16,7 +25,12 @@
       <%= f.search_field :q_name_cont,
                          placeholder: "名前で検索",
                          data: { action: "input->dropdown#search" },
-                         class: "w-full border border-gray-200 rounded px-2 py-1 text-sm mb-2 focus:outline-none focus:border-indigo-300",
+                         class: "w-full border border-gray-200 dark:border-gray-600
+                                 rounded px-2 py-1 text-sm mb-2
+                                 bg-white dark:bg-gray-700
+                                 text-gray-900 dark:text-gray-100
+                                 placeholder-gray-400 dark:placeholder-gray-500
+                                 focus:outline-none focus:border-indigo-300 dark:focus:border-indigo-600",
                          name: "q[name_cont]" %>
     <% end %>
 

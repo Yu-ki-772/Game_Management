@@ -1,37 +1,38 @@
+<%# app/views/message_templates/_templates_list.html.erb %>
 <% if message_templates.empty? %>
-  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
-    <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-12 text-center">
+    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
-    <p class="text-gray-500 font-medium mb-2">
+    <p class="text-gray-500 dark:text-gray-400 font-medium mb-2">
       <%= empty_message %>
     </p>
-    <p class="text-gray-400 text-sm">
+    <p class="text-gray-400 dark:text-gray-500 text-sm">
       <%= empty_description %>
     </p>
   </div>
 <% else %>
   <div class="space-y-6">
     <% message_templates.group_by(&:reason).each do |reason, templates| %>
-      <section class="bg-white rounded-xl shadow-sm border border-gray-100">
+      <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
 
-        <div class="px-4 md:px-6 py-4 border-b border-gray-100 bg-gray-50 rounded-t-xl">
+        <div class="px-4 md:px-6 py-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 rounded-t-xl">
           <div class="flex items-center gap-3">
             <span class="w-1 h-5 bg-emerald-500 rounded-full shrink-0"></span>
-            <h2 class="text-base font-semibold text-gray-800">
+            <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200">
               <%= reason %>
             </h2>
           </div>
         </div>
 
-        <ul class="divide-y divide-gray-50 px-2 py-2">
+        <ul class="divide-y divide-gray-50 dark:divide-gray-700 px-2 py-2">
           <% templates.each do |template| %>
             <% bookmark = user_bookmarks[template.id] %>
 
-            <li class="px-3 md:px-4 py-3 rounded-lg hover:bg-emerald-50 transition group"
+            <li class="px-3 md:px-4 py-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition group"
                 data-controller="clipboard">
               <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-4">
-                <p class="text-gray-800 flex-1 text-sm leading-relaxed"
+                <p class="text-gray-800 dark:text-gray-200 flex-1 text-sm leading-relaxed"
                    data-clipboard-target="source">
                   <%= template.template %>
                 </p>
@@ -41,7 +42,12 @@
                   <button type="button"
                           data-clipboard-target="button"
                           data-action="click->clipboard#copy"
-                          class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold rounded-md border border-blue-200 transition">
+                          class="inline-flex items-center gap-1.5 px-3 py-1.5
+                                 bg-blue-50 dark:bg-blue-900/30
+                                 hover:bg-blue-100 dark:hover:bg-blue-900/50
+                                 text-blue-700 dark:text-blue-400
+                                 text-xs font-semibold rounded-md
+                                 border border-blue-200 dark:border-blue-800 transition">
                     <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
@@ -57,13 +63,23 @@
 
                     <% if template.user_uuid.present? %>
                       <%= link_to edit_message_template_path(template),
-                          class: "px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-md border border-emerald-200 transition" do %>
+                          class: "px-3 py-1.5
+                                  bg-emerald-50 dark:bg-emerald-900/30
+                                  hover:bg-emerald-100 dark:hover:bg-emerald-900/50
+                                  text-emerald-700 dark:text-emerald-400
+                                  text-xs font-semibold rounded-md
+                                  border border-emerald-200 dark:border-emerald-800 transition" do %>
                         編集
                       <% end %>
                       <%= button_to message_template_path(template),
                           method: :delete,
                           data: { turbo_confirm: '本当に削除しますか?' },
-                          class: "px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold rounded-md border border-red-200 transition" do %>
+                          class: "px-3 py-1.5
+                                  bg-red-50 dark:bg-red-900/30
+                                  hover:bg-red-100 dark:hover:bg-red-900/50
+                                  text-red-600 dark:text-red-400
+                                  text-xs font-semibold rounded-md
+                                  border border-red-200 dark:border-red-800 transition" do %>
                         削除
                       <% end %>
                     <% end %>

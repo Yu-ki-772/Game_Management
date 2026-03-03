@@ -1,5 +1,5 @@
-<%# アラーム一覧の表示用のパーシャル %>
-<div class="bg-white rounded-xl border border-gray-100 shadow-sm divide-y divide-gray-50">
+<%# app/views/alarms/index/_alarm_list.html.erb %>
+<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm divide-y divide-gray-50 dark:divide-gray-700">
   <% memberships.each do |membership| %>
     <% alarm = membership.alarm %>
 
@@ -9,16 +9,16 @@
 
         <div class="flex flex-col gap-0.5 shrink-0">
           <%# 日付 %>
-          <span class="text-xs text-gray-500 font-medium whitespace-nowrap">
+          <span class="text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap">
             <%= alarm.scheduled_at.strftime("%m/%d") %>
             <span class="text-[10px]">(<%= %w[日 月 火 水 木 金 土][alarm.scheduled_at.wday] %>)</span>
           </span>
-          
+
           <%# 時刻（開始時刻がある場合は範囲表示） %>
-          <span class="text-sm font-bold text-gray-900 whitespace-nowrap">
+          <span class="text-sm font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">
             <% if alarm.started_at.present? %>
               <%= alarm.started_at.strftime("%H:%M") %>
-              <span class="text-xs text-gray-400 mx-0.5">-</span>
+              <span class="text-xs text-gray-400 dark:text-gray-500 mx-0.5">-</span>
               <%= alarm.scheduled_at.strftime("%H:%M") %>
             <% else %>
               <%= alarm.scheduled_at.strftime("%H:%M") %>
@@ -27,12 +27,12 @@
         </div>
 
         <div class="flex-1 min-w-0">
-          <span class="text-sm text-gray-700"><%= truncate(alarm.label, length: 10) %></span>
+          <span class="text-sm text-gray-700 dark:text-gray-300"><%= truncate(alarm.label, length: 10) %></span>
 
           <%# リマインダー設定の表示 %>
           <% if alarm.reminder_minutes.present? %>
             <div class="mt-1">
-              <span class="inline-flex items-center gap-1 text-xs text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+              <span class="inline-flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-full">
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                 </svg>
@@ -45,34 +45,33 @@
             <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
 
               <%# 作成者 %>
-              <span class="inline-flex items-center gap-1.5 text-xs text-gray-400">
+              <span class="inline-flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500">
                 作成者:
                 <% if alarm.creator.avatar.attached? %>
                   <%= image_tag alarm.creator.avatar, class: "w-5 h-5 rounded-full object-cover" %>
                 <% else %>
-                  <span class="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                  <span class="w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-gray-400 dark:text-gray-500" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
                     </svg>
                   </span>
                 <% end %>
-
-                <span class="font-medium text-gray-600">
+                <span class="font-medium text-gray-600 dark:text-gray-400">
                   <%= truncate(alarm.creator.name, length: 11, omission: "...") %>
                 </span>
               </span>
 
               <% if alarm_display_members(alarm).any? %>
-                <span class="w-px h-3 bg-gray-300"></span>
-                <span class="text-xs text-gray-400">メンバー:</span>
+                <span class="w-px h-3 bg-gray-300 dark:bg-gray-600"></span>
+                <span class="text-xs text-gray-400 dark:text-gray-500">メンバー:</span>
 
                 <% alarm_display_members(alarm).each do |member| %>
-                  <span class="inline-flex items-center gap-1 text-xs text-gray-500">
+                  <span class="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                     <% if member.avatar.attached? %>
                       <%= image_tag member.avatar, class: "w-4 h-4 rounded-full object-cover" %>
                     <% else %>
-                      <span class="w-4 h-4 rounded-full bg-gray-100 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-2.5 h-2.5 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                      <span class="w-4 h-4 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-2.5 h-2.5 text-gray-400 dark:text-gray-500" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
                         </svg>
                       </span>
@@ -82,7 +81,7 @@
                 <% end %>
 
                 <% if alarm_hidden_members_count(alarm) > 0 %>
-                  <span class="text-xs text-gray-400 font-medium">+<%= alarm_hidden_members_count(alarm) %>人</span>
+                  <span class="text-xs text-gray-400 dark:text-gray-500 font-medium">+<%= alarm_hidden_members_count(alarm) %>人</span>
                 <% end %>
               <% end %>
 
@@ -95,13 +94,17 @@
         <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
           <%= render "alarm_memberships/invite_dropdown", alarm: alarm %>
           <%= link_to edit_alarm_path(alarm),
-              class: "px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-md border border-emerald-200 transition" do %>
+              class: "px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50
+                      text-emerald-700 dark:text-emerald-400 text-xs font-semibold rounded-md
+                      border border-emerald-200 dark:border-emerald-800 transition" do %>
             編集
           <% end %>
           <%= button_to alarm_path(alarm),
               method: :delete,
               data: { turbo_confirm: '本当に削除しますか?' },
-              class: "px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold rounded-md border border-red-200 transition" do %>
+              class: "px-3 py-1.5 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50
+                      text-red-600 dark:text-red-400 text-xs font-semibold rounded-md
+                      border border-red-200 dark:border-red-800 transition" do %>
             削除
           <% end %>
         </div>

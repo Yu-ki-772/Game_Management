@@ -1,5 +1,4 @@
-<%# アラームストップ画面 %>
-<%# アラームストップ時のバリデーションエラーの表示 %>
+<%# app/views/alarms/pending.html.erb %>
 <% if @alarm_log&.errors&.any? %>
   <%= render 'shared/error_messages', object: @alarm_log %>
 <% end %>
@@ -7,8 +6,8 @@
 <div class="max-w-7xl mx-auto px-4 py-8">
   <%= render 'alarms/navigation' %>
 
-  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-5 border-b border-gray-200 mb-6">
-    <h1 class="text-2xl font-bold text-gray-900">アラームストップ</h1>
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-5 border-b border-gray-200 dark:border-gray-700 mb-6">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">アラームストップ</h1>
     <% if @alarms.present? %>
       <%= link_to new_alarm_path,
           class: "inline-flex items-center justify-center gap-2 sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2 rounded-lg transition text-sm" do %>
@@ -22,7 +21,7 @@
     <% end %>
   </div>
 
-  <p class="text-xs text-gray-400 mb-6">
+  <p class="text-xs text-gray-400 dark:text-gray-500 mb-6">
     一日以上先または一日以上前のアラームは表示されません
   </p>
 
@@ -33,5 +32,4 @@
   <% else %>
     <%= render 'alarms/pending/no_alarms_message' %>
   <% end %>
-
 </div>
