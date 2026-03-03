@@ -23,7 +23,6 @@ class AlarmsController < ApplicationController
 
   # カレンダー
   def calendar
-
     # 現在の日付から表示する月を取得（デフォルトは今月）
     @start_date = Date.today
 

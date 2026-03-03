@@ -1,5 +1,4 @@
 class WebPushSubscriptionsController < ApplicationController
-
   def create
     WebPushSubscription.upsert(
       {
