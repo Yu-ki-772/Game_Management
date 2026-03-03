@@ -2,6 +2,8 @@ class AlarmMembership < ApplicationRecord
   belongs_to :user, foreign_key: "user_uuid",  primary_key: "uuid"
   belongs_to :alarm, foreign_key: "alarm_uuid", primary_key: "uuid"
 
+  validate :user_must_be_friend_of_creator, unless: :creator?
+
   # 指定したユーザーがまだストップしていないメンバーシップだけを返す。
   scope :not_unlocked_by, ->(user) {
     where.not(
@@ -52,5 +54,19 @@ class AlarmMembership < ApplicationRecord
     alarm.alarm_memberships
         .where.not(user_uuid: alarm.alarm_logs.select(:user_uuid))
         .none?
+  end
+
+  # 招待されるユーザーがアラーム作成者のフレンドかどうかを確認
+  def user_must_be_friend_of_creator
+    creator = alarm.creator
+
+    unless Friendship.accepted.between(creator, user).exists?
+      errors.add(:user_uuid, "はフレンドのみ招待できます")
+    end
+  end
+
+  # アラームの作成者かどうかの確認
+  def creator?
+    user_uuid == alarm.user_uuid
   end
 end

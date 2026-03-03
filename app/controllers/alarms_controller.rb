@@ -2,32 +2,27 @@ class AlarmsController < ApplicationController
   #=================================================
   # フィルタ設定
   #=================================================
-  skip_before_action :authenticate_user!, only: [ :index, :pending, :calendar ]
   before_action :set_alarm, only: [ :edit, :update, :unlock, :destroy ]
 
   #=================================================
   # 一覧・表示系アクション
   #=================================================
   def index
-    if user_signed_in?
-      @memberships = current_user.alarm_memberships
-                               .joins(:alarm)
-                               .merge(Alarm.unsent.future.locked)
-                               .includes(
-                                 alarm: [
-                                   { creator: { avatar_attachment: :blob } },
-                                   { members: { avatar_attachment: :blob } },
-                                   :alarm_memberships
-                                 ]
-                               )
-                               .order("alarms.scheduled_at asc")
-    end
+    @memberships = current_user.alarm_memberships
+                              .joins(:alarm)
+                              .merge(Alarm.unsent.future.locked)
+                              .includes(
+                                alarm: [
+                                  { creator: { avatar_attachment: :blob } },
+                                  { members: { avatar_attachment: :blob } },
+                                  :alarm_memberships
+                                ]
+                              )
+                              .order("alarms.scheduled_at asc")
   end
 
   # カレンダー
   def calendar
-    return redirect_to new_user_session_path unless user_signed_in?
-
     # 現在の日付から表示する月を取得（デフォルトは今月）
     @start_date = Date.today
 
@@ -55,9 +50,7 @@ class AlarmsController < ApplicationController
   end
 
   def pending
-    if user_signed_in?
-      @alarm_memberships = pending_alarm_memberships
-    end
+    @alarm_memberships = pending_alarm_memberships
   end
 
   #=================================================

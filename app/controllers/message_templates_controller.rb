@@ -4,18 +4,9 @@ class MessageTemplatesController < ApplicationController
   # フォームでの、既存の理由表示用
   before_action :set_existing_reasons, only: [ :new, :edit ]
 
-  # ログイン前でも許可
-  skip_before_action :authenticate_user!, only: [ :index ]
-
   def index
-    # 基本となるクエリ
-    base_query = if user_signed_in?
-      # デフォルトデータと、自分で作成したもののみ取得
-      MessageTemplate.where(user_uuid: [ current_user.uuid, nil ])
-    else
-      # デフォルトデータのみ取得
-      MessageTemplate.where(user_uuid: nil)
-    end
+    # 基本となるクエリ（デフォルトデータと、自分で作成したものを取得）
+    base_query = MessageTemplate.where(user_uuid: [ current_user.uuid, nil ])
 
     # 検索
     @q = base_query.ransack(search_params)
@@ -24,13 +15,9 @@ class MessageTemplatesController < ApplicationController
     @available_reasons = base_query.distinct.pluck(:reason).sort
 
     # 該当ユーザのブックマークの取得
-    if user_signed_in?
-      @user_bookmarks = current_user.bookmarks
-                                    .where(message_template_id: @message_templates.ids)
-                                    .index_by(&:message_template_id)
-    else
-      @user_bookmarks = {}
-    end
+    @user_bookmarks = current_user.bookmarks
+                                  .where(message_template_id: @message_templates.ids)
+                                  .index_by(&:message_template_id)
   end
 
   # ブックマークした定型文の一覧表示用

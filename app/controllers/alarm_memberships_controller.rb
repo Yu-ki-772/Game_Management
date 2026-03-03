@@ -9,7 +9,6 @@ class AlarmMembershipsController < ApplicationController
     @users = @q.result
                 .with_attached_avatar
                 .friends_with(current_user)
-                .limit(5)
 
     memberships = @alarm.alarm_memberships.where(user_uuid: @users.map(&:uuid))
     @invited_memberships_hash = memberships.index_by(&:user_uuid)
