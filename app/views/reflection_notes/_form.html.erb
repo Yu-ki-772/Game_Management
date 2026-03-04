@@ -17,10 +17,16 @@
   </div>
 <% end %>
 
+<%# --- 必須項目の注記 ----------------------------------------------- %>
+<p class="text-xs text-gray-500 dark:text-gray-400 mb-5">
+  <span class="text-red-500">*</span> は必須項目です
+</p>
+
 <%# --- reflection_type --------------------------------------------- %>
 <div class="mb-5">
-  <%= f.label :reflection_type, "種別",
-        class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+  <%= f.label :reflection_type, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" do %>
+    種別<span class="text-red-500 ml-0.5">*</span>
+  <% end %>
   <%= f.select :reflection_type,
         options_for_select(
           ReflectionNote.reflection_types.keys.map do |key|
@@ -48,8 +54,9 @@
 
 <%# --- 本文 -------------------------------------------------------- %>
 <div class="mb-5">
-  <%= f.label :body, "本文",
-        class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+  <%= f.label :body, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" do %>
+    本文<span class="text-red-500 ml-0.5">*</span>
+  <% end %>
   <%= f.text_area :body,
         rows: 8,
         class: "w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm
