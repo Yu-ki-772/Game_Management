@@ -29,9 +29,9 @@
       <span>未解除</span>
 
       <%# 時間（scheduled_at）を過ぎた未解除アラームが存在する場合のみバッジを表示する %>
-      <% if @overdue_alarm_count&.positive? %>
+      <% if @stoppable_alarms_count&.positive? %>
         <span class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
-          <%= @overdue_alarm_count > 9 ? "9+" : @overdue_alarm_count %>
+          <%= @stoppable_alarms_count > 9 ? "9+" : @stoppable_alarms_count %>
         </span>
       <% end %>
     </div>
