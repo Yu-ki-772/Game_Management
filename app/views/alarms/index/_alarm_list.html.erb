@@ -5,7 +5,8 @@
 
     <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
 
-      <div class="flex sm:items-center gap-4 flex-1 min-w-0">
+      <%= link_to alarm_alarm_membership_path(alarm, membership),
+          class: "flex sm:items-center gap-4 flex-1 min-w-0 hover:opacity-70 transition-opacity" do %>
 
         <div class="flex flex-col gap-0.5 shrink-0">
           <%# 日付 %>
@@ -88,8 +89,9 @@
             </div>
           <% end %>
         </div>
-      </div>
+      <% end %>
 
+      <%# 編集・削除ボタンはlink_toの外に独立して配置。作成者のみ表示 %>
       <% if alarm.created_by?(current_user) %>
         <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
           <%= render "alarm_memberships/invite_dropdown", alarm: alarm %>

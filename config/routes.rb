@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     member do
       patch :unlock
     end
-    resources :alarm_memberships, only: [ :create, :destroy ] do
+    resources :alarm_memberships, only: [ :create, :destroy, :show ] do
       collection do
         # アラームに招待するユーザーを検索する用
         get :search_users
