@@ -53,21 +53,15 @@
       <% @reflection_notes.each do |note| %>
         <article class="bg-white dark:bg-gray-800
                         border border-gray-200 dark:border-gray-700
-                        rounded-xl shadow-sm hover:shadow-md dark:hover:shadow-gray-900/50
+                        rounded-xl shadow-sm
                         transition-shadow flex flex-col">
 
-          <div class="p-5 flex-1">
+          <%= link_to reflection_note_path(note),
+              class: "p-5 flex-1 block hover:bg-gray-50 dark:hover:bg-gray-700/40
+                      rounded-t-xl transition-colors" do %>
             <%# 種別 %>
             <div class="flex flex-wrap items-center gap-2 mb-3">
-              <%
-                type_colors = {
-                  "success"     => "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400",
-                  "improvement" => "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400",
-                  "hypothesis"  => "bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-400"
-                }
-                color_class = type_colors[note.reflection_type] || "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
-              %>
-              <span class="inline-block text-xs font-semibold px-2 py-0.5 rounded-full <%= color_class %>">
+              <span class="inline-block text-xs font-semibold px-2 py-0.5 rounded-full <%= reflection_type_color_class(note.reflection_type) %>">
                 <%= I18n.t("enums.reflection_note.reflection_type.#{note.reflection_type}") %>
               </span>
               <% note.tags.first(7).each do |tag| %>
@@ -86,7 +80,7 @@
             <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 leading-relaxed">
               <%= truncate(note.body, length: 25) %>
             </p>
-          </div>
+          <% end %>
 
           <div class="border-t border-gray-100 dark:border-gray-700 px-5 py-3 flex items-center justify-between">
             <span class="text-xs text-gray-400 dark:text-gray-500"><%= note.created_at.strftime("%Y/%m/%d") %></span>
