@@ -118,7 +118,11 @@
   <% else %>
     <div class="text-center py-20 text-gray-400 dark:text-gray-500">
       <p class="text-lg mb-1">該当する振り返りメモがありません</p>
-      <p class="text-sm">フィルターを変更するか、新規作成してください。</p>
+      <p class="text-sm mb-4">フィルターを変更するか、新規作成してください。</p>
+      <%= link_to "＋ 新規作成",
+            new_reflection_note_path,
+            class: "inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700
+                    text-white text-base font-semibold px-8 py-3 rounded-xl transition-colors" %>
     </div>
   <% end %>
 
