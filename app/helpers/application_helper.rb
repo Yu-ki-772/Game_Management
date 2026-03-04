@@ -3,27 +3,28 @@ module ApplicationHelper
   def default_meta_tags
     {
       site: "Game Exit",
-      reverse: true,
       charset: "utf-8",
-      title: "ゲーム時間管理サービス",
-      description: "決めた時間にゲームをやめることをサポートします。",
-      separator: "|",
+      description: "複数のアプローチでゲーム時間管理をサポート。",
+      title: "ゲーム時間管理",
+      separator: " - ",
       keywords: "ゲーム,時間管理",
       canonical: ENV.fetch("APP_URL", "http://localhost:3000"),
       og: {
         site_name: "Game Exit",
-        title: "ゲーム時間管理サービス",
-        description: "決めた時間にゲームをやめることをサポートします。※OGP画像はAIで生成したものです。",
+        description: "複数のアプローチでゲーム時間管理をサポート。",
+        title: "ゲーム時間管理",
         type: "website",
         url: ENV.fetch("APP_URL", "http://localhost:3000"),
         image: image_url("ogp.jpg", only_path: false), # 絶対パスで設定
+        "image:alt" => "Game Exit - ゲーム時間管理",
         locale: "ja_JP"
       },
       twitter: {
         card: "summary_large_image",
-        title: "ゲーム時間管理サービス",
-        description: "決めた時間にゲームをやめることをサポートします。※OGP画像はAIで生成したものです。",
-        image: image_url("ogp.jpg", only_path: false) # 絶対パスで設定
+        description: "複数のアプローチでゲーム時間管理をサポート。",
+        title: "ゲーム時間管理",
+        image: image_url("ogp.jpg", only_path: false), # 絶対パスで設定
+        "image:alt" => "Game Exit - ゲーム時間管理"
       }
     }
   end
@@ -34,7 +35,6 @@ module ApplicationHelper
 
     # シェアするもの
     share_data = {
-      text: "ゲーム時間管理サービス",
       url: ENV.fetch("APP_URL", "http://localhost:3000"),
       hashtags: "ゲーム,時間管理,GameExit"
     }
