@@ -34,3 +34,7 @@ application.register("pwa-install", PwaInstallController)
 // ダークモード・ライトモードの切り替えボタン用
 import ThemeController from "./theme_controller"
 application.register("theme", ThemeController)
+
+// フラッシュメッセージ用
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
