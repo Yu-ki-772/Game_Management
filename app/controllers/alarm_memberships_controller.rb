@@ -38,6 +38,16 @@ class AlarmMembershipsController < ApplicationController
     end
   end
 
+  def show
+    @membership = @alarm.alarm_memberships.find_by!(id: params[:id])
+    @creator    = @alarm.creator
+    @members    = @alarm.alarm_memberships.includes(:user).map(&:user)
+
+    other_members  = @members.reject { |user| user == @creator }
+    @display_members = other_members.first(19)
+    @hidden_count    = other_members.size - @display_members.size
+  end
+
   # DELETE /alarms/:alarm_id/alarm_memberships/:id
   def destroy
     @membership = @alarm.alarm_memberships.find(params[:id])
