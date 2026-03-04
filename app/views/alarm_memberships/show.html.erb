@@ -4,15 +4,15 @@
   <%= link_to "← 戻る", request.referer || alarms_path,
         class: "text-sm text-gray-500 dark:text-gray-400 hover:underline" %>
 
-  <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
 
     <%# ステータスバー %>
     <% if @membership.notified? %>
-      <div class="bg-emerald-500 text-white text-xs font-semibold text-center py-2 tracking-wide">
+      <div class="bg-emerald-500 text-white text-xs font-semibold text-center py-2 tracking-wide rounded-t-2xl">
         ✅ 通知済み
       </div>
     <% else %>
-      <div class="bg-blue-500 text-white text-xs font-semibold text-center py-2 tracking-wide">
+      <div class="bg-blue-500 text-white text-xs font-semibold text-center py-2 tracking-wide rounded-t-2xl">
         ⏳ 待機中
       </div>
     <% end %>
@@ -54,6 +54,22 @@
               method: :patch,
               class: "w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white
                       font-semibold rounded-xl transition text-sm" %>
+      <% end %>
+
+      <% if @alarm.created_by?(current_user) %>
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <%= render "alarm_memberships/invite_dropdown", alarm: @alarm %>
+
+          <%= button_to alarm_path(@alarm),
+              method: :delete,
+              data: { turbo_confirm: '本当に削除しますか?' },
+              class: "px-3 py-2
+                      bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50
+                      text-red-600 dark:text-red-400 text-xs font-semibold rounded-md
+                      border border-red-200 dark:border-red-800 transition" do %>
+            削除
+          <% end %>
+        </div>
       <% end %>
 
       <%# 作成者・メンバー %>
