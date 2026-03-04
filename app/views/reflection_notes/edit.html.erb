@@ -1,13 +1,14 @@
 <%# app/views/reflection_notes/edit.html.erb %>
 <div class="max-w-2xl mx-auto px-4 py-10">
 
-  <%# パンくず %>
-  <nav class="text-sm text-gray-400 dark:text-gray-500 mb-6">
-    <%= link_to "一覧へ戻る", reflection_notes_path,
-          class: "hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" %>
-    <span class="mx-2">/</span>
-    <span class="text-gray-600 dark:text-gray-400">編集</span>
-  </nav>
+  <%= link_to request.referer || reflection_notes_path,
+        class: "inline-flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500
+                hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors mb-6" do %>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+    </svg>
+    戻る
+  <% end %>
 
   <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-8">
     <h1 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-8">振り返りメモを編集</h1>
@@ -26,7 +27,7 @@
               class: "bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium
                       px-6 py-2 rounded-lg transition-colors cursor-pointer" %>
         <%= link_to "キャンセル",
-              reflection_notes_path,
+              request.referer || reflection_notes_path,
               class: "text-sm font-medium text-gray-500 dark:text-gray-400
                       hover:text-gray-800 dark:hover:text-gray-200
                       border border-gray-300 dark:border-gray-600
