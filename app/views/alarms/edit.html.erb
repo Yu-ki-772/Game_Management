@@ -4,6 +4,16 @@
   <%# ナビゲーション %>
   <%= render 'alarms/navigation' %>
 
+  <div class="mb-4">
+    <%= link_to request.referer || alarms_path,
+        class: "inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200" do %>
+      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+      戻る
+    <% end %>
+  </div>
+
   <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3 pb-5 border-b border-gray-200 dark:border-gray-700 mb-8">
     <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">アラームを編集</h1>
   </div>
@@ -70,7 +80,7 @@
       <div class="flex items-center gap-3 pt-2">
         <%= f.submit '更新',
             class: "px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition cursor-pointer" %>
-        <%= link_to 'キャンセル', alarms_path,
+        <%= link_to 'キャンセル', request.referer || alarms_path,
             class: "px-5 py-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
                     text-gray-600 dark:text-gray-300 text-sm font-semibold rounded-lg
                     border border-gray-200 dark:border-gray-600 transition" %>
