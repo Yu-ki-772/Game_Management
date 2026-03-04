@@ -76,8 +76,11 @@
         </div>
       <% end %>
 
-      <div class="pt-6 mt-6 border-t border-gray-100 dark:border-gray-700">
-        <%= render "devise/shared/links" %>
+      <div class="pt-6 mt-6 border-t border-gray-100 dark:border-gray-700 flex flex-col items-center gap-3">
+        <%= link_to "ログイン", new_session_path(resource_name),
+            class: "text-sm text-emerald-600 dark:text-emerald-400
+                    hover:text-emerald-700 dark:hover:text-emerald-300
+                    font-medium transition" %>
       </div>
     </div>
 
