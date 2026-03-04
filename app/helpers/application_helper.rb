@@ -63,7 +63,7 @@ module ApplicationHelper
 
   # ドロップダウン内の各メニュー項目用
   def dropdown_item_class(path)
-    base = "block px-4 py-2 text-sm"
+    base = "block px-4 py-3 text-base"
 
     if current_page?(path)
       "#{base} #{active_state_classes} font-medium"
