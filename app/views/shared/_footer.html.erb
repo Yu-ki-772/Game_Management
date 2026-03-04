@@ -5,10 +5,10 @@
                 sticky bottom-0 z-50 shadow-[0_-1px_3px_rgba(0,0,0,0.05)]
                 transition-colors duration-200">
     <div class="container mx-auto px-4 max-w-7xl">
-      <nav class="flex items-center justify-around h-16">
+      <nav class="flex items-start justify-around h-22 pt-2">
         <%= link_to root_path,
             class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition #{nav_link_class(root_path)}" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
             <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
@@ -24,7 +24,7 @@
             class="flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition <%= dropdown_button_class([alarms_path, pending_alarms_path]) %>"
           >
             <div class="relative">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                 <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
                 <path d="M12 10l0 3l2 0" />
@@ -93,7 +93,7 @@
             data-action="click->dropdown#toggle"
             class="flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition <%= dropdown_button_class([alarm_logs_path, reflection_notes_path]) %>"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
               <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />
@@ -144,7 +144,7 @@
 
         <%= link_to message_templates_path,
             class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition #{nav_link_class(message_templates_path)}" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M12 11v.01" />
             <path d="M8 11v.01" />
@@ -161,7 +161,7 @@
             class="flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition <%= dropdown_button_class([friendships_path, pending_friendships_path, users_path]) %>"
           >
             <div class="relative">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                 <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
                 <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
