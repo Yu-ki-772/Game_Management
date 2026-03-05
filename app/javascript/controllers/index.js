@@ -12,8 +12,8 @@ import DropdownController from './dropdown_controller'
 application.register('dropdown', DropdownController)
 
 // アラームストップ時のモーダル表示用
-import ModalController from "./modal_controller"
-application.register("modal", ModalController)
+import UnlockModalController from "./unlock_modal_controller"
+application.register("unlock_modal", UnlockModalController)
 
 // 検索機能用
 import SearchController from "./search_controller"
@@ -34,3 +34,11 @@ application.register("pwa-install", PwaInstallController)
 // ダークモード・ライトモードの切り替えボタン用
 import ThemeController from "./theme_controller"
 application.register("theme", ThemeController)
+
+// フラッシュメッセージ用
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
+
+// dialog要素操作用(フォーム等)
+import DialogController from "./dialog_controller"
+application.register("dialog", DialogController)

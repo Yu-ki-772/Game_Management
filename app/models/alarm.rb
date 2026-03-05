@@ -51,6 +51,16 @@ class Alarm < ApplicationRecord
       )
   }
 
+  # ストップ可能なアラーム
+  scope :stoppable_now, -> {
+    now = Time.current
+
+    where(
+      "(started_at IS NOT NULL AND started_at <= ?) OR (started_at IS NULL AND scheduled_at <= ?)",
+      now, now
+    ).where("scheduled_at >= ?", now - 5.hours)
+  }
+
   def start_time
     started_at || scheduled_at
   end

@@ -24,6 +24,7 @@
       <% end %>
 
       <%= link_to new_message_template_path,
+          data: { turbo_frame: "dialog" },
           class: "inline-flex items-center justify-center gap-2 flex-1 md:flex-none
                   bg-emerald-600 hover:bg-emerald-700 text-white
                   font-semibold px-5 py-2 rounded-lg transition text-sm" do %>

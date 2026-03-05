@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   before_action :set_pending_friendship_count
-  before_action :set_overdue_alarm_count, if: :user_signed_in?
+  before_action :set_stoppable_alarms_count, if: :user_signed_in?
 
   include Pagy::Method # ページネーション用
 
@@ -25,14 +25,10 @@ class ApplicationController < ActionController::Base
     @pending_friendship_count = current_user.received_friendships.pending.count
   end
 
-  def set_overdue_alarm_count
-    # pending画面と同じフィルタリング条件に加えて、
-    # scheduled_atが現在時刻より前のものだけを数える。
-    @overdue_alarm_count = current_user.alarm_memberships
-                                      .not_unlocked_by(current_user)
-                                      .joins(:alarm)
-                                      .merge(Alarm.locked.near)
-                                      .merge(Alarm.where("scheduled_at < ?", Time.current))
-                                      .count
+  def set_stoppable_alarms_count
+    @stoppable_alarms_count = current_user.member_alarms
+                              .stoppable_now
+                              .not_unlocked_by(current_user)
+                              .count
   end
 end

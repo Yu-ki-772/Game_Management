@@ -96,6 +96,7 @@
         <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
           <%= render "alarm_memberships/invite_dropdown", alarm: alarm %>
           <%= link_to edit_alarm_path(alarm),
+              data: { turbo_frame: "dialog" },
               class: "px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50
                       text-emerald-700 dark:text-emerald-400 text-xs font-semibold rounded-md
                       border border-emerald-200 dark:border-emerald-800 transition" do %>

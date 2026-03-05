@@ -23,7 +23,7 @@
           <% if alarm.created_by?(current_user) && alarm.scheduled_at > Time.current %>
             <%= link_to edit_alarm_path(alarm),
               title: "アラームを編集",
-              data: { turbo_frame: "_top" },
+              data: { turbo_frame: "dialog" },
               class: "block p-1.5 sm:p-2 rounded border-l-2 overflow-hidden transition-all hover:opacity-80 active:scale-95
                       bg-emerald-100 dark:bg-emerald-900/40
                       border-emerald-500 dark:border-emerald-600

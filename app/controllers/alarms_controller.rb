@@ -152,7 +152,7 @@ class AlarmsController < ApplicationController
     current_user.alarm_memberships
                 .not_unlocked_by(current_user)
                 .joins(:alarm)
-                .merge(Alarm.locked.near)
+                .merge(Alarm.locked.stoppable_now)
                 .includes(
                   :user,
                   alarm: [ :alarm_memberships, { members: :avatar_attachment }, { creator: :avatar_attachment } ]

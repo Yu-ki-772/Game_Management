@@ -61,8 +61,9 @@
                       <%= render 'bookmark_button', message_template: template %>
                     <% end %>
 
-                    <% if template.user_uuid.present? %>
+                    <% if template.user_uuid.present? && template.user_uuid == current_user.uuid %>
                       <%= link_to edit_message_template_path(template),
+                          data: { turbo_frame: "dialog" },
                           class: "px-3 py-1.5
                                   bg-emerald-50 dark:bg-emerald-900/30
                                   hover:bg-emerald-100 dark:hover:bg-emerald-900/50

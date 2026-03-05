@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :reflection_notes, only: %i[index new create edit update destroy]
+  resources :reflection_notes
   #=============================================================
   # 補助リソース
   #=============================================================

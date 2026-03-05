@@ -16,6 +16,9 @@ module Myapp
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # 外部ホストにリダイレクトすることからの保護
+    config.action_controller.raise_on_open_redirects = true
+
     config.action_cable.mount_path = nil
 
     # デフォルトのロケールを日本語に設定

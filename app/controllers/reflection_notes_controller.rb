@@ -1,5 +1,5 @@
 class ReflectionNotesController < ApplicationController
-  before_action :set_reflection_note, only: %i[edit update destroy]
+  before_action :set_reflection_note, only: %i[show edit update destroy]
 
   def index
     base_query = current_user.reflection_notes
@@ -30,6 +30,9 @@ class ReflectionNotesController < ApplicationController
       @existing_tags = current_user.existing_tags
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def show
   end
 
   def edit

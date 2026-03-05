@@ -1,10 +1,51 @@
 <%# app/views/home/top.html.erb %>
+
+<%# ストップ可能なアラームがあるときだけバナーを表示 %>
+<% if user_signed_in? && @stoppable_alarms_count&.positive? %>
+  <%= link_to pending_alarms_path,
+      class: "flex items-center gap-3 w-full px-4 py-3 mb-6
+              bg-amber-50 dark:bg-amber-900/30
+              border border-amber-300 dark:border-amber-700
+              rounded-lg
+              text-amber-700 dark:text-amber-300
+              hover:bg-amber-100 dark:hover:bg-amber-900/50
+              transition" do %>
+
+    <%# 警告アイコン %>
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         class="shrink-0">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M12 9v4" />
+      <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214
+               a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536
+               a1.914 1.914 0 0 0 -3.274 0z" />
+      <path d="M12 16h.01" />
+    </svg>
+
+    <span class="font-semibold text-sm flex-1">
+      ストップできるアラームが <%= @stoppable_alarms_count %> 件あります。
+    </span>
+
+    <%# 右矢印アイコン %>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         class="shrink-0">
+      <path d="M5 12l14 0" />
+      <path d="M15 16l4 -4" />
+      <path d="M15 8l4 4" />
+    </svg>
+  <% end %>
+<% end %>
+
+<%# 未ログイン時のヒーローセクション %>
 <% unless user_signed_in? %>
   <div class="px-4 py-16 text-center">
     <div class="flex items-center justify-center gap-4 mb-8">
       <%# アイコンロゴ %>
       <%= image_tag "logo_mark.png", class: "h-12" %>
-
       <%# テキストロゴ %>
       <%= image_tag "name_logo.png", class: "h-12" %>
     </div>
@@ -42,18 +83,33 @@
     Features
   </h2>
 
-  <%# ログイン時のみアラーム作成ボタンを表示 %>
+  <%# ログイン時のみアラーム作成・振り返りメモ作成ボタンを表示 %>
   <% if user_signed_in? %>
-    <div class="mb-8">
+    <div class="flex flex-wrap gap-3 mb-8">
       <%= link_to new_alarm_path,
+          data: { turbo_frame: "dialog" },
           class: "inline-flex items-center gap-3 px-6 py-3 bg-emerald-600 text-white
                   rounded-lg hover:bg-emerald-700 transition font-semibold shadow-sm" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-          <path d="M12 5l0 14" />
-          <path d="M5 12l14 0" />
+          <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+          <path d="M12 10l0 3l2 0" />
+          <path d="M7 4l-2.75 2" />
+          <path d="M17 4l2.75 2" />
         </svg>
-        <span>アラームを作成する</span>
+        <span>アラームを作成</span>
+      <% end %>
+
+      <%= link_to new_reflection_note_path,
+          class: "inline-flex items-center gap-3 px-6 py-3 bg-emerald-600 text-white
+                  rounded-lg hover:bg-emerald-700 transition font-semibold shadow-sm" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-notebook">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />
+          <path d="M13 8l2 0" />
+          <path d="M13 12l2 0" />
+        </svg>
+        <span>振り返りメモを作成</span>
       <% end %>
     </div>
   <% end %>
@@ -173,6 +229,5 @@
         </p>
       </div>
     <% end %>
-
   </div>
 </div>

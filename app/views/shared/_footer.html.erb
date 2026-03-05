@@ -5,10 +5,10 @@
                 sticky bottom-0 z-50 shadow-[0_-1px_3px_rgba(0,0,0,0.05)]
                 transition-colors duration-200">
     <div class="container mx-auto px-4 max-w-7xl">
-      <nav class="flex items-center justify-around h-16">
+      <nav class="flex items-start justify-around h-22 pt-2">
         <%= link_to root_path,
             class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition #{nav_link_class(root_path)}" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
             <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
@@ -23,13 +23,21 @@
             data-action="click->dropdown#toggle"
             class="flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition <%= dropdown_button_class([alarms_path, pending_alarms_path]) %>"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-              <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-              <path d="M12 10l0 3l2 0" />
-              <path d="M7 4l-2.75 2" />
-              <path d="M17 4l2.75 2" />
-            </svg>
+            <div class="relative">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                <path d="M12 10l0 3l2 0" />
+                <path d="M7 4l-2.75 2" />
+                <path d="M17 4l2.75 2" />
+              </svg>
+              <%# ストップ可能なアラームがある場合のみバッジを表示 %>
+              <% if @stoppable_alarms_count&.positive? %>
+                <span class="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 rounded-full bg-red-500 text-white text-xs font-bold leading-none">
+                  <%= @stoppable_alarms_count > 9 ? "9+" : @stoppable_alarms_count %>
+                </span>
+              <% end %>
+            </div>
             <span>アラーム</span>
           </button>
           <%# ドロップダウン %>
@@ -60,44 +68,83 @@
 
               <%= link_to pending_alarms_path,
                   data: { action: "dropdown#close" },
-                  class: "#{dropdown_item_class(pending_alarms_path)} flex items-center gap-2" do %>
-                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                アラームをストップ
+                  class: "#{dropdown_item_class(pending_alarms_path)} flex items-center justify-between" do %>
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  アラームをストップ
+                </div>
+                <%# ストップ可能なアラームがある場合のみバッジを表示 %>
+                <% if @stoppable_alarms_count&.positive? %>
+                  <span class="flex items-center justify-center h-5 min-w-5 px-1 rounded-full bg-red-500 text-white text-xs font-bold">
+                    <%= @stoppable_alarms_count > 9 ? "9+" : @stoppable_alarms_count %>
+                  </span>
+                <% end %>
               <% end %>
             </div>
           </div>
         </div>
 
-        <%= link_to alarm_logs_path,
-            class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition #{nav_link_class(alarm_logs_path)}" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-            <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />
-            <path d="M9 17v-4" />
-            <path d="M12 17v-1" />
-            <path d="M15 17v-2" />
-          </svg>
-          <span>記録</span>
-        <% end %>
+        <%# 記録 & 振り返りをまとめたドロップダウン %>
+        <div data-controller="dropdown" class="relative">
+          <button
+            type="button"
+            data-action="click->dropdown#toggle"
+            class="flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition <%= dropdown_button_class([alarm_logs_path, reflection_notes_path]) %>"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+              <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />
+              <path d="M9 17v-4" />
+              <path d="M12 17v-1" />
+              <path d="M15 17v-2" />
+            </svg>
+            <span>記録</span>
+          </button>
 
-        <%# 振り返りメモ %>
-        <%= link_to reflection_notes_path,
-            class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition #{nav_link_class(reflection_notes_path)}" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />
-            <path d="M13 8l2 0" />
-            <path d="M13 12l2 0" />
-          </svg>
-          <span>振り返り</span>
-        <% end %>
+          <%# ドロップダウン %>
+          <div
+            data-dropdown-target="menu"
+            class="hidden absolute bottom-full left-0 mb-2 w-56 rounded-lg shadow-xl
+                  bg-white dark:bg-gray-800
+                  border border-gray-100 dark:border-gray-700
+                  z-50 overflow-hidden">
+            <div class="divide-y divide-gray-100 dark:divide-gray-700">
+
+              <%# アラーム記録 %>
+              <%= link_to alarm_logs_path,
+                  data: { action: "dropdown#close" },
+                  class: "#{dropdown_item_class(alarm_logs_path)} flex items-center gap-2" do %>
+                <svg class="w-4 h-4 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-4M12 17v-1M15 17v-2" />
+                </svg>
+                ゲーム時間記録
+              <% end %>
+
+              <%# 振り返りメモ %>
+              <%= link_to reflection_notes_path,
+                  data: { action: "dropdown#close" },
+                  class: "#{dropdown_item_class(reflection_notes_path)} flex items-center gap-2" do %>
+                <svg class="w-4 h-4 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 8l2 0M13 12l2 0" />
+                </svg>
+                振り返りメモ
+              <% end %>
+
+            </div>
+          </div>
+        </div>
 
         <%= link_to message_templates_path,
             class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition #{nav_link_class(message_templates_path)}" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M12 11v.01" />
             <path d="M8 11v.01" />
@@ -114,7 +161,7 @@
             class="flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition <%= dropdown_button_class([friendships_path, pending_friendships_path, users_path]) %>"
           >
             <div class="relative">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                 <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
                 <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />

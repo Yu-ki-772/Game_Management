@@ -29,7 +29,7 @@ class User < ApplicationRecord
               foreign_key: :friend_uuid,
               dependent: :destroy
   has_many :alarm_memberships, foreign_key: "user_uuid", primary_key: "uuid"
-  has_many :invited_alarms,
+  has_many :member_alarms,
            through: :alarm_memberships,
            source: :alarm
 
