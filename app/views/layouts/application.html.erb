@@ -43,6 +43,7 @@
     <div class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 items-center">
       <% if notice %>
         <div data-controller="flash"
+            data-action="turbo:before-cache@window->flash#beforeCache"
              class="inline-flex items-center gap-3 rounded-lg px-4 py-3 max-w-sm w-max
                     shadow-lg
                     bg-emerald-50 border border-emerald-200
