@@ -6,6 +6,7 @@
     <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">振り返りメモ一覧</h1>
     <%= link_to "＋ 新規作成",
           new_reflection_note_path,
+          data: { turbo_frame: "dialog" },
           class: "inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700
                   text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors" %>
   </div>
@@ -88,6 +89,7 @@
               <%# 編集ボタン %>
               <%= link_to "編集",
                     edit_reflection_note_path(note),
+                    data: { turbo_frame: "dialog" },
                     class: "text-xs font-medium
                             text-emerald-600 dark:text-emerald-400
                             hover:text-emerald-800 dark:hover:text-emerald-300
@@ -115,6 +117,7 @@
       <p class="text-sm mb-4">フィルターを変更するか、新規作成してください。</p>
       <%= link_to "＋ 新規作成",
             new_reflection_note_path,
+            data: { turbo_frame: "dialog" },
             class: "inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700
                     text-white text-base font-semibold px-8 py-3 rounded-xl transition-colors" %>
     </div>
