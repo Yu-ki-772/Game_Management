@@ -23,17 +23,18 @@ class AlarmMemberReminderJob < ApplicationJob
     user = User.find_by(uuid: user_uuid)
     return unless user
 
-    send_push_notification(user, build_reminder_payload(alarm, minutes_until_alarm))
+    send_push_notification(user, build_reminder_payload(alarm, minutes_until_alarm, membership))
   end
 
   private
 
   # プッシュ通知で届けるもの
-  def build_reminder_payload(alarm, minutes_until_alarm)
+  def build_reminder_payload(alarm, minutes_until_alarm, membership)
     {
       title: "🔔 #{minutes_until_alarm}分後にゲーム終了",
       body:  "ゲーム終了の時間まであと#{minutes_until_alarm}分です",
-      icon:  "/icon-192x192.png"
+      icon:  "/icon-192x192.png",
+      url:   "/alarms/#{alarm.uuid}/alarm_memberships/#{membership.id}"
     }
   end
 end

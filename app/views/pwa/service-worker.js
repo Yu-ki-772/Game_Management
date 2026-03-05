@@ -17,7 +17,20 @@ self.addEventListener('push', function(event) {
   event.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.body,
-      icon: data.icon
+      icon: data.icon,
+      data: { url: data.url }
     })
+  );
+});
+
+// 通知クリック/タップ時の処理
+self.addEventListener('notificationclick', function(event) {
+  console.log('通知をクリック');
+  event.notification.close();
+
+  const url = event.notification.data?.url || '/';
+
+  event.waitUntil(
+    clients.openWindow(url)
   );
 });
