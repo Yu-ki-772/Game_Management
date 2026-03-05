@@ -25,4 +25,9 @@ export default class extends Controller {
       this.element.remove()
     })
   }
+
+  // turbo_driveのキャッシュに含めないようにするためのもの
+  beforeCache() {
+    this.element.remove()
+  }
 }
