@@ -14,4 +14,9 @@ export default class extends Controller {
   clickOutside(event) {
     if (event.target === this.element) this.element.close()
   }
+
+  // Turbo Driveのキャッシュにモーダルが踏まれないように削除
+  beforeCache() {
+    this.element.remove()
+  }
 }

@@ -1,7 +1,7 @@
 <%# app/views/reflection_notes/edit.html.erb %>
 <%= turbo_frame_tag "dialog" do %>
   <dialog data-controller="dialog"
-          data-action="click->dialog#clickOutside"
+          data-action="click->dialog#clickOutside turbo:before-cache@window->dialog#beforeCache"
           class="fixed inset-0 mx-auto mt-20 rounded-xl shadow-lg p-6 w-11/12 max-w-2xl backdrop:bg-black/40 bg-white dark:bg-gray-800">
 
     <div class="flex items-center justify-between mb-6">
@@ -13,8 +13,7 @@
 
     <%= form_with model: @reflection_note,
           url: reflection_note_path(@reflection_note),
-          method: :patch,
-          data: { turbo_frame: "_top" } do |f| %>
+          method: :patch do |f| %>
 
       <%= render "form", f: f,
             reflection_note: @reflection_note,
