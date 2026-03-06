@@ -33,4 +33,20 @@ class AlarmLogsController < ApplicationController
       .group_by_day(:unlocked_at, time_zone: "Tokyo", format: "%-m月%-d日", last: 7)
       .sum(:play_duration)
   end
+
+  def show
+    @alarm_log = AlarmLog
+      .where(user_uuid: current_user.uuid)
+      .includes(alarm: [:creator, { alarm_memberships: :user }])
+      .find(params[:id])
+
+    @members = @alarm_log.alarm.alarm_memberships
+      .map(&:user)
+      .reject { |user| user.uuid == current_user.uuid }
+
+    @other_member_logs = AlarmLog
+      .where(alarm_uuid: @alarm_log.alarm_uuid)
+      .where.not(user_uuid: current_user.uuid)
+      .includes(:user)
+  end
 end
