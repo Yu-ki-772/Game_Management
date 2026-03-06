@@ -14,7 +14,7 @@ class AlarmLogsController < ApplicationController
     # 直近7回
     recent_minutes_to_unlock = all_minutes_to_unlock.last(7)
     @minutes_stats = recent_minutes_to_unlock.each_with_index.to_h do |min, i|
-      ["#{i + 1}回目", min]
+      [ "#{i + 1}回目", min ]
     end
 
     # フレンドごとの比較
