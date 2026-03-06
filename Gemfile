@@ -74,6 +74,10 @@ gem "simple_calendar", "~> 3.1"
 # メタタグの実装用
 gem "meta-tags", "~> 2.22", ">= 2.22.3"
 
+gem "chartkick", "~> 5.2", ">= 5.2.1" # グラフ用
+
+gem "groupdate", "~> 6.7"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
