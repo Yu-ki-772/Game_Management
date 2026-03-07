@@ -50,6 +50,7 @@ class MessageTemplatesController < ApplicationController
     if @message_template.save
       respond_to do |format|
         format.turbo_stream do
+          flash.now[:notice] = "定型文を作成しました"
           load_templates_list_data  # リスト再描画に必要なデータを取得
         end
         format.html { redirect_to message_templates_path, notice: "定型文を作成しました", status: :see_other }
@@ -68,6 +69,7 @@ class MessageTemplatesController < ApplicationController
     if @message_template.update(message_template_params)
       respond_to do |format|
         format.turbo_stream do
+          flash.now[:notice] = "定型文を更新しました"
           load_templates_list_data  # リスト再描画に必要なデータを取得
         end
         format.html { redirect_to message_templates_path, notice: "定型文を更新しました", status: :see_other }
