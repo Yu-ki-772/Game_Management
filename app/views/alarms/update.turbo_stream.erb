@@ -4,4 +4,8 @@
       partial: "alarms/index/membership_row",
       locals: { membership: @membership } %>
 
+<%= turbo_stream.replace "alarm_detail_#{@alarm.id}",
+      partial: "alarm_memberships/alarm_detail",
+      locals: { alarm: @alarm } %>
+
 <%= turbo_stream.update "dialog" %>
