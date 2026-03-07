@@ -47,10 +47,12 @@
         turbo_frame: "bookmarks_list",
         available_reasons: @available_reasons %>
 
-    <%= render 'templates_list',
-        message_templates: @bookmarks_message_templates,
-        user_bookmarks: @user_bookmarks,
-        empty_message: @empty_message,
-        empty_description: @empty_description %>
+    <div id="bookmarks_list_content">
+      <%= render 'templates_list',
+          message_templates: @bookmarks_message_templates,
+          user_bookmarks: @user_bookmarks,
+          empty_message: @empty_message,
+          empty_description: @empty_description %>
+    </div>
   <% end %>
 </div>
