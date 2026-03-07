@@ -1,0 +1,27 @@
+<%# app/views/alarms/create.turbo_stream.erb %>
+
+<%# indexページ用 %>
+<%= turbo_stream.prepend "alarms_list",
+      partial: "alarms/index/membership_row",
+      locals: { membership: @membership } %>
+
+<%# 空状態メッセージが存在する場合は削除 %>
+<%= turbo_stream.remove "no_alarms_message" %>
+
+<%# pendingページ用 %>
+<% if @add_to_pending %>
+  <%= turbo_stream.prepend "pending_alarms_list",
+        partial: "alarms/pending/membership_row",
+        locals: { membership: @membership } %>
+  <%= turbo_stream.remove "pending_no_alarms_message" %>
+<% end %>
+
+<%# ダイアログを閉じる %>
+<%= turbo_stream.update "dialog" %>
+
+
+
+<%# 3. PWAインストールプロンプトが必要なときだけ差し込む %>
+<% if flash[:show_pwa_install_prompt] %>
+  <%= turbo_stream.append "push_notification_modal", partial: "shared/pwa_install_prompt" %>
+<% end %>

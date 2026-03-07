@@ -21,25 +21,7 @@
 
       <%# 日時・ラベル %>
       <div>
-        <p class="text-xs text-gray-400 dark:text-gray-500 font-medium mb-1">アラーム</p>
-        <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">
-          <%= @alarm.scheduled_at.strftime("%H:%M") %>
-        </p>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-          <%= @alarm.scheduled_at.strftime("%Y/%m/%d") %>
-          （<%= %w[日 月 火 水 木 金 土][@alarm.scheduled_at.wday] %>）
-          <% if @alarm.started_at.present? %>
-            <span class="ml-1 text-gray-400 dark:text-gray-500">
-              <%= @alarm.started_at.strftime("%H:%M") %> 〜
-            </span>
-          <% end %>
-        </p>
-        <% if @alarm.label.present? %>
-          <p class="mt-2 inline-block text-sm font-medium text-gray-700 dark:text-gray-300
-                     bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-1">
-            <%= @alarm.label %>
-          </p>
-        <% end %>
+        <%= render "alarm_memberships/alarm_detail", alarm: @alarm %>
       </div>
 
       <% if @alarm.alarm_logs.exists?(user_uuid: current_user.uuid) %>
