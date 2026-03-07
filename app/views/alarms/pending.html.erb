@@ -39,12 +39,17 @@
     </div>
   </div>
 
-
+</div>
+<div id="pending_alarms_list">
   <% if @alarm_memberships.present? %>
-    <%= render 'alarms/pending/alarm_list',
-           alarms: @alarms,
-           alarm_memberships: @alarm_memberships %>
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm divide-y divide-gray-50 dark:divide-gray-700">
+      <% @alarm_memberships.values.each do |membership| %>
+        <%= render 'alarms/pending/membership_row', membership: membership %>
+      <% end %>
+    </div>
   <% else %>
     <%= render 'alarms/pending/no_alarms_message' %>
   <% end %>
 </div>
+
+<%= turbo_frame_tag "dialog" %>

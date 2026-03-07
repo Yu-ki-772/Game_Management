@@ -86,6 +86,13 @@ class AlarmsController < ApplicationController
       # リストへのajaxでの追加のために作成直後の membership を取得する。
       @membership = @alarm.alarm_memberships.find_by(user: current_user)
 
+      # pending画面に追加すべきかの判定
+      @add_to_pending = current_user.alarm_memberships
+                                      .not_unlocked_by(current_user)
+                                      .joins(:alarm)
+                                      .merge(Alarm.locked.stoppable_now)
+                                      .exists?(@membership.id)
+
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to alarms_path, notice: "アラームを作成しました", status: :see_other }
