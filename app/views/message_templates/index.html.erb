@@ -44,10 +44,12 @@
         turbo_frame: "message_templates_list",
         available_reasons: @available_reasons %>
 
-    <%= render 'templates_list',
-        message_templates: @message_templates,
-        user_bookmarks: @user_bookmarks,
-        empty_message: "定型文が見つかりませんでした",
-        empty_description: "検索条件を変更してお試しください" %>
+    <div id="message_templates_list_content">
+      <%= render 'templates_list',
+          message_templates: @message_templates,
+          user_bookmarks: @user_bookmarks,
+          empty_message: "定型文が見つかりませんでした",
+          empty_description: "検索条件を変更してお試しください" %>
+    </div>
   <% end %>
 </div>
