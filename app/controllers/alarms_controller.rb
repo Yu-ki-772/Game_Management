@@ -94,7 +94,9 @@ class AlarmsController < ApplicationController
                                       .exists?(@membership.id)
 
       respond_to do |format|
-        format.turbo_stream
+        format.turbo_stream do
+          flash.now[:notice] = "アラームを作成しました"
+        end
         format.html { redirect_to alarms_path, notice: "アラームを作成しました", status: :see_other }
       end
     else
@@ -111,7 +113,9 @@ class AlarmsController < ApplicationController
       @membership = @alarm.alarm_memberships.find_by(user: current_user)
 
       respond_to do |format|
-        format.turbo_stream
+        format.turbo_stream do
+          flash.now[:notice] = "アラームを更新しました"
+        end
         format.html { redirect_to alarms_path, notice: "アラームを更新しました", status: :see_other }
       end
     else

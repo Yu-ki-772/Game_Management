@@ -1,0 +1,52 @@
+<%# app/views/shared/_flash.html.erb %>
+<!-- フラッシュメッセージのパーシャル -->
+
+<% if notice %>
+  <div data-controller="flash"
+       data-action="turbo:before-cache@window->flash#beforeCache"
+       class="inline-flex items-center gap-3 rounded-lg px-4 py-3 max-w-sm w-max
+              shadow-lg
+              bg-emerald-50 border border-emerald-200
+              dark:bg-emerald-950 dark:border-emerald-800
+              transition-opacity duration-500"
+       role="alert">
+    <p class="text-xs text-emerald-700 dark:text-emerald-300">
+      <%= notice %>
+    </p>
+    <button data-action="flash#dismiss"
+            class="shrink-0 text-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-200"
+            aria-label="閉じる">
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+<% end %>
+
+<% if alert %>
+  <div data-controller="flash"
+       data-flash-duration-value="0"
+       class="inline-flex items-center gap-3 rounded-lg px-4 py-3 max-w-sm w-max
+              shadow-lg
+              bg-red-50 border border-red-200
+              dark:bg-red-950 dark:border-red-800
+              transition-opacity duration-500"
+       role="alert">
+    <p class="text-xs text-red-600 dark:text-red-400">
+      <%= alert %>
+    </p>
+    <button data-action="flash#dismiss"
+            class="shrink-0 text-red-400 hover:text-red-600 dark:hover:text-red-200"
+            aria-label="閉じる">
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+<% end %>

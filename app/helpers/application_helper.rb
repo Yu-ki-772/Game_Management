@@ -72,6 +72,11 @@ module ApplicationHelper
     end
   end
 
+  # ajax処理対応のフラッシュメッセージ用
+  def render_turbo_stream_flash_messages
+    turbo_stream.prepend "flash_messages", partial: "shared/flash"
+  end
+
   private
 
   # メニューのアクティブ状態のカラークラスを一元管理
