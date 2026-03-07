@@ -100,7 +100,7 @@
 
     <%= turbo_frame_tag "dialog" %>
 
-    <%= render "shared/pwa_install_prompt" if flash[:show_pwa_install_prompt] %>
+    <div id="push_notification_modal"></div>
     <%= render "shared/push_notification_modal" if flash[:show_push_notification_modal] %>
   </body>
 </html>

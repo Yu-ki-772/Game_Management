@@ -34,9 +34,17 @@
     </div>
   </div>
 
-  <% if @memberships.present? %>
-    <%= render 'alarms/index/alarm_list', memberships: @memberships %>
-  <% else %>
-    <%= render 'alarms/index/no_alarms_message' %>
-  <% end %>
+  <div id="alarms_list">
+    <% if @memberships.present? %>
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm divide-y divide-gray-50 dark:divide-gray-700">
+        <% @memberships.each do |membership| %>
+          <%= render 'alarms/index/membership_row', membership: membership %>
+        <% end %>
+      </div>
+    <% else %>
+      <%= render 'alarms/index/no_alarms_message' %>
+    <% end %>
+  </div>
+
+  <%= turbo_frame_tag "dialog" %>
 </div>

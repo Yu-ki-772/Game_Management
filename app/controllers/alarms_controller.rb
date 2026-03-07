@@ -82,7 +82,14 @@ class AlarmsController < ApplicationController
 
     if @alarm.save
       check_pwa_install_prompt
-      redirect_to alarms_path, notice: "アラームを作成しました", status: :see_other
+
+      # リストへのajaxでの追加のために作成直後の membership を取得する。
+      @membership = @alarm.alarm_memberships.find_by(user: current_user)
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to alarms_path, notice: "アラームを作成しました", status: :see_other }
+      end
     else
       flash.now[:alert] = "アラームを作成できませんでした"
       render :new, status: :unprocessable_entity
@@ -94,7 +101,12 @@ class AlarmsController < ApplicationController
 
   def update
     if @alarm.update(alarm_params)
-      redirect_to alarms_path, notice: "アラームを更新しました", status: :see_other
+      @membership = @alarm.alarm_memberships.find_by(user: current_user)
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to alarms_path, notice: "アラームを更新しました", status: :see_other }
+      end
     else
       flash.now[:alert] = "アラームを更新できませんでした"
       render :edit, status: :unprocessable_entity

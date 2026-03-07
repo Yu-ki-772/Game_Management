@@ -1,0 +1,7 @@
+<%# app/views/alarms/update.turbo_stream.erb %>
+
+<%= turbo_stream.replace dom_id(@membership),
+      partial: "alarms/index/membership_row",
+      locals: { membership: @membership } %>
+
+<%= turbo_stream.update "dialog" %>
