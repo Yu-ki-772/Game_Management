@@ -26,74 +26,67 @@
     </div>
   <% end %>
 
-  <% if @friends.any? %>
+  <div id="friends_list_section">
+    <% if @friends.any? %>
 
-    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-      <span class="font-semibold text-gray-700 dark:text-gray-300"><%= @friends.count %></span> 人のフレンドがいます
-    </p>
+      <p id="friends_count_text" class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        <span class="font-semibold text-gray-700 dark:text-gray-300"><%= @friends.count %></span> 人のフレンドがいます
+      </p>
 
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-      <ul class="divide-y divide-gray-50 dark:divide-gray-700">
-        <% @friends.each do |friendship| %>
-          <% friend = friendship.partner(current_user) %>
-          <% next if friend.nil? %>
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <ul class="divide-y divide-gray-50 dark:divide-gray-700">
+          <% @friends.each do |friendship| %>
+            <% friend = friendship.partner(current_user) %>
+            <% next if friend.nil? %>
 
-          <li class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+            <li id="friendship_<%= friendship.id %>"
+                class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
 
-            <%# アバター + 名前 %>
-            <%= link_to user_path(friend), class: "flex items-center gap-4 flex-1 min-w-0" do %>
-              <div class="shrink-0">
-                <% if friend.avatar.attached? %>
-                  <%= image_tag friend.avatar,
-                      class: "w-12 h-12 rounded-full object-cover border border-gray-200 dark:border-gray-600" %>
-                <% else %>
-                  <div class="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                         class="text-gray-400 dark:text-gray-500">
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                      <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                      <path d="M9 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                      <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-                    </svg>
-                  </div>
-                <% end %>
-              </div>
-              <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate"><%= friend.name %></span>
-            <% end %>
+              <%# アバター + 名前 %>
+              <%= link_to user_path(friend), class: "flex items-center gap-4 flex-1 min-w-0" do %>
+                <div class="shrink-0">
+                  <% if friend.avatar.attached? %>
+                    <%= image_tag friend.avatar,
+                        class: "w-12 h-12 rounded-full object-cover border border-gray-200 dark:border-gray-600" %>
+                  <% else %>
+                    <div class="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                           stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                           class="text-gray-400 dark:text-gray-500">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M9 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                        <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
+                      </svg>
+                    </div>
+                  <% end %>
+                </div>
+                <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate"><%= friend.name %></span>
+              <% end %>
 
-            <%# 解除ボタン %>
-            <%= button_to friendship_path(friendship),
-                method: :delete,
-                form: { data: { turbo_confirm: "本当に#{friend.name}さんとのフレンド関係を解除しますか？この操作は取り消せません。" } },
-                class: "shrink-0 px-3 py-1.5
-                        bg-red-50 dark:bg-red-900/30
-                        hover:bg-red-100 dark:hover:bg-red-900/50
-                        text-red-600 dark:text-red-400
-                        text-xs font-semibold rounded-md
-                        border border-red-200 dark:border-red-800 transition" do %>
-              解除
-            <% end %>
+              <%# 解除ボタン %>
+              <%= button_to friendship_path(friendship),
+                  method: :delete,
+                  form: { data: { turbo_confirm: "本当に#{friend.name}さんとのフレンド関係を解除しますか？この操作は取り消せません。" } },
+                  class: "shrink-0 px-3 py-1.5
+                          bg-red-50 dark:bg-red-900/30
+                          hover:bg-red-100 dark:hover:bg-red-900/50
+                          text-red-600 dark:text-red-400
+                          text-xs font-semibold rounded-md
+                          border border-red-200 dark:border-red-800 transition" do %>
+                解除
+              <% end %>
 
-          </li>
-        <% end %>
-      </ul>
-    </div>
-
-  <% else %>
-
-    <%# フレンドがいない場合 %>
-    <div class="flex items-center justify-center py-20">
-      <div class="max-w-md mx-auto text-center">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">まだフレンドがいません</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">ユーザーを探してフレンド申請を送ってみましょう</p>
-        <%= link_to users_path,
-            class: "inline-flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition text-sm font-semibold" do %>
-          ユーザーを探す
-        <% end %>
+            </li>
+          <% end %>
+        </ul>
       </div>
-    </div>
 
-  <% end %>
+    <% else %>
+    <%# フレンドがいない場合 %>
+      <%= render 'empty_state' %>
+
+    <% end %>
+  </div>
 
 </div>

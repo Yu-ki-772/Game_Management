@@ -1,0 +1,42 @@
+<%# app/views/users/_friendship_action.html.erb %>
+
+<% if pending_request_from_user.present? %>
+  <%= button_to friendship_path(pending_request_from_user),
+      method: :patch,
+      params: { action_type: 'accept' },
+      class: "px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-md transition" do %>
+    申請を承認
+  <% end %>
+
+<% elsif existing_friendship.nil? %>
+  <%= button_to friendships_path,
+      method: :post,
+      params: { friend_uuid: user.uuid },
+      class: "px-4 py-1.5
+              bg-white dark:bg-gray-700
+              hover:bg-emerald-50 dark:hover:bg-emerald-900/30
+              text-emerald-700 dark:text-emerald-400
+              text-xs font-semibold rounded-md
+              border border-emerald-200 dark:border-emerald-800 transition" do %>
+    フレンド申請
+  <% end %>
+
+<% elsif existing_friendship.accepted? %>
+  <span class="px-3 py-1.5
+               bg-emerald-50 dark:bg-emerald-900/30
+               text-emerald-700 dark:text-emerald-400
+               text-xs font-medium rounded-md
+               border border-emerald-200 dark:border-emerald-800">
+    フレンドです
+  </span>
+
+<% elsif existing_friendship.user_uuid == current_user.uuid %>
+  <span class="px-3 py-1.5
+               bg-gray-50 dark:bg-gray-700
+               text-gray-500 dark:text-gray-400
+               text-xs font-medium rounded-md
+               border border-gray-200 dark:border-gray-600">
+    申請済み
+  </span>
+
+<% end %>

@@ -1,0 +1,15 @@
+<%# app/views/friendships/destroy.turbo_stream.erb %>
+
+<% if @remaining_count == 0 %>
+  <%= turbo_stream.update "friends_list_section" do %>
+    <%= render 'empty_state' %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "friendship_#{@friendship.id}" %>
+  <%= turbo_stream.update "friends_count_text" do %>
+    <span class="font-semibold text-gray-700 dark:text-gray-300"><%= @remaining_count %></span> 人のフレンドがいます
+  <% end %>
+<% end %>
+
+<!-- フラッシュメッセージの表示 -->
+<%= render_turbo_stream_flash_messages %>
