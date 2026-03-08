@@ -1,0 +1,12 @@
+<%# app/views/friendships/create.turbo_stream.erb %>
+
+<%# 申請先ユーザーのボタンエリアを「申請済み」に切り替える %>
+<%= turbo_stream.update "friendship_action_#{@friend.uuid}" do %>
+  <%= render 'users/friendship_action',
+      user: @friend,
+      pending_request_from_user: nil,
+      existing_friendship: @friendship %>
+<% end %>
+
+<!-- フラッシュメッセージの表示 -->
+<%= render_turbo_stream_flash_messages %>

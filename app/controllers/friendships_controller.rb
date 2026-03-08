@@ -15,43 +15,66 @@ class FriendshipsController < ApplicationController
   end
 
   def create
-    friend = User.find(params[:friend_uuid])
+    @friend = User.find(params[:friend_uuid])
+    @friendship = current_user.send_friend_request(@friend)
 
-    if current_user.send_friend_request(friend)
-      flash[:notice] = "#{friend.name}さんにフレンド申請を送りました"
-    else
-      flash[:alert] = "フレンド申請の送信に失敗しました"
+    respond_to do |format|
+      format.turbo_stream do
+        if @friendship.persisted?
+          flash.now[:notice] = "#{@friend.name}さんにフレンド申請を送りました"
+        else
+          flash.now[:alert] = "フレンド申請の送信に失敗しました"
+        end
+      end
+      format.html do
+        if @friendship.persisted?
+          redirect_to users_path, notice: "#{@friend.name}さんにフレンド申請を送りました"
+        else
+          redirect_to users_path, alert: "フレンド申請の送信に失敗しました"
+        end
+      end
     end
-
-    redirect_to users_path
   end
 
   def update
+    @action_type = params[:action_type]
     # action_typeの指定により実行することが決まる
-    case params[:action_type]
+    case @action_type
     when "accept" # 申請を承認
-      # Userモデルのaccept_friend_requestメソッドを使います
+      @friend = @friendship.user  # 申請を送ってきた相手
+
       if @friendship.update(status: "accepted")
-        flash[:notice] = "#{@friendship.user.name}さんとフレンドになりました"
-
+        @remaining_pending_count = current_user.received_friendships.pending.count
+        respond_to do |format|
+          format.turbo_stream { flash.now[:notice] = "#{@friend.name}さんとフレンドになりました" }
+          format.html { redirect_to pending_friendships_path, notice: "#{@friend.name}さんとフレンドになりました", status: :see_other }
+        end
       else
-        flash[:alert] = "承認に失敗しました"
-
+        respond_to do |format|
+          format.turbo_stream { flash.now[:alert] = "承認に失敗しました" }
+          format.html { redirect_to pending_friendships_path, alert: "承認に失敗しました", status: :see_other }
+        end
       end
-
-      redirect_to pending_friendships_path
 
     when "reject" # 申請を拒否
+      @friend = @friendship.user
+
       if @friendship.destroy
-        flash[:notice] = "フレンド申請を拒否しました"
+        @remaining_pending_count = current_user.received_friendships.pending.count
+
+        respond_to do |format|
+          format.turbo_stream { flash.now[:notice] = "#{@friend.name}さんのフレンド申請を拒否しました" }
+          format.html { redirect_to pending_friendships_path, notice: "フレンド申請を拒否しました", status: :see_other }
+        end
       else
-        flash[:alert] = "拒否に失敗しました"
+        respond_to do |format|
+          format.turbo_stream { flash.now[:alert] = "拒否に失敗しました" }
+          format.html { redirect_to pending_friendships_path, alert: "拒否に失敗しました", status: :see_other }
+        end
       end
-      redirect_to pending_friendships_path
 
     else
-      flash[:alert] = "無効な操作です"
-      redirect_to pending_friendships_path
+      redirect_to pending_friendships_path, alert: "無効な操作です", status: :see_other
     end
   end
 
@@ -60,8 +83,15 @@ class FriendshipsController < ApplicationController
 
     @friendship.destroy
 
-    flash[:notice] = "#{friend.name}さんとのフレンド関係を解除しました"
-    redirect_to friendships_path
+    respond_to do |format|
+      format.turbo_stream do
+        flash.now[:notice] = "#{friend.name}さんとのフレンド関係を解除しました"
+        # 解除後の残りフレンド数をビューに渡す
+        @remaining_count = current_user.friendships.accepted.count +
+                   current_user.received_friendships.accepted.count
+      end
+      format.html { redirect_to friendships_path, notice: "フレンド関係を解除しました", status: :see_other }
+    end
   end
 
   private

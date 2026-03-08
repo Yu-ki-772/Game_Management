@@ -1,0 +1,28 @@
+<%# app/views/friendships/update.turbo_stream.erb %>
+
+
+<% if @remaining_pending_count == 0 %>
+<!-- フレンド申請が1件もなくなった場合の表示 -->
+  <%= turbo_stream.update "pending_list_section" do %>
+    <%= render 'pending_empty_state' %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "pending_friendship_#{@friendship.id}" %>
+  <!-- 受信フレンド申請数表示の更新　-->
+  <%= turbo_stream.update "pending_count_text" do %>
+    <span class="font-semibold"><%= @remaining_pending_count %></span> 件の申請が届いています
+  <% end %>
+<% end %>
+
+<% if @action_type == "accept" %>
+  <!-- アクションボタンの更新 -->
+  <%= turbo_stream.update "friendship_action_#{@friend.uuid}" do %>
+    <%= render 'users/friendship_action',
+        user: @friend,
+        pending_request_from_user: nil,
+        existing_friendship: @friendship %>
+  <% end %>
+<% end %>
+
+<!-- フラッシュメッセージの表示 -->
+<%= render_turbo_stream_flash_messages %>
