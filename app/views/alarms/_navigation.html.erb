@@ -1,39 +1,66 @@
 <%# app/views/alarms/_navigation.html.erb %>
-<nav class="mb-4 sm:mb-6 bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-1 sm:p-2 flex gap-1 sm:gap-2 overflow-x-auto">
+
+<nav class="mb-4 sm:mb-6
+            bg-white dark:bg-gray-800
+            rounded-xl shadow-sm
+            border border-gray-100 dark:border-gray-700
+            p-1 flex gap-0.5 overflow-x-auto">
+
+
+  <%# 一覧 %>
   <%= link_to alarms_path,
-      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(alarms_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}" do %>
-    <div class="flex items-center gap-1 sm:gap-2">
-      <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
-      </svg>
-      <span>一覧</span>
-    </div>
+      class: "flex-shrink-0 flex items-center gap-1.5
+              px-3.5 py-2 rounded-lg text-sm font-medium
+              transition-colors duration-100
+              #{current_page?(alarms_path) ?
+                'bg-emerald-500 text-white shadow-sm' :
+                'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-800 dark:hover:text-gray-200'}" do %>
+    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+    </svg>
+    <span>一覧</span>
   <% end %>
 
+  <%# カレンダー %>
   <%= link_to calendar_alarms_path,
-      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(calendar_alarms_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}" do %>
-    <div class="flex items-center gap-1 sm:gap-2">
-      <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-      </svg>
-      <span>カレンダー</span>
-    </div>
+      class: "flex-shrink-0 flex items-center gap-1.5
+              px-3.5 py-2 rounded-lg text-sm font-medium
+              transition-colors duration-100
+              #{current_page?(calendar_alarms_path) ?
+                'bg-emerald-500 text-white shadow-sm' :
+                'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-800 dark:hover:text-gray-200'}" do %>
+    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+    </svg>
+    <span>カレンダー</span>
   <% end %>
 
+  <%# 未解除 %>
   <%= link_to pending_alarms_path,
-      class: "flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base #{current_page?(pending_alarms_path) ? 'bg-emerald-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}" do %>
-    <div class="flex items-center gap-1 sm:gap-2">
-      <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-      </svg>
-      <span>未解除</span>
+      class: "flex-shrink-0 flex items-center gap-1.5
+              px-3.5 py-2 rounded-lg text-sm font-medium
+              transition-colors duration-100
+              #{current_page?(pending_alarms_path) ?
+                'bg-emerald-500 text-white shadow-sm' :
+                'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-800 dark:hover:text-gray-200'}" do %>
+    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    <span>未解除</span>
 
-      <%# 時間（scheduled_at）を過ぎた未解除アラームが存在する場合のみバッジを表示する %>
-      <% if @stoppable_alarms_count&.positive? %>
-        <span class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
-          <%= @stoppable_alarms_count > 9 ? "9+" : @stoppable_alarms_count %>
-        </span>
-      <% end %>
-    </div>
+    <%# 時間（scheduled_at）を過ぎた未解除アラームが存在する場合のみバッジを表示する %>
+    <% if @stoppable_alarms_count&.positive? %>
+      <span class="inline-flex items-center justify-center
+                   w-4 h-4 text-[10px] font-bold
+                   text-white bg-red-500 rounded-full
+                   ring-2
+                   #{current_page?(pending_alarms_path) ? 'ring-emerald-500' : 'ring-white dark:ring-gray-800'}">
+        <%= @stoppable_alarms_count > 9 ? "9+" : @stoppable_alarms_count %>
+      </span>
+    <% end %>
   <% end %>
+
 </nav>
