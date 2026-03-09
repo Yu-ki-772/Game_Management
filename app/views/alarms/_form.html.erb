@@ -59,6 +59,32 @@
                 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
   </div>
 
+  <%# 通知設定ができていることの表示 or オンにするボタン %>
+  <div data-controller="push-notification"
+       data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>">
+
+    <p id="push-status-loading"
+       class="text-xs text-gray-400 dark:text-gray-500">確認中...</p>
+
+    <button id="push-subscribe-btn"
+            type="button"
+            data-action="click->push-notification#subscribe"
+            class="hidden w-full px-4 py-2 bg-blue-600 hover:bg-blue-700
+                   text-white text-sm font-medium rounded-lg transition">
+      🔔 この端末でアラーム通知をオンにする
+    </button>
+
+    <p id="push-unsubscribe-btn"
+       class="hidden text-sm text-green-600 dark:text-green-400 text-center py-2">
+      ✓ この端末ではアラーム通知が有効です
+    </p>
+
+    <p id="push-not-supported"
+       class="hidden text-xs text-red-500 dark:text-red-400">
+      このブラウザはプッシュ通知に対応していません。
+    </p>
+  </div>
+
   <%# ボタン %>
   <div class="flex items-center gap-3 pt-2">
     <%= f.submit alarm.persisted? ? '更新' : 'アラームを作成',
