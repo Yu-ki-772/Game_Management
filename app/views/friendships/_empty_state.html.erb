@@ -1,10 +1,36 @@
 <%# app/views/friendships/_empty_state.html.erb %>
 <div class="flex items-center justify-center py-20">
-  <div class="max-w-md mx-auto text-center">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">まだフレンドがいません</h2>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">ユーザーを探してフレンド申請を送ってみましょう</p>
+  <div class="max-w-sm mx-auto text-center">
+
+    <%# フレンドアイコン %>
+    <div class="w-14 h-14 rounded-full bg-gray-100 dark:bg-gray-700
+                flex items-center justify-center mx-auto mb-5">
+      <svg class="w-7 h-7 text-gray-400 dark:text-gray-500"
+           fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857
+                 M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857
+                 m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+      </svg>
+    </div>
+
+    <h2 class="text-base font-semibold text-gray-700 dark:text-gray-300 mb-1">
+      まだフレンドがいません
+    </h2>
+    <p class="text-sm text-gray-400 dark:text-gray-500 mb-6">
+      ユーザーを探してフレンド申請を送ってみましょう
+    </p>
+
     <%= link_to users_path,
-        class: "inline-flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition text-sm font-semibold" do %>
+        class: "inline-flex items-center gap-2
+                px-5 py-2.5
+                bg-emerald-500 hover:bg-emerald-600
+                text-white text-sm font-semibold rounded-lg
+                shadow-sm transition-colors duration-100" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
       ユーザーを探す
     <% end %>
   </div>

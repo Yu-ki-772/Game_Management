@@ -1,96 +1,136 @@
 <%# app/views/message_templates/_templates_list.html.erb %>
+
 <% if message_templates.empty? %>
-  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-12 text-center">
-    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+  <%# ── 空状態 ── %>
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm
+              border border-gray-100 dark:border-gray-700
+              p-12 text-center">
+    <svg class="mx-auto h-10 w-10 text-gray-300 dark:text-gray-600 mb-4"
+         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
-    <p class="text-gray-500 dark:text-gray-400 font-medium mb-2">
+    <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
       <%= empty_message %>
     </p>
-    <p class="text-gray-400 dark:text-gray-500 text-sm">
+    <p class="text-xs text-gray-400 dark:text-gray-500">
       <%= empty_description %>
     </p>
   </div>
-<% else %>
-  <div class="space-y-6">
-    <% message_templates.group_by(&:reason).each do |reason, templates| %>
-      <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
 
-        <div class="px-4 md:px-6 py-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 rounded-t-xl">
-          <div class="flex items-center gap-3">
-            <span class="w-1 h-5 bg-emerald-500 rounded-full shrink-0"></span>
-            <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200">
-              <%= reason %>
-            </h2>
-          </div>
+<% else %>
+
+  <div class="space-y-5">
+    <% message_templates.group_by(&:reason).each do |reason, templates| %>
+
+      <%# ── セクション ── %>
+      <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm
+                      border border-gray-100 dark:border-gray-700 overflow-hidden">
+
+        <%# ── セクションヘッダー ── %>
+        <div class="px-5 py-3.5
+                    border-b border-gray-100 dark:border-gray-700
+                    border-l-4 border-l-emerald-500
+                    bg-gray-50/70 dark:bg-gray-700/40">
+          <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-200 leading-snug">
+            <%= reason %>
+          </h2>
         </div>
 
-        <ul class="divide-y divide-gray-50 dark:divide-gray-700 px-2 py-2">
+        <%# ── テンプレート一覧 ── %>
+        <ul class="divide-y divide-gray-50 dark:divide-gray-700/70">
           <% templates.each do |template| %>
             <% bookmark = user_bookmarks[template.id] %>
+            <% is_owner = template.user_uuid.present? && template.user_uuid == current_user&.uuid %>
 
-            <li class="px-3 md:px-4 py-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition group"
+            <li class="group px-5 py-4 hover:bg-gray-50/80 dark:hover:bg-gray-700/30
+                       transition-colors duration-100"
                 data-controller="clipboard">
-              <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-4">
-                <p class="text-gray-800 dark:text-gray-200 flex-1 text-sm leading-relaxed"
+
+              <div class="flex flex-col gap-3">
+
+                <%# ── 定型文 ── %>
+                <p class="text-sm leading-relaxed text-gray-700 dark:text-gray-200 flex-1"
                    data-clipboard-target="source">
                   <%= template.template %>
                 </p>
 
-                <div class="flex items-center gap-2 shrink-0 justify-end md:justify-start">
+                <%# ── ボタン ── %>
+                <div class="flex items-center gap-2 flex-wrap">
+
                   <%# コピーボタン %>
                   <button type="button"
                           data-clipboard-target="button"
                           data-action="click->clipboard#copy"
-                          class="inline-flex items-center gap-1.5 px-3 py-1.5
-                                 bg-blue-50 dark:bg-blue-900/30
-                                 hover:bg-blue-100 dark:hover:bg-blue-900/50
-                                 text-blue-700 dark:text-blue-400
-                                 text-xs font-semibold rounded-md
-                                 border border-blue-200 dark:border-blue-800 transition">
-                    <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          class="inline-flex items-center gap-1.5
+                                 px-3 py-1.5 text-xs font-medium rounded-md
+                                 text-emerald-700 dark:text-emerald-400
+                                 border border-emerald-300 dark:border-emerald-700
+                                 hover:bg-emerald-50 dark:hover:bg-emerald-900/30
+                                 active:bg-emerald-100
+                                 transition-colors duration-100">
+                    <svg class="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
                     コピー
                   </button>
 
                   <% if user_signed_in? %>
+
+                    <%# ブックマーク %>
                     <% if bookmark %>
                       <%= render 'unbookmark_button', message_template: template, bookmark: bookmark %>
                     <% else %>
                       <%= render 'bookmark_button', message_template: template %>
                     <% end %>
 
-                    <% if template.user_uuid.present? && template.user_uuid == current_user.uuid %>
+
+                    
+                    
+                    <%# 編集・削除 %>
+                    <% if is_owner %>
+
+                      <%# 編集 %>
                       <%= link_to edit_message_template_path(template),
                           data: { turbo_frame: "dialog" },
-                          class: "px-3 py-1.5
-                                  bg-emerald-50 dark:bg-emerald-900/30
-                                  hover:bg-emerald-100 dark:hover:bg-emerald-900/50
-                                  text-emerald-700 dark:text-emerald-400
-                                  text-xs font-semibold rounded-md
-                                  border border-emerald-200 dark:border-emerald-800 transition" do %>
+                          class: "px-3 py-1.5 text-xs font-medium rounded-md
+                                  text-gray-500 dark:text-gray-400
+                                  border border-gray-200 dark:border-gray-700
+                                  hover:text-gray-700 dark:hover:text-gray-200
+                                  hover:bg-gray-100 dark:hover:bg-gray-700
+                                  active:bg-gray-200
+                                  transition-colors duration-100" do %>
                         編集
                       <% end %>
+
+                      <%# 削除 %>
                       <%= button_to message_template_path(template),
                           method: :delete,
                           data: { turbo_confirm: '本当に削除しますか?' },
-                          class: "px-3 py-1.5
-                                  bg-red-50 dark:bg-red-900/30
-                                  hover:bg-red-100 dark:hover:bg-red-900/50
-                                  text-red-600 dark:text-red-400
-                                  text-xs font-semibold rounded-md
-                                  border border-red-200 dark:border-red-800 transition" do %>
+                          class: "px-3 py-1.5 text-xs font-medium rounded-md
+                                  text-gray-400 dark:text-gray-500
+                                  border border-gray-200 dark:border-gray-700
+                                  hover:text-red-500 dark:hover:text-red-400
+                                  hover:border-red-200 dark:hover:border-red-800
+                                  hover:bg-red-50 dark:hover:bg-red-900/20
+                                  active:bg-red-100
+                                  transition-colors duration-100" do %>
                         削除
                       <% end %>
+
                     <% end %>
                   <% end %>
+
                 </div>
               </div>
             </li>
           <% end %>
         </ul>
+
       </section>
     <% end %>
   </div>
+
 <% end %>

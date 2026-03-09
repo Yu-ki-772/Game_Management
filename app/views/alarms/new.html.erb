@@ -1,20 +1,39 @@
 <%# app/views/alarms/new.html.erb %>
-
 <%= turbo_frame_tag "dialog" do %>
-    <dialog data-controller="dialog"
-            data-action="click->dialog#clickOutside turbo:before-cache@window->dialog#beforeCache"
-            class="fixed inset-0 mx-auto mt-20 rounded-xl shadow-lg p-6 w-11/12 max-w-2xl backdrop:bg-black/40 dark:bg-gray-800 bg-white">
+  <dialog data-controller="dialog"
+          data-action="click->dialog#clickOutside turbo:before-cache@window->dialog#beforeCache"
+          class="fixed inset-0 mx-auto mt-16 rounded-2xl shadow-xl
+                 p-0 w-11/12 max-w-lg
+                 backdrop:bg-black/50
+                 bg-white dark:bg-gray-800
+                 border border-gray-100 dark:border-gray-700">
 
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">アラームを作成</h2>
-        <button data-action="click->dialog#close"
-                type="button"
-                class="text-gray-400 hover:text-gray-600 transition">✕</button>
+    <%# ── ヘッダー ── %>
+    <div class="flex items-start justify-between px-6 pt-6 pb-5
+                border-b border-gray-100 dark:border-gray-700">
+      <div>
+        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 leading-tight">
+          アラームを作成
+        </h2>
+        <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+          日時とラベルを設定してください
+        </p>
       </div>
+      <button data-action="click->dialog#close"
+              type="button"
+              class="p-1.5 -mt-1 -mr-1 rounded-lg
+                     text-gray-400 dark:text-gray-500
+                     hover:text-gray-600 dark:hover:text-gray-300
+                     hover:bg-gray-100 dark:hover:bg-gray-700
+                     transition-colors duration-100"
+              aria-label="閉じる">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
 
-      <%= render 'form', alarm: @alarm %>
+    <%= render 'form', alarm: @alarm %>
 
-    </dialog>
-
-    
+  </dialog>
 <% end %>
