@@ -39,14 +39,14 @@
                     bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
                     placeholder-gray-400 dark:placeholder-gray-500
                     focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition" %>
+        <p class="text-xs text-gray-400 dark:text-gray-500 mt-1.5 ml-1">
+          一覧画面ではこのカテゴリごとに表示されます（255文字以内）。既存のカテゴリを選択 or 新しく入力。
+        </p>
         <datalist id="reason-datalist">
           <% @existing_reasons.each do |reason| %>
             <option value="<%= reason %>"></option>
           <% end %>
         </datalist>
-        <p class="text-xs text-gray-400 dark:text-gray-500 mt-1.5 ml-1">
-          一覧画面ではこのカテゴリごとに表示されます
-        </p>
       </div>
 
       <div>
@@ -61,6 +61,9 @@
                     placeholder-gray-400 dark:placeholder-gray-500
                     focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent
                     resize-y transition" %>
+        <p class="text-xs text-gray-400 dark:text-gray-500 mt-1.5 ml-1">
+          255文字以内で入力してください
+        </p>
       </div>
 
       <div class="flex items-center gap-3 pt-2">
