@@ -1,8 +1,91 @@
 ja:
   activerecord:
+    models:
+      alarm:                 アラーム
+      alarm_log:             記録
+      alarm_membership:      アラームメンバーシップ
+      bookmark:              ブックマーク
+      friendship:            フレンド関係
+      message_template:      定型文
+      reflection_note:       振り返りノート
+      reflection_note_tag:   タグ
+      tag:                   タグ
+      web_push_subscription: Web通知設定
+      user:                  ユーザー
+
     attributes:
-      user:
-        name: ユーザーネーム
       alarm:
-        label: ラベル
-        scheduled_at: 日時
+        label:             ラベル
+        scheduled_at:      アラーム時刻
+        started_at:        開始時刻
+        sent:              送信済み
+        unlocked:          解除済み
+        job_id:            ジョブID
+        reminder_job_id:   リマインダージョブID
+        reminder_minutes:  リマインダー時間（分前）
+        user_uuid:         作成者
+
+      alarm_log:
+        alarm_uuid:        アラーム
+        user_uuid:         ユーザー
+        unlocked_at:       解除時刻
+        minutes_to_unlock: 解除までの時間（分）
+        play_duration:     プレイ時間（分）
+
+      alarm_membership:
+        alarm_uuid:          アラーム
+        user_uuid:           メンバー
+        notified:            通知済み
+        reminder_notified:   リマインダー通知済み
+
+      bookmark:
+        user_uuid:           ユーザー
+        message_template_id: 定型文
+
+      friendship:
+        user_uuid:   フレンド
+        friend_uuid: フレンド
+        status:      ステータス
+
+      message_template:
+        user_uuid: ユーザー
+        reason:    カテゴリ
+        template:  定型文
+
+      reflection_note:
+        user_uuid:       ユーザー
+        title:           タイトル
+        body:            本文
+        reflection_type: 種別
+
+      reflection_note_tag:
+        reflection_note_id: 振り返りノート
+        tag_id:             タグ
+
+      tag:
+        user_uuid: ユーザー
+        name:      タグ名
+
+      web_push_subscription:
+        user_uuid: ユーザー
+        endpoint:  エンドポイント
+        p256dh:    公開鍵
+        auth:      認証キー
+
+      user:
+        name:        ユーザネーム
+        email:       メールアドレス
+        description: 自己紹介
+        admin:       管理者フラグ
+        avatar:      アバター
+        pwa_install_prompted: PWAインストール案内済み
+        password:               パスワード
+        encrypted_password:     暗号化パスワード
+        reset_password_token:   パスワードリセットトークン
+        reset_password_sent_at: パスワードリセット送信日時
+        remember_created_at:    ログイン保持日時
+        failed_attempts: ログイン失敗回数
+        locked_at:       アカウントロック日時
+        unlock_token:    ロック解除トークン
+        provider: 認証プロバイダー
+        uid:      外部認証ID
