@@ -2,27 +2,41 @@ class AlarmMemberNotificationJob < ApplicationJob
   include PushNotifiable
 
   queue_as :default
-
   retry_on Net::OpenTimeout, Net::ReadTimeout, wait: 5.seconds, attempts: 5
 
   def perform(alarm_uuid, user_uuid)
     alarm = Alarm.find_by(uuid: alarm_uuid)
-    return unless alarm
+    unless alarm
+      Rails.logger.warn("[AlarmMemberNotificationJob] アラームが見つかりません uuid=#{alarm_uuid}")
+      return
+    end
 
-    return if alarm.alarm_logs.exists?(user_uuid: user_uuid)
+    if alarm.alarm_logs.exists?(user_uuid: user_uuid)
+      Rails.logger.warn("[AlarmMemberNotificationJob] ストップ済みのためスキップ user=#{user_uuid}")
+      return
+    end
 
     membership = alarm.alarm_memberships.find_by(user_uuid: user_uuid)
-    return unless membership
+    unless membership
+      Rails.logger.warn("[AlarmMemberNotificationJob] メンバーシップが見つかりません user=#{user_uuid}")
+      return
+    end
 
     # 通知済みかどうかのチェック
-    return if membership.notified?
+    if membership.notified?
+      Rails.logger.warn("[AlarmMemberNotificationJob] 送信済みフラグが立っているためスキップ user=#{user_uuid} notified_at=#{membership.updated_at}")
+      return
+    end
 
-    # メール・プッシュ通知より先に送信済みとして記録（エラー時のリトライによる二重送信対策）
     membership.update!(notified: true)
 
     user = User.find_by(uuid: user_uuid)
-    return unless user
+    unless user
+      Rails.logger.warn("[AlarmMemberNotificationJob] ユーザーが見つかりません uuid=#{user_uuid}")
+      return
+    end
 
+    Rails.logger.info("[AlarmMemberNotificationJob] send_push_notification を呼び出します user=#{user_uuid}")
     send_push_notification(user, build_alarm_payload(alarm, membership))
   end
 
