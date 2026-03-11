@@ -1,0 +1,120 @@
+<%# app/views/diagnosis_results/show.html.erb %>
+
+
+<div>
+  <header class="sticky top-0 z-10
+                 bg-white/90 dark:bg-gray-900/90 backdrop-blur
+                 border-b border-gray-100 dark:border-gray-800
+                 px-5 py-3">
+    <div class="max-w-lg mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <%= link_to root_path,
+              class: "w-8 h-8 flex items-center justify-center rounded-md
+                      text-gray-400 dark:text-gray-500
+                      hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+        <% end %>
+        <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">診断結果</span>
+      </div>
+      <span class="text-xs text-gray-400 dark:text-gray-500">
+        <%= @result.created_at.strftime("%-m/%-d") %> 実施
+      </span>
+    </div>
+  </header>
+
+  <main class="max-w-lg mx-auto px-4 py-6 space-y-3">
+
+    <%# ── ① スコアサマリーカード ──────────────────────────────────── %>
+    <div class="<%= zone_bg_class(@result) %> <%= zone_border_class(@result) %>
+                border rounded-2xl px-5 py-6">
+
+      <span class="text-xs text-gray-400 dark:text-gray-500">総合スコア</span>
+      <div class="flex items-baseline gap-1 mt-1 mb-3">
+        <span class="text-6xl font-bold tabular-nums <%= zone_text_class(@result) %>">
+          <%= @result.total_score %>
+        </span>
+        <span class="text-sm text-gray-400 dark:text-gray-500">/ 100</span>
+      </div>
+
+      <span class="inline-flex items-center gap-1.5 w-fit text-xs font-semibold
+                   <%= zone_text_class(@result) %>
+                   bg-white dark:bg-gray-900
+                   <%= zone_border_class(@result) %> border
+                   px-2.5 py-1 rounded-full">
+        <span class="w-1.5 h-1.5 rounded-full <%= zone_dot_class(@result) %>"></span>
+        <%= zone_label(@result) %>
+      </span>
+    </div>
+
+    <%# ── ② 軸別スコア ───────────────────────────────────────────── %>
+    <div class="bg-white dark:bg-gray-900
+                border border-gray-100 dark:border-gray-800
+                rounded-2xl px-5 py-4 space-y-4">
+      <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300">軸別スコア</h2>
+
+      <% @result.axis_items.each do |axis| %>
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">
+              <%= axis[:icon] %> <%= axis[:name] %>
+            </span>
+            <span class="text-xs font-bold tabular-nums <%= zone_text_class(@result) %>">
+              <%= axis[:score] %> / 25
+            </span>
+          </div>
+          <div class="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+            <div class="h-full <%= zone_bar_class(@result) %> rounded-full"
+                 style="width: <%= (axis[:score] / 25.0 * 100).round %>%"></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <%# ── ③ 総評メッセージ ───────────────────────────────────────── %>
+    <div class="bg-white dark:bg-gray-900
+                border border-gray-100 dark:border-gray-800
+                rounded-2xl px-5 py-4 space-y-2">
+      <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+        <%= zone_headline(@result) %>
+      </h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+        <%= zone_message(@result) %>
+      </p>
+    </div>
+
+    <%# ── ④ レッドゾーンのみ表示するサポート案内 ─────────────────── %>
+    <% if @result.red? %>
+      <div class="bg-red-50 dark:bg-red-900/20
+                  border border-red-100 dark:border-red-900
+                  rounded-2xl px-5 py-4">
+        <p class="text-xs text-red-500 dark:text-red-400 leading-relaxed">
+          ⚠ この診断は医療的な診断ではありません。
+          心配な場合は、学校のカウンセラー・かかりつけ医・信頼できる大人への相談を検討してください。
+        </p>
+      </div>
+    <% end %>
+
+    <%# ── ⑤ アクションボタン ─────────────────────────────────────── %>
+    <div class="flex gap-2">
+      <%= link_to new_diagnosis_result_path,
+            class: "flex-1 px-3 py-2.5 text-xs font-medium rounded-xl border
+                    text-center transition-colors
+                    text-emerald-600 dark:text-emerald-400
+                    border-emerald-200 dark:border-emerald-800
+                    hover:bg-emerald-50 dark:hover:bg-emerald-900/30" do %>
+        もう一度診断する
+      <% end %>
+      <%= link_to root_path,
+            class: "flex-1 px-3 py-2.5 text-xs font-medium rounded-xl border
+                    text-center transition-colors
+                    text-gray-600 dark:text-gray-400
+                    border-gray-200 dark:border-gray-700
+                    hover:bg-gray-50 dark:hover:bg-gray-800" do %>
+        トップに戻る
+      <% end %>
+    </div>
+
+  </main>
+</div>

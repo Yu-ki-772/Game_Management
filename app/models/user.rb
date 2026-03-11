@@ -40,7 +40,12 @@ class User < ApplicationRecord
 
   has_many :tags,             foreign_key: :user_uuid, primary_key: :uuid, dependent: :destroy
   has_many :web_push_subscriptions, foreign_key: :user_uuid, primary_key: :uuid, dependent: :destroy
-
+  
+  has_many :diagnosis_results,
+         primary_key: :uuid,
+         foreign_key: :user_uuid,
+         dependent: :destroy
+         
   scope :non_admin, -> { where(admin: false) } # 管理者ユーザかどうかの確認
 
   # フレンドを優先的に表示させるためのスコープ
