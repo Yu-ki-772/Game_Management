@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_04_003641) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_10_073557) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -91,6 +91,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_04_003641) do
     t.index ["message_template_id"], name: "index_bookmarks_on_message_template_id"
     t.index ["user_uuid", "message_template_id"], name: "index_bookmarks_on_user_uuid_and_message_template_id", unique: true
     t.index ["user_uuid"], name: "index_bookmarks_on_user_uuid"
+  end
+
+  create_table "diagnosis_results", force: :cascade do |t|
+    t.decimal "consistency_score", precision: 3, scale: 1, null: false
+    t.decimal "control_score", precision: 3, scale: 1, null: false
+    t.datetime "created_at", null: false
+    t.decimal "life_score", precision: 3, scale: 1, null: false
+    t.decimal "quality_score", precision: 3, scale: 1, null: false
+    t.decimal "total_score", precision: 4, scale: 1, null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_uuid", null: false
+    t.index ["user_uuid"], name: "index_diagnosis_results_on_user_uuid"
   end
 
   create_table "friendships", force: :cascade do |t|
@@ -276,6 +288,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_04_003641) do
   add_foreign_key "alarms", "users", column: "user_uuid", primary_key: "uuid"
   add_foreign_key "bookmarks", "message_templates"
   add_foreign_key "bookmarks", "users", column: "user_uuid", primary_key: "uuid"
+  add_foreign_key "diagnosis_results", "users", column: "user_uuid", primary_key: "uuid"
   add_foreign_key "friendships", "users", column: "friend_uuid", primary_key: "uuid"
   add_foreign_key "friendships", "users", column: "user_uuid", primary_key: "uuid"
   add_foreign_key "message_templates", "users", column: "user_uuid", primary_key: "uuid"

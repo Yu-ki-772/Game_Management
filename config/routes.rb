@@ -49,6 +49,9 @@ Rails.application.routes.draw do
   end
 
   resources :reflection_notes
+
+  # ゲーム時間管理度診断用
+  resources :diagnosis_results, only: %i[ new create show ]
   #=============================================================
   # 補助リソース
   #=============================================================

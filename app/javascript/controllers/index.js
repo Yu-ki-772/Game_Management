@@ -42,3 +42,7 @@ application.register("flash", FlashController)
 // dialog要素操作用(フォーム等)
 import DialogController from "./dialog_controller"
 application.register("dialog", DialogController)
+
+// ゲーム時間管理度診断のアンケート診断フォーム用
+import DiagnosisFormController from "./diagnosis_form_controller"
+application.register("diagnosis-form", DiagnosisFormController)

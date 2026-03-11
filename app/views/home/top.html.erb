@@ -111,6 +111,17 @@
         </svg>
         <span>振り返りメモを作成</span>
       <% end %>
+
+      <%= link_to new_diagnosis_result_path,
+          class: "inline-flex items-center gap-3 px-6 py-3 bg-emerald-600 text-white
+                  rounded-lg hover:bg-emerald-700 transition font-semibold shadow-sm" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M9 11l3 3l8 -8" />
+          <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+        </svg>
+        <span>ゲーム時間管理度診断</span>
+      <% end %>
     </div>
   <% end %>
 
@@ -226,6 +237,26 @@
         </h3>
         <p class="text-sm md:text-base text-gray-600 dark:text-gray-400">
           時間管理の振り返りをメモ。
+        </p>
+      </div>
+    <% end %>
+
+    <%= link_to new_diagnosis_result_path, class: "block group" do %>
+      <div class="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-6
+                  hover:border-emerald-500 dark:hover:border-emerald-500
+                  bg-white dark:bg-gray-800
+                  hover:shadow-lg dark:hover:shadow-gray-900/50
+                  transition h-48">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600 dark:text-emerald-400 mb-3">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M9 11l3 3l8 -8" />
+          <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+        </svg>
+        <h3 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+          ゲーム時間管理度診断
+        </h3>
+        <p class="text-sm md:text-base text-gray-600 dark:text-gray-400">
+          ゲームとの関わり方を4つの軸で振り返り、より充実したゲームライフへ。
         </p>
       </div>
     <% end %>
