@@ -21,10 +21,21 @@
 
     <%# Safari等、beforeinstallprompt が使えないブラウザ向けの手順案内。
         JavaScriptで表示・非表示を切り替え。 %>
-    <div id="pwa-manual-guide" class="hidden mb-4">
-      <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">iPhoneの場合：Safariの共有ボタン →「ホーム画面に追加」</p>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Androidの場合：Chromeのメニュー →「ホーム画面に追加」</p>
-      <p class="text-sm text-gray-600 dark:text-gray-400">PCの場合：アドレスバー右端のアイコン →「ホーム画面に追加」</p>
+    <div id="pwa-manual-guide" class="hidden mb-4
+        rounded-lg border border-gray-200 dark:border-gray-600
+        bg-gray-50 dark:bg-gray-700/50 px-4 py-3 space-y-2">
+      <p class="text-sm text-gray-700 dark:text-gray-300">
+        <span class="font-medium">iOS：</span>Safariの共有ボタン →「ホーム画面に追加」
+      </p>
+      <p class="text-sm text-gray-700 dark:text-gray-300">
+        <span class="font-medium">Android：</span>Chromeのメニュー →「ホーム画面に追加」
+      </p>
+      <p class="text-sm text-gray-700 dark:text-gray-300">
+        <span class="font-medium">PC：</span>アドレスバー右端のアイコン →「ホーム画面に追加」
+      </p>
+      <p class="text-xs text-gray-400 dark:text-gray-500 pt-1">
+        手順が異なる場合は、お使いのブラウザのメニューからお試しください。
+      </p>
     </div>
 
     <button data-action="click->pwa-install#close"
