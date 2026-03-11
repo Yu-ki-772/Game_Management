@@ -80,10 +80,10 @@
 
   <%# 通知設定ができていることの表示 or オンにするボタン %>
   <div data-controller="push-notification"
-       data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>"
-       class="rounded-lg border border-gray-100 dark:border-gray-700
-              bg-gray-50/60 dark:bg-gray-700/30 px-4 py-3 min-h-[44px]
-              flex items-center">
+      data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>"
+      class="rounded-lg border border-gray-100 dark:border-gray-700
+              bg-gray-50/60 dark:bg-gray-700/30 px-4 py-3
+              flex items-start">
 
     <p id="push-status-loading"
        class="text-xs text-gray-400 dark:text-gray-500">
@@ -113,8 +113,8 @@
 
     <%# 非対応 %>
     <p id="push-not-supported"
-       class="hidden text-xs text-red-400 dark:text-red-400">
-      このブラウザはプッシュ通知に対応していません
+      class="hidden text-sm text-red-400 dark:text-red-400 leading-relaxed">
+      現在の環境ではプッシュ通知を有効にできません。iOSでプッシュ通知を有効にしたい場合は、このアプリをホーム画面に追加してください。
     </p>
   </div>
 
