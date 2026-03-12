@@ -53,10 +53,7 @@ Rails.application.routes.draw do
   # ゲーム時間管理度診断用
   resources :diagnosis_results, only: %i[ new create show ]
 
-  # 静的ページ
-  get "/privacy_policy" => "pages#privacy_policy", as: :privacy_policy # プライバシーポリシー
-  get "/terms" => "pages#terms", as: :terms # 利用規約
-  get "/others" => "pages#others", as: :others
+  
   #=============================================================
   # 補助リソース
   #=============================================================
@@ -70,6 +67,14 @@ Rails.application.routes.draw do
       delete :destroy # endpoint を受け取って削除する用のエンドポイント
     end
   end
+
+  # バグ報告
+  resource :bug_report, only: [:new, :create]
+
+  # 静的ページ
+  get "/privacy_policy" => "pages#privacy_policy", as: :privacy_policy # プライバシーポリシー
+  get "/terms" => "pages#terms", as: :terms # 利用規約
+  get "/others" => "pages#others", as: :others
 
   #==============================================================
   # その他
