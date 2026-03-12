@@ -56,7 +56,7 @@ Rails.application.routes.draw do
   # 静的ページ
   get "/privacy_policy" => "pages#privacy_policy", as: :privacy_policy # プライバシーポリシー
   get "/terms" => "pages#terms", as: :terms # 利用規約
-  get '/others' => 'pages#others', as: :others
+  get "/others" => "pages#others", as: :others
   #=============================================================
   # 補助リソース
   #=============================================================
