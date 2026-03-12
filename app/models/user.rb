@@ -20,6 +20,8 @@ class User < ApplicationRecord
   #======================================================================================
   has_many :alarms, primary_key: :uuid, foreign_key: :user_uuid, dependent: :destroy
   has_many :alarm_logs, through: :alarms
+  has_many :direct_alarm_logs, class_name: "AlarmLog",
+              foreign_key: "user_uuid", primary_key: "uuid", dependent: :destroy
   has_many :message_templates, primary_key: :uuid, foreign_key: :user_uuid, dependent: :destroy
   has_many :bookmarks, primary_key: :uuid, foreign_key: :user_uuid, dependent: :destroy
   has_many :friendships, primary_key: :uuid, foreign_key: :user_uuid, dependent: :destroy
@@ -28,7 +30,7 @@ class User < ApplicationRecord
               primary_key: :uuid,
               foreign_key: :friend_uuid,
               dependent: :destroy
-  has_many :alarm_memberships, foreign_key: "user_uuid", primary_key: "uuid"
+  has_many :alarm_memberships, foreign_key: "user_uuid", primary_key: "uuid", dependent: :destroy
   has_many :member_alarms,
            through: :alarm_memberships,
            source: :alarm
