@@ -53,7 +53,7 @@ Rails.application.routes.draw do
   # ゲーム時間管理度診断用
   resources :diagnosis_results, only: %i[ new create show ]
 
-  
+
   #=============================================================
   # 補助リソース
   #=============================================================
@@ -69,7 +69,7 @@ Rails.application.routes.draw do
   end
 
   # バグ報告
-  resource :bug_report, only: [:new, :create]
+  resource :bug_report, only: [ :new, :create ]
 
   # 静的ページ
   get "/privacy_policy" => "pages#privacy_policy", as: :privacy_policy # プライバシーポリシー
