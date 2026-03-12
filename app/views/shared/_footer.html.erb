@@ -1,6 +1,7 @@
 <%# app/views/shared/_footer.html.erb %>
-<!-- ログイン時のみ -->
+
 <% if user_signed_in? %>
+  <%# ── ログイン時フッター ─────────────────────── %>
   <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700
                 sticky bottom-0 z-50 shadow-[0_-1px_3px_rgba(0,0,0,0.05)]
                 transition-colors duration-200">
@@ -137,7 +138,7 @@
                 </svg>
                 振り返りメモ
               <% end %>
-
+              
             </div>
           </div>
         </div>
@@ -231,4 +232,39 @@
       </nav>
     </div>
   </footer>
+
+<% else %>
+  <%# ── ログイン前フッター（法的リンクのみ） ────────────────── %>
+  <footer class="bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800
+                 transition-colors duration-200">
+    <div class="max-w-lg mx-auto px-5 pt-3 pb-5 flex flex-col items-center gap-2">
+
+      <nav class="flex items-center gap-3">
+        <%= link_to privacy_policy_path,
+              class: "text-xs text-gray-400 dark:text-gray-500
+                      hover:text-emerald-600 dark:hover:text-emerald-400
+                      px-3 py-3 rounded-md
+                      hover:bg-emerald-50 dark:hover:bg-emerald-900/30
+                      transition-colors" do %>
+          プライバシーポリシー
+        <% end %>
+        <span class="text-gray-200 dark:text-gray-700 text-xs select-none">|</span>
+        <%= link_to terms_path,
+              class: "text-xs text-gray-400 dark:text-gray-500
+                      hover:text-emerald-600 dark:hover:text-emerald-400
+                      px-3 py-3 rounded-md
+                      hover:bg-emerald-50 dark:hover:bg-emerald-900/30
+                      transition-colors" do %>
+          利用規約
+        <% end %>
+      </nav>
+
+      <%# コピーライト %>
+      <p class="text-xs text-gray-300 dark:text-gray-700">
+        &copy; <%= Date.current.year %> Game Exit
+      </p>
+
+    </div>
+  </footer>
+
 <% end %>
