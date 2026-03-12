@@ -54,8 +54,9 @@ Rails.application.routes.draw do
   resources :diagnosis_results, only: %i[ new create show ]
 
   # 静的ページ
-  get "/privacy_policy" => "pages#privacy_policy", as: :privacy_policy
-  get "/terms" => "pages#terms", as: :terms
+  get "/privacy_policy" => "pages#privacy_policy", as: :privacy_policy # プライバシーポリシー
+  get "/terms" => "pages#terms", as: :terms # 利用規約
+  get '/others' => 'pages#others', as: :others
   #=============================================================
   # 補助リソース
   #=============================================================
