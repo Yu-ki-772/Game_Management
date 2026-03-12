@@ -52,6 +52,10 @@ Rails.application.routes.draw do
 
   # ゲーム時間管理度診断用
   resources :diagnosis_results, only: %i[ new create show ]
+
+  # 静的ページ
+  get "/privacy_policy" => "pages#privacy_policy", as: :privacy_policy
+  get "/terms" => "pages#terms", as: :terms
   #=============================================================
   # 補助リソース
   #=============================================================
