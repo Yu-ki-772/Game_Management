@@ -88,6 +88,7 @@
               <%= button_to friendship_path(friendship),
                   method: :delete,
                   form: { data: { turbo_confirm: "本当に#{friend.name}さんとのフレンド関係を解除しますか？この操作は取り消せません。" } },
+                  data: { turbo_submits_with: "解除中..." },
                   class: "shrink-0 px-3 py-1.5 text-xs font-medium rounded-md
                           text-gray-400 dark:text-gray-500
                           border border-gray-200 dark:border-gray-700

@@ -7,6 +7,8 @@ export default class extends Controller {
     vapidPublicKey: String
   }
 
+  static targets = ["subscribeBtn", "unsubscribeBtn"]
+
   async connect() {
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
       this.showElement("push-not-supported")
@@ -27,20 +29,29 @@ export default class extends Controller {
   }
 
   async subscribe() {
-    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-      alert("このブラウザはプッシュ通知に対応していません");
-      this.closeModal()
-      return;
-    }
+    // ターゲットが存在しない場合は何もしない
+    if (!this.hasSubscribeBtnTarget) return
 
-    const permission = await Notification.requestPermission();
-    if (permission !== "granted") {
-      console.log("Push通知が拒否されました");
-      this.closeModal()
-      return;
-    }
+    // ローディングアニメーション
+    const btn = this.subscribeBtnTarget
+    const originalText = btn.textContent
+    btn.disabled = true
+    btn.textContent = "登録中..."
 
     try {
+      if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+        alert("このブラウザはプッシュ通知に対応していません");
+        this.closeModal()
+        return;
+      }
+
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        console.log("Push通知が拒否されました");
+        this.closeModal()
+        return;
+      }
+
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
@@ -55,23 +66,35 @@ export default class extends Controller {
       } else {
         console.error("[Push] サーバーへの保存に失敗しました");
       }
+
     } catch (error) {
       console.error("[Push] 購読エラー:", error);
+
     } finally {
       this.closeModal()
+      btn.disabled = false
+      btn.textContent = originalText
     }
   }
 
   async unsubscribe() {
-    const registration = await navigator.serviceWorker.ready;
-    const subscription = await registration.pushManager.getSubscription();
-
-    if (!subscription) {
-      console.log("[Push] 購読情報が見つかりません");
-      return;
+    // ローディングアニメーション
+    const btn = this.hasUnsubscribeBtnTarget ? this.unsubscribeBtnTarget : null
+    const originalText = btn?.textContent
+    if (btn) {
+      btn.disabled = true
+      btn.textContent = "解除中..."
     }
 
     try {
+      const registration = await navigator.serviceWorker.ready
+      const subscription = await registration.pushManager.getSubscription()
+
+      if (!subscription) {
+        console.log("[Push] 購読情報が見つかりません")
+        return
+      }
+
       const success = await this.deleteSubscription(subscription);
       if (!success) {
         console.error("[Push] サーバー側の削除に失敗しました");
@@ -84,8 +107,15 @@ export default class extends Controller {
       // 通知設定ページでボタンを切り替える
       this.hideElement("push-unsubscribe-btn")
       this.showElement("push-subscribe-btn")
+
     } catch (error) {
       console.error("[Push] 購読解除エラー:", error);
+
+    } finally {
+      if (btn) {
+        btn.disabled = false
+        btn.textContent = originalText
+      }
     }
   }
 

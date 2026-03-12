@@ -135,7 +135,8 @@
 
       <%= button_to alarm_path(alarm),
           method: :delete,
-          data: { turbo_confirm: '本当に削除しますか?' },
+          data: { turbo_confirm: '本当に削除しますか?',
+                  turbo_submits_with: "削除中..." },
           class: "px-3 py-1.5 text-xs font-medium rounded-md border transition-colors
                   text-red-500 dark:text-red-400
                   border-red-200 dark:border-red-800

@@ -126,6 +126,7 @@
       <%= button_to 'ストップ',
           unlock_alarm_alarm_membership_path(alarm, membership),
           method: :patch,
+          data: { turbo_submits_with: "ストップ中..." },
           class: "px-4 py-2 text-xs font-semibold rounded-lg
                   text-red-500 dark:text-red-400
                   border border-red-300 dark:border-red-700
@@ -136,6 +137,7 @@
       <%= button_to 'ストップ',
           unlock_alarm_alarm_membership_path(alarm, membership),
           method: :patch,
+          data: { turbo_submits_with: "ストップ中..." },
           class: "px-4 py-2 text-xs font-semibold rounded-lg
                   bg-emerald-500 hover:bg-emerald-600
                   text-white shadow-sm
