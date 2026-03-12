@@ -1,0 +1,66 @@
+<%# app/views/bug_reports/new.html.erb %>
+<div class="flex flex-col h-full -mx-4 -my-6">
+
+  <%# ── ヘッダー ── %>
+  <div class="shrink-0 sticky top-0 z-10
+              bg-white/90 dark:bg-gray-900/90 backdrop-blur
+              border-b border-gray-100 dark:border-gray-800
+              px-5 py-3">
+    <div class="max-w-lg mx-auto flex items-center gap-3">
+      <%= link_to others_path,
+            class: "p-1 -ml-1 rounded-md text-gray-400 hover:text-gray-600
+                    dark:text-gray-500 dark:hover:text-gray-300 transition-colors" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      <% end %>
+      <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">不具合報告</span>
+    </div>
+  </div>
+
+  <%# ── メインコンテンツ ── %>
+  <div class="flex-1 overflow-y-auto px-4 pt-6 pb-12">
+    <div class="max-w-lg mx-auto space-y-6">
+
+      <div class="bg-white dark:bg-gray-900
+                  border border-gray-100 dark:border-gray-800
+                  rounded-xl overflow-hidden">
+        <div class="px-5 py-4 space-y-4">
+
+          <p class="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
+            アプリの動作に問題があった場合は、できるだけ詳しく状況を教えてください。
+            内容を確認の上、順次対応いたします。
+          </p>
+
+          <%= form_with url: bug_report_path, method: :post do |f| %>
+            <div class="space-y-4">
+
+              <%= f.text_area :body,
+                    maxlength: 1000,
+                    placeholder: "例：〇〇の画面で△△を操作したとき、××が起きました",
+                    rows: 6,
+                    class: "w-full rounded-lg px-3 py-2.5
+                            text-sm text-gray-700 dark:text-gray-200
+                            placeholder-gray-300 dark:placeholder-gray-600
+                            bg-gray-50 dark:bg-gray-800
+                            border border-gray-200 dark:border-gray-700
+                            focus:outline-none focus:ring-2 focus:ring-emerald-400/50
+                            focus:border-emerald-400 dark:focus:border-emerald-500
+                            resize-none transition" %>
+
+              <%= f.submit '送信する',
+                    class: "w-full py-2.5 rounded-lg
+                            text-sm font-medium text-white
+                            bg-emerald-500 hover:bg-emerald-600
+                            dark:bg-emerald-600 dark:hover:bg-emerald-500
+                            transition-colors cursor-pointer" %>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
