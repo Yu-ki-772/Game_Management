@@ -84,3 +84,39 @@
 .dark .clipboard-error {
   @apply bg-red-900/30 text-red-400 border-red-800;
 }
+
+/* 画面遷移時のプログレスバーのカスタマイズ */
+.turbo-progress-bar {
+  height: 3px;
+  background: linear-gradient(to right, #10b981, #34d399);
+}
+
+
+/* フレーム読込中 */
+turbo-frame[busy] {
+  opacity: 0.45;
+  cursor: wait;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+
+/* ── ダイアログ本体のスライドアニメーション ── */
+dialog[open] {
+  animation: dialog-slide-in 0.2s ease-out both;
+}
+
+@keyframes dialog-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+dialog[open]::backdrop {
+  animation: backdrop-fade-in 0.2s ease-out both;
+}
+
+@keyframes backdrop-fade-in {
+  from { opacity: 0; }
+}

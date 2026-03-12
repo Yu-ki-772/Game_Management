@@ -2,6 +2,7 @@
 <div id="bookmark_button_<%= message_template.id %>">
   <%= button_to bookmarks_path(message_template_id: message_template.id),
       method: :post,
+      data: { turbo_submits_with: "..." },
       class: "px-3 py-1.5
               bg-white dark:bg-gray-700
               hover:bg-amber-50 dark:hover:bg-amber-900/30

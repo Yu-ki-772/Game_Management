@@ -10,34 +10,37 @@
       アラームの時間になったときにブラウザで通知をお届けします。
     </p>
 
-    <div data-controller="push-notification"
-         data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>">
+<div data-controller="push-notification"
+     data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>">
 
-      <p id="push-status-loading" class="text-sm text-gray-400 dark:text-gray-500">確認中...</p>
+  <p id="push-status-loading" class="text-sm text-gray-400 dark:text-gray-500">確認中...</p>
 
-      <%# 購読していない場合に表示するボタン。 %>
-      <button id="push-subscribe-btn"
-              data-action="click->push-notification#subscribe"
-              class="hidden w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition">
-        通知をオンにする
-      </button>
+  <%# 購読していない場合に表示するボタン。 %>
+  <%# subscribeBtnターゲット %>
+  <button id="push-subscribe-btn"
+          data-push-notification-target="subscribeBtn"
+          data-action="click->push-notification#subscribe"
+          class="hidden w-full px-4 py-2 bg-blue-600 hover:bg-blue-700
+                 text-white text-sm font-medium rounded-lg transition">
+    通知をオンにする
+  </button>
 
-      <%# 購読している場合に表示するボタン。 %>
-      <button id="push-unsubscribe-btn"
-              data-action="click->push-notification#unsubscribe"
-              class="hidden w-full px-4 py-2
-                     bg-gray-100 dark:bg-gray-700
-                     hover:bg-gray-200 dark:hover:bg-gray-600
-                     text-gray-700 dark:text-gray-300
-                     text-sm font-medium rounded-lg transition">
-        通知をオフにする
-      </button>
+  <%# 購読している場合に表示するボタン。 %>
+  <%# unsubscribeBtn ターゲットを追加 %>
+  <button id="push-unsubscribe-btn"
+          data-push-notification-target="unsubscribeBtn"
+          data-action="click->push-notification#unsubscribe"
+          class="hidden w-full px-4 py-2
+                 bg-gray-100 dark:bg-gray-700
+                 hover:bg-gray-200 dark:hover:bg-gray-600
+                 text-gray-700 dark:text-gray-300
+                 text-sm font-medium rounded-lg transition">
+    通知をオフにする
+  </button>
 
-      <%# Service Worker 非対応ブラウザへのメッセージ。初期状態は hidden。 %>
-      <p id="push-not-supported"
-         class="hidden text-sm text-red-500 dark:text-red-400 leading-relaxed">
-        現在の環境ではプッシュ通知を有効にできません。iOSでプッシュ通知を有効にしたい場合は、このアプリをホーム画面に追加してください。
-      </p>
-    </div>
-  </div>
+  <%# Service Worker 非対応ブラウザへのメッセージ。初期状態は hidden。 %>
+  <p id="push-not-supported"
+     class="hidden text-sm text-red-500 dark:text-red-400 leading-relaxed">
+    現在の環境ではプッシュ通知を有効にできません。iOSでプッシュ通知を有効にしたい場合は、このアプリをホーム画面に追加してください。
+  </p>
 </div>

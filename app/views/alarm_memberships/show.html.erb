@@ -34,6 +34,7 @@
         <%= button_to 'アラームをストップ',
               unlock_alarm_alarm_membership_path(@alarm, @membership),
               method: :patch,
+              data: { turbo_submits_with: "ストップ中..." },
               class: "w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white
                       font-semibold rounded-xl transition text-sm" %>
       <% end %>
@@ -53,7 +54,8 @@
 
           <%= button_to alarm_path(@alarm),
               method: :delete,
-              data: { turbo_confirm: '本当に削除しますか?' },
+              data: { turbo_confirm: '本当に削除しますか?',
+                      turbo_submits_with: "削除中..." },
               class: "px-3 py-2
                       bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50
                       text-red-600 dark:text-red-400 text-xs font-semibold rounded-md

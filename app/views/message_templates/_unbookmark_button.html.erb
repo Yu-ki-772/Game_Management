@@ -2,6 +2,7 @@
 <div id="bookmark_button_<%= message_template.id %>">
   <%= button_to bookmark_path(bookmark),
       method: :delete,
+      data: { turbo_submits_with: "..." },
       class: "px-3 py-1.5 bg-amber-400 hover:bg-amber-500 text-white
               text-xs font-semibold rounded-md border border-amber-400 transition" do %>
     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">

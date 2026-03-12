@@ -103,6 +103,7 @@
         </button>
 
         <%= f.submit '作成する',
+            data: { turbo_submits_with: "作成中..." },
             class: "px-5 py-2 text-sm font-semibold rounded-lg
                     bg-emerald-500 hover:bg-emerald-600
                     text-white

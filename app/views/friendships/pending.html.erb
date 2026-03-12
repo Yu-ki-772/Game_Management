@@ -61,6 +61,7 @@
                 <%= button_to friendship_path(pending),
                     method: :patch,
                     params: { action_type: 'accept' },
+                    data: { turbo_submits_with: "承認中..." },
                     class: "px-3.5 py-1.5
                             bg-emerald-500 hover:bg-emerald-600
                             text-white text-xs font-semibold rounded-lg
@@ -71,6 +72,7 @@
                 <%= button_to friendship_path(pending),
                     method: :patch,
                     params: { action_type: 'reject' },
+                    data: { turbo_submits_with: "拒否中..." },
                     class: "px-3.5 py-1.5 text-xs font-medium rounded-lg
                             text-gray-400 dark:text-gray-500
                             border border-gray-200 dark:border-gray-700

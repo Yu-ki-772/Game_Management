@@ -4,6 +4,7 @@
   <%= button_to friendship_path(pending_request_from_user),
       method: :patch,
       params: { action_type: 'accept' },
+      data: { turbo_submits_with: "承認中..." },
       class: "px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-md transition" do %>
     申請を承認
   <% end %>
@@ -12,6 +13,7 @@
   <%= button_to friendships_path,
       method: :post,
       params: { friend_uuid: user.uuid },
+      data: { turbo_submits_with: "申請中..." },
       class: "px-4 py-1.5
               bg-white dark:bg-gray-700
               hover:bg-emerald-50 dark:hover:bg-emerald-900/30
