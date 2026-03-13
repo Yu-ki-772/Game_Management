@@ -38,9 +38,7 @@ class User < ApplicationRecord
   # ブックマークした定型文
   has_many :bookmarks_message_templates, through: :bookmarks, source: :message_template
 
-  has_many :reflection_notes, foreign_key: :user_uuid, primary_key: :uuid, dependent: :destroy
 
-  has_many :tags,             foreign_key: :user_uuid, primary_key: :uuid, dependent: :destroy
   has_many :web_push_subscriptions, foreign_key: :user_uuid, primary_key: :uuid, dependent: :destroy
 
   has_many :diagnosis_results,
@@ -158,8 +156,4 @@ class User < ApplicationRecord
     bookmarks_message_templates.destroy(message_template)
   end
 
-  # reflection_noteのフォームのdatalist用
-  def existing_tags
-    tags.order(:name)
-  end
 end

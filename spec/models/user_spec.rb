@@ -69,19 +69,6 @@ RSpec.describe User, type: :model do
         .source(:message_template)
     end
 
-    it do
-      is_expected.to have_many(:reflection_notes)
-        .with_foreign_key(:user_uuid)
-        .with_primary_key(:uuid)
-        .dependent(:destroy)
-    end
-
-    it do
-      is_expected.to have_many(:tags)
-        .with_foreign_key(:user_uuid)
-        .with_primary_key(:uuid)
-        .dependent(:destroy)
-    end
 
     it do
       is_expected.to have_many(:web_push_subscriptions)
