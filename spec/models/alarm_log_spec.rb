@@ -27,7 +27,6 @@ RSpec.describe AlarmLog, type: :model do
   # バリデーション
   # ============================================================
   describe "validations" do
-
     # アラームのストップは設定時刻から24時間（1440分）前後の範囲内のみ受け付ける
     describe "minutes_to_unlock_range" do
       context "範囲内の場合" do

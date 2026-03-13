@@ -7,7 +7,6 @@ RSpec.describe AlarmMembership, type: :model do
   # アソシエーション
   # ============================================================
   describe "associations" do
-
     it "user に belongs_to している" do
       reflection = AlarmMembership.reflect_on_association(:user)
       expect(reflection.macro).to eq(:belongs_to)
@@ -27,10 +26,8 @@ RSpec.describe AlarmMembership, type: :model do
   # バリデーション
   # ============================================================
   describe "validations" do
-
     # unless: :creator? で条件付きのため、作成者かどうかで分ける
     describe "user_must_be_friend_of_creator" do
-
       context "ユーザーがアラームの作成者である場合（creator? が true）" do
         it "有効である" do
           expect(subject).to be_valid

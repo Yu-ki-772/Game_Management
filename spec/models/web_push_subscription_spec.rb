@@ -27,6 +27,5 @@ RSpec.describe WebPushSubscription, type: :model do
       is_expected.to validate_uniqueness_of(:endpoint)
         .ignoring_case_sensitivity # endpoint はDBに保存時に小文字へ正規化される可能性があるため、大文字での一意性検証を無効化
     end
-
   end
 end

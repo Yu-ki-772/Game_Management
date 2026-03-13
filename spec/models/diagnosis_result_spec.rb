@@ -19,7 +19,6 @@ RSpec.describe DiagnosisResult, type: :model do
   # バリデーション
   # ============================================================
   describe "validations" do
-
     # ---- 軸スコア（4カラム共通：0〜25の範囲）----
     %i[control_score life_score quality_score consistency_score].each do |column|
       describe column do
