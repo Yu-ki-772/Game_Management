@@ -166,3 +166,4 @@ class Alarm < ApplicationRecord
     alarm_memberships.create!(user_uuid: user_uuid)
   end
 end
+
