@@ -1,6 +1,7 @@
 # spec/factories/users.rb
 FactoryBot.define do
   factory :user do
+    uuid     { SecureRandom.uuid }
     name     { Faker::Name.name }
     email    { Faker::Internet.unique.email }
     password { "Password123!" }
