@@ -155,5 +155,4 @@ class User < ApplicationRecord
   def unbookmark(message_template)
     bookmarks_message_templates.destroy(message_template)
   end
-
 end
