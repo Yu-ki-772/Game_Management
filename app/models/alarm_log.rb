@@ -6,13 +6,6 @@ class AlarmLog < ApplicationRecord
   # バリデーション
   validate :minutes_to_unlock_range
 
-  # コールバック
-
-
-  # 60分以上遅れた場合を「長すぎ」と判定する。
-  def ignored?
-    minutes_to_unlock >= 60
-  end
 
   private
 
