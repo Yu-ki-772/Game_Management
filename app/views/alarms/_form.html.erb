@@ -14,7 +14,7 @@
     <% end %>
     <%= f.text_field :label,
         placeholder: 'アラーム',
-        class: "w-full px-3.5 py-2.5
+        class: "w-full min-w-0 max-w-full px-3.5 py-2.5
                 border border-gray-200 dark:border-gray-600 rounded-lg
                 text-sm text-gray-900 dark:text-gray-100
                 bg-white dark:bg-gray-700/60
@@ -26,13 +26,13 @@
   </div>
 
   <%# ── 開始時刻 ── %>
-  <div class="space-y-1.5">
+  <div class="space-y-1.5 overflow-x-hidden">
     <%= f.label :started_at, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
       開始時刻
       <span class="text-xs font-normal text-gray-400 dark:text-gray-500 ml-1">任意</span>
     <% end %>
     <%= f.datetime_field :started_at,
-        class: "w-full min-w-0 px-3.5 py-2.5
+        class: "w-full min-w-0 max-w-full px-3.5 py-2.5
                 border border-gray-200 dark:border-gray-600 rounded-lg
                 text-sm text-gray-900 dark:text-gray-100
                 bg-white dark:bg-gray-700/60
@@ -45,12 +45,12 @@
   </div>
 
   <%# ── アラーム日時 ── %>
-  <div class="space-y-1.5">
+  <div class="space-y-1.5 overflow-x-hidden">
     <%= f.label :scheduled_at, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
       アラーム日時 <span class="text-red-400">*</span>
     <% end %>
     <%= f.datetime_field :scheduled_at,
-        class: "w-full min-w-0 px-3.5 py-2.5
+        class: "w-full min-w-0 max-w-full px-3.5 py-2.5
                 border border-gray-200 dark:border-gray-600 rounded-lg
                 text-sm text-gray-900 dark:text-gray-100
                 bg-white dark:bg-gray-700/60
@@ -69,7 +69,7 @@
     <%= f.select :reminder_minutes,
         [['なし', nil], ['5分前', 5], ['10分前', 10], ['15分前', 15], ['30分前', 30], ['1時間前', 60]],
         { include_blank: false },
-        class: "w-full px-3.5 py-2.5
+        class: "w-full min-w-0 max-w-full px-3.5 py-2.5
                 border border-gray-200 dark:border-gray-600 rounded-lg
                 text-sm text-gray-900 dark:text-gray-100
                 bg-white dark:bg-gray-700/60
