@@ -31,7 +31,6 @@ RSpec.describe MessageTemplate, type: :model do
     it { is_expected.to validate_length_of(:template).is_at_most(255) }
   end
 
-  # spec/models/message_template_spec.rb（既存ファイルに追記）
 
   describe "class methods" do
     describe ".existing_reasons" do

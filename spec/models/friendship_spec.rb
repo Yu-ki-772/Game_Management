@@ -46,7 +46,6 @@ RSpec.describe Friendship, type: :model do
     end
   end
 
-  # spec/models/friendship_spec.rb（既存ファイルに追記）
 
   describe "instance methods" do
     describe "#partner" do
@@ -54,7 +53,7 @@ RSpec.describe Friendship, type: :model do
         it "nil を返す" do
           user       = create(:user)
           other_user = create(:user)
-          # デフォルトは pending 状態
+          # statusのデフォルトは pending
           friendship = create(:friendship, user: user, friend: other_user)
 
           expect(friendship.partner(user)).to be_nil
@@ -86,7 +85,6 @@ RSpec.describe Friendship, type: :model do
               status: :accepted
             )
 
-            # other_user 視点から見ると、相手は user になる
             expect(friendship.partner(other_user)).to eq(user)
           end
         end

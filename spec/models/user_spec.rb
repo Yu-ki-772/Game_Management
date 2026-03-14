@@ -192,7 +192,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  # spec/models/user_spec.rb（既存ファイルに追記）
 
   # ============================================================
   # インスタンスメソッド
@@ -288,8 +287,7 @@ RSpec.describe User, type: :model do
         user             = create(:user)
         message_template = create(:message_template)
 
-        # 事前にブックマークしておく
-        user.bookmark(message_template)
+        user.bookmark(message_template) # 事前にブックマークしておく
         user.unbookmark(message_template)
 
         expect(user.bookmarks_message_templates).not_to include(message_template)

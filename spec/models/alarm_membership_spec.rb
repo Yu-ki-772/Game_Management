@@ -26,7 +26,6 @@ RSpec.describe AlarmMembership, type: :model do
   # バリデーション
   # ============================================================
   describe "validations" do
-    # unless: :creator? で条件付きのため、作成者かどうかで分ける
     describe "user_must_be_friend_of_creator" do
       context "ユーザーがアラームの作成者である場合（creator? が true）" do
         it "有効である" do
@@ -67,7 +66,6 @@ RSpec.describe AlarmMembership, type: :model do
     end
   end
 
-  # spec/models/alarm_membership_spec.rb（既存ファイルに追記）
 
   describe "instance methods" do
     before do
@@ -104,8 +102,6 @@ RSpec.describe AlarmMembership, type: :model do
     end
 
     describe "#unlock" do
-      # unlock は AlarmLog の作成と Alarm の更新という
-      # 複数モデルへの副作用を持つため、全て create を使う。
 
       context "すでにアンロック済みの場合" do
         it "false を返す" do
@@ -125,8 +121,6 @@ RSpec.describe AlarmMembership, type: :model do
 
       context "AlarmLog のバリデーションが失敗する場合" do
         it "false を返す" do
-          # scheduled_at を24時間以上前に設定することで
-          # minutes_to_unlock が -1440 を超えてバリデーション失敗を引き起こす
           alarm = create(:alarm, scheduled_at: 25.hours.from_now)
           alarm.update_column(:scheduled_at, 25.hours.ago)
           membership = alarm.alarm_memberships.first
@@ -173,8 +167,6 @@ RSpec.describe AlarmMembership, type: :model do
           alarm.update_column(:scheduled_at, 1.minute.ago)
           membership = alarm.alarm_memberships.first
 
-          # private メソッドだが allow でスタブ可能。
-          #「まだ全員済みでない」状態を外部依存なしに再現する。
           allow(membership).to receive(:all_members_unlocked?).and_return(false)
 
           membership.unlock

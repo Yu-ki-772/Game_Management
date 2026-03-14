@@ -122,14 +122,11 @@ RSpec.describe Alarm, type: :model do
     end
   end
 
-  # spec/models/alarm_spec.rb（既存ファイルに追記）
 
   # ============================================================
   # インスタンスメソッド
   # ============================================================
   describe "instance methods" do
-    # schedule_notification_job は GoodJob に依存しているため、
-    # コールバックをスタブしてテストへの干渉を防ぐ。
     before do
       allow_any_instance_of(Alarm).to receive(:schedule_notification_job)
     end
@@ -185,8 +182,6 @@ RSpec.describe Alarm, type: :model do
       context "alarm_membership が存在する場合" do
         it "true を返す" do
           alarm = create(:alarm)
-          # after_create で作成者のメンバーシップが自動的に作成されるため
-          # 追加の操作なしで true になる
           expect(alarm.belonging_to_membership?).to be true
         end
       end
@@ -194,7 +189,6 @@ RSpec.describe Alarm, type: :model do
       context "alarm_membership が存在しない場合" do
         it "false を返す" do
           alarm = create(:alarm)
-          # 全てのメンバーシップを削除して空の状態を作る
           alarm.alarm_memberships.destroy_all
           expect(alarm.belonging_to_membership?).to be false
         end
@@ -237,8 +231,6 @@ RSpec.describe Alarm, type: :model do
           alarm  = build(:alarm)
           member = build(:user, uuid: SecureRandom.uuid)
 
-          # alarm_memberships.any? の結果をスタブして
-          # DBへのアクセスなしに「メンバーが存在する」状態を作る
           allow(alarm.alarm_memberships).to receive(:any?).and_return(true)
 
           expect(alarm.accessible_by?(member)).to be true

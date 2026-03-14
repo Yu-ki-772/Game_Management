@@ -53,9 +53,7 @@ RSpec.describe DiagnosisResult, type: :model do
     # #zone
     # ----------------------------------------------------------
     describe "#zone" do
-      # 境界値を中心に検証する。
-      # case式の切り替わり点（29/30、54/55、79/80）を押さえることで、
-      # < と <= の書き間違いなどのバグを確実に検出できる。
+      # 境界値を中心に検証
 
       context "total_score が 80 以上の場合" do
         it "境界値の 80 のとき green を返す" do
@@ -101,9 +99,6 @@ RSpec.describe DiagnosisResult, type: :model do
       end
     end
 
-    # zone? 系は zone の結果に完全に依存するため、
-    # 代表値1つで zone との整合性だけを確認する。
-    # 境界値の網羅は #zone のテストが担っている。
     describe "#green?" do
       it "zone が green のとき true を返す" do
         expect(build(:diagnosis_result, total_score: 80).green?).to be true
@@ -148,8 +143,6 @@ RSpec.describe DiagnosisResult, type: :model do
     # #axis_items
     # ----------------------------------------------------------
     describe "#axis_items" do
-      # 共通のテストデータを let に切り出して重複を排除する。
-      # ただし control_score を整数で渡すテストだけは個別に build する。
       let(:result) do
         build(:diagnosis_result,
           control_score:     15.0,
@@ -173,7 +166,7 @@ RSpec.describe DiagnosisResult, type: :model do
       end
 
       it "control_score が Float として score に設定される" do
-        # to_f が呼ばれているため、整数で渡しても Float になるはずである
+        # to_f が呼ばれているため、整数で渡しても Float になるはず
         result = build(:diagnosis_result,
           control_score:     15,
           life_score:        5.0,
@@ -191,10 +184,7 @@ RSpec.describe DiagnosisResult, type: :model do
   # ============================================================
   describe "class methods" do
     describe ".build_from_answers" do
-      # 全問題に回答値 1 を設定したときのスコアを手動で計算して期待値とする。
-      # 実装と同じロジックで計算すると実装のバグをそのままコピーしてしまうため、
-      # 独立した手動計算の結果を期待値として使う。
-      #
+      # ↓ 計算結果
       # reversed: false の問いは 6-1=5、reversed: true の問いは 1 になる。
       # control:     q1(5) + q2(1)          = 6  → 6.0/10*25  = 15.0
       # life:        q3(1) + q4(1) + q5(1)  = 3  → 3.0/15*25  = 5.0
@@ -202,6 +192,7 @@ RSpec.describe DiagnosisResult, type: :model do
       # consistency: q9(5) + q10(1)         = 6  → 6.0/10*25  = 15.0
       # total:       15.0 + 5.0 + 11.7 + 15.0   = 46.7
       let(:user) { build(:user) }
+      # 全て１と回答
       let(:answers) do
         (1..10).each_with_object({}) { |i, h| h["q#{i}"] = "1" }
       end
