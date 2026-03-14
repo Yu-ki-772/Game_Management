@@ -121,4 +121,137 @@ RSpec.describe Alarm, type: :model do
       end
     end
   end
+
+  # spec/models/alarm_spec.rb（既存ファイルに追記）
+
+  # ============================================================
+  # インスタンスメソッド
+  # ============================================================
+  describe "instance methods" do
+    # schedule_notification_job は GoodJob に依存しているため、
+    # コールバックをスタブしてテストへの干渉を防ぐ。
+    before do
+      allow_any_instance_of(Alarm).to receive(:schedule_notification_job)
+    end
+
+    # ----------------------------------------------------------
+    # #start_time
+    # ----------------------------------------------------------
+    describe "#start_time" do
+      context "started_at が存在する場合" do
+        it "started_at を返す" do
+          alarm = build(:alarm, :with_started_at)
+          expect(alarm.start_time).to eq(alarm.started_at)
+        end
+      end
+
+      context "started_at が存在しない場合" do
+        it "scheduled_at を返す" do
+          alarm = build(:alarm, started_at: nil)
+          expect(alarm.start_time).to eq(alarm.scheduled_at)
+        end
+      end
+    end
+
+    # ----------------------------------------------------------
+    # #time_text
+    # ----------------------------------------------------------
+    describe "#time_text" do
+      context "started_at が存在する場合" do
+        it "started_at と scheduled_at を HH:MM - HH:MM 形式で返す" do
+          alarm = build(:alarm,
+            started_at:   Time.zone.parse("2026-01-01 08:00"),
+            scheduled_at: Time.zone.parse("2026-01-01 09:00")
+          )
+          expect(alarm.time_text).to eq("08:00 - 09:00")
+        end
+      end
+
+      context "started_at が存在しない場合" do
+        it "scheduled_at を HH:MM 形式で返す" do
+          alarm = build(:alarm,
+            started_at:   nil,
+            scheduled_at: Time.zone.parse("2026-01-01 09:00")
+          )
+          expect(alarm.time_text).to eq("09:00")
+        end
+      end
+    end
+
+    # ----------------------------------------------------------
+    # #belonging_to_membership?
+    # ----------------------------------------------------------
+    describe "#belonging_to_membership?" do
+      context "alarm_membership が存在する場合" do
+        it "true を返す" do
+          alarm = create(:alarm)
+          # after_create で作成者のメンバーシップが自動的に作成されるため
+          # 追加の操作なしで true になる
+          expect(alarm.belonging_to_membership?).to be true
+        end
+      end
+
+      context "alarm_membership が存在しない場合" do
+        it "false を返す" do
+          alarm = create(:alarm)
+          # 全てのメンバーシップを削除して空の状態を作る
+          alarm.alarm_memberships.destroy_all
+          expect(alarm.belonging_to_membership?).to be false
+        end
+      end
+    end
+
+    # ----------------------------------------------------------
+    # #created_by?
+    # ----------------------------------------------------------
+    describe "#created_by?" do
+      context "渡したユーザーがアラームの作成者である場合" do
+        it "true を返す" do
+          alarm = build(:alarm)
+          expect(alarm.created_by?(alarm.creator)).to be true
+        end
+      end
+
+      context "渡したユーザーがアラームの作成者でない場合" do
+        it "false を返す" do
+          alarm      = build(:alarm)
+          other_user = build(:user)
+          expect(alarm.created_by?(other_user)).to be false
+        end
+      end
+    end
+
+    # ----------------------------------------------------------
+    # #accessible_by?
+    # ----------------------------------------------------------
+    describe "#accessible_by?" do
+      context "渡したユーザーがアラームの作成者である場合" do
+        it "true を返す" do
+          alarm = build(:alarm)
+          expect(alarm.accessible_by?(alarm.creator)).to be true
+        end
+      end
+
+      context "渡したユーザーがメンバーシップに存在する場合" do
+        it "true を返す" do
+          alarm  = build(:alarm)
+          member = build(:user, uuid: SecureRandom.uuid)
+
+          # alarm_memberships.any? の結果をスタブして
+          # DBへのアクセスなしに「メンバーが存在する」状態を作る
+          allow(alarm.alarm_memberships).to receive(:any?).and_return(true)
+
+          expect(alarm.accessible_by?(member)).to be true
+        end
+      end
+
+      context "渡したユーザーが作成者でもメンバーでもない場合" do
+        it "false を返す" do
+          alarm      = create(:alarm)
+          other_user = build(:user)
+          expect(alarm.accessible_by?(other_user)).to be false
+        end
+      end
+    end
+  end
 end
