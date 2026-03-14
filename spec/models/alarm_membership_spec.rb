@@ -102,7 +102,6 @@ RSpec.describe AlarmMembership, type: :model do
     end
 
     describe "#unlock" do
-
       context "すでにアンロック済みの場合" do
         it "false を返す" do
           alarm      = create(:alarm)
