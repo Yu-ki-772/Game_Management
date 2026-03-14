@@ -66,4 +66,122 @@ RSpec.describe AlarmMembership, type: :model do
       end
     end
   end
+
+  # spec/models/alarm_membership_spec.rb（既存ファイルに追記）
+
+  describe "instance methods" do
+    before do
+      allow_any_instance_of(Alarm).to receive(:schedule_notification_job)
+    end
+
+    # ----------------------------------------------------------
+    # #unlocked?
+    # ----------------------------------------------------------
+    describe "#unlocked?" do
+      context "ユーザーがアラームをストップ済みの場合" do
+        it "true を返す" do
+          alarm      = create(:alarm)
+          membership = alarm.alarm_memberships.first
+          # alarm_log を直接作成してストップ済みの状態を作る
+          alarm.alarm_logs.create!(
+            user_uuid:         membership.user_uuid,
+            unlocked_at:       Time.current,
+            minutes_to_unlock: 0
+          )
+
+          expect(membership.unlocked?).to be true
+        end
+      end
+
+      context "ユーザーがアラームをストップしていない場合" do
+        it "false を返す" do
+          alarm      = create(:alarm)
+          membership = alarm.alarm_memberships.first
+
+          expect(membership.unlocked?).to be false
+        end
+      end
+    end
+
+    describe "#unlock" do
+      # unlock は AlarmLog の作成と Alarm の更新という
+      # 複数モデルへの副作用を持つため、全て create を使う。
+
+      context "すでにアンロック済みの場合" do
+        it "false を返す" do
+          alarm      = create(:alarm)
+          membership = alarm.alarm_memberships.first
+
+          # 事前にアンロック済みの状態を作る
+          alarm.alarm_logs.create!(
+            user_uuid:         membership.user_uuid,
+            unlocked_at:       Time.current,
+            minutes_to_unlock: 0
+          )
+
+          expect(membership.unlock).to be false
+        end
+      end
+
+      context "AlarmLog のバリデーションが失敗する場合" do
+        it "false を返す" do
+          # scheduled_at を24時間以上前に設定することで
+          # minutes_to_unlock が -1440 を超えてバリデーション失敗を引き起こす
+          alarm = create(:alarm, scheduled_at: 25.hours.from_now)
+          alarm.update_column(:scheduled_at, 25.hours.ago)
+          membership = alarm.alarm_memberships.first
+
+          expect(membership.unlock).to be false
+        end
+      end
+
+      context "正常にアンロックできた場合" do
+        it "AlarmLog を返す" do
+          alarm      = create(:alarm)
+          alarm.update_column(:scheduled_at, 1.minute.ago)
+          membership = alarm.alarm_memberships.first
+
+          result = membership.unlock
+
+          expect(result).to be_a(AlarmLog)
+        end
+
+        it "AlarmLog が DB に保存される" do
+          alarm      = create(:alarm)
+          alarm.update_column(:scheduled_at, 1.minute.ago)
+          membership = alarm.alarm_memberships.first
+
+          expect { membership.unlock }.to change(AlarmLog, :count).by(1)
+        end
+      end
+
+      context "全員がアンロック済みになった場合" do
+        it "alarm.unlocked が true になる" do
+          alarm      = create(:alarm)
+          alarm.update_column(:scheduled_at, 1.minute.ago)
+          membership = alarm.alarm_memberships.first
+
+          membership.unlock
+
+          expect(alarm.reload.unlocked).to be true
+        end
+      end
+
+      context "まだ全員がアンロック済みでない場合" do
+        it "alarm.unlocked は false のまま" do
+          alarm      = create(:alarm)
+          alarm.update_column(:scheduled_at, 1.minute.ago)
+          membership = alarm.alarm_memberships.first
+
+          # private メソッドだが allow でスタブ可能。
+          #「まだ全員済みでない」状態を外部依存なしに再現する。
+          allow(membership).to receive(:all_members_unlocked?).and_return(false)
+
+          membership.unlock
+
+          expect(alarm.reload.unlocked).to be false
+        end
+      end
+    end
+  end
 end
