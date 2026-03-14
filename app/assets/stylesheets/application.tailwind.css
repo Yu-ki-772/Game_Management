@@ -122,6 +122,12 @@ dialog[open]::backdrop {
 }
 
 @layer base {
+  input[type="datetime-local"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
   ::-webkit-datetime-edit,
   ::-webkit-datetime-edit-fields-wrapper,
   ::-webkit-datetime-edit-text,
