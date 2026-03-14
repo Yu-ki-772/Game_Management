@@ -19,7 +19,8 @@ RSpec.describe DiagnosisResult, type: :model do
   # バリデーション
   # ============================================================
   describe "validations" do
-    # ---- 軸スコア（4カラム共通：0〜25の範囲）----
+    # モデルでは %i[].each でまとめて定義されているが、
+    # テストは個別に書くことでどのカラムが壊れているかを明確に特定できる。
     %i[control_score life_score quality_score consistency_score].each do |column|
       describe column do
         it { is_expected.to validate_presence_of(column) }
@@ -32,7 +33,6 @@ RSpec.describe DiagnosisResult, type: :model do
       end
     end
 
-    # ---- total_score（0〜100の範囲）----
     describe :total_score do
       it { is_expected.to validate_presence_of(:total_score) }
 
@@ -44,17 +44,163 @@ RSpec.describe DiagnosisResult, type: :model do
     end
   end
 
-  # spec/models/diagnosis_result_spec.rb（既存ファイルに追記）
+  # ============================================================
+  # インスタンスメソッド
+  # ============================================================
+  describe "instance methods" do
 
+    # ----------------------------------------------------------
+    # #zone
+    # ----------------------------------------------------------
+    describe "#zone" do
+      # 境界値を中心に検証する。
+      # case式の切り替わり点（29/30、54/55、79/80）を押さえることで、
+      # < と <= の書き間違いなどのバグを確実に検出できる。
+
+      context "total_score が 80 以上の場合" do
+        it "境界値の 80 のとき green を返す" do
+          result = build(:diagnosis_result, total_score: 80)
+          expect(result.zone).to eq("green")
+        end
+
+        it "100 のとき green を返す" do
+          result = build(:diagnosis_result, total_score: 100)
+          expect(result.zone).to eq("green")
+        end
+      end
+
+      context "total_score が 55 以上 79 以下の場合" do
+        it "境界値の 55 のとき yellow を返す" do
+          result = build(:diagnosis_result, total_score: 55)
+          expect(result.zone).to eq("yellow")
+        end
+
+        it "境界値の 79 のとき yellow を返す" do
+          result = build(:diagnosis_result, total_score: 79)
+          expect(result.zone).to eq("yellow")
+        end
+      end
+
+      context "total_score が 30 以上 54 以下の場合" do
+        it "境界値の 30 のとき orange を返す" do
+          result = build(:diagnosis_result, total_score: 30)
+          expect(result.zone).to eq("orange")
+        end
+
+        it "境界値の 54 のとき orange を返す" do
+          result = build(:diagnosis_result, total_score: 54)
+          expect(result.zone).to eq("orange")
+        end
+      end
+
+      context "total_score が 29 以下の場合" do
+        it "境界値の 29 のとき red を返す" do
+          result = build(:diagnosis_result, total_score: 29)
+          expect(result.zone).to eq("red")
+        end
+      end
+    end
+
+    # zone? 系は zone の結果に完全に依存するため、
+    # 代表値1つで zone との整合性だけを確認する。
+    # 境界値の網羅は #zone のテストが担っている。
+    describe "#green?" do
+      it "zone が green のとき true を返す" do
+        expect(build(:diagnosis_result, total_score: 80).green?).to be true
+      end
+
+      it "zone が green でないとき false を返す" do
+        expect(build(:diagnosis_result, total_score: 79).green?).to be false
+      end
+    end
+
+    describe "#yellow?" do
+      it "zone が yellow のとき true を返す" do
+        expect(build(:diagnosis_result, total_score: 55).yellow?).to be true
+      end
+
+      it "zone が yellow でないとき false を返す" do
+        expect(build(:diagnosis_result, total_score: 54).yellow?).to be false
+      end
+    end
+
+    describe "#orange?" do
+      it "zone が orange のとき true を返す" do
+        expect(build(:diagnosis_result, total_score: 30).orange?).to be true
+      end
+
+      it "zone が orange でないとき false を返す" do
+        expect(build(:diagnosis_result, total_score: 29).orange?).to be false
+      end
+    end
+
+    describe "#red?" do
+      it "zone が red のとき true を返す" do
+        expect(build(:diagnosis_result, total_score: 29).red?).to be true
+      end
+
+      it "zone が red でないとき false を返す" do
+        expect(build(:diagnosis_result, total_score: 30).red?).to be false
+      end
+    end
+
+    # ----------------------------------------------------------
+    # #axis_items
+    # ----------------------------------------------------------
+    describe "#axis_items" do
+      # 共通のテストデータを let に切り出して重複を排除する。
+      # ただし control_score を整数で渡すテストだけは個別に build する。
+      let(:result) do
+        build(:diagnosis_result,
+          control_score:     15.0,
+          life_score:        5.0,
+          quality_score:     11.7,
+          consistency_score: 15.0,
+          total_score:       46.7
+        )
+      end
+
+      it "4つの軸データを返す" do
+        expect(result.axis_items.length).to eq(4)
+      end
+
+      it "各軸データが icon・name・score キーを持つ" do
+        result.axis_items.each do |item|
+          expect(item).to have_key(:icon)
+          expect(item).to have_key(:name)
+          expect(item).to have_key(:score)
+        end
+      end
+
+      it "control_score が Float として score に設定される" do
+        # to_f が呼ばれているため、整数で渡しても Float になるはずである
+        result = build(:diagnosis_result,
+          control_score:     15,
+          life_score:        5.0,
+          quality_score:     11.7,
+          consistency_score: 15.0,
+          total_score:       46.7
+        )
+        expect(result.axis_items.first[:score]).to be_a(Float)
+      end
+    end
+  end
+
+  # ============================================================
+  # クラスメソッド
+  # ============================================================
   describe "class methods" do
     describe ".build_from_answers" do
       # 全問題に回答値 1 を設定したときのスコアを手動で計算して期待値とする。
+      # 実装と同じロジックで計算すると実装のバグをそのままコピーしてしまうため、
+      # 独立した手動計算の結果を期待値として使う。
+      #
       # reversed: false の問いは 6-1=5、reversed: true の問いは 1 になる。
-      # control:     q1(5) + q2(1)                   = 6  → 6.0/10*25  = 15.0
-      # life:        q3(1) + q4(1) + q5(1)            = 3  → 3.0/15*25  = 5.0
-      # quality:     q6(5) + q7(1) + q8(1)            = 7  → 7.0/15*25  = 11.7
-      # consistency: q9(5) + q10(1)                   = 6  → 6.0/10*25  = 15.0
-      # total: 15.0 + 5.0 + 11.7 + 15.0              = 46.7
+      # control:     q1(5) + q2(1)          = 6  → 6.0/10*25  = 15.0
+      # life:        q3(1) + q4(1) + q5(1)  = 3  → 3.0/15*25  = 5.0
+      # quality:     q6(5) + q7(1) + q8(1)  = 7  → 7.0/15*25  = 11.7
+      # consistency: q9(5) + q10(1)         = 6  → 6.0/10*25  = 15.0
+      # total:       15.0 + 5.0 + 11.7 + 15.0   = 46.7
       let(:user) { build(:user) }
       let(:answers) do
         (1..10).each_with_object({}) { |i, h| h["q#{i}"] = "1" }
@@ -95,47 +241,5 @@ RSpec.describe DiagnosisResult, type: :model do
         expect(result.total_score).to eq(46.7)
       end
     end
-    
-    describe "#axis_items" do
-      it "4つの軸データを返す" do
-        result = build(:diagnosis_result,
-          control_score:     15.0,
-          life_score:        5.0,
-          quality_score:     11.7,
-          consistency_score: 15.0,
-          total_score:       46.7
-        )
-        expect(result.axis_items.length).to eq(4)
-      end
-
-      it "各軸データが icon・name・score キーを持つ" do
-        result = build(:diagnosis_result,
-          control_score:     15.0,
-          life_score:        5.0,
-          quality_score:     11.7,
-          consistency_score: 15.0,
-          total_score:       46.7
-        )
-        result.axis_items.each do |item|
-          expect(item).to have_key(:icon)
-          expect(item).to have_key(:name)
-          expect(item).to have_key(:score)
-        end
-      end
-
-      it "control_score が Float として score に設定される" do
-        result = build(:diagnosis_result,
-          control_score:     15,  # 整数で渡す
-          life_score:        5.0,
-          quality_score:     11.7,
-          consistency_score: 15.0,
-          total_score:       46.7
-        )
-        # to_f が呼ばれているため Float になっているはずである
-        expect(result.axis_items.first[:score]).to be_a(Float)
-      end
-    end
   end
-
-  
 end
