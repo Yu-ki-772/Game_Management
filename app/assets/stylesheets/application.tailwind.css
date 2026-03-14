@@ -122,12 +122,15 @@ dialog[open]::backdrop {
 }
 
 @layer base {
+  /* display: block にすることで width: 100% を Safari に認識させる */
+  /* box-sizing: border-box で padding 分の幅増加を防ぐ */
   input[type="datetime-local"] {
+    display: block;
     width: 100%;
-    max-width: 100%;
     box-sizing: border-box;
   }
 
+  /* display: block にすると内部パディングが崩れるので疑似要素でリセット */
   ::-webkit-datetime-edit,
   ::-webkit-datetime-edit-fields-wrapper,
   ::-webkit-datetime-edit-text,
