@@ -191,4 +191,147 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+
+  # ============================================================
+  # インスタンスメソッド
+  # ============================================================
+  describe "instance methods" do
+    # ----------------------------------------------------------
+    # #send_friend_request
+    # ----------------------------------------------------------
+    describe "#send_friend_request" do
+      let(:user)       { create(:user) }
+      let(:other_user) { create(:user) }
+      let(:friendship) { user.send_friend_request(other_user) }
+
+      it "Friendship が DB に保存される" do
+        expect(friendship).to be_persisted
+      end
+
+      it "friend が other_user である" do
+        expect(friendship.friend).to eq(other_user)
+      end
+
+      it "status が pending である" do
+        expect(friendship.status).to eq("pending")
+      end
+    end
+
+    # ----------------------------------------------------------
+    # #pending_request_from?
+    # ----------------------------------------------------------
+    describe "#pending_request_from?" do
+      context "対象ユーザから pending のフレンドリクエストが来ている場合" do
+        it "その Friendship を返す" do
+          user       = create(:user)
+          other_user = create(:user)
+          # other_user → user への pending リクエストを作成する
+          friendship = create(:friendship, user: other_user, friend: user)
+
+          expect(user.pending_request_from?(other_user)).to eq(friendship)
+        end
+      end
+
+      context "対象ユーザからフレンドリクエストが来ていない場合" do
+        it "nil を返す" do
+          user       = create(:user)
+          other_user = create(:user)
+
+          expect(user.pending_request_from?(other_user)).to be_nil
+        end
+      end
+    end
+
+    # ----------------------------------------------------------
+    # #friendship_with
+    # ----------------------------------------------------------
+    describe "#friendship_with" do
+      context "対象ユーザとの Friendship が存在する場合" do
+        it "その Friendship を返す" do
+          user       = create(:user)
+          other_user = create(:user)
+          friendship = create(:friendship, user: user, friend: other_user)
+
+          expect(user.friendship_with(other_user)).to eq(friendship)
+        end
+      end
+
+      context "対象ユーザとの Friendship が存在しない場合" do
+        it "nil を返す" do
+          user       = create(:user)
+          other_user = create(:user)
+
+          expect(user.friendship_with(other_user)).to be_nil
+        end
+      end
+    end
+
+    # ----------------------------------------------------------
+    # #bookmark / #unbookmark
+    # ----------------------------------------------------------
+    describe "#bookmark" do
+      it "message_template をブックマークに追加する" do
+        user             = create(:user)
+        message_template = create(:message_template)
+
+        user.bookmark(message_template)
+
+        expect(user.bookmarks_message_templates).to include(message_template)
+      end
+    end
+
+    describe "#unbookmark" do
+      it "message_template をブックマークから削除する" do
+        user             = create(:user)
+        message_template = create(:message_template)
+
+        user.bookmark(message_template) # 事前にブックマークしておく
+        user.unbookmark(message_template)
+
+        expect(user.bookmarks_message_templates).not_to include(message_template)
+      end
+    end
+
+    # ----------------------------------------------------------
+    # #avatar_image?
+    # ----------------------------------------------------------
+    describe "#avatar_image?" do
+      context "jpeg または png が添付されている場合" do
+        it "true を返す" do
+          user = build(:user)
+          attachment_double = double("attachment",
+            attached?: true,
+            content_type: "image/jpeg"
+          )
+          allow(user).to receive(:avatar).and_return(attachment_double)
+
+          expect(user.avatar_image?).to be true
+        end
+      end
+
+      context "jpeg・png 以外のファイルが添付されている場合" do
+        it "false を返す" do
+          user = build(:user)
+          attachment_double = double("attachment",
+            attached?: true,
+            content_type: "image/gif"
+          )
+          allow(user).to receive(:avatar).and_return(attachment_double)
+
+          expect(user.avatar_image?).to be false
+        end
+      end
+
+      context "アバターが添付されていない場合" do
+        it "false を返す" do
+          user = build(:user)
+          attachment_double = double("attachment", attached?: false)
+          allow(user).to receive(:avatar).and_return(attachment_double)
+
+          expect(user.avatar_image?).to be false
+        end
+      end
+    end
+  end
 end

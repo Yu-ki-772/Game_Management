@@ -34,7 +34,6 @@ RSpec.describe AlarmLog, type: :model do
           expect(build(:alarm_log, minutes_to_unlock: 0)).to be_valid
         end
 
-        # 境界値：-1440 と 1440 はちょうど条件式の端
         it "-1440分（境界値）のとき有効である" do
           expect(build(:alarm_log, minutes_to_unlock: -1440)).to be_valid
         end

@@ -26,7 +26,6 @@ RSpec.describe AlarmMembership, type: :model do
   # バリデーション
   # ============================================================
   describe "validations" do
-    # unless: :creator? で条件付きのため、作成者かどうかで分ける
     describe "user_must_be_friend_of_creator" do
       context "ユーザーがアラームの作成者である場合（creator? が true）" do
         it "有効である" do
@@ -62,6 +61,116 @@ RSpec.describe AlarmMembership, type: :model do
             membership.valid?
             expect(membership.errors[:user_uuid]).not_to be_empty
           end
+        end
+      end
+    end
+  end
+
+
+  describe "instance methods" do
+    before do
+      allow_any_instance_of(Alarm).to receive(:schedule_notification_job)
+    end
+
+    # ----------------------------------------------------------
+    # #unlocked?
+    # ----------------------------------------------------------
+    describe "#unlocked?" do
+      context "ユーザーがアラームをストップ済みの場合" do
+        it "true を返す" do
+          alarm      = create(:alarm)
+          membership = alarm.alarm_memberships.first
+          # alarm_log を直接作成してストップ済みの状態を作る
+          alarm.alarm_logs.create!(
+            user_uuid:         membership.user_uuid,
+            unlocked_at:       Time.current,
+            minutes_to_unlock: 0
+          )
+
+          expect(membership.unlocked?).to be true
+        end
+      end
+
+      context "ユーザーがアラームをストップしていない場合" do
+        it "false を返す" do
+          alarm      = create(:alarm)
+          membership = alarm.alarm_memberships.first
+
+          expect(membership.unlocked?).to be false
+        end
+      end
+    end
+
+    describe "#unlock" do
+      context "すでにアンロック済みの場合" do
+        it "false を返す" do
+          alarm      = create(:alarm)
+          membership = alarm.alarm_memberships.first
+
+          # 事前にアンロック済みの状態を作る
+          alarm.alarm_logs.create!(
+            user_uuid:         membership.user_uuid,
+            unlocked_at:       Time.current,
+            minutes_to_unlock: 0
+          )
+
+          expect(membership.unlock).to be false
+        end
+      end
+
+      context "AlarmLog のバリデーションが失敗する場合" do
+        it "false を返す" do
+          alarm = create(:alarm, scheduled_at: 25.hours.from_now)
+          alarm.update_column(:scheduled_at, 25.hours.ago)
+          membership = alarm.alarm_memberships.first
+
+          expect(membership.unlock).to be false
+        end
+      end
+
+      context "正常にアンロックできた場合" do
+        it "AlarmLog を返す" do
+          alarm      = create(:alarm)
+          alarm.update_column(:scheduled_at, 1.minute.ago)
+          membership = alarm.alarm_memberships.first
+
+          result = membership.unlock
+
+          expect(result).to be_a(AlarmLog)
+        end
+
+        it "AlarmLog が DB に保存される" do
+          alarm      = create(:alarm)
+          alarm.update_column(:scheduled_at, 1.minute.ago)
+          membership = alarm.alarm_memberships.first
+
+          expect { membership.unlock }.to change(AlarmLog, :count).by(1)
+        end
+      end
+
+      context "全員がアンロック済みになった場合" do
+        it "alarm.unlocked が true になる" do
+          alarm      = create(:alarm)
+          alarm.update_column(:scheduled_at, 1.minute.ago)
+          membership = alarm.alarm_memberships.first
+
+          membership.unlock
+
+          expect(alarm.reload.unlocked).to be true
+        end
+      end
+
+      context "まだ全員がアンロック済みでない場合" do
+        it "alarm.unlocked は false のまま" do
+          alarm      = create(:alarm)
+          alarm.update_column(:scheduled_at, 1.minute.ago)
+          membership = alarm.alarm_memberships.first
+
+          allow(membership).to receive(:all_members_unlocked?).and_return(false)
+
+          membership.unlock
+
+          expect(alarm.reload.unlocked).to be false
         end
       end
     end
