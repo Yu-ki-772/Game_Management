@@ -23,30 +23,7 @@ class AlarmsController < ApplicationController
 
   # カレンダー
   def calendar
-    # 現在の日付から表示する月を取得（デフォルトは今月）
-    @start_date = Date.today
-
-    # カレンダー表示用の期間を計算（カレンダーグリッド全体）
-    start_of_calendar = @start_date.beginning_of_month.beginning_of_week(:sunday)
-    end_of_calendar = @start_date.end_of_month.end_of_week(:sunday)
-
-    memberships = current_user.alarm_memberships
-                              .joins(:alarm)
-                              .merge(
-                                Alarm.locked.in_period(start_of_calendar, end_of_calendar)
-                              )
-                              .includes(
-                                alarm: :alarm_memberships
-                              )
-
-    @alarms = memberships.map(&:alarm)
-                        .uniq(&:uuid)
-                        .sort_by(&:start_time)
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
+    load_calendar_data
   end
 
   def pending
@@ -58,6 +35,8 @@ class AlarmsController < ApplicationController
   #=================================================
   def new
     @alarm = current_user.alarms.build
+
+    @start_date = params[:start_date]&.to_date
 
     now = Time.current.change(sec: 0)
 
@@ -96,6 +75,10 @@ class AlarmsController < ApplicationController
       respond_to do |format|
         format.turbo_stream do
           flash.now[:notice] = "アラームを作成しました"
+          if params[:start_date].present?
+            load_calendar_data
+            @update_calendar = true
+          end
         end
         format.html { redirect_to alarms_path, notice: "アラームを作成しました", status: :see_other }
       end
@@ -106,6 +89,7 @@ class AlarmsController < ApplicationController
   end
 
   def edit
+    @start_date = params[:start_date]&.to_date
   end
 
   def update
@@ -115,6 +99,11 @@ class AlarmsController < ApplicationController
       respond_to do |format|
         format.turbo_stream do
           flash.now[:notice] = "アラームを更新しました"
+          if params[:start_date].present?
+            load_calendar_data
+            @update_calendar = true
+          end
+
         end
         format.html { redirect_to alarms_path, notice: "アラームを更新しました", status: :see_other }
       end
@@ -182,6 +171,26 @@ class AlarmsController < ApplicationController
                 )
                 .order("alarms.scheduled_at ASC")
                 .index_by(&:alarm_uuid)
+  end
+
+  def load_calendar_data
+    # start_date パラメータがあれば使い、なければ今月を基準にする。
+    @start_date = params[:start_date].present? ? params[:start_date].to_date : Date.today
+
+    # カレンダー表示用の期間を計算（カレンダーグリッド全体）
+    start_of_calendar = @start_date.beginning_of_month.beginning_of_week(:sunday)
+    end_of_calendar   = @start_date.end_of_month.end_of_week(:sunday)
+
+    memberships = current_user.alarm_memberships
+                              .joins(:alarm)
+                              .merge(
+                                Alarm.locked.in_period(start_of_calendar, end_of_calendar)
+                              )
+                              .includes(alarm: :alarm_memberships)
+
+    @alarms = memberships.map(&:alarm)
+                        .uniq(&:uuid)
+                        .sort_by(&:start_time)
   end
 
   def handle_unlock_failure

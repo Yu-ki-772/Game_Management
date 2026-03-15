@@ -71,7 +71,7 @@
 
                     <!-- 新規アラーム作成ボタン -->
                     <% if day >= Date.today && day.month == start_date.month %>
-                      <%= link_to new_alarm_path(date: day.to_s),
+                      <%= link_to new_alarm_path(date: day.to_s, start_date: start_date.to_s),
                           title: "アラームを追加",
                           data: { turbo_frame: "dialog" },
                           class: "flex items-center justify-center w-3.5 h-3.5 sm:w-5 sm:h-5 md:w-6 md:h-6
