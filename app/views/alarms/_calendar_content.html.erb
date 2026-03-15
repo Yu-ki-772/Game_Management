@@ -11,89 +11,170 @@
     <% remaining_count = alarms_on_date.size - 3 %>
 
     <% visible_alarms.each do |alarm| %>
-      <%# 自分が作成した未来のアラーム：編集可能 %>
-      <% if alarm.created_by?(current_user) && alarm.scheduled_at > Time.current %>
-        <%= link_to edit_alarm_path(alarm, start_date: @start_date.to_s),
-          title: "アラームを編集",
-          data: { turbo_frame: "dialog" },
-          class: "block p-1.5 sm:p-2 rounded border-l-2 overflow-hidden transition-all hover:opacity-80 active:scale-95
-                  bg-emerald-100 dark:bg-emerald-900/40
-                  border-emerald-500 dark:border-emerald-600
-                  text-emerald-900 dark:text-emerald-100" do %>
 
-          <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-emerald-700 dark:text-emerald-300">
-            <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span><%= alarm.time_text %></span>
+      <% if alarm.created_by?(current_user) && alarm.scheduled_at > Time.current %>
+        <%# 自分が作成した未来のアラーム：編集可能 %>
+        <%= link_to edit_alarm_path(alarm, start_date: @start_date.to_s),
+            title: "アラームを編集",
+            data: { turbo_frame: "dialog" },
+            class: "block rounded-sm border-l-2 overflow-hidden transition-all
+                    hover:brightness-95 active:scale-95
+                    bg-blue-50 dark:bg-blue-900/30
+                    border-blue-500 dark:border-blue-400
+                    p-0.5 sm:p-1.5" do %>
+
+          <div class="sm:hidden flex flex-col items-start">
+            <% if alarm.started_at.present? %>
+              <span class="text-[9px] leading-tight
+                           text-blue-500 dark:text-blue-400 opacity-80 tabular-nums">
+                <%= alarm.started_at.strftime("%H:%M") %>
+              </span>
+              <div class="w-px h-2 bg-blue-400 dark:bg-blue-500 opacity-40 my-0.5 ml-[10px]"></div>
+            <% end %>
+            <span class="text-[9px] font-semibold leading-tight
+                         text-blue-700 dark:text-blue-300 tabular-nums">
+              <%= alarm.scheduled_at.strftime("%H:%M") %>
+            </span>
           </div>
 
-          <% if alarm.alarm_memberships.size > 1 %>
-            <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5">
-              <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+          <%# デスクトップ：時刻＋人数 %>
+          <div class="hidden sm:block">
+            <div class="flex items-center gap-1 text-[11px]
+                        text-blue-700 dark:text-blue-300">
+              <svg class="w-2.5 h-2.5 flex-shrink-0" fill="none"
+                   stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <span><%= alarm.alarm_memberships.size %>人</span>
+              <span class="tabular-nums"><%= alarm.time_text %></span>
             </div>
-          <% end %>
+            <% if alarm.alarm_memberships.size > 1 %>
+              <div class="flex items-center gap-1 text-[10px]
+                          text-blue-500 dark:text-blue-400 mt-0.5">
+                <svg class="w-2.5 h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                </svg>
+                <span><%= alarm.alarm_memberships.size %>人</span>
+              </div>
+            <% end %>
+          </div>
+
         <% end %>
 
-      <%# 招待されたアラーム：クリック不可 %>
       <% elsif !alarm.created_by?(current_user) %>
+        <%# ───────────────────────────────────── %>
+        <%# 招待されたアラーム：クリック不可       %>
+        <%# カラー：アンバー                      %>
+        <%# ───────────────────────────────────── %>
         <div title="招待されたアラームです"
-              class="block p-1.5 sm:p-2 rounded border-l-2 overflow-hidden cursor-default
-                    bg-indigo-100 dark:bg-indigo-900/40
-                    border-indigo-500 dark:border-indigo-600
-                    text-indigo-900 dark:text-indigo-100">
+             class="block rounded-sm border-l-2 overflow-hidden cursor-default
+                    bg-amber-50 dark:bg-amber-900/30
+                    border-amber-400 dark:border-amber-500
+                    p-0.5 sm:p-1.5">
 
-          <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-indigo-700 dark:text-indigo-300">
-            <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span><%= alarm.time_text %></span>
+          <%# スマホ版 %>
+          <div class="sm:hidden flex flex-col items-start">
+            <% if alarm.started_at.present? %>
+              <span class="text-[9px] leading-tight
+                           text-amber-500 dark:text-amber-400 opacity-80 tabular-nums">
+                <%= alarm.started_at.strftime("%H:%M") %>
+              </span>
+              <div class="w-px h-2 bg-amber-400 dark:bg-amber-500 opacity-40 my-0.5 ml-[10px]"></div>
+            <% end %>
+            <span class="text-[9px] font-semibold leading-tight
+                         text-amber-700 dark:text-amber-300 tabular-nums">
+              <%= alarm.scheduled_at.strftime("%H:%M") %>
+            </span>
           </div>
 
-          <% if alarm.alarm_memberships.size > 1 %>
-            <div class="flex items-center gap-1 text-[9px] sm:text-[11px] text-indigo-600 dark:text-indigo-400 mt-0.5">
-              <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+          <%# デスクトップ：時刻＋「招待」バッジ＋人数 %>
+          <div class="hidden sm:block">
+            <div class="flex items-center gap-1 text-[11px]
+                        text-amber-700 dark:text-amber-300">
+              <svg class="w-2.5 h-2.5 flex-shrink-0" fill="none"
+                   stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <span><%= alarm.alarm_memberships.size %>人</span>
+              <span class="tabular-nums"><%= alarm.time_text %></span>
             </div>
-          <% end %>
+            <div class="mt-0.5">
+              <span class="inline-block text-[9px] font-semibold tracking-wide
+                           bg-amber-100 dark:bg-amber-900/50
+                           text-amber-600 dark:text-amber-400
+                           px-1 py-px rounded">
+                招待
+              </span>
+              <% if alarm.alarm_memberships.size > 1 %>
+                <span class="text-[10px] text-amber-500 dark:text-amber-400 ml-1">
+                  <%= alarm.alarm_memberships.size %>人
+                </span>
+              <% end %>
+            </div>
+          </div>
+
         </div>
 
       <% else %>
-        <%# 過去のアラーム：クリック不可 %>
+        <%# ───────────────────────────────────── %>
+        <%# 過去のアラーム：クリック不可           %>
+        <%# カラー：グレー %>
+        <%# ───────────────────────────────────── %>
         <div title="過去のアラームは編集できません"
-              class="block p-1.5 sm:p-2 rounded border-l-2 overflow-hidden cursor-not-allowed opacity-50
-                    bg-gray-200 dark:bg-gray-700
-                    border-gray-400 dark:border-gray-500
-                    text-gray-700 dark:text-gray-400">
+             class="block rounded-sm border-l-2 overflow-hidden cursor-not-allowed
+                    bg-gray-100 dark:bg-gray-700/50
+                    border-gray-300 dark:border-gray-600
+                    opacity-50 p-0.5 sm:p-1.5">
 
-          <div class="flex items-center gap-1 text-[9px] sm:text-[11px]">
-            <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span><%= alarm.time_text %></span>
+          <%# スマホ版 %>
+          <div class="sm:hidden flex flex-col items-start">
+            <% if alarm.started_at.present? %>
+              <span class="text-[9px] leading-tight
+                           text-gray-500 dark:text-gray-400 tabular-nums">
+                <%= alarm.started_at.strftime("%H:%M") %>
+              </span>
+              <div class="w-px h-2 bg-gray-400 dark:bg-gray-500 opacity-40 my-0.5 ml-[10px]"></div>
+            <% end %>
+            <span class="text-[9px] font-semibold leading-tight
+                         text-gray-600 dark:text-gray-300 tabular-nums">
+              <%= alarm.scheduled_at.strftime("%H:%M") %>
+            </span>
           </div>
 
-          <% if alarm.alarm_memberships.size > 1 %>
-            <div class="flex items-center gap-1 text-[9px] sm:text-[11px] mt-0.5">
-              <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+          <%# デスクトップ：時刻＋人数 %>
+          <div class="hidden sm:block">
+            <div class="flex items-center gap-1 text-[11px]
+                        text-gray-500 dark:text-gray-400">
+              <svg class="w-2.5 h-2.5 flex-shrink-0" fill="none"
+                   stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <span><%= alarm.alarm_memberships.size %>人</span>
+              <span class="tabular-nums"><%= alarm.time_text %></span>
             </div>
-          <% end %>
+            <% if alarm.alarm_memberships.size > 1 %>
+              <div class="flex items-center gap-1 text-[10px]
+                          text-gray-400 dark:text-gray-500 mt-0.5">
+                <svg class="w-2.5 h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                </svg>
+                <span><%= alarm.alarm_memberships.size %>人</span>
+              </div>
+            <% end %>
+          </div>
+
         </div>
       <% end %>
+
     <% end %>
 
+    <%# +N件：スマホ・デスクトップ共通 %>
     <% if remaining_count > 0 %>
-      <div class="text-[9px] sm:text-[11px] text-gray-500 dark:text-gray-400 text-center py-0.5 font-medium">
+      <div class="text-[9px] sm:text-[10px] text-gray-400 dark:text-gray-500
+                  text-center py-0.5 font-medium tabular-nums">
         +<%= remaining_count %>件
       </div>
     <% end %>
   </div>
+
 <% end %>

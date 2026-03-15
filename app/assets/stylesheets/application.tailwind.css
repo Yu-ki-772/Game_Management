@@ -4,12 +4,11 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* simple-calendar 専用トークン（ライトモードのデフォルト値） */
-  --cal-border:         rgb(229 231 235);
-  --cal-sunday-bg:      rgb(254 242 242);
-  --cal-saturday-bg:    rgb(239 246 255);
-  --cal-today-bg:       rgb(236 253 245);
-  --cal-othermonth-bg:  rgb(249 250 251);
+  --cal-border:          rgb(229 231 235);
+  --cal-sunday-bg:       rgb(254 242 242);
+  --cal-saturday-bg:     rgb(239 246 255);
+  --cal-today-bg:        rgb(236 253 245);
+  --cal-othermonth-bg:   rgb(249 250 251);
   --cal-othermonth-text: rgb(156 163 175);
 }
 
@@ -43,10 +42,10 @@
 }
 
 .simple-calendar tbody td {
-  border: 1px solid var(--cal-border); /* ← ハードコードやめて var() に */
+  border: 1px solid var(--cal-border);
   vertical-align: top;
-  height: 100px;
   /* テーマ切り替え時の色変化をなめらかに */
+  min-height: 80px;
   transition: background-color 0.2s ease;
 }
 
@@ -65,10 +64,17 @@
   color: var(--cal-othermonth-text);
 }
 
-/* レスポンシブ（色に無関係なのでそのまま） */
-@media (max-width: 480px) { .simple-calendar tbody td { height: 70px; } }
-@media (max-width: 768px) { .simple-calendar tbody td { height: 80px; } }
-@media (min-width: 769px) { .simple-calendar tbody td { height: 120px; } }
+@media (max-width: 639px) {
+  .simple-calendar tbody td { min-height: 56px; }
+}
+
+@media (min-width: 640px) {
+  .simple-calendar tbody td { min-height: 100px; }
+}
+
+@media (min-width: 1024px) {
+  .simple-calendar tbody td { min-height: 120px; }
+}
 
 /* 定型文一覧のクリップボードにコピーするボタン用 */
 .clipboard-success {
