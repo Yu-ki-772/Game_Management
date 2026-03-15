@@ -1,15 +1,28 @@
 <%# app/views/shared/_footer.html.erb %>
+<%#
+  Vercel 風の変更点：
+  - bg-gray-800 → bg-black
+  - shadow を削除してボーダーのみで区切る
+  - アクティブ状態をエメラルドで統一（ブランドカラーを節制して使う）
+  - ドロップダウンも黒系で統一
+%>
 
 <% if user_signed_in? %>
-  <%# ── ログイン時フッター ─────────────────────── %>
-  <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700
-                sticky bottom-0 z-50 shadow-[0_-1px_3px_rgba(0,0,0,0.05)]
-                transition-colors duration-200">
-    <div class="container mx-auto px-4 max-w-7xl">
-      <nav class="flex items-start justify-around h-22 pt-2">
+  <footer class="bg-white dark:bg-black
+                 border-t border-gray-200 dark:border-gray-800
+                 sticky bottom-0 z-50
+                 transition-colors duration-200">
+    <div class="container mx-auto px-2 max-w-7xl">
+      <nav class="flex items-start justify-around pt-2 pb-5 pb-safe">
+
+        <%# ── HOME ── %>
         <%= link_to root_path,
-            class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition #{nav_link_class(root_path)}" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md
+                    text-xs font-medium transition-colors
+                    #{nav_link_class(root_path)}" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
             <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
@@ -18,51 +31,59 @@
           <span>HOME</span>
         <% end %>
 
+        <%# ── アラーム ── %>
         <div data-controller="dropdown" class="relative">
-          <button
-            type="button"
-            data-action="click->dropdown#toggle"
-            class="flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition <%= dropdown_button_class([alarms_path, pending_alarms_path]) %>"
-          >
+          <button type="button"
+                  data-action="click->dropdown#toggle"
+                  class="flex flex-col items-center gap-1 px-3 py-2 rounded-md
+                         text-xs font-medium transition-colors
+                         <%= dropdown_button_class([alarms_path, pending_alarms_path]) %>">
             <div class="relative">
-              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                 <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
                 <path d="M12 10l0 3l2 0" />
                 <path d="M7 4l-2.75 2" />
                 <path d="M17 4l2.75 2" />
               </svg>
-              <%# ストップ可能なアラームがある場合のみバッジを表示 %>
               <% if @stoppable_alarms_count&.positive? %>
-                <span class="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 rounded-full bg-red-500 text-white text-xs font-bold leading-none">
+                <span class="absolute -top-1 -right-1 flex items-center justify-center
+                             h-4 w-4 rounded-full bg-red-500 text-white text-[10px] font-bold">
                   <%= @stoppable_alarms_count > 9 ? "9+" : @stoppable_alarms_count %>
                 </span>
               <% end %>
             </div>
             <span>アラーム</span>
           </button>
-          <%# ドロップダウン %>
-          <div
-            data-dropdown-target="menu"
-            class="hidden absolute bottom-full left-0 mb-2 w-56 rounded-lg shadow-xl
-                  bg-white dark:bg-gray-800
-                  border border-gray-100 dark:border-gray-700
-                  z-50 overflow-hidden">
-            <div class="divide-y divide-gray-100 dark:divide-gray-700">
+
+          <div data-dropdown-target="menu"
+               class="hidden absolute bottom-full left-0 mb-2 w-52
+                      rounded-lg overflow-hidden
+                      bg-white dark:bg-gray-950
+                      border border-gray-200 dark:border-gray-800
+                      shadow-lg shadow-black/5 dark:shadow-black/40
+                      z-50">
+            <div class="divide-y divide-gray-100 dark:divide-gray-800">
               <%= link_to alarms_path,
                   data: { action: "dropdown#close" },
-                  class: "#{dropdown_item_class(alarms_path)} flex items-center gap-2" do %>
-                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                  class: "#{dropdown_item_class(alarms_path)} flex items-center gap-2.5" do %>
+                <svg class="w-4 h-4 shrink-0 text-gray-400" fill="none"
+                     stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
                 </svg>
                 アラーム一覧
               <% end %>
 
               <%= link_to calendar_alarms_path,
                   data: { action: "dropdown#close" },
-                  class: "#{dropdown_item_class(calendar_alarms_path)} flex items-center gap-2" do %>
-                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  class: "#{dropdown_item_class(calendar_alarms_path)} flex items-center gap-2.5" do %>
+                <svg class="w-4 h-4 shrink-0 text-gray-400" fill="none"
+                     stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
                 カレンダー
               <% end %>
@@ -70,15 +91,17 @@
               <%= link_to pending_alarms_path,
                   data: { action: "dropdown#close" },
                   class: "#{dropdown_item_class(pending_alarms_path)} flex items-center justify-between" do %>
-                <div class="flex items-center gap-2">
-                  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <div class="flex items-center gap-2.5">
+                  <svg class="w-4 h-4 shrink-0 text-gray-400" fill="none"
+                       stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
                   アラームをストップ
                 </div>
-                <%# ストップ可能なアラームがある場合のみバッジを表示 %>
                 <% if @stoppable_alarms_count&.positive? %>
-                  <span class="flex items-center justify-center h-5 min-w-5 px-1 rounded-full bg-red-500 text-white text-xs font-bold">
+                  <span class="flex items-center justify-center h-5 min-w-5 px-1
+                               rounded-full bg-red-500 text-white text-[10px] font-bold">
                     <%= @stoppable_alarms_count > 9 ? "9+" : @stoppable_alarms_count %>
                   </span>
                 <% end %>
@@ -87,10 +110,14 @@
           </div>
         </div>
 
-        <%# 記録 %>
+        <%# ── 記録 ── %>
         <%= link_to alarm_logs_path,
-            class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition #{nav_link_class(alarm_logs_path)}" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md
+                    text-xs font-medium transition-colors
+                    #{nav_link_class(alarm_logs_path)}" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
             <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />
@@ -101,9 +128,14 @@
           <span>記録</span>
         <% end %>
 
+        <%# ── 定型文 ── %>
         <%= link_to message_templates_path,
-            class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition #{nav_link_class(message_templates_path)}" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md
+                    text-xs font-medium transition-colors
+                    #{nav_link_class(message_templates_path)}" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M12 11v.01" />
             <path d="M8 11v.01" />
@@ -113,42 +145,48 @@
           <span>定型文</span>
         <% end %>
 
+        <%# ── フレンド ── %>
         <div data-controller="dropdown" class="relative">
-          <button
-            type="button"
-            data-action="click->dropdown#toggle"
-            class="flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium transition <%= dropdown_button_class([friendships_path, pending_friendships_path, users_path]) %>"
-          >
+          <button type="button"
+                  data-action="click->dropdown#toggle"
+                  class="flex flex-col items-center gap-1 px-3 py-2 rounded-md
+                         text-xs font-medium transition-colors
+                         <%= dropdown_button_class([friendships_path, pending_friendships_path, users_path]) %>">
             <div class="relative">
-              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                 <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
                 <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
               </svg>
-              <%# フレンド申請の受信がある場合のみバッジを表示 %>
               <% if @pending_friendship_count&.positive? %>
-                <span class="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 rounded-full bg-red-500 text-white text-xs font-bold leading-none">
+                <span class="absolute -top-1 -right-1 flex items-center justify-center
+                             h-4 w-4 rounded-full bg-red-500 text-white text-[10px] font-bold">
                   <%= @pending_friendship_count > 9 ? "9+" : @pending_friendship_count %>
                 </span>
               <% end %>
             </div>
             <span>フレンド</span>
           </button>
-          <%# ドロップダウン %>
-          <div
-            data-dropdown-target="menu"
-            class="hidden absolute bottom-full right-0 mb-2 w-56 max-w-[calc(100vw-2rem)] rounded-lg shadow-xl
-                  bg-white dark:bg-gray-800
-                  border border-gray-100 dark:border-gray-700
-                  z-50 overflow-hidden">
-            <div class="divide-y divide-gray-100 dark:divide-gray-700">
+
+          <div data-dropdown-target="menu"
+               class="hidden absolute bottom-full right-0 mb-2 w-52
+                      max-w-[calc(100vw-2rem)] rounded-lg overflow-hidden
+                      bg-white dark:bg-gray-950
+                      border border-gray-200 dark:border-gray-800
+                      shadow-lg shadow-black/5 dark:shadow-black/40
+                      z-50">
+            <div class="divide-y divide-gray-100 dark:divide-gray-800">
               <%= link_to friendships_path,
                   data: { action: "dropdown#close" },
-                  class: "#{dropdown_item_class(friendships_path)} flex items-center gap-2" do %>
-                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  class: "#{dropdown_item_class(friendships_path)} flex items-center gap-2.5" do %>
+                <svg class="w-4 h-4 shrink-0 text-gray-400" fill="none"
+                     stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
                 フレンド一覧
               <% end %>
@@ -156,15 +194,17 @@
               <%= link_to pending_friendships_path,
                   data: { action: "dropdown#close" },
                   class: "#{dropdown_item_class(pending_friendships_path)} flex items-center justify-between" do %>
-                <div class="flex items-center gap-2">
-                  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex items-center gap-2.5">
+                  <svg class="w-4 h-4 shrink-0 text-gray-400" fill="none"
+                       stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                   </svg>
                   受信申請
                 </div>
                 <% if @pending_friendship_count&.positive? %>
-                  <span class="flex items-center justify-center h-5 min-w-5 px-1 rounded-full bg-red-500 text-white text-xs font-bold">
+                  <span class="flex items-center justify-center h-5 min-w-5 px-1
+                               rounded-full bg-red-500 text-white text-[10px] font-bold">
                     <%= @pending_friendship_count > 9 ? "9+" : @pending_friendship_count %>
                   </span>
                 <% end %>
@@ -172,9 +212,10 @@
 
               <%= link_to users_path,
                   data: { action: "dropdown#close" },
-                  class: "#{dropdown_item_class(users_path)} flex items-center gap-2" do %>
-                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  class: "#{dropdown_item_class(users_path)} flex items-center gap-2.5" do %>
+                <svg class="w-4 h-4 shrink-0 text-gray-400" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                   <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
                   <path d="M16 19h6" />
@@ -192,37 +233,33 @@
   </footer>
 
 <% else %>
-  <%# ── ログイン前フッター（法的リンクのみ） ────────────────── %>
-  <footer class="bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800
+  <%# ── ログイン前フッター ── %>
+  <footer class="bg-white dark:bg-black
+                 border-t border-gray-100 dark:border-gray-900
                  transition-colors duration-200">
-    <div class="max-w-lg mx-auto px-5 pt-3 pb-5 flex flex-col items-center gap-2">
-
-      <nav class="flex items-center gap-3">
+    <div class="max-w-lg mx-auto px-5 py-4 flex flex-col items-center gap-2">
+      <nav class="flex items-center gap-1">
         <%= link_to privacy_policy_path,
-              class: "text-xs text-gray-400 dark:text-gray-500
-                      hover:text-emerald-600 dark:hover:text-emerald-400
-                      px-3 py-3 rounded-md
-                      hover:bg-emerald-50 dark:hover:bg-emerald-900/30
-                      transition-colors" do %>
+            class: "text-xs text-gray-400 dark:text-gray-600
+                    hover:text-gray-600 dark:hover:text-gray-400
+                    px-3 py-2 rounded-md
+                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    transition-colors" do %>
           プライバシーポリシー
         <% end %>
-        <span class="text-gray-200 dark:text-gray-700 text-xs select-none">|</span>
+        <span class="text-gray-200 dark:text-gray-800 text-xs select-none">|</span>
         <%= link_to terms_path,
-              class: "text-xs text-gray-400 dark:text-gray-500
-                      hover:text-emerald-600 dark:hover:text-emerald-400
-                      px-3 py-3 rounded-md
-                      hover:bg-emerald-50 dark:hover:bg-emerald-900/30
-                      transition-colors" do %>
+            class: "text-xs text-gray-400 dark:text-gray-600
+                    hover:text-gray-600 dark:hover:text-gray-400
+                    px-3 py-2 rounded-md
+                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    transition-colors" do %>
           利用規約
         <% end %>
       </nav>
-
-      <%# コピーライト %>
-      <p class="text-xs text-gray-300 dark:text-gray-700">
+      <p class="text-xs text-gray-300 dark:text-gray-800">
         &copy; <%= Date.current.year %> Game Exit
       </p>
-
     </div>
   </footer>
-
 <% end %>
