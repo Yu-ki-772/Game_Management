@@ -124,7 +124,6 @@ dialog[open]::backdrop {
 input[type="datetime-local"] {
   display: block;
   width: 100%;
-  box-sizing: border-box;
 }
 
 ::-webkit-datetime-edit,
