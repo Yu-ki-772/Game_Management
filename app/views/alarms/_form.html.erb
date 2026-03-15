@@ -146,7 +146,9 @@
                   hover:bg-gray-100 dark:hover:bg-gray-700
                   transition-colors duration-100" %>
     <% end %>
-
+    
+    <%= hidden_field_tag :start_date, @start_date if @start_date %><%# どの月を表示していたかを伝える。 %>
+    
     <%= f.submit alarm.persisted? ? '更新する' : 'アラームを作成',
         data: { turbo_submits_with: alarm.persisted? ? "更新中..." : "作成中..." },
         class: "w-full sm:w-auto px-5 py-2 text-sm font-semibold rounded-lg

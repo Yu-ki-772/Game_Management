@@ -28,3 +28,10 @@
 <% if flash[:show_pwa_install_prompt] %>
   <%= turbo_stream.append "push_notification_modal", partial: "shared/pwa_install_prompt" %>
 <% end %>
+
+<%# カレンダーページを開いているときだけ更新 %>
+<% if @update_calendar %>
+  <%= turbo_stream.update "calendar" do %>
+    <%= render 'alarms/calendar_content' %>
+  <% end %>
+<% end %>
