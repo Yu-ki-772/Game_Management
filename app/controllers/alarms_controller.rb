@@ -103,7 +103,6 @@ class AlarmsController < ApplicationController
             load_calendar_data
             @update_calendar = true
           end
-
         end
         format.html { redirect_to alarms_path, notice: "アラームを更新しました", status: :see_other }
       end
