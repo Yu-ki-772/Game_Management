@@ -1,18 +1,24 @@
-<%# ストップ可能なアラームが一つもない場合にpending画面に表示するもの %>
 <%# app/views/alarms/pending/_no_alarms_message.html.erb %>
 <div class="flex items-center justify-center py-20">
   <div class="max-w-md mx-auto text-center">
     <% if user_signed_in? %>
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+      <%# index の no_alarms_message と同じパターンに揃える %>
+      <p class="text-sm text-gray-400 dark:text-gray-500 mb-6">
         ストップ可能なアラームがありません
-      </h2>
+      </p>
       <%= link_to new_alarm_path,
           data: { turbo_frame: "dialog" },
-          class: "inline-flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition text-sm font-semibold" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          class: "inline-flex items-center gap-2 px-5 py-2.5
+                  bg-gray-900 dark:bg-white
+                  text-white dark:text-gray-900
+                  text-sm font-semibold rounded-md
+                  hover:bg-gray-700 dark:hover:bg-gray-100
+                  transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-          <path d="M12 5l0 14" /><path d="M5 12l14 0" />
+          <path d="M12 5l0 14" />
+          <path d="M5 12l14 0" />
         </svg>
         アラームを作成
       <% end %>

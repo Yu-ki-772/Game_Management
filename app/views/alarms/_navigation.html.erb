@@ -1,11 +1,15 @@
 <%# app/views/alarms/_navigation.html.erb %>
-
+<%#
+  アクティブ状態のピルを bg-emerald-500 から bg-gray-900 dark:bg-white に変更。
+  エメラルドは「アクションを起こすボタン」の色として温存し、
+  「現在地を示すインジケーター」には使わないことで、
+  「エメラルド = 何かが起きる」という色の意味論を一貫させる。
+%>
 <nav class="mb-4 sm:mb-6
-            bg-white dark:bg-gray-800
-            rounded-xl shadow-sm
-            border border-gray-100 dark:border-gray-700
+            bg-white dark:bg-gray-950
+            rounded-xl
+            border border-gray-200 dark:border-gray-800
             p-1 flex gap-0.5 overflow-x-auto">
-
 
   <%# 一覧 %>
   <%= link_to alarms_path,
@@ -13,8 +17,10 @@
               px-3.5 py-2 rounded-lg text-sm font-medium
               transition-colors duration-100
               #{current_page?(alarms_path) ?
-                'bg-emerald-500 text-white shadow-sm' :
-                'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-800 dark:hover:text-gray-200'}" do %>
+                'bg-gray-900 dark:bg-white text-white dark:text-gray-900' :
+                'text-gray-500 dark:text-gray-400
+                 hover:text-gray-900 dark:hover:text-gray-100
+                 hover:bg-gray-100 dark:hover:bg-gray-900'}" do %>
     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
@@ -28,8 +34,10 @@
               px-3.5 py-2 rounded-lg text-sm font-medium
               transition-colors duration-100
               #{current_page?(calendar_alarms_path) ?
-                'bg-emerald-500 text-white shadow-sm' :
-                'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-800 dark:hover:text-gray-200'}" do %>
+                'bg-gray-900 dark:bg-white text-white dark:text-gray-900' :
+                'text-gray-500 dark:text-gray-400
+                 hover:text-gray-900 dark:hover:text-gray-100
+                 hover:bg-gray-100 dark:hover:bg-gray-900'}" do %>
     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -43,21 +51,20 @@
               px-3.5 py-2 rounded-lg text-sm font-medium
               transition-colors duration-100
               #{current_page?(pending_alarms_path) ?
-                'bg-emerald-500 text-white shadow-sm' :
-                'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-800 dark:hover:text-gray-200'}" do %>
+                'bg-gray-900 dark:bg-white text-white dark:text-gray-900' :
+                'text-gray-500 dark:text-gray-400
+                 hover:text-gray-900 dark:hover:text-gray-100
+                 hover:bg-gray-100 dark:hover:bg-gray-900'}" do %>
     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
     </svg>
     <span>未解除</span>
 
-    <%# 時間（scheduled_at）を過ぎた未解除アラームが存在する場合のみバッジを表示する %>
     <% if @stoppable_alarms_count&.positive? %>
       <span class="inline-flex items-center justify-center
-                   w-4 h-4 text-[10px] font-bold
-                   text-white bg-red-500 rounded-full
-                   ring-2
-                   #{current_page?(pending_alarms_path) ? 'ring-emerald-500' : 'ring-white dark:ring-gray-800'}">
+                  w-4 h-4 text-[10px] font-bold
+                  text-white bg-red-500 rounded-full">
         <%= @stoppable_alarms_count > 9 ? "9+" : @stoppable_alarms_count %>
       </span>
     <% end %>

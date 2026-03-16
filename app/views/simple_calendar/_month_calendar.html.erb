@@ -1,10 +1,12 @@
 <%# app/views/simple_calendar/_month_calendar.html.erb %>
-<div class="w-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm">
+<div class="w-full bg-white dark:bg-gray-950 rounded-xl overflow-hidden">
 
+  <%# カレンダーヘッダー：エメラルドグラデーションはブランドアイデンティティとして維持 %>
   <div class="flex justify-center items-center px-2 py-2 sm:p-4
               bg-gradient-to-r from-emerald-50 dark:from-emerald-950
-                               to-emerald-100 dark:to-emerald-900/50
-              border-b-2 border-emerald-500 gap-2">
+                               to-emerald-100 dark:to-emerald-900/30
+              border-b border-emerald-200 dark:border-emerald-900
+              gap-2">
 
     <%= link_to calendar.url_for_previous_view,
         data: { turbo_frame: "calendar" },
@@ -12,13 +14,15 @@
                 w-8 h-8 sm:w-9 sm:h-9
                 text-emerald-600 dark:text-emerald-400
                 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/50
-                transition-all" do %>
+                transition-colors" do %>
       <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
       </svg>
     <% end %>
 
-    <span class="text-base sm:text-xl font-bold text-gray-800 dark:text-gray-100 tabular-nums
+    <%# tabular-nums + min-w でボタン位置がぶれない %>
+    <span class="text-base sm:text-xl font-bold tabular-nums
+                 text-gray-800 dark:text-white
                  min-w-[7rem] sm:min-w-[9rem] text-center">
       <%= start_date.strftime("%Y年%m月") %>
     </span>
@@ -29,7 +33,7 @@
                 w-8 h-8 sm:w-9 sm:h-9
                 text-emerald-600 dark:text-emerald-400
                 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/50
-                transition-all" do %>
+                transition-colors" do %>
       <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
       </svg>
@@ -42,11 +46,11 @@
       <tr>
         <% t('date.abbr_day_names').each_with_index do |day_name, index| %>
           <th class="py-1.5 sm:py-2 sm:px-3 text-center text-[10px] sm:text-xs font-semibold
-                     bg-gray-50 dark:bg-gray-700/50
-                     border-b-2 border-gray-200 dark:border-gray-700
+                     bg-gray-50 dark:bg-gray-900
+                     border-b border-gray-200 dark:border-gray-800
                      <%= 'text-red-600 dark:text-red-400'   if index == 0 %>
                      <%= 'text-blue-600 dark:text-blue-400' if index == 6 %>
-                     <%= 'text-gray-600 dark:text-gray-400' unless [0, 6].include?(index) %>">
+                     <%= 'text-gray-500 dark:text-gray-400' unless [0, 6].include?(index) %>">
             <%= day_name %>
           </th>
         <% end %>
@@ -60,32 +64,19 @@
             <%= content_tag :td, class: calendar.td_classes_for(day) do %>
               <div class="h-full flex flex-col p-0.5 sm:p-2 min-h-[48px] sm:min-h-[80px]">
 
-                <%# 日付ヘッダー %>
+                <%# 日付ヘッダー：作成ボタンを削除し今日バッジのみ %>
                 <div class="flex justify-between items-center mb-0.5 sm:mb-1">
                   <span class="text-[11px] sm:text-sm font-semibold
                                text-gray-800 dark:text-gray-200 leading-none">
                     <%= day.day %>
                   </span>
-
-                  <div class="flex items-center gap-0.5 sm:gap-1">
-
-                    <%# 新規アラーム作成ボタン %>
-                    <% if day >= Date.today && day.month == start_date.month %>
-                      <%= link_to new_alarm_path(date: day.to_s, start_date: start_date.to_s),
-                          title: "アラームを追加",
-                          data: { turbo_frame: "dialog" },
-                          class: "flex items-center justify-center
-                                  w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6
-                                  rounded bg-emerald-500 text-white
-                                  opacity-80 hover:opacity-100 hover:bg-emerald-600
-                                  active:scale-95 transition-all flex-shrink-0" do %>
-                        <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4"
-                             fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
-                        </svg>
-                      <% end %>
-                    <% end %>
-                  </div>
+                  <% if day == Date.today %>
+                    <span class="text-[8px] sm:text-[10px] bg-emerald-500 text-white
+                                 px-0.5 sm:px-1.5 py-0.5 rounded font-semibold leading-tight">
+                      <span class="sm:hidden">今</span>
+                      <span class="hidden sm:inline">今日</span>
+                    </span>
+                  <% end %>
                 </div>
 
                 <%# アラーム一覧 %>
