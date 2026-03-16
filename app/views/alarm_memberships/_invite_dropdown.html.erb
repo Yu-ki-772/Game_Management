@@ -1,8 +1,6 @@
 <%# app/views/alarm_memberships/_invite_dropdown.html.erb %>
 <div data-controller="dropdown" class="relative inline-block">
 
-  <%# 招待ボタン：塗りつぶし → ボーダースタイルに変更してボタン群の重さを揃える %>
-  <%# ブルーを使うことで「人に関わる操作」という意味論を色で表現する %>
   <button data-action="click->dropdown#toggle"
           class="px-3 py-1.5 text-xs font-medium rounded-md
                  border border-blue-200 dark:border-blue-800
@@ -14,7 +12,7 @@
   </button>
 
   <div data-dropdown-target="menu"
-       class="hidden absolute right-0 z-10 w-72
+       class="hidden absolute right-0 z-50 w-72
               bg-white dark:bg-gray-950
               border border-gray-200 dark:border-gray-800
               rounded-lg shadow-lg shadow-black/5 dark:shadow-black/40
