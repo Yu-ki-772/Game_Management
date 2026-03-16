@@ -8,12 +8,6 @@
       partial: "alarm_memberships/alarm_detail",
       locals: { alarm: @alarm } %>
 
-<%# カレンダーページを開いているときだけ更新 %>
-<% if @update_calendar %>
-  <%= turbo_stream.update "calendar" do %>
-    <%= render 'alarms/calendar_content' %>
-  <% end %>
-<% end %>
 
 <!-- フラッシュメッセージの表示 -->
 <%= render_turbo_stream_flash_messages %>
