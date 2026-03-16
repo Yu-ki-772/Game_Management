@@ -11,31 +11,35 @@
 <% if user_signed_in? && @stoppable_alarms_count&.positive? %>
   <%= link_to pending_alarms_path,
       class: "flex items-center gap-3 w-full px-4 py-3 mb-6
-              bg-amber-50 dark:bg-amber-950/50
-              border border-amber-200 dark:border-amber-800
+              bg-white dark:bg-gray-900
+              border border-gray-300 dark:border-gray-600
+              border-l-4 border-l-gray-500 dark:border-l-gray-400
               rounded-lg
-              text-amber-700 dark:text-amber-400
-              hover:bg-amber-100 dark:hover:bg-amber-950
-              transition-colors" do %>
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-         fill="none" stroke="currentColor" stroke-width="2"
-         stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <path d="M12 9v4" />
-      <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214
-               a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536
-               a1.914 1.914 0 0 0 -3.274 0z" />
-      <path d="M12 16h.01" />
+              text-gray-700 dark:text-gray-200
+              shadow-[0_0_16px_rgba(0,0,0,0.08)]
+              dark:shadow-[0_0_20px_rgba(255,255,255,0.07)]
+              hover:shadow-[0_0_20px_rgba(0,0,0,0.12)]
+              dark:hover:shadow-[0_0_24px_rgba(255,255,255,0.12)]
+              hover:border-l-gray-700 dark:hover:border-l-gray-300
+              transition-all duration-200" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         class="shrink-0 text-gray-500 dark:text-gray-400">
+      <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16
+               a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6"/>
+      <path d="M9 17v1a3 3 0 0 0 6 0v-1"/>
     </svg>
     <span class="text-sm font-medium flex-1">
       ストップできるアラームが <%= @stoppable_alarms_count %> 件あります
     </span>
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-         fill="none" stroke="currentColor" stroke-width="2"
-         stroke-linecap="round" stroke-linejoin="round" class="shrink-0 opacity-50">
-      <path d="M5 12l14 0" />
-      <path d="M15 16l4 -4" />
-      <path d="M15 8l4 4" />
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         class="shrink-0 opacity-40">
+      <path d="M5 12l14 0"/>
+      <path d="M15 16l4 -4"/>
+      <path d="M15 8l4 4"/>
     </svg>
   <% end %>
 <% end %>

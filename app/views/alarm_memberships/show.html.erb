@@ -13,20 +13,32 @@
               border border-gray-200 dark:border-gray-800">
 
     <%# ステータスバー：通知済み → 時間超過 → 待機中 の順で評価 %>
-    <% if @membership.notified? %>
-      <div class="text-xs font-semibold text-center py-2 tracking-wide rounded-t-xl
-                  bg-emerald-500 text-white">
-        ✅ 通知済み
-      </div>
-    <% elsif expired %>
-      <div class="text-xs font-semibold text-center py-2 tracking-wide rounded-t-xl
+    <% if expired %>
+      <div class="flex items-center justify-center gap-1.5
+                  text-xs font-semibold text-center py-2 tracking-wide rounded-t-xl
                   bg-red-500 text-white">
-        ⚠️ 時間超過
+        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 9v4"/>
+          <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214
+                  a1.914 1.914 0 0 0 1.636-2.87l-8.106-13.536
+                  a1.914 1.914 0 0 0-3.274 0z"/>
+          <path d="M12 16h.01"/>
+        </svg>
+        時間超過
       </div>
     <% else %>
-      <div class="text-xs font-semibold text-center py-2 tracking-wide rounded-t-xl
+      <div class="flex items-center justify-center gap-1.5
+                  text-xs font-semibold text-center py-2 tracking-wide rounded-t-xl
                   bg-gray-900 dark:bg-white text-white dark:text-gray-900">
-        ⏳ 待機中
+        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8v4l3 3"/>
+          <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/>
+        </svg>
+        待機中
       </div>
     <% end %>
 
