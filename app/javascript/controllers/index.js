@@ -46,3 +46,7 @@ application.register("dialog", DialogController)
 // ゲーム時間管理度診断のアンケート診断フォーム用
 import DiagnosisFormController from "./diagnosis_form_controller"
 application.register("diagnosis-form", DiagnosisFormController)
+
+// 定型文一覧のセクション開閉用
+import DisclosureController from "./disclosure_controller"
+application.register("disclosure", DisclosureController)

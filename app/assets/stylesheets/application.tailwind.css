@@ -79,17 +79,19 @@
 
 /* 定型文一覧のクリップボードにコピーするボタン用 */
 .clipboard-success {
-  @apply bg-green-50 text-green-700 border-green-200;
-}
-.dark .clipboard-success {
-  @apply bg-green-900/30 text-green-400 border-green-800;
+  @apply text-emerald-600 bg-emerald-50;
+
+  @variant dark {
+    @apply text-emerald-400 bg-emerald-900/30;
+  }
 }
 
 .clipboard-error {
-  @apply bg-red-50 text-red-700 border-red-200;
-}
-.dark .clipboard-error {
-  @apply bg-red-900/30 text-red-400 border-red-800;
+  @apply text-red-500 bg-red-50;
+
+  @variant dark {
+    @apply text-red-400 bg-red-950/50;
+  }
 }
 
 /* 画面遷移時のプログレスバーのカスタマイズ */

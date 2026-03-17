@@ -3,13 +3,12 @@
   <%= button_to bookmarks_path(message_template_id: message_template.id),
       method: :post,
       data: { turbo_submits_with: "..." },
-      class: "px-3 py-1.5
-              bg-white dark:bg-gray-700
-              hover:bg-amber-50 dark:hover:bg-amber-900/30
-              text-amber-500 dark:text-amber-400
-              text-xs font-semibold rounded-md
-              border border-amber-300 dark:border-amber-700 transition" do %>
-    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+      class: "p-2
+              text-gray-400 dark:text-gray-500
+              hover:text-yellow-500 dark:hover:text-yellow-400
+              hover:bg-yellow-50 dark:hover:bg-yellow-900/20
+              rounded-md transition-colors" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
