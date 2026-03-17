@@ -4,13 +4,14 @@
 
   <%# ── ページヘッダー ── %>
   <div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">受け取ったフレンド申請</h1>
+    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+      受け取ったフレンド申請
+    </h1>
     <p class="text-sm mt-1">
       <% if @pending.any? %>
-        <span class="font-semibold text-red-500 dark:text-red-400"><%= @pending.count %></span>
-        <span class="text-gray-500 dark:text-gray-400">件の申請が届いています</span>
-      <% else %>
-        <span class="text-gray-400 dark:text-gray-500">現在、届いている申請はありません</span>
+        <%# 件数はグレー系に。赤は「緊急・破壊的アクション」専用 %>
+        <span class="font-semibold text-gray-700 dark:text-gray-300"><%= @pending.count %></span>
+        <span class="text-gray-400 dark:text-gray-500">件の申請が届いています</span>
       <% end %>
     </p>
   </div>
@@ -18,13 +19,13 @@
   <%# ── 申請リスト ── %>
   <div id="pending_list_section">
     <% if @pending.any? %>
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm
-                  border border-gray-100 dark:border-gray-700 overflow-hidden">
-        <ul class="divide-y divide-gray-50 dark:divide-gray-700/70">
+      <div class="bg-white dark:bg-gray-900 rounded-xl
+                  border border-gray-200 dark:border-gray-800 overflow-hidden">
+        <ul class="divide-y divide-gray-200 dark:divide-gray-800">
           <% @pending.each do |pending| %>
             <li id="pending_friendship_<%= pending.id %>"
                 class="flex items-center gap-4 px-5 py-3.5
-                       hover:bg-gray-50/80 dark:hover:bg-gray-700/30
+                       hover:bg-gray-50 dark:hover:bg-gray-800/50
                        transition-colors duration-100">
 
               <%# アバター + 名前 %>
@@ -33,20 +34,20 @@
                   <% if pending.user.avatar.attached? %>
                     <%= image_tag pending.user.avatar,
                         class: "w-10 h-10 rounded-full object-cover
-                                ring-1 ring-gray-200 dark:ring-gray-600" %>
+                                ring-1 ring-gray-200 dark:ring-gray-800" %>
                   <% else %>
+                    <%# アバターSVGをヘッダーと統一（頭+肩パス、stroke-width="2"） %>
                     <div class="w-10 h-10 rounded-full
-                                bg-gray-100 dark:bg-gray-700
-                                ring-1 ring-gray-200 dark:ring-gray-600
+                                bg-gray-50 dark:bg-gray-800
+                                ring-1 ring-gray-200 dark:ring-gray-800
                                 flex items-center justify-center">
                       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 dark:text-gray-500"
                            viewBox="0 0 24 24" fill="none"
-                           stroke="currentColor" stroke-width="1.5"
+                           stroke="currentColor" stroke-width="2"
                            stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                        <path d="M9 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                        <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
+                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                       </svg>
                     </div>
                   <% end %>
@@ -58,28 +59,32 @@
 
               <%# 承認・拒否ボタン %>
               <div class="flex items-center gap-2 shrink-0">
+                <%# 承認 → プライマリボタン（グレー反転）。エメラルドはアクションではなく状態表示に使う %>
                 <%= button_to friendship_path(pending),
                     method: :patch,
                     params: { action_type: 'accept' },
                     data: { turbo_submits_with: "承認中..." },
                     class: "px-3.5 py-1.5
-                            bg-emerald-500 hover:bg-emerald-600
-                            text-white text-xs font-semibold rounded-lg
-                            shadow-sm transition-colors duration-100 cursor-pointer" do %>
+                            bg-gray-900 dark:bg-white
+                            text-white dark:text-gray-900
+                            hover:bg-gray-700 dark:hover:bg-gray-300
+                            text-xs font-semibold rounded-md
+                            transition-colors duration-100 cursor-pointer" do %>
                   承認
                 <% end %>
 
+                <%# 拒否 → デストラクティブホバーパターン %>
                 <%= button_to friendship_path(pending),
                     method: :patch,
                     params: { action_type: 'reject' },
                     data: { turbo_submits_with: "拒否中..." },
-                    class: "px-3.5 py-1.5 text-xs font-medium rounded-lg
+                    class: "px-3.5 py-1.5 text-xs font-medium rounded-md
                             text-gray-400 dark:text-gray-500
-                            border border-gray-200 dark:border-gray-700
+                            border border-gray-200 dark:border-gray-800
                             hover:text-red-500 dark:hover:text-red-400
                             hover:border-red-200 dark:hover:border-red-800
                             hover:bg-red-50 dark:hover:bg-red-900/20
-                            active:bg-red-100
+                            active:bg-red-100 dark:active:bg-red-900/40
                             transition-colors duration-100 cursor-pointer" do %>
                   拒否
                 <% end %>
@@ -91,7 +96,6 @@
       </div>
 
     <% else %>
-      <%# フレンド申請が無い場合 %>
       <%= render 'pending_empty_state' %>
     <% end %>
   </div>

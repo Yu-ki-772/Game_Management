@@ -1,160 +1,191 @@
 <%# app/views/alarms/_form.html.erb %>
-<%= form_with model: alarm, class: "px-6 py-5 space-y-5" do |f| %>
+<%# 変更点：focus:ring-2 focus:ring-emerald-400/50 focus:border-emerald-400 dark:focus:border-emerald-500
+    → focus:ring-1 focus:ring-gray-400 dark:focus:ring-gray-600 focus:border-gray-400 dark:focus:border-gray-600
+    4箇所すべてに適用 %>
 
-  <p class="text-xs text-gray-400 dark:text-gray-500">
-    <span class="text-red-500 font-medium">*</span> は必須項目です
-  </p>
+<%= form_with model: alarm, class: "px-6 py-6 space-y-6" do |f| %>
 
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%# ── ラベル ── %>
   <div class="space-y-1.5">
-    <%= f.label :label, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
-      ラベル <span class="text-red-400">*</span>
+    <%= f.label :label,
+        class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
+      ラベル
+      <span class="text-red-400 ml-0.5">*</span>
     <% end %>
     <%= f.text_field :label,
         placeholder: 'アラーム',
-        class: "w-full px-3.5 py-2.5
-                border border-gray-200 dark:border-gray-600 rounded-lg
-                text-sm text-gray-900 dark:text-gray-100
-                bg-white dark:bg-gray-700/60
+        class: "w-full px-3.5 py-2.5 rounded-lg text-sm
+                border border-gray-200 dark:border-gray-800
+                bg-white dark:bg-gray-900
+                text-gray-900 dark:text-white
                 placeholder:text-gray-300 dark:placeholder:text-gray-600
-                focus:outline-none focus:ring-2 focus:ring-emerald-400/50
-                focus:border-emerald-400 dark:focus:border-emerald-500
+                focus:outline-none focus:ring-1
+                focus:ring-gray-400 dark:focus:ring-gray-600
+                focus:border-gray-400 dark:focus:border-gray-600
                 transition-colors duration-100" %>
-    <p class="text-xs text-gray-400 dark:text-gray-500">255文字以内</p>
   </div>
 
-  <%# ── 開始時刻 ── %>
-  <div class="space-y-1.5">
-    <%= f.label :started_at, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
-      開始時刻
-      <span class="text-xs font-normal text-gray-400 dark:text-gray-500 ml-1">任意</span>
-    <% end %>
-    <%= f.datetime_field :started_at,
-        style: "width: calc(100% - 30px);",
-        class: "px-3.5 py-2.5
-                border border-gray-200 dark:border-gray-600 rounded-lg
-                text-sm text-gray-900 dark:text-gray-100
-                bg-white dark:bg-gray-700/60
-                focus:outline-none focus:ring-2 focus:ring-emerald-400/50
-                focus:border-emerald-400 dark:focus:border-emerald-500
-                transition-colors duration-100" %>
-    <p class="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
-      プレイ開始時刻（アラーム日時より前、かつ現在から7時間前以内）
-    </p>
+  <div class="rounded-lg border border-gray-200 dark:border-gray-800
+              bg-gray-50 dark:bg-gray-900/50
+              divide-y divide-gray-200 dark:divide-gray-800">
+
+    <div class="px-4 py-3.5 space-y-1.5">
+      <%= f.label :started_at,
+          class: "flex items-center gap-2 text-sm font-medium
+                  text-gray-700 dark:text-gray-300" do %>
+        開始時刻
+        <span class="text-[10px] font-normal text-gray-400 dark:text-gray-500
+                     bg-gray-100 dark:bg-gray-800
+                     border border-gray-200 dark:border-gray-700
+                     px-1.5 py-0.5 rounded">
+          任意
+        </span>
+      <% end %>
+      <%= f.datetime_field :started_at,
+          style: "width: calc(100% - 30px);",
+          class: "px-3.5 py-2.5 rounded-lg text-sm
+                  border border-gray-200 dark:border-gray-800
+                  bg-white dark:bg-gray-900
+                  text-gray-900 dark:text-white
+                  focus:outline-none focus:ring-1
+                  focus:ring-gray-400 dark:focus:ring-gray-600
+                  focus:border-gray-400 dark:focus:border-gray-600
+                  transition-colors duration-100" %>
+      <p class="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
+        プレイ開始時刻（アラーム日時より前、かつ現在から7時間前以内）
+      </p>
+    </div>
+
+    <div class="px-4 py-3.5 space-y-1.5">
+      <%= f.label :scheduled_at,
+          class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
+        アラーム日時
+        <span class="text-red-400 ml-0.5">*</span>
+      <% end %>
+      <%= f.datetime_field :scheduled_at,
+          style: "width: calc(100% - 30px);",
+          class: "px-3.5 py-2.5 rounded-lg text-sm
+                  border border-gray-200 dark:border-gray-800
+                  bg-white dark:bg-gray-900
+                  text-gray-900 dark:text-white
+                  focus:outline-none focus:ring-1
+                  focus:ring-gray-400 dark:focus:ring-gray-600
+                  focus:border-gray-400 dark:focus:border-gray-600
+                  transition-colors duration-100" %>
+      <p class="text-xs text-gray-400 dark:text-gray-500">未来の日時のみ指定可能</p>
+    </div>
+
   </div>
 
-  <%# ── アラーム日時 ── %>
   <div class="space-y-1.5">
-    <%= f.label :scheduled_at, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
-      アラーム日時 <span class="text-red-400">*</span>
-    <% end %>
-    <%= f.datetime_field :scheduled_at,
-        style: "width: calc(100% - 30px);",
-        class: "px-3.5 py-2.5
-                border border-gray-200 dark:border-gray-600 rounded-lg
-                text-sm text-gray-900 dark:text-gray-100
-                bg-white dark:bg-gray-700/60
-                focus:outline-none focus:ring-2 focus:ring-emerald-400/50
-                focus:border-emerald-400 dark:focus:border-emerald-500
-                transition-colors duration-100" %>
-    <p class="text-xs text-gray-400 dark:text-gray-500">未来の日時のみ指定可能</p>
-  </div>
-
-  <%# ── 事前リマインダー ── %>
-  <div class="space-y-1.5">
-    <%= f.label :reminder_minutes, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
+    <%= f.label :reminder_minutes,
+        class: "flex items-center gap-2 text-sm font-medium
+                text-gray-700 dark:text-gray-300" do %>
       事前リマインダー
-      <span class="text-xs font-normal text-gray-400 dark:text-gray-500 ml-1">任意</span>
+      <span class="text-[10px] font-normal text-gray-400 dark:text-gray-500
+                   bg-gray-100 dark:bg-gray-800
+                   border border-gray-200 dark:border-gray-700
+                   px-1.5 py-0.5 rounded">
+        任意
+      </span>
     <% end %>
     <%= f.select :reminder_minutes,
         [['なし', nil], ['5分前', 5], ['10分前', 10], ['15分前', 15], ['30分前', 30], ['1時間前', 60]],
         { include_blank: false },
-        class: "w-full px-3.5 py-2.5
-                border border-gray-200 dark:border-gray-600 rounded-lg
-                text-sm text-gray-900 dark:text-gray-100
-                bg-white dark:bg-gray-700/60
-                focus:outline-none focus:ring-2 focus:ring-emerald-400/50
-                focus:border-emerald-400 dark:focus:border-emerald-500
+        class: "w-full px-3.5 py-2.5 rounded-lg text-sm
+                border border-gray-200 dark:border-gray-800
+                bg-white dark:bg-gray-900
+                text-gray-900 dark:text-white
+                focus:outline-none focus:ring-1
+                focus:ring-gray-400 dark:focus:ring-gray-600
+                focus:border-gray-400 dark:focus:border-gray-600
                 transition-colors duration-100" %>
   </div>
 
-  <%# 通知設定ができていることの表示 or オンにするボタン %>
-  <div data-controller="push-notification"
-      data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>"
-      class="rounded-lg border border-gray-100 dark:border-gray-700
-              bg-gray-50/60 dark:bg-gray-700/30 px-4 py-3">
+  <div class="space-y-4 pt-2 border-t border-gray-200 dark:border-gray-800">
 
-    <p id="push-status-loading"
-       class="text-xs text-gray-400 dark:text-gray-500">
-      通知設定を確認中...
-    </p>
+    <div data-controller="push-notification"
+         data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>"
+         class="rounded-lg border border-gray-200 dark:border-gray-800
+                bg-gray-50 dark:bg-gray-900 px-4 py-3">
 
-    <%# 通知オンにするボタン %>
-    <button id="push-subscribe-btn"
-            type="button"
-            data-push-notification-target="subscribeBtn"
-            data-action="click->push-notification#subscribe"
-            class="hidden w-full px-4 py-2
-                   bg-blue-500 hover:bg-blue-600
-                   text-white text-sm font-medium rounded-lg
-                   transition-colors duration-100">
-      🔔 この端末でアラーム通知をオンにする
-    </button>
+      <p id="push-status-loading"
+         class="text-xs text-gray-400 dark:text-gray-500">
+        通知設定を確認中...
+      </p>
 
-    <%# 通知有効 %>
-    <p id="push-unsubscribe-btn"
-       class="hidden text-sm text-emerald-600 dark:text-emerald-400">
-      <span class="flex items-center gap-2">
-        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-        </svg>
-        この端末ではアラーム通知が有効です
-      </span>
-    </p>
-
-    <%# 非対応 %>
-    <p id="push-not-supported"
-      class="hidden text-sm text-red-400 dark:text-red-400 leading-relaxed">
-      現在の環境ではプッシュ通知を有効にできません。iOSでプッシュ通知を有効にしたい場合は、このアプリをホーム画面に追加してください。
-    </p>
-  </div>
-
-  <%# ── フッター ── %>
-  <div class="flex flex-col-reverse gap-2 pt-2
-              border-t border-gray-100 dark:border-gray-700
-              sm:flex-row sm:items-center sm:justify-between">
-
-    <% if turbo_frame_request? %>
-      <button type="button"
-              data-action="click->dialog#close"
-              class="w-full sm:w-auto px-4 py-2 text-sm font-medium rounded-lg
-                     text-center
-                     text-gray-500 dark:text-gray-400
-                     hover:text-gray-700 dark:hover:text-gray-200
-                     hover:bg-gray-100 dark:hover:bg-gray-700
-                     transition-colors duration-100">
-        キャンセル
+      <button id="push-subscribe-btn"
+              type="button"
+              data-push-notification-target="subscribeBtn"
+              data-action="click->push-notification#subscribe"
+              class="hidden w-full px-4 py-2 rounded-lg text-sm font-medium
+                    bg-gray-900 dark:bg-white
+                    text-white dark:text-gray-900
+                    hover:bg-gray-700 dark:hover:bg-gray-200
+                    transition-colors duration-100">
+        <span class="flex items-center justify-center gap-2">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16
+                    a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6"/>
+            <path d="M9 17v1a3 3 0 0 0 6 0v-1"/>
+          </svg>
+          この端末でアラーム通知をオンにする
+        </span>
       </button>
-    <% else %>
-      <%= link_to 'キャンセル', request.referer || alarms_path,
-          class: "w-full sm:w-auto px-4 py-2 text-sm font-medium rounded-lg
-                  text-center block
-                  text-gray-500 dark:text-gray-400
-                  hover:text-gray-700 dark:hover:text-gray-200
-                  hover:bg-gray-100 dark:hover:bg-gray-700
-                  transition-colors duration-100" %>
-    <% end %>
-    
-    <%= hidden_field_tag :start_date, @start_date if @start_date %><%# どの月を表示していたかを伝える。 %>
-    
-    <%= f.submit alarm.persisted? ? '更新する' : 'アラームを作成',
-        data: { turbo_submits_with: alarm.persisted? ? "更新中..." : "作成中..." },
-        class: "w-full sm:w-auto px-5 py-2 text-sm font-semibold rounded-lg
-                bg-emerald-500 hover:bg-emerald-600
-                text-white shadow-sm
-                transition-colors duration-100 cursor-pointer" %>
+
+      <p id="push-unsubscribe-btn"
+         class="hidden text-sm text-emerald-600 dark:text-emerald-400">
+        <span class="flex items-center gap-2">
+          <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          この端末ではアラーム通知が有効です
+        </span>
+      </p>
+
+      <p id="push-not-supported"
+         class="hidden text-sm text-red-400 leading-relaxed">
+        現在の環境ではプッシュ通知を有効にできません。iOSでプッシュ通知を有効にしたい場合は、このアプリをホーム画面に追加してください。
+      </p>
+    </div>
+
+    <div class="flex flex-col-reverse gap-2
+                sm:flex-row sm:items-center sm:justify-end">
+
+      <% if turbo_frame_request? %>
+        <button type="button"
+                data-action="click->dialog#close"
+                class="w-full sm:w-auto px-4 py-2 rounded-lg
+                       text-sm font-medium text-center
+                       text-gray-500 dark:text-gray-400
+                       hover:text-gray-700 dark:hover:text-gray-200
+                       hover:bg-gray-200 dark:hover:bg-gray-900
+                       transition-colors duration-100">
+          キャンセル
+        </button>
+      <% else %>
+        <%= link_to 'キャンセル', request.referer || alarms_path,
+            class: "w-full sm:w-auto px-4 py-2 rounded-lg
+                    text-sm font-medium text-center block
+                    text-gray-500 dark:text-gray-400
+                    hover:text-gray-700 dark:hover:text-gray-200
+                    hover:bg-gray-100 dark:hover:bg-gray-900
+                    transition-colors duration-100" %>
+      <% end %>
+
+      <%= f.submit alarm.persisted? ? '更新する' : 'アラームを作成',
+          data: { turbo_submits_with: alarm.persisted? ? "更新中..." : "作成中..." },
+          class: "w-full sm:w-auto px-5 py-2 rounded-lg
+                  text-sm font-semibold
+                  bg-gray-900 dark:bg-white
+                  text-white dark:text-gray-900
+                  hover:bg-gray-700 dark:hover:bg-gray-300
+                  transition-colors duration-100 cursor-pointer" %>
+    </div>
+
   </div>
 
 <% end %>

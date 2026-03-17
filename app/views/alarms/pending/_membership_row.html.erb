@@ -2,147 +2,176 @@
 <% alarm = membership.alarm %>
 <% expired = alarm.scheduled_at < Time.current %>
 
+<%#
+  外側 div は relative group のみ。
+  flex をここに置かないことでスタッキングコンテキストが生成されず、
+  ドロップダウン等のフローティング要素が正しく前面に出られる。
+  expired の背景色と transition はここで設定したまま維持する。
+%>
 <div id="<%= dom_id(membership) %>"
-     class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3
-            px-5 py-4
-            <%= expired ? 'bg-red-50/60 dark:bg-red-900/10' : '' %>
+     class="relative group px-5 py-4
+            <%= expired ? 'bg-red-50/40 dark:bg-red-950/20' : '' %>
             transition-colors duration-100">
 
+  <%# 時間超過の左ボーダーライン：絶対配置なので構造変更の影響を受けない %>
   <% if expired %>
     <div class="absolute left-0 top-0 bottom-0 w-0.5 bg-red-400 dark:bg-red-500 rounded-r"></div>
   <% end %>
 
-  <%# ── リンク部分 ── %>
-  <%= link_to alarm_alarm_membership_path(alarm, membership),
-      class: "flex items-center gap-4 flex-1 min-w-0 hover:opacity-70 transition-opacity" do %>
+  <%#
+    透明オーバーレイリンク。
+    z-index を指定しないことでスタッキングコンテキストを生成せず、
+    flex 層（DOM 順で後ろ）が自然に上に重なる。
+  %>
+  <%= link_to "",
+      alarm_alarm_membership_path(alarm, membership),
+      class: "absolute inset-0
+              group-hover:bg-gray-50 dark:group-hover:bg-gray-900/60
+              transition-colors" %>
 
-    <div class="flex flex-col items-center justify-center gap-1 shrink-0
-                rounded-lg px-3 py-2.5 min-w-[68px]
-                <%= expired ?
-                  'bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800' :
-                  'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800' %>">
+  <%#
+    flex レイアウト層。
+    relative のみ（z-index なし）でスタッキングコンテキストを生成しない。
+    pointer-events-none でクリックをオーバーレイリンクに透過させる。
+  %>
+  <div class="relative
+              flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3
+              pointer-events-none">
 
-      <%# 時刻 %>
-      <span class="text-base font-bold tabular-nums whitespace-nowrap leading-tight
-                   <%= expired ? 'text-red-500 dark:text-red-400' : 'text-gray-900 dark:text-gray-100' %>">
-        <% if alarm.started_at.present? %>
-          <%= alarm.started_at.strftime("%H:%M") %>
-          <span class="text-xs font-normal text-gray-400 dark:text-gray-500 mx-0.5">-</span>
-          <%= alarm.scheduled_at.strftime("%H:%M") %>
-        <% else %>
-          <%= alarm.scheduled_at.strftime("%H:%M") %>
-        <% end %>
-      </span>
+    <%# ── 左コンテンツ（日付ブロック + ラベル・メンバー情報）── %>
+    <div class="flex items-center gap-4 flex-1 min-w-0">
 
-      <span class="text-[10px] text-gray-400 dark:text-gray-500 whitespace-nowrap leading-tight tabular-nums">
-        <%= alarm.scheduled_at.strftime("%-m/%-d") %>
-        (<%= %w[日 月 火 水 木 金 土][alarm.scheduled_at.wday] %>)
-      </span>
-    </div>
+      <div class="flex flex-col items-center justify-center gap-1 shrink-0
+                  rounded-lg px-3 py-2.5 min-w-[68px]
+                  <%= expired ?
+                    'bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900' :
+                    'bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800' %>">
 
-    <div class="flex-1 min-w-0 flex flex-col gap-1.5">
-
-      <%# ラベル + 時間超過バッジ %>
-      <div class="flex items-center gap-2">
-        <span class="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate leading-tight">
-          <%= truncate(alarm.label, length: 20) %>
+        <span class="text-base font-bold tabular-nums whitespace-nowrap leading-tight
+                     <%= expired ? 'text-red-500 dark:text-red-400' : 'text-gray-900 dark:text-white' %>">
+          <% if alarm.started_at.present? %>
+            <%= alarm.started_at.strftime("%H:%M") %>
+            <span class="text-xs font-normal text-gray-400 dark:text-gray-600 mx-0.5">–</span>
+            <%= alarm.scheduled_at.strftime("%H:%M") %>
+          <% else %>
+            <%= alarm.scheduled_at.strftime("%H:%M") %>
+          <% end %>
         </span>
-        <% if expired %>
-          <span class="shrink-0 inline-flex items-center
-                       text-[10px] font-semibold
-                       text-red-600 dark:text-red-400
-                       bg-red-100 dark:bg-red-900/30
-                       border border-red-200 dark:border-red-800
-                       rounded-full px-2 py-0.5">
-            時間超過
-          </span>
-        <% end %>
+
+        <span class="text-xs font-medium tabular-nums
+                     text-gray-400 dark:text-gray-600
+                     whitespace-nowrap leading-tight">
+          <%= alarm.scheduled_at.strftime("%-m/%-d") %>
+          (<%= %w[日 月 火 水 木 金 土][alarm.scheduled_at.wday] %>)
+        </span>
       </div>
 
-      <%# 作成者 + メンバー %>
-      <% if alarm.alarm_memberships.any? %>
-        <div class="flex items-center gap-2">
+      <div class="flex-1 min-w-0 flex flex-col gap-1.5">
 
-          <%# 作成者アバター %>
-          <div class="flex items-center -space-x-1">
-            <% if alarm.creator.avatar.attached? %>
-              <%= image_tag alarm.creator.avatar,
-                    title: "作成者: #{alarm.creator.name}",
-                    class: "w-5 h-5 rounded-full object-cover
-                            ring-2 ring-emerald-300 dark:ring-emerald-700" %>
-            <% else %>
-              <span title="作成者: <%= alarm.creator.name %>"
-                    class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/50
-                           ring-2 ring-emerald-300 dark:ring-emerald-700
-                           flex items-center justify-center">
-                <svg class="w-3 h-3 text-emerald-500 dark:text-emerald-400" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
-                </svg>
-              </span>
-            <% end %>
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-base font-semibold text-gray-900 dark:text-white truncate leading-tight">
+            <%= truncate(alarm.label, length: 20) %>
+          </span>
+          <% if expired %>
+            <span class="shrink-0 inline-flex items-center
+                         text-[10px] font-semibold
+                         text-red-600 dark:text-red-400
+                         bg-red-50 dark:bg-red-950/30
+                         border border-red-200 dark:border-red-900
+                         rounded-full px-2 py-0.5">
+              時間超過
+            </span>
+          <% end %>
+        </div>
 
-            <%# メンバーアバター %>
-            <% alarm_display_members(alarm).each do |member| %>
-              <% if member.avatar.attached? %>
-                <%= image_tag member.avatar,
-                      title: member.name,
+        <% if alarm.alarm_memberships.any? %>
+          <div class="flex items-center gap-2">
+            <div class="flex items-center -space-x-1">
+              <% if alarm.creator.avatar.attached? %>
+                <%= image_tag alarm.creator.avatar,
+                      title: "作成者: #{alarm.creator.name}",
                       class: "w-5 h-5 rounded-full object-cover
-                              ring-2 ring-white dark:ring-gray-900" %>
+                              ring-2 ring-gray-200 dark:ring-gray-700" %>
               <% else %>
-                <span title="<%= member.name %>"
-                      class="w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-700
-                             ring-2 ring-white dark:ring-gray-900
+                <span title="作成者: <%= alarm.creator.name %>"
+                      class="w-5 h-5 rounded-full
+                             bg-gray-100 dark:bg-gray-800
+                             ring-2 ring-gray-200 dark:ring-gray-700
                              flex items-center justify-center">
-                  <svg class="w-2.5 h-2.5 text-gray-400 dark:text-gray-500" viewBox="0 0 24 24" fill="currentColor">
+                  <svg class="w-3 h-3 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
                   </svg>
                 </span>
               <% end %>
-            <% end %>
 
-            <% if alarm_hidden_members_count(alarm) > 0 %>
-              <span class="w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-700
-                           ring-2 ring-white dark:ring-gray-900
-                           text-[10px] font-semibold text-gray-500 dark:text-gray-400
-                           flex items-center justify-center">
-                +<%= alarm_hidden_members_count(alarm) %>
-              </span>
-            <% end %>
+              <% alarm_display_members(alarm).each do |member| %>
+                <% if member.avatar.attached? %>
+                  <%= image_tag member.avatar,
+                        title: member.name,
+                        class: "w-5 h-5 rounded-full object-cover
+                                ring-2 ring-white dark:ring-gray-950" %>
+                <% else %>
+                  <span title="<%= member.name %>"
+                        class="w-5 h-5 rounded-full
+                               bg-gray-100 dark:bg-gray-800
+                               ring-2 ring-white dark:ring-gray-950
+                               flex items-center justify-center">
+                    <svg class="w-2.5 h-2.5 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                    </svg>
+                  </span>
+                <% end %>
+              <% end %>
+
+              <% if alarm_hidden_members_count(alarm) > 0 %>
+                <span class="w-5 h-5 rounded-full
+                             bg-gray-100 dark:bg-gray-800
+                             ring-2 ring-white dark:ring-gray-950
+                             text-[10px] font-semibold text-gray-500 dark:text-gray-400
+                             flex items-center justify-center">
+                  +<%= alarm_hidden_members_count(alarm) %>
+                </span>
+              <% end %>
+            </div>
+
+            <span class="text-xs text-gray-400 dark:text-gray-600 truncate">
+              <%= truncate(alarm.creator.name, length: 11, omission: "...") %>
+            </span>
           </div>
+        <% end %>
 
-          <%# 作成者名 %>
-          <span class="text-xs text-gray-400 dark:text-gray-500 truncate">
-            <%= truncate(alarm.creator.name, length: 11, omission: "...") %>
-          </span>
-        </div>
+      </div>
+    </div>
+
+    <%#
+      ストップボタン。
+      pointer-events-auto で親の pointer-events-none を上書きし、
+      クリックをボタンに届かせる。
+    %>
+    <div class="shrink-0 self-end sm:self-auto pointer-events-auto">
+      <% if expired %>
+        <%= button_to 'ストップ',
+            unlock_alarm_alarm_membership_path(alarm, membership),
+            method: :patch,
+            data: { turbo_submits_with: "ストップ中..." },
+            class: "px-4 py-2 text-xs font-semibold rounded-md
+                    border border-red-300 dark:border-red-800
+                    text-red-500 dark:text-red-400
+                    bg-white dark:bg-gray-950
+                    hover:bg-red-50 dark:hover:bg-red-950/50
+                    transition-colors" %>
+      <% else %>
+        <%= button_to 'ストップ',
+            unlock_alarm_alarm_membership_path(alarm, membership),
+            method: :patch,
+            data: { turbo_submits_with: "ストップ中..." },
+            class: "px-4 py-2 text-xs font-semibold rounded-md
+                    bg-gray-900 dark:bg-white
+                    text-white dark:text-gray-900
+                    hover:bg-gray-700 dark:hover:bg-gray-300
+                    transition-colors" %>
       <% end %>
     </div>
 
-  <% end %> 
-
-  <%# ── ストップボタン ── %>
-  <div class="shrink-0 self-end sm:self-auto">
-    <% if expired %>
-      <%= button_to 'ストップ',
-          unlock_alarm_alarm_membership_path(alarm, membership),
-          method: :patch,
-          data: { turbo_submits_with: "ストップ中..." },
-          class: "px-4 py-2 text-xs font-semibold rounded-lg
-                  text-red-500 dark:text-red-400
-                  border border-red-300 dark:border-red-700
-                  hover:bg-red-50 dark:hover:bg-red-900/20
-                  active:bg-red-100
-                  transition-colors duration-100" %>
-    <% else %>
-      <%= button_to 'ストップ',
-          unlock_alarm_alarm_membership_path(alarm, membership),
-          method: :patch,
-          data: { turbo_submits_with: "ストップ中..." },
-          class: "px-4 py-2 text-xs font-semibold rounded-lg
-                  bg-emerald-500 hover:bg-emerald-600
-                  text-white shadow-sm
-                  transition-colors duration-100" %>
-    <% end %>
   </div>
-
 </div>

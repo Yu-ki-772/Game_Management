@@ -1,11 +1,9 @@
 <%# app/views/shared/_flash.html.erb %>
-<!-- フラッシュメッセージのパーシャル -->
 
 <% if notice %>
   <div data-controller="flash"
        data-action="turbo:before-cache@window->flash#beforeCache"
-       class="inline-flex items-center gap-3 rounded-lg px-4 py-3 max-w-sm w-max
-              shadow-lg
+       class="inline-flex items-center gap-3 rounded-md px-4 py-3 max-w-sm w-max
               bg-emerald-50 border border-emerald-200
               dark:bg-emerald-950 dark:border-emerald-800
               transition-opacity duration-500"
@@ -29,8 +27,7 @@
 <% if alert %>
   <div data-controller="flash"
        data-flash-duration-value="0"
-       class="inline-flex items-center gap-3 rounded-lg px-4 py-3 max-w-sm w-max
-              shadow-lg
+       class="inline-flex items-center gap-3 rounded-md px-4 py-3 max-w-sm w-max
               bg-red-50 border border-red-200
               dark:bg-red-950 dark:border-red-800
               transition-opacity duration-500"

@@ -1,53 +1,19 @@
 <%# app/views/message_templates/index.html.erb %>
 <div class="max-w-7xl mx-auto px-4 py-8">
 
-  <%# ページヘッダー %>
-  <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between pb-5 border-b border-gray-200 dark:border-gray-700 mb-8">
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">定型文一覧</h1>
+  <%= render 'message_templates/navigation' %>
 
-    <div class="flex items-center gap-3">
-      <% if user_signed_in? %>
-        <%= link_to bookmarks_message_templates_path,
-            class: "inline-flex items-center justify-center gap-2 flex-1 md:flex-none
-                    bg-amber-500 hover:bg-amber-600 text-white
-                    font-semibold px-5 py-2 rounded-lg transition text-sm" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" />
-          </svg>
-          <span class="hidden sm:inline">ブックマーク一覧</span>
-          <span class="sm:hidden">ブックマーク</span>
-        <% end %>
-      <% end %>
-
-      <%= link_to new_message_template_path,
-          data: { turbo_frame: "dialog" },
-          class: "inline-flex items-center justify-center gap-2 flex-1 md:flex-none
-                  bg-emerald-600 hover:bg-emerald-700 text-white
-                  font-semibold px-5 py-2 rounded-lg transition text-sm" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-          <path d="M12 5l0 14" /><path d="M5 12l14 0" />
-        </svg>
-        定型文を作成
-      <% end %>
-    </div>
+  <div class="pb-5 border-b border-gray-200 dark:border-gray-800 mb-8">
+    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      定型文一覧
+    </h1>
   </div>
 
-  <%# Turbo Frame %>
   <%= turbo_frame_tag "message_templates_list" do %>
-    <%# 検索フォーム %>
-    <%= render 'search_form',
-        q: @q,
-        url: message_templates_path,
-        turbo_frame: "message_templates_list",
-        available_reasons: @available_reasons %>
 
     <div id="message_templates_list_content">
       <%= render 'templates_list',
           message_templates: @message_templates,
-          user_bookmarks: @user_bookmarks,
           empty_message: "定型文が見つかりませんでした",
           empty_description: "検索条件を変更してお試しください" %>
     </div>

@@ -5,21 +5,20 @@ export default class extends Controller {
   static targets = ["source", "button"]
 
   connect() {
-    // 元のボタン内容を保存
     this.originalHTML = this.buttonTarget.innerHTML
     this.originalClasses = this.buttonTarget.className
   }
 
-  #showFeedback(svgPath, label, stateClass) {
+  // label パラメータを削除。アイコンのみで状態を表現する。
+  #showFeedback(svgPath, stateClass) {
     const button = this.buttonTarget
 
     button.innerHTML = `
-      <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${svgPath}" />
       </svg>
-      ${label}
     `
-    button.className = `inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md border ${stateClass}`
+    button.className = `shrink-0 p-2 rounded-md transition-colors duration-100 ${stateClass}`
     button.disabled = true
 
     setTimeout(() => {
@@ -34,15 +33,13 @@ export default class extends Controller {
 
     navigator.clipboard.writeText(text).then(() => {
       this.#showFeedback(
-        "M5 13l4 4L19 7",
-        "コピー済み",
+        "M5 13l4 4L19 7",     // チェックマーク
         "clipboard-success"
       )
     }).catch((error) => {
       console.error("コピー失敗:", error)
       this.#showFeedback(
-        "M6 18L18 6M6 6l12 12",
-        "コピー失敗",
+        "M6 18L18 6M6 6l12 12",  // ×マーク
         "clipboard-error"
       )
     })

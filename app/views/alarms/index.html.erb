@@ -2,18 +2,26 @@
 <div class="max-w-7xl mx-auto px-4 py-8">
   <%= render 'alarms/navigation' %>
 
-  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-5 border-b border-gray-200 dark:border-gray-700 mb-8">
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">アラーム一覧</h1>
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between
+              pb-5 border-b border-gray-200 dark:border-gray-800 mb-8">
+
+    <%# tracking-tight でモダンな印象に。Vercel のタイトルはほぼすべてこれが効いている。 %>
+    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      アラーム一覧
+    </h1>
 
     <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+
+      <%# セカンダリボタン：border のみ、shadow なし %>
       <%= link_to notification_setting_path,
           class: "inline-flex items-center justify-center gap-2
-                  bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
+                  bg-white dark:bg-gray-950
+                  border border-gray-200 dark:border-gray-800
                   text-gray-700 dark:text-gray-300
-                  font-semibold px-5 py-2 rounded-lg transition text-sm
-                  border border-gray-300 dark:border-gray-600" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  hover:bg-gray-50 dark:hover:bg-gray-900
+                  font-medium px-4 py-2 rounded-md transition-colors text-sm" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
           <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
           <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
@@ -21,22 +29,35 @@
         通知設定
       <% end %>
 
+      <%# プライマリボタン：エメラルドはアプリの核となるアクションにのみ使う %>
       <%= link_to new_alarm_path,
           data: { turbo_frame: "dialog" },
-          class: "inline-flex items-center justify-center gap-2 sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2 rounded-lg transition text-sm" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          class: "inline-flex items-center justify-center gap-2
+                  bg-gray-900 dark:bg-white
+                  text-white dark:text-gray-900
+                  hover:bg-gray-700 dark:hover:bg-gray-100
+                  font-medium px-4 py-2 rounded-md
+                  transition-colors text-sm" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-          <path d="M12 5l0 14" /><path d="M5 12l14 0" />
+          <path d="M12 5l0 14" />
+          <path d="M5 12l14 0" />
         </svg>
         アラームを作成
       <% end %>
+
     </div>
   </div>
 </div>
+
 <div id="alarms_list">
   <% if @memberships.present? %>
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm divide-y divide-gray-50 dark:divide-gray-700">
+    <%# shadow 廃止・border を 1px に統一・背景を gray-950 に %>
+    <div class="bg-white dark:bg-gray-950
+                rounded-xl
+                border border-gray-200 dark:border-gray-800
+                divide-y divide-gray-100 dark:divide-gray-800">
       <% @memberships.each do |membership| %>
         <%= render 'alarms/index/membership_row', membership: membership %>
       <% end %>
@@ -45,4 +66,3 @@
     <%= render 'alarms/index/no_alarms_message' %>
   <% end %>
 </div>
-

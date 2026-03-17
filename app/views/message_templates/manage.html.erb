@@ -1,0 +1,43 @@
+<%# app/views/message_templates/manage.html.erb %>
+<div class="max-w-7xl mx-auto px-4 py-8">
+
+  <%= render 'message_templates/navigation' %>
+
+  <%#
+    管理画面だけ「定型文を作成」ボタンをヘッダーに持つ。
+    定型文の作成は管理行為なので、この画面にだけプライマリボタンを置く。
+  %>
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between
+              pb-5 border-b border-gray-200 dark:border-gray-800 mb-8">
+    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      定型文の管理
+    </h1>
+
+    <%= link_to new_message_template_path,
+        data: { turbo_frame: "dialog" },
+        class: "inline-flex items-center justify-center gap-2
+                self-start sm:self-auto
+                bg-gray-900 dark:bg-white
+                text-white dark:text-gray-900
+                hover:bg-gray-700 dark:hover:bg-gray-100
+                font-medium px-4 py-2 rounded-md transition-colors text-sm" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M12 5l0 14" /><path d="M5 12l14 0" />
+      </svg>
+      定型文を作成
+    <% end %>
+  </div>
+
+  <%= turbo_frame_tag "manage_list" do %>
+
+    <div id="manage_list_content">
+      <%= render 'manage_list',
+          message_templates: @message_templates,
+          user_bookmarks: @user_bookmarks,
+          empty_message: "定型文が見つかりませんでした",
+          empty_description: "検索条件を変更してお試しください" %>
+    </div>
+  <% end %>
+</div>

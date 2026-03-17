@@ -3,30 +3,86 @@
   <%= render 'alarms/navigation' %>
 
   <div class="mb-4 sm:mb-6">
-    <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1 sm:mb-2">
+    <h1 class="text-xl sm:text-2xl font-bold tracking-tight
+               text-gray-900 dark:text-white mb-1 sm:mb-2">
       アラームカレンダー
     </h1>
-    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3">
+    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
       登録されたアラームを確認できます
     </p>
-
-    <div class="flex items-center gap-4 flex-wrap">
-      <div class="flex items-center gap-1.5">
-        <div class="w-2.5 h-2.5 rounded-sm bg-blue-400 border-l-2 border-blue-600 flex-shrink-0"></div>
-        <span class="text-xs text-gray-600 dark:text-gray-400">自分のアラーム</span>
-      </div>
-      <div class="flex items-center gap-1.5">
-        <div class="w-2.5 h-2.5 rounded-sm bg-amber-100 border-l-2 border-amber-400 flex-shrink-0"></div>
-        <span class="text-xs text-gray-600 dark:text-gray-400">招待されたアラーム</span>
-      </div>
-      <div class="flex items-center gap-1.5">
-        <div class="w-2.5 h-2.5 rounded-sm bg-gray-200 border-l-2 border-gray-400 flex-shrink-0 opacity-60"></div>
-        <span class="text-xs text-gray-600 dark:text-gray-400">過去のアラーム</span>
-      </div>
-    </div>
   </div>
 
   <%= turbo_frame_tag "calendar" do %>
-    <%= render 'calendar_content' %>
+    <%= month_calendar(
+          events: @alarms,
+          attribute: :start_time,
+          start_date: @start_date,
+          params: { controller: 'alarms', action: 'calendar' }
+        ) do |date, alarms_on_date| %>
+
+      <div class="flex flex-col gap-0.5 flex-1 overflow-hidden">
+        <% visible_alarms = alarms_on_date.first(3) %>
+        <% remaining_count = alarms_on_date.size - 3 %>
+
+        <% visible_alarms.each do |alarm| %>
+          <%#
+            色分けなし・リンクなし・cursor 指定なし。
+            閲覧専用画面として情報だけを提示する。
+            スタイルはアラーム一覧の日付ブロックと同じグレー系に統一。
+          %>
+          <div class="rounded-sm border-l-2 overflow-hidden
+                      bg-gray-50 dark:bg-gray-900
+                      border-gray-300 dark:border-gray-700
+                      p-0.5 sm:p-1.5">
+
+            <%# スマホ：縦棒で時刻範囲を表現 %>
+            <div class="sm:hidden flex flex-col items-start">
+              <% if alarm.started_at.present? %>
+                <span class="text-[9px] tabular-nums leading-tight
+                            text-gray-900 dark:text-gray-400">
+                  <%= alarm.started_at.strftime("%H:%M") %>
+                </span>
+                <div class="w-px h-2 bg-gray-900 dark:bg-gray-300 opacity-40 my-0.5 ml-[10px]"></div>
+              <% end %>
+              <span class="text-[9px] font-semibold tabular-nums leading-tight
+                          text-gray-900 dark:text-white">
+                <%= alarm.scheduled_at.strftime("%H:%M") %>
+              </span>
+            </div>
+
+            <%# デスクトップ：時刻（time_text）＋人数 %>
+            <div class="hidden sm:block">
+              <div class="flex items-center gap-1 text-[11px]
+                          text-gray-900 dark:text-white">
+                <svg class="w-2.5 h-2.5 flex-shrink-0" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="tabular-nums"><%= alarm.time_text %></span>
+              </div>
+              <% if alarm.alarm_memberships.size > 1 %>
+                <div class="flex items-center gap-1 text-[10px] mt-0.5
+                            text-gray-400 dark:text-gray-500">
+                  <svg class="w-2.5 h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                  </svg>
+                  <span><%= alarm.alarm_memberships.size %>人</span>
+                </div>
+              <% end %>
+            </div>
+
+          </div>
+        <% end %>
+
+        <% if remaining_count > 0 %>
+          <div class="text-[9px] sm:text-[10px] text-gray-400 dark:text-gray-500
+                      text-center py-0.5 font-medium tabular-nums">
+            +<%= remaining_count %>件
+          </div>
+        <% end %>
+      </div>
+
+    <% end %>
   <% end %>
 </div>

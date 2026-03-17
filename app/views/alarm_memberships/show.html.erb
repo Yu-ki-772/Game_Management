@@ -2,53 +2,107 @@
 <div class="max-w-lg mx-auto px-4 py-8 space-y-6">
 
   <%= link_to "← 戻る", request.referer || alarms_path,
-        class: "text-sm text-gray-500 dark:text-gray-400 hover:underline" %>
+        class: "text-sm text-gray-500 dark:text-gray-400
+                hover:text-gray-700 dark:hover:text-gray-200
+                transition-colors" %>
 
-  <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+  <% expired = @alarm.scheduled_at < Time.current %>
 
-    <%# ステータスバー %>
-    <% if @membership.notified? %>
-      <div class="bg-emerald-500 text-white text-xs font-semibold text-center py-2 tracking-wide rounded-t-2xl">
-        ✅ 通知済み
+  <div class="bg-white dark:bg-gray-950
+              rounded-xl
+              border border-gray-200 dark:border-gray-800">
+
+    <%# ステータスバー：通知済み → 時間超過 → 待機中 の順で評価 %>
+    <% if expired %>
+      <div class="flex items-center justify-center gap-1.5
+                  text-xs font-semibold text-center py-2 tracking-wide rounded-t-xl
+                  bg-red-500 text-white">
+        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 9v4"/>
+          <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214
+                  a1.914 1.914 0 0 0 1.636-2.87l-8.106-13.536
+                  a1.914 1.914 0 0 0-3.274 0z"/>
+          <path d="M12 16h.01"/>
+        </svg>
+        時間超過
       </div>
     <% else %>
-      <div class="bg-blue-500 text-white text-xs font-semibold text-center py-2 tracking-wide rounded-t-2xl">
-        ⏳ 待機中
+      <div class="flex items-center justify-center gap-1.5
+                  text-xs font-semibold text-center py-2 tracking-wide rounded-t-xl
+                  bg-gray-900 dark:bg-white text-white dark:text-gray-900">
+        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8v4l3 3"/>
+          <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/>
+        </svg>
+        待機中
       </div>
     <% end %>
 
-    <div class="px-6 py-6 space-y-6">
+    <div class="px-6 py-6 space-y-6
+                <%= expired ? 'bg-red-50/40 dark:bg-red-950/20' : '' %>
+                rounded-b-xl transition-colors duration-100">
 
-      <%# 日時・ラベル %>
+      <%# 日時・ラベル：expired を渡して時刻テキストの色を連動させる %>
       <div>
-        <%= render "alarm_memberships/alarm_detail", alarm: @alarm %>
+        <%= render "alarm_memberships/alarm_detail", alarm: @alarm, expired: expired %>
       </div>
 
+      <%# ストップ済み or ストップボタン %>
       <% if @alarm.alarm_logs.exists?(user_uuid: current_user.uuid) %>
         <div class="text-center">
-          <span class="inline-block text-sm text-emerald-600 font-semibold bg-emerald-50 dark:bg-emerald-900/30 rounded-xl px-5 py-3">
-            ✅ あなたはストップ済みです
+          <span class="inline-flex items-center gap-1.5
+                       text-sm font-semibold
+                       text-emerald-600 dark:text-emerald-400
+                       bg-emerald-50 dark:bg-emerald-900/20
+                       border border-emerald-200 dark:border-emerald-800
+                       rounded-lg px-5 py-3">
+            ✓ ストップ済み
           </span>
         </div>
       <% else %>
-        <%= button_to 'アラームをストップ',
-              unlock_alarm_alarm_membership_path(@alarm, @membership),
-              method: :patch,
-              data: { turbo_submits_with: "ストップ中..." },
-              class: "w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white
-                      font-semibold rounded-xl transition text-sm" %>
+        <% if expired %>
+          <%= button_to 'アラームをストップ',
+                unlock_alarm_alarm_membership_path(@alarm, @membership),
+                method: :patch,
+                data: { turbo_submits_with: "ストップ中..." },
+                class: "w-full py-3 text-sm font-semibold rounded-lg
+                        border border-red-300 dark:border-red-800
+                        text-red-500 dark:text-red-400
+                        bg-white dark:bg-gray-950
+                        hover:bg-red-50 dark:hover:bg-red-950/50
+                        transition-colors" %>
+        <% else %>
+          <%= button_to 'アラームをストップ',
+                unlock_alarm_alarm_membership_path(@alarm, @membership),
+                method: :patch,
+                data: { turbo_submits_with: "ストップ中..." },
+                class: "w-full py-3 text-sm font-semibold rounded-lg
+                        bg-gray-900 dark:bg-white
+                        text-white dark:text-gray-900
+                        hover:bg-gray-700 dark:hover:bg-gray-300
+                        transition-colors" %>
+        <% end %>
       <% end %>
 
+      <%# 作成者向け操作ボタン %>
       <% if @alarm.created_by?(current_user) %>
-        <div class="flex items-center justify-end gap-2 pt-2">
+        <div class="flex items-center justify-end gap-2 pt-2
+                    border-t border-gray-100 dark:border-gray-800">
           <%= render "alarm_memberships/invite_dropdown", alarm: @alarm %>
 
           <%= link_to edit_alarm_path(@alarm),
               data: { turbo_frame: "dialog" },
-              class: "px-3 py-2
-                      bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600
-                      text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-md
-                      border border-gray-200 dark:border-gray-600 transition" do %>
+              class: "px-3 py-1.5 text-xs font-medium rounded-md
+                      border border-gray-200 dark:border-gray-800
+                      text-gray-600 dark:text-gray-400
+                      bg-white dark:bg-gray-950
+                      hover:bg-gray-50 dark:hover:bg-gray-900
+                      hover:text-gray-900 dark:hover:text-gray-100
+                      transition-colors" do %>
             編集
           <% end %>
 
@@ -56,55 +110,84 @@
               method: :delete,
               data: { turbo_confirm: '本当に削除しますか?',
                       turbo_submits_with: "削除中..." },
-              class: "px-3 py-2
-                      bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50
-                      text-red-600 dark:text-red-400 text-xs font-semibold rounded-md
-                      border border-red-200 dark:border-red-800 transition" do %>
+              class: "px-3 py-1.5 text-xs font-medium rounded-md
+                      border border-red-200 dark:border-red-900
+                      text-red-500 dark:text-red-400
+                      bg-white dark:bg-gray-950
+                      hover:bg-red-50 dark:hover:bg-red-950/50
+                      transition-colors" do %>
             削除
           <% end %>
         </div>
       <% end %>
 
-      <%# 作成者・メンバー %>
-      <div>
-        <p class="text-xs text-gray-400 dark:text-gray-500 font-medium mb-3">参加者</p>
+      <%# 参加者リスト %>
+      <div class="border-t border-gray-100 dark:border-gray-800 pt-6">
+        <p class="text-xs font-medium text-gray-400 dark:text-gray-500 mb-3">
+          参加者
+        </p>
         <ul class="space-y-2">
 
           <li class="flex items-center gap-3">
             <% if @creator.avatar.attached? %>
-              <%= image_tag @creator.avatar, class: "w-8 h-8 rounded-full object-cover" %>
+              <%= image_tag @creator.avatar,
+                    class: "w-8 h-8 rounded-full object-cover
+                            border border-gray-200 dark:border-gray-700" %>
             <% else %>
-              <span class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+              <span class="w-8 h-8 rounded-full
+                          bg-gray-100 dark:bg-gray-800
+                          border border-gray-200 dark:border-gray-700
+                          flex items-center justify-center">
+                <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
                 </svg>
               </span>
             <% end %>
-            <span class="text-sm font-medium text-gray-800 dark:text-gray-200"><%= @creator.name %></span>
-            <span class="text-xs text-gray-400 bg-gray-100 dark:bg-gray-700 rounded px-1.5 py-0.5">作成者</span>
+
+            <%# 名前とバッジをひとつの div にまとめて隣り合わせにする %>
+            <div class="flex items-center gap-2 flex-1 min-w-0">
+              <span class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                <%= @creator.name %>
+              </span>
+              <span class="shrink-0 text-xs text-gray-500 dark:text-gray-400
+                          bg-gray-100 dark:bg-gray-800
+                          rounded px-1.5 py-0.5">
+                作成者
+              </span>
+            </div>
           </li>
 
           <% @display_members.each do |member| %>
             <li class="flex items-center gap-3">
               <% if member.avatar.attached? %>
-                <%= image_tag member.avatar, class: "w-8 h-8 rounded-full object-cover" %>
+                <%= image_tag member.avatar,
+                      class: "w-8 h-8 rounded-full object-cover
+                              border border-gray-200 dark:border-gray-700" %>
               <% else %>
-                <span class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                <span class="w-8 h-8 rounded-full
+                             bg-gray-100 dark:bg-gray-800
+                             border border-gray-200 dark:border-gray-700
+                             flex items-center justify-center">
+                  <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
                   </svg>
                 </span>
               <% end %>
-              <span class="text-sm text-gray-700 dark:text-gray-300"><%= member.name %></span>
+              <span class="text-sm text-gray-700 dark:text-gray-300 flex-1">
+                <%= member.name %>
+              </span>
               <% if @alarm.alarm_logs.find_by(user_uuid: member.uuid) %>
-                <span class="text-xs text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 rounded px-1.5 py-0.5">
+                <span class="text-xs font-medium
+                             text-emerald-600 dark:text-emerald-400
+                             bg-emerald-50 dark:bg-emerald-900/20
+                             border border-emerald-200 dark:border-emerald-800
+                             rounded px-1.5 py-0.5">
                   ストップ済み
                 </span>
               <% end %>
             </li>
           <% end %>
 
-          <%# 21人目以降は件数だけ表示 %>
           <% if @hidden_count > 0 %>
             <li class="text-xs text-gray-400 dark:text-gray-500 pl-1">
               他 <%= @hidden_count %> 人

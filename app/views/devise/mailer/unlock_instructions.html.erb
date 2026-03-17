@@ -24,13 +24,13 @@
               ログインの失敗が規定回数を超えたため、アカウントがロックされました。下のボタンからロックを解除してください。
             </p>
 
-            <%# ── ボタン ── %>
+            <%# ── ボタン：アクションなのでグレー反転 ── %>
             <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
               <tr>
                 <td align="center">
                   <%= link_to "アカウントのロックを解除する",
                       unlock_url(@resource, unlock_token: @token),
-                      style: "display: inline-block; padding: 12px 32px; background-color: #059669; color: #ffffff; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px;" %>
+                      style: "display: inline-block; padding: 12px 32px; background-color: #111827; color: #ffffff; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px;" %>
                 </td>
               </tr>
             </table>

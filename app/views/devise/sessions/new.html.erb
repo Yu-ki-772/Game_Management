@@ -1,26 +1,20 @@
 <%# app/views/devise/sessions/new.html.erb %>
-<div class="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden
-            bg-gradient-to-br from-gray-50 via-emerald-50/30 to-gray-100
-            dark:from-gray-950 dark:via-emerald-950/20 dark:to-gray-900">
+<div class="min-h-screen flex items-center justify-center px-4 py-12
+            bg-white dark:bg-gray-950">
 
-  <div class="pointer-events-none absolute -top-32 -left-32 w-96 h-96 rounded-full
-              bg-emerald-200/30 dark:bg-emerald-900/20 blur-3xl"></div>
-  <div class="pointer-events-none absolute -bottom-32 -right-32 w-96 h-96 rounded-full
-              bg-emerald-300/20 dark:bg-emerald-800/10 blur-3xl"></div>
+  <div class="w-full max-w-md">
 
-  <div class="w-full max-w-md relative z-10">
-
-    <%# ヘッダー：アイコン＋タイトル %>
+    <%# ヘッダー：タイトル %>
     <div class="text-center mb-8">
-      
       <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">ログイン</h2>
       <p class="mt-1.5 text-sm text-gray-500 dark:text-gray-400">アカウントにログインしてください</p>
     </div>
 
     <%# メインカード %>
-    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm
-                rounded-2xl shadow-xl shadow-gray-200/60 dark:shadow-gray-950/40
-                border border-white dark:border-gray-700/60 p-8">
+    <div class="bg-gray-50 dark:bg-gray-900
+                rounded-xl
+                border border-gray-200 dark:border-gray-800
+                p-8">
 
       <%# Google OAuth ボタン %>
       <div class="mb-6 flex justify-center">
@@ -36,10 +30,11 @@
       <%# 区切り線 %>
       <div class="relative mb-6">
         <div class="absolute inset-0 flex items-center">
-          <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
+          <div class="w-full border-t border-gray-200 dark:border-gray-800"></div>
         </div>
         <div class="relative flex justify-center">
-          <span class="px-3 bg-white dark:bg-gray-800 text-gray-400 dark:text-gray-500 text-xs font-medium">
+          <span class="px-3 bg-gray-50 dark:bg-gray-900
+                       text-gray-400 dark:text-gray-500 text-xs font-medium">
             または
           </span>
         </div>
@@ -64,14 +59,14 @@
                 autofocus: true,
                 autocomplete: "email",
                 placeholder: "example@email.com",
-                class: "w-full pl-10 pr-4 py-2.5 rounded-xl
-                        border border-gray-200 dark:border-gray-600
-                        bg-gray-50 dark:bg-gray-700/60
+                class: "w-full pl-10 pr-4 py-2.5 rounded-md
+                        border border-gray-200 dark:border-gray-700
+                        bg-white dark:bg-gray-800
                         text-gray-900 dark:text-gray-100 text-sm
                         placeholder-gray-400 dark:placeholder-gray-500
-                        focus:outline-none focus:ring-2 focus:ring-emerald-500/40
-                        focus:border-emerald-500 focus:bg-white dark:focus:bg-gray-700
-                        transition duration-150" %>
+                        focus:outline-none focus:ring-1 focus:ring-gray-400 dark:focus:ring-gray-600
+                        focus:border-gray-400 dark:focus:border-gray-600
+                        transition-colors" %>
           </div>
         </div>
 
@@ -88,13 +83,13 @@
             </div>
             <%= f.password_field :password,
                 autocomplete: "current-password",
-                class: "w-full pl-10 pr-4 py-2.5 rounded-xl
-                        border border-gray-200 dark:border-gray-600
-                        bg-gray-50 dark:bg-gray-700/60
+                class: "w-full pl-10 pr-4 py-2.5 rounded-md
+                        border border-gray-200 dark:border-gray-700
+                        bg-white dark:bg-gray-800
                         text-gray-900 dark:text-gray-100 text-sm
-                        focus:outline-none focus:ring-2 focus:ring-emerald-500/40
-                        focus:border-emerald-500 focus:bg-white dark:focus:bg-gray-700
-                        transition duration-150" %>
+                        focus:outline-none focus:ring-1 focus:ring-gray-400 dark:focus:ring-gray-600
+                        focus:border-gray-400 dark:focus:border-gray-600
+                        transition-colors" %>
           </div>
         </div>
 
@@ -102,9 +97,10 @@
         <% if devise_mapping.rememberable? %>
           <div class="flex items-center gap-2">
             <%= f.check_box :remember_me,
-                class: "h-4 w-4 text-emerald-600 focus:ring-emerald-400
-                        border-gray-300 dark:border-gray-600 rounded
-                        bg-white dark:bg-gray-700" %>
+                class: "h-4 w-4 rounded
+                        border-gray-300 dark:border-gray-600
+                        bg-white dark:bg-gray-700
+                        focus:ring-1 focus:ring-gray-400 dark:focus:ring-gray-600" %>
             <%= f.label :remember_me, "ログイン状態を保持する",
                 class: "text-sm text-gray-600 dark:text-gray-400 select-none" %>
           </div>
@@ -113,30 +109,29 @@
         <%# ログインボタン %>
         <div>
           <%= f.submit "ログイン",
-              class: "w-full py-3 px-4
-                      bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700
-                      dark:bg-emerald-600 dark:hover:bg-emerald-500
-                      text-white text-sm font-bold tracking-wide rounded-xl
-                      shadow-md shadow-emerald-500/30
-                      transition-all duration-150 cursor-pointer
-                      hover:shadow-lg hover:shadow-emerald-500/40
-                      hover:-translate-y-px active:translate-y-0" %>
+              class: "w-full py-3 px-4 rounded-md
+                      text-sm font-bold
+                      text-white dark:text-gray-900
+                      bg-gray-900 dark:bg-white
+                      hover:bg-gray-700 dark:hover:bg-gray-300
+                      transition-colors cursor-pointer" %>
         </div>
       <% end %>
 
       <%# リンク類 %>
-      <div class="pt-6 mt-6 border-t border-gray-100 dark:border-gray-700
+      <div class="pt-6 mt-6 border-t border-gray-200 dark:border-gray-800
                   flex flex-col items-center gap-3">
         <%= link_to "新規登録", new_registration_path(resource_name),
-            class: "text-sm text-emerald-600 dark:text-emerald-400
-                    hover:text-emerald-700 dark:hover:text-emerald-300
-                    font-semibold transition" %>
+            class: "text-sm font-semibold
+                    text-gray-700 dark:text-gray-300
+                    hover:text-gray-900 dark:hover:text-gray-100
+                    transition-colors" %>
         <%= link_to "パスワードをお忘れの方", new_password_path(resource_name),
             class: "text-sm text-gray-400 dark:text-gray-500
-                    hover:text-gray-600 dark:hover:text-gray-300 transition" %>
+                    hover:text-gray-600 dark:hover:text-gray-300 transition-colors" %>
         <%= link_to "アカウントロックの解除", new_unlock_path(resource_name),
             class: "text-sm text-gray-400 dark:text-gray-500
-                    hover:text-gray-600 dark:hover:text-gray-300 transition" %>
+                    hover:text-gray-600 dark:hover:text-gray-300 transition-colors" %>
       </div>
     </div>
 

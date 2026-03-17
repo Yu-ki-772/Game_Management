@@ -43,32 +43,35 @@ module ApplicationHelper
 
   def nav_link_class(path)
     if current_page?(path)
-      "#{active_state_classes} px-3 py-2 rounded-md text-sm font-medium"
+      "#{active_state_classes} px-3 py-2 rounded-md text-sm"
     else
-      "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-sm font-medium transition"
+      "text-gray-500 dark:text-gray-400
+        hover:text-gray-900 dark:hover:text-gray-100
+        px-3 py-2 rounded-md text-sm font-medium transition-colors"
     end
   end
 
   # ドロップダウンのトリガーのボタン
   def dropdown_button_class(paths)
     is_active = paths.any? { |path| current_page?(path) }
-    base = "px-3 py-2 rounded-md text-sm font-medium transition flex items-center gap-1"
+    base = "px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1"
 
     if is_active
       "#{base} #{active_state_classes}"
     else
-      "#{base} text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-emerald-600 dark:hover:text-emerald-400"
+      "#{base} text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
     end
   end
 
   # ドロップダウン内の各メニュー項目用
   def dropdown_item_class(path)
-    base = "block px-4 py-3 text-base"
+    # py-3.5 がスマホ向け（タップしやすい高さ）、sm:py-2.5 がデスクトップ向け
+    base = "block px-4 py-3.5 lg:py-2.5 text-sm"
 
     if current_page?(path)
-      "#{base} #{active_state_classes} font-medium"
+      "#{base} #{active_state_classes}"
     else
-      "#{base} text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+      "#{base} text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
     end
   end
 
@@ -81,6 +84,6 @@ module ApplicationHelper
 
   # メニューのアクティブ状態のカラークラスを一元管理
   def active_state_classes
-    "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30"
+    "text-emerald-600 dark:text-emerald-400 font-semibold"
   end
 end

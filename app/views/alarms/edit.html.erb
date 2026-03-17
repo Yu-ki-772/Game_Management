@@ -2,21 +2,22 @@
 <%= turbo_frame_tag "dialog" do %>
   <dialog data-controller="dialog"
           data-action="click->dialog#clickOutside turbo:before-cache@window->dialog#beforeCache"
-          class="fixed inset-0 mx-auto mt-16 rounded-2xl shadow-xl
+          class="fixed inset-0 mx-auto mt-16 rounded-xl
                  p-0 w-11/12 max-w-lg
                  max-h-[calc(100svh-5rem)] overflow-x-hidden overflow-y-auto
                  backdrop:bg-black/50
-                 bg-white dark:bg-gray-800
-                 border border-gray-100 dark:border-gray-700">
+                 bg-white dark:bg-gray-950
+                 border border-gray-200 dark:border-gray-800">
 
     <%# ── ヘッダー ── %>
     <div class="flex items-start justify-between px-6 pt-6 pb-5
-                border-b border-gray-100 dark:border-gray-700">
+                border-b border-gray-100 dark:border-gray-800">
       <div>
-        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 leading-tight">
+        <h2 class="text-lg font-bold tracking-tight
+                   text-gray-900 dark:text-white leading-tight">
           アラームを編集
         </h2>
-        <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
           内容を変更して更新してください
         </p>
       </div>
@@ -25,7 +26,7 @@
               class="p-1.5 -mt-1 -mr-1 rounded-lg
                      text-gray-400 dark:text-gray-500
                      hover:text-gray-600 dark:hover:text-gray-300
-                     hover:bg-gray-100 dark:hover:bg-gray-700
+                     hover:bg-gray-100 dark:hover:bg-gray-900
                      transition-colors duration-100"
               aria-label="閉じる">
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -37,25 +38,28 @@
     <%# フォーム本体 %>
     <%= render 'form', alarm: @alarm %>
 
-    <%# ── 削除ゾーン ── %>
+    <%#
+      ── 削除ゾーン ──
+      破線ボーダーは「この操作は通常の操作とは性質が異なる」という
+      視覚的な警告として機能する。border-dashed はそのまま維持する。
+      ボーダー色を dark:border-gray-700 → dark:border-gray-800 に統一。
+    %>
     <div class="px-6 pb-5">
       <div class="flex items-center justify-between
-                  pt-4 border-t border-dashed border-gray-100 dark:border-gray-700">
-        <p class="text-xs text-gray-400 dark:text-gray-500">
-          このアラームを削除します
-        </p>
+                  pt-4 border-t border-dashed
+                  border-gray-200 dark:border-gray-800">
         <%= button_to alarm_path(@alarm),
             method: :delete,
             data: { turbo_confirm: '本当に削除しますか?', turbo_frame: "_top" },
             class: "px-3 py-1.5 text-xs font-medium rounded-md
                     text-gray-400 dark:text-gray-500
-                    border border-gray-200 dark:border-gray-700
+                    border border-gray-200 dark:border-gray-800
                     hover:text-red-500 dark:hover:text-red-400
                     hover:border-red-200 dark:hover:border-red-800
                     hover:bg-red-50 dark:hover:bg-red-900/20
                     active:bg-red-100
                     transition-colors duration-100 cursor-pointer" do %>
-          削除
+          アラームを削除
         <% end %>
       </div>
     </div>

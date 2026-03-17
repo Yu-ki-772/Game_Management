@@ -1,15 +1,14 @@
 <%# app/views/message_templates/update.turbo_stream.erb %>
 
-<%# indexページ用: リストの更新 %>
+<%# index ページ用 %>
 <%= turbo_stream.update "message_templates_list_content" do %>
   <%= render 'templates_list',
       message_templates: @message_templates,
-      user_bookmarks: @user_bookmarks,
       empty_message: "定型文が見つかりませんでした",
       empty_description: "検索条件を変更してお試しください" %>
 <% end %>
 
-<%# bookmarksページ用: リストの更新 %>
+<%# bookmarks ページ用 %>
 <%= turbo_stream.update "bookmarks_list_content" do %>
   <%= render 'templates_list',
       message_templates: @bookmarks_message_templates,
@@ -18,8 +17,14 @@
       empty_description: "検索条件を変更してお試しください" %>
 <% end %>
 
-<!-- フラッシュメッセージの表示 -->
-<%= render_turbo_stream_flash_messages %>
+<%# manage ページ用 %>
+<%= turbo_stream.update "manage_list_content" do %>
+  <%= render 'manage_list',
+      message_templates: @message_templates,
+      user_bookmarks: @user_bookmarks,
+      empty_message: "定型文が見つかりませんでした",
+      empty_description: "検索条件を変更してお試しください" %>
+<% end %>
 
-<%# ダイアログを閉じる %>
+<%= render_turbo_stream_flash_messages %>
 <%= turbo_stream.update "dialog" %>

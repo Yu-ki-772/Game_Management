@@ -14,12 +14,12 @@
 
 /* .dark クラスが html 要素に付いたとき、変数の値を差し替える */
 .dark {
-  --cal-border:         rgb(55 65 81);
-  --cal-sunday-bg:      rgb(69 26 26);
-  --cal-saturday-bg:    rgb(23 37 84);
-  --cal-today-bg:       rgb(20 61 43);
-  --cal-othermonth-bg:  rgb(31 41 55);
-  --cal-othermonth-text: rgb(107 114 128);
+  --cal-border:          rgb(39 39 42);
+  --cal-sunday-bg:       rgb(69 26 26);
+  --cal-saturday-bg:     rgb(23 37 84);
+  --cal-today-bg:        rgb(20 61 43);
+  --cal-othermonth-bg:   rgb(9 9 11);
+  --cal-othermonth-text: rgb(113 113 122);
 }
 
 .simple-calendar,
@@ -44,7 +44,6 @@
 .simple-calendar tbody td {
   border: 1px solid var(--cal-border);
   vertical-align: top;
-  /* テーマ切り替え時の色変化をなめらかに */
   min-height: 80px;
   transition: background-color 0.2s ease;
 }
@@ -64,6 +63,8 @@
   color: var(--cal-othermonth-text);
 }
 
+/* Tailwind の sm:（640px）・lg:（1024px）に揃えることで、
+   HTML 側の sm: クラスと同じ境界線でスタイルが切り替わる。 */
 @media (max-width: 639px) {
   .simple-calendar tbody td { min-height: 56px; }
 }
@@ -78,17 +79,19 @@
 
 /* 定型文一覧のクリップボードにコピーするボタン用 */
 .clipboard-success {
-  @apply bg-green-50 text-green-700 border-green-200;
-}
-.dark .clipboard-success {
-  @apply bg-green-900/30 text-green-400 border-green-800;
+  @apply text-emerald-600 bg-emerald-50;
+
+  @variant dark {
+    @apply text-emerald-400 bg-emerald-900/30;
+  }
 }
 
 .clipboard-error {
-  @apply bg-red-50 text-red-700 border-red-200;
-}
-.dark .clipboard-error {
-  @apply bg-red-900/30 text-red-400 border-red-800;
+  @apply text-red-500 bg-red-50;
+
+  @variant dark {
+    @apply text-red-400 bg-red-950/50;
+  }
 }
 
 /* 画面遷移時のプログレスバーのカスタマイズ */
