@@ -5,36 +5,43 @@
 
   <%# ── ページヘッダー ── %>
   <div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">フレンド一覧</h1>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+      フレンド一覧
+    </h1>
+    <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">
       <% if @friends.any? %>
         <span class="font-semibold text-gray-700 dark:text-gray-300"><%= @friends.count %></span> 人のフレンドがいます
       <% end %>
     </p>
   </div>
 
-  <%# ── 受信申請バナー %>
+  <%# ── 受信申請バナー ── %>
   <% if @pending_friendship_count&.positive? %>
     <div class="flex items-center justify-between gap-4
-                bg-emerald-50 dark:bg-emerald-950/60
-                border border-emerald-100 dark:border-emerald-900
-                border-l-4 border-l-emerald-500
-                rounded-lg px-4 py-3 mb-5">
+                bg-gray-50 dark:bg-gray-900
+                border border-gray-200 dark:border-gray-800
+                border-l-4 border-l-gray-900 dark:border-l-white
+                rounded-xl px-4 py-3 mb-5">
       <div class="flex items-center gap-2.5">
         <span class="inline-flex items-center justify-center
-                     w-5 h-5 rounded-full
-                     bg-emerald-500 text-white text-[11px] font-bold shrink-0">
+                    w-5 h-5 rounded-full
+                    bg-gray-900 dark:bg-white
+                    text-white dark:text-gray-900
+                    text-[11px] font-bold shrink-0">
           <%= @pending_friendship_count %>
         </span>
-        <span class="text-sm text-emerald-700 dark:text-emerald-300">
+        <%# テキストも普通のグレーに %>
+        <span class="text-sm text-gray-700 dark:text-gray-300">
           件のフレンド申請が届いています
         </span>
       </div>
       <%= link_to pending_friendships_path,
           class: "shrink-0 px-3.5 py-1.5
-                  bg-emerald-500 hover:bg-emerald-600
-                  text-white text-xs font-semibold rounded-lg
-                  shadow-sm transition-colors duration-100" do %>
+                  bg-gray-900 dark:bg-white
+                  text-white dark:text-gray-900
+                  hover:bg-gray-700 dark:hover:bg-gray-300
+                  text-xs font-semibold rounded-md
+                  transition-colors duration-100" do %>
         確認する
       <% end %>
     </div>
@@ -43,16 +50,16 @@
   <%# ── フレンドリスト ── %>
   <div id="friends_list_section">
     <% if @friends.any? %>
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm
-                  border border-gray-100 dark:border-gray-700 overflow-hidden">
-        <ul class="divide-y divide-gray-50 dark:divide-gray-700/70">
+      <div class="bg-white dark:bg-gray-900 rounded-xl
+                  border border-gray-200 dark:border-gray-800 overflow-hidden">
+        <ul class="divide-y divide-gray-200 dark:divide-gray-800">
           <% @friends.each do |friendship| %>
             <% friend = friendship.partner(current_user) %>
             <% next if friend.nil? %>
 
             <li id="friendship_<%= friendship.id %>"
                 class="flex items-center gap-4 px-5 py-3.5
-                       hover:bg-gray-50/80 dark:hover:bg-gray-700/30
+                       hover:bg-gray-50 dark:hover:bg-gray-800/50
                        transition-colors duration-100">
 
               <%# アバター + 名前 %>
@@ -61,20 +68,19 @@
                   <% if friend.avatar.attached? %>
                     <%= image_tag friend.avatar,
                         class: "w-10 h-10 rounded-full object-cover
-                                ring-1 ring-gray-200 dark:ring-gray-600" %>
+                                ring-1 ring-gray-200 dark:ring-gray-800" %>
                   <% else %>
                     <div class="w-10 h-10 rounded-full
-                                bg-gray-100 dark:bg-gray-700
-                                ring-1 ring-gray-200 dark:ring-gray-600
+                                bg-gray-50 dark:bg-gray-800
+                                ring-1 ring-gray-200 dark:ring-gray-800
                                 flex items-center justify-center">
                       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 dark:text-gray-500"
-                           viewBox="0 0 24 24" fill="none"
-                           stroke="currentColor" stroke-width="1.5"
-                           stroke-linecap="round" stroke-linejoin="round">
+                          viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2"
+                          stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                        <path d="M9 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                        <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
+                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                       </svg>
                     </div>
                   <% end %>
@@ -84,18 +90,18 @@
                 </span>
               <% end %>
 
-              <%# 解除ボタン %>
+              <%# 解除ボタン（デストラクティブ） %>
               <%= button_to friendship_path(friendship),
                   method: :delete,
                   form: { data: { turbo_confirm: "本当に#{friend.name}さんとのフレンド関係を解除しますか？この操作は取り消せません。" } },
                   data: { turbo_submits_with: "解除中..." },
                   class: "shrink-0 px-3 py-1.5 text-xs font-medium rounded-md
                           text-gray-400 dark:text-gray-500
-                          border border-gray-200 dark:border-gray-700
+                          border border-gray-200 dark:border-gray-800
                           hover:text-red-500 dark:hover:text-red-400
                           hover:border-red-200 dark:hover:border-red-800
                           hover:bg-red-50 dark:hover:bg-red-900/20
-                          active:bg-red-100
+                          active:bg-red-100 dark:active:bg-red-900/40
                           transition-colors duration-100" do %>
                 解除
               <% end %>
@@ -106,7 +112,6 @@
       </div>
 
     <% else %>
-      <%# フレンドがいない場合 %>
       <%= render 'empty_state' %>
     <% end %>
   </div>

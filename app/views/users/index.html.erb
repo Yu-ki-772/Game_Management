@@ -5,44 +5,53 @@
 
   <%# ── ページヘッダー ── %>
   <div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">ユーザー検索</h1>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">ユーザーネームでフレンドを探せます</p>
+    <%# tracking-tight を追加 %>
+    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">ユーザー検索</h1>
+    <%# 補足テキストは gray-400/500 に統一 %>
+    <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">ユーザーネームでフレンドを探せます</p>
   </div>
 
   <%# ── 検索フォーム ── %>
+  <%# shadow-sm 削除、border・bg をトークンに合わせる %>
   <%= search_form_for @q, url: users_path, method: :get,
-      html: { class: "bg-white dark:bg-gray-800 rounded-xl shadow-sm
-                       border border-gray-100 dark:border-gray-700
+      html: { class: "bg-white dark:bg-gray-900 rounded-xl
+                       border border-gray-200 dark:border-gray-800
                        px-5 py-4 mb-5" } do |f| %>
     <div class="flex flex-col sm:flex-row gap-3">
 
       <%# 検索入力欄 %>
       <div class="flex-1">
+        <%# rounded-md に統一、フォーカスリングをトークンに合わせる、bg を1段階差で %>
         <%= f.search_field :name_cont,
             placeholder: 'ユーザーネームを検索...',
             autofocus: true,
             class: "w-full px-3.5 py-2.5
-                    border border-gray-200 dark:border-gray-600 rounded-lg text-sm
-                    bg-white dark:bg-gray-700/60
+                    border border-gray-200 dark:border-gray-800 rounded-md text-sm
+                    bg-gray-50 dark:bg-gray-800
                     text-gray-900 dark:text-gray-100
-                    placeholder:text-gray-300 dark:placeholder:text-gray-600
-                    focus:outline-none focus:ring-2 focus:ring-emerald-400/50
-                    focus:border-emerald-400 dark:focus:border-emerald-500
+                    placeholder:text-gray-400 dark:placeholder:text-gray-600
+                    focus:outline-none focus:ring-1
+                    focus:ring-gray-400 dark:focus:ring-gray-600
+                    focus:border-gray-400 dark:focus:border-gray-600
                     transition-colors duration-100" %>
       </div>
 
       <%# ボタン %>
       <div class="flex items-center gap-2">
+        <%# 検索ボタン → プライマリ（グレー反転）。shadow-sm 削除、rounded-md に %>
         <%= f.submit "検索",
             class: "px-5 py-2.5
-                    bg-emerald-500 hover:bg-emerald-600
-                    text-white text-sm font-semibold rounded-lg
-                    shadow-sm transition-colors duration-100 cursor-pointer" %>
+                    bg-gray-900 dark:bg-white
+                    hover:bg-gray-700 dark:hover:bg-gray-300
+                    text-white dark:text-gray-900
+                    text-sm font-semibold rounded-md
+                    transition-colors duration-100 cursor-pointer" %>
+        <%# クリアはセカンダリ的な操作なのでテキストのみ %>
         <%= link_to "クリア", users_path,
-            class: "px-4 py-2.5 text-sm font-medium rounded-lg
+            class: "px-4 py-2.5 text-sm font-medium rounded-md
                     text-gray-500 dark:text-gray-400
                     hover:text-gray-700 dark:hover:text-gray-200
-                    hover:bg-gray-100 dark:hover:bg-gray-700
+                    hover:bg-gray-100 dark:hover:bg-gray-800
                     transition-colors duration-100" %>
       </div>
     </div>
@@ -51,7 +60,9 @@
   <%# ── 検索結果件数 ── %>
   <% if params[:q].present? %>
     <p class="text-xs text-gray-400 dark:text-gray-500 mb-4">
-      <span class="font-semibold text-gray-700 dark:text-gray-300 text-sm"><%= @search_count %></span> 件見つかりました
+      <span class="font-semibold text-gray-700 dark:text-gray-300 text-sm tabular-nums">
+        <%= @search_count %>
+      </span> 件見つかりました
     </p>
   <% end %>
 
@@ -63,53 +74,50 @@
   <% end %>
 
   <%# ── ユーザーリスト ── %>
-  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm
-              border border-gray-100 dark:border-gray-700 overflow-hidden">
+  <%# shadow-sm 削除、bg・border をトークンに合わせる %>
+  <div class="bg-white dark:bg-gray-900 rounded-xl
+              border border-gray-200 dark:border-gray-800 overflow-hidden">
     <% if @users.any? %>
-      <ul class="divide-y divide-gray-50 dark:divide-gray-700/70">
+      <ul class="divide-y divide-gray-200 dark:divide-gray-800">
         <% @users.each do |user| %>
           <% next if user == current_user %>
           <% pending_request_from_user = @pending_requests_hash[user.uuid] %>
           <% existing_friendship       = @friendships_hash[user.uuid] %>
 
           <li class="flex items-center gap-4 px-5 py-3.5
-                     hover:bg-gray-50/80 dark:hover:bg-gray-700/30
+                     hover:bg-gray-50 dark:hover:bg-gray-800/50
                      transition-colors duration-100">
 
             <%# アバター + 名前 %>
             <%= link_to user_path(user), class: "flex items-center gap-3 flex-1 min-w-0" do %>
-
-              <%# アバター %>
               <div class="shrink-0">
                 <% if user.avatar.attached? %>
                   <%= image_tag user.avatar,
                       class: "w-10 h-10 rounded-full object-cover
-                              ring-1 ring-gray-200 dark:ring-gray-600" %>
+                              ring-1 ring-gray-200 dark:ring-gray-800" %>
                 <% else %>
+                  <%# ヘッダーと統一（頭+肩パス、stroke-width="2"） %>
                   <div class="w-10 h-10 rounded-full
-                              bg-gray-100 dark:bg-gray-700
-                              ring-1 ring-gray-200 dark:ring-gray-600
+                              bg-gray-50 dark:bg-gray-800
+                              ring-1 ring-gray-200 dark:ring-gray-800
                               flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 dark:text-gray-500"
                          viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="1.5"
+                         stroke="currentColor" stroke-width="2"
                          stroke-linecap="round" stroke-linejoin="round">
                       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                      <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                      <path d="M9 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                      <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
+                      <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                      <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                     </svg>
                   </div>
                 <% end %>
               </div>
 
-              <%# ユーザー名 %>
-              <span class="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">
+              <span class="text-base font-bold text-gray-800 dark:text-gray-100 truncate">
                 <%= user.name %>
               </span>
             <% end %>
 
-            <%# フレンド関連ボタン（Turbo Stream ターゲット） %>
             <div id="friendship_action_<%= user.uuid %>" class="shrink-0">
               <%= render 'friendship_action',
                   user: user,
@@ -122,7 +130,6 @@
       </ul>
 
     <% else %>
-      <%# 空状態 %>
       <div class="text-center py-16">
         <p class="text-sm text-gray-400 dark:text-gray-500">
           <%= params[:q].present? ? "検索条件に一致するユーザーが見つかりませんでした" : "ユーザーが見つかりませんでした" %>

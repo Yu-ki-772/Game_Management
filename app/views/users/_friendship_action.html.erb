@@ -1,43 +1,53 @@
 <%# app/views/users/_friendship_action.html.erb %>
 
+<%# ケース1: 相手から申請が来ている → 承認アクション（プライマリ） %>
 <% if pending_request_from_user.present? %>
   <%= button_to friendship_path(pending_request_from_user),
       method: :patch,
       params: { action_type: 'accept' },
       data: { turbo_submits_with: "承認中..." },
-      class: "px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-md transition" do %>
+      class: "px-4 py-1.5
+              bg-gray-900 dark:bg-white
+              hover:bg-gray-700 dark:hover:bg-gray-300
+              text-white dark:text-gray-900
+              text-xs font-semibold rounded-md
+              transition-colors duration-100" do %>
     申請を承認
   <% end %>
 
+<%# ケース2: 関係なし → 申請ボタン（セカンダリ） %>
 <% elsif existing_friendship.nil? %>
   <%= button_to friendships_path,
       method: :post,
       params: { friend_uuid: user.uuid },
       data: { turbo_submits_with: "申請中..." },
       class: "px-4 py-1.5
-              bg-white dark:bg-gray-700
-              hover:bg-emerald-50 dark:hover:bg-emerald-900/30
-              text-emerald-700 dark:text-emerald-400
+              bg-white dark:bg-gray-950
+              hover:bg-gray-100 dark:hover:bg-gray-800
+              text-gray-700 dark:text-gray-300
               text-xs font-semibold rounded-md
-              border border-emerald-200 dark:border-emerald-800 transition" do %>
+              border border-gray-200 dark:border-gray-800
+              transition-colors duration-100" do %>
     フレンド申請
   <% end %>
 
+<%# ケース3: 承認済み → 状態バッジ（エメラルドは状態表示として意味論的に正当） %>
 <% elsif existing_friendship.accepted? %>
   <span class="px-3 py-1.5
-               bg-emerald-50 dark:bg-emerald-900/30
+               bg-emerald-50 dark:bg-emerald-950/40
                text-emerald-700 dark:text-emerald-400
                text-xs font-medium rounded-md
                border border-emerald-200 dark:border-emerald-800">
     フレンドです
   </span>
 
+<%# ケース4: 自分から申請済み → 状態バッジ（中立グレー） %>
 <% elsif existing_friendship.user_uuid == current_user.uuid %>
   <span class="px-3 py-1.5
-               bg-gray-50 dark:bg-gray-700
+               bg-gray-50 dark:bg-gray-900
                text-gray-500 dark:text-gray-400
                text-xs font-medium rounded-md
-               border border-gray-200 dark:border-gray-600">
+               border border-gray-200 dark:border-gray-800">
     申請済み
   </span>
 
