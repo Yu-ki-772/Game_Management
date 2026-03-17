@@ -3,48 +3,62 @@
      data-controller="pwa-install"
      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 dark:bg-black/50">
 
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-90 max-w-full mx-4">
-    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
+  <div class="bg-white dark:bg-gray-900
+              rounded-xl
+              border border-gray-200 dark:border-gray-800
+              p-6 w-80 sm:w-96 max-w-full mx-4">
+
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1">
       アラーム通知をより確実に受け取るために
     </h2>
-    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-      ホーム画面に追加しておくと、アプリを開いていないときでもアラームの通知が届くようになります。
+    <p class="text-base text-gray-400 dark:text-gray-500 mb-6">
+      ホーム画面に追加すると、アプリを開いていないときでも通知が届きます。
     </p>
 
-    <%# beforeinstallprompt が使えるブラウザ（Chrome・Edge等）向け。
-        JavaScriptで表示・非表示を切り替え。 %>
+    <%# beforeinstallprompt が使えるブラウザ（Chrome・Edge等）向け %>
     <button id="pwa-install-btn"
             data-action="click->pwa-install#install"
-            class="hidden w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition mb-2">
+            class="hidden w-full px-4 py-2 rounded-md mb-3
+                   text-sm font-medium
+                   text-white dark:text-gray-900
+                   bg-gray-900 dark:bg-white
+                   hover:bg-gray-700 dark:hover:bg-gray-300
+                   transition-colors">
       ホーム画面に追加する
     </button>
 
-    <%# Safari等、beforeinstallprompt が使えないブラウザ向けの手順案内。
-        JavaScriptで表示・非表示を切り替え。 %>
-    <div id="pwa-manual-guide" class="hidden mb-4
-        rounded-lg border border-gray-200 dark:border-gray-600
-        bg-gray-50 dark:bg-gray-700/50 px-4 py-3 space-y-2">
-      <p class="text-sm text-gray-700 dark:text-gray-300">
-        <span class="font-medium">iOS：</span>Safariの共有ボタン →「ホーム画面に追加」
+    <%# Safari等、beforeinstallprompt が使えないブラウザ向けの手順案内 %>
+    <div id="pwa-manual-guide"
+         class="hidden mb-4
+                rounded-md
+                border border-gray-200 dark:border-gray-800
+                bg-gray-50 dark:bg-gray-800
+                px-4 py-3 space-y-2">
+      <p class="text-base text-gray-700 dark:text-gray-300">
+        <span class="font-semibold">iOS：</span>Safariの共有ボタン →「ホーム画面に追加」
       </p>
-      <p class="text-sm text-gray-700 dark:text-gray-300">
-        <span class="font-medium">Android：</span>Chromeのメニュー →「ホーム画面に追加」
+      <p class="text-base text-gray-700 dark:text-gray-300">
+        <span class="font-semibold">Android：</span>Chromeのメニュー →「ホーム画面に追加」
       </p>
-      <p class="text-sm text-gray-700 dark:text-gray-300">
-        <span class="font-medium">PC：</span>アドレスバー右端のアイコン →「ホーム画面に追加」
+      <p class="text-base text-gray-700 dark:text-gray-300">
+        <span class="font-semibold">PC：</span>アドレスバー右端のアイコン →「ホーム画面に追加」
       </p>
-      <p class="text-xs text-gray-400 dark:text-gray-500 pt-1">
+      <p class="text-sm text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-200 dark:border-gray-700">
         手順が異なる場合は、お使いのブラウザのメニューからお試しください。
       </p>
     </div>
 
+    <%# セカンダリ：ボーダーで区切るパターン %>
     <button data-action="click->pwa-install#close"
-            class="w-full px-4 py-2
-                   bg-gray-100 dark:bg-gray-700
-                   hover:bg-gray-200 dark:hover:bg-gray-600
+            class="w-full px-4 py-2 rounded-md
+                   text-sm font-medium
                    text-gray-700 dark:text-gray-300
-                   text-sm font-medium rounded-lg transition">
+                   bg-white dark:bg-gray-950
+                   border border-gray-200 dark:border-gray-800
+                   hover:bg-gray-100 dark:hover:bg-gray-900
+                   transition-colors">
       後で
     </button>
+
   </div>
 </div>
