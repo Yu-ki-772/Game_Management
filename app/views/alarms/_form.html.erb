@@ -1,13 +1,12 @@
 <%# app/views/alarms/_form.html.erb %>
+<%# 変更点：focus:ring-2 focus:ring-emerald-400/50 focus:border-emerald-400 dark:focus:border-emerald-500
+    → focus:ring-1 focus:ring-gray-400 dark:focus:ring-gray-600 focus:border-gray-400 dark:focus:border-gray-600
+    4箇所すべてに適用 %>
+
 <%= form_with model: alarm, class: "px-6 py-6 space-y-6" do |f| %>
 
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%# ── ラベル ── %>
-  <%#
-    最も自由度が高く、ユーザーがまず入力するフィールド。
-    先頭に置くことで「このアラームは何のためか」を最初に決めさせる。
-  %>
   <div class="space-y-1.5">
     <%= f.label :label,
         class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
@@ -21,22 +20,16 @@
                 bg-white dark:bg-gray-900
                 text-gray-900 dark:text-white
                 placeholder:text-gray-300 dark:placeholder:text-gray-600
-                focus:outline-none focus:ring-2 focus:ring-emerald-400/50
-                focus:border-emerald-400 dark:focus:border-emerald-500
+                focus:outline-none focus:ring-1
+                focus:ring-gray-400 dark:focus:ring-gray-600
+                focus:border-gray-400 dark:focus:border-gray-600
                 transition-colors duration-100" %>
   </div>
 
-  <%#
-    ── 時間設定グループ ──
-    「開始時刻」と「アラーム日時」は一体の時間範囲を表している。
-    ひとつの枠でグループ化することで「これらは関連している」という
-    意味的なまとまりを視覚的に伝える。
-  %>
   <div class="rounded-lg border border-gray-200 dark:border-gray-800
               bg-gray-50 dark:bg-gray-900/50
               divide-y divide-gray-200 dark:divide-gray-800">
 
-    <%# 開始時刻 %>
     <div class="px-4 py-3.5 space-y-1.5">
       <%= f.label :started_at,
           class: "flex items-center gap-2 text-sm font-medium
@@ -55,15 +48,15 @@
                   border border-gray-200 dark:border-gray-800
                   bg-white dark:bg-gray-900
                   text-gray-900 dark:text-white
-                  focus:outline-none focus:ring-2 focus:ring-emerald-400/50
-                  focus:border-emerald-400 dark:focus:border-emerald-500
+                  focus:outline-none focus:ring-1
+                  focus:ring-gray-400 dark:focus:ring-gray-600
+                  focus:border-gray-400 dark:focus:border-gray-600
                   transition-colors duration-100" %>
       <p class="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
         プレイ開始時刻（アラーム日時より前、かつ現在から7時間前以内）
       </p>
     </div>
 
-    <%# アラーム日時 %>
     <div class="px-4 py-3.5 space-y-1.5">
       <%= f.label :scheduled_at,
           class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
@@ -76,15 +69,15 @@
                   border border-gray-200 dark:border-gray-800
                   bg-white dark:bg-gray-900
                   text-gray-900 dark:text-white
-                  focus:outline-none focus:ring-2 focus:ring-emerald-400/50
-                  focus:border-emerald-400 dark:focus:border-emerald-500
+                  focus:outline-none focus:ring-1
+                  focus:ring-gray-400 dark:focus:ring-gray-600
+                  focus:border-gray-400 dark:focus:border-gray-600
                   transition-colors duration-100" %>
       <p class="text-xs text-gray-400 dark:text-gray-500">未来の日時のみ指定可能</p>
     </div>
 
   </div>
 
-  <%# ── 事前リマインダー ── %>
   <div class="space-y-1.5">
     <%= f.label :reminder_minutes,
         class: "flex items-center gap-2 text-sm font-medium
@@ -104,20 +97,14 @@
                 border border-gray-200 dark:border-gray-800
                 bg-white dark:bg-gray-900
                 text-gray-900 dark:text-white
-                focus:outline-none focus:ring-2 focus:ring-emerald-400/50
-                focus:border-emerald-400 dark:focus:border-emerald-500
+                focus:outline-none focus:ring-1
+                focus:ring-gray-400 dark:focus:ring-gray-600
+                focus:border-gray-400 dark:focus:border-gray-600
                 transition-colors duration-100" %>
   </div>
 
-  <%#
-    ── フッター ──
-    「入力 → 通知確認 → 送信」という3段階の流れ。
-    border-t で入力エリアと最終確認エリアを区切ることで、
-    「ここから先は送信のステップ」という視覚的な区切りを作る。
-  %>
   <div class="space-y-4 pt-2 border-t border-gray-200 dark:border-gray-800">
 
-    <%# 通知設定：送信直前の確認ステップ %>
     <div data-controller="push-notification"
          data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>"
          class="rounded-lg border border-gray-200 dark:border-gray-800
@@ -128,7 +115,6 @@
         通知設定を確認中...
       </p>
 
-      <%# 通知オンにするボタン：青は「通知機能」の色として意味がある %>
       <button id="push-subscribe-btn"
               type="button"
               data-push-notification-target="subscribeBtn"
@@ -137,7 +123,7 @@
                     bg-gray-900 dark:bg-white
                     text-white dark:text-gray-900
                     hover:bg-gray-700 dark:hover:bg-gray-200
-                      transition-colors duration-100">
+                    transition-colors duration-100">
         <span class="flex items-center justify-center gap-2">
           <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor"
               viewBox="0 0 24 24" stroke-width="2"
@@ -150,7 +136,6 @@
         </span>
       </button>
 
-      <%# 通知有効：エメラルドは「完了・有効状態」として意味がある %>
       <p id="push-unsubscribe-btn"
          class="hidden text-sm text-emerald-600 dark:text-emerald-400">
         <span class="flex items-center gap-2">
@@ -161,14 +146,12 @@
         </span>
       </p>
 
-      <%# 非対応 %>
       <p id="push-not-supported"
          class="hidden text-sm text-red-400 leading-relaxed">
         現在の環境ではプッシュ通知を有効にできません。iOSでプッシュ通知を有効にしたい場合は、このアプリをホーム画面に追加してください。
       </p>
     </div>
 
-    <%# キャンセル・送信ボタン %>
     <div class="flex flex-col-reverse gap-2
                 sm:flex-row sm:items-center sm:justify-end">
 
