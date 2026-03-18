@@ -85,6 +85,11 @@ class User < ApplicationRecord
   #========================================================
   # publicメソッド
   #========================================================
+  # ログイン状態を維持するのを通常にする
+  def remember_me
+    true
+  end
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |new_user|
       new_user.name = auth.info.name

@@ -17,7 +17,7 @@ ja:
       alarm:
         label:             ラベル
         scheduled_at:      アラーム時刻
-        started_at:        開始時刻
+        started_at:        プレイ開始時刻
         sent:              送信済み
         unlocked:          解除済み
         job_id:            ジョブID

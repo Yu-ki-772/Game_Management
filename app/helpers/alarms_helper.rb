@@ -37,7 +37,7 @@ module AlarmsHelper
   end
 
   # プレイ時間の表示
-  def format_play_duration(minutes)
+  def format_play_minutes(minutes)
     return "#{minutes}分" if minutes <= 60
 
     hours = minutes / 60    # 時間（切り捨て）
@@ -55,7 +55,7 @@ module AlarmsHelper
     base_url = "https://x.com/intent/tweet"
 
     log = format_minutes_defer_for_share(alarm_log.minutes_to_unlock)
-    play_duration = format_play_duration(alarm_log.play_duration)
+    play_duration = format_play_minutes(alarm_log.play_duration)
 
     share_data = {
       text: "目標時間から#{log}ゲームを終了。 プレイ時間: #{play_duration}",
@@ -92,5 +92,12 @@ module AlarmsHelper
     else
       "#{alarm.reminder_minutes}分前にリマインダー"
     end
+  end
+
+  # ストップ可能かどうかの条件分岐
+  def stoppable?(alarm)
+    range = (alarm.scheduled_at - 5.hours)..(alarm.scheduled_at + 5.hours)
+
+    range.cover?(Time.current)
   end
 end
