@@ -34,7 +34,7 @@
       <%= f.label :started_at,
           class: "flex items-center gap-2 text-sm font-medium
                   text-gray-700 dark:text-gray-300" do %>
-        開始時刻
+        プレイ開始時刻
         <span class="text-[10px] font-normal text-gray-400 dark:text-gray-500
                      bg-gray-100 dark:bg-gray-800
                      border border-gray-200 dark:border-gray-700
@@ -53,14 +53,14 @@
                   focus:border-gray-400 dark:focus:border-gray-600
                   transition-colors duration-100" %>
       <p class="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
-        プレイ開始時刻（アラーム日時より前、かつ現在から7時間前以内）
+        アラーム日時より前、かつ現在から7時間前以内
       </p>
     </div>
 
     <div class="px-4 py-3.5 space-y-1.5">
       <%= f.label :scheduled_at,
           class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
-        アラーム日時
+        アラーム時刻
         <span class="text-red-400 ml-0.5">*</span>
       <% end %>
       <%= f.datetime_field :scheduled_at,

@@ -1,13 +1,26 @@
 <%# バリデーションエラー表示用のパーシャル %>
 <%# app/views/shared/_error_messages.html.erb %>
 <% if object.errors.any? %>
-  <div class="mb-4 rounded-md bg-red-50 dark:bg-red-900/30
-              border border-red-200 dark:border-red-800
-              px-4 py-3" role="alert">
-    <ul class="space-y-1">
-      <% object.errors.full_messages.each do |message| %>
-        <li class="text-xs text-red-600 dark:text-red-400"><%= message %></li>
-      <% end %>
-    </ul>
+  <div class="mb-4 rounded-md border border-red-200 dark:border-red-800
+              bg-red-50 dark:bg-red-900/20 px-4 py-3" role="alert">
+    <div class="flex items-start gap-3">
+
+      <%# エラーの視覚的起点となるアイコン。mt-0.5 でテキストベースラインに揃える %>
+      <svg class="mt-0.5 h-4 w-4 shrink-0 text-red-500 dark:text-red-400"
+           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+
+      <ul class="space-y-0.5">
+        <% object.errors.full_messages.each do |message| %>
+          <li class="text-xs text-red-600 dark:text-red-400"><%= message %></li>
+        <% end %>
+      </ul>
+
+    </div>
   </div>
 <% end %>
