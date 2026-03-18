@@ -82,7 +82,7 @@
       </p>
       <p class="text-3xl font-bold tabular-nums tracking-tight
                 text-gray-900 dark:text-white">
-        <%= alarm_log.minutes_to_unlock %>
+        <%= format_play_minutes(alarm_log.minutes_to_unlock) %>
       </p>
 
       <% if alarm_log.play_duration.present? %>
@@ -91,7 +91,7 @@
         </p>
         <p class="text-3xl font-bold tabular-nums tracking-tight
                   text-gray-900 dark:text-white">
-          <%= format_play_duration(alarm_log.play_duration) %>
+          <%= format_play_minutes(alarm_log.play_duration) %>
         </p>
       <% end %>
     </div>

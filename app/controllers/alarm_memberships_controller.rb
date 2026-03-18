@@ -73,7 +73,7 @@ class AlarmMembershipsController < ApplicationController
       flash[:alarm_log_id] = alarm_log.id if alarm_log
       redirect_to alarm_logs_path, notice: "アラームをストップしました", status: :see_other
     else
-      redirect_to pending_alarms_path, alert: "すでにストップ済みです"
+      redirect_to pending_alarms_path, alert: "アラームをストップできませんでした"
     end
   end
 
