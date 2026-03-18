@@ -36,19 +36,7 @@ module AlarmsHelper
     end
   end
 
-  # プレイ時間の表示
-  def format_play_minutes(minutes)
-    return "#{minutes}分" if minutes <= 60
 
-    hours = minutes / 60    # 時間（切り捨て）
-    mins  = minutes % 60    # 残りの分
-
-    if mins.zero?
-      "#{hours}時間"
-    else
-      "#{hours}時間#{mins}分"
-    end
-  end
 
   # Xでのalarm_logの共有用
   def x_share_url_for_alarm_log(alarm_log)

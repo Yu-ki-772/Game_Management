@@ -15,11 +15,11 @@ Chartkick.options = {
     scales: {
       x: {
         ticks: { color: "#9ca3af", font: { size: 11 } },
-        grid:  { color: "rgba(255,255,255,0.05)" }
+        grid:  { color: "rgba(107,114,128,0.1)" }
       },
       y: {
         ticks: { color: "#9ca3af", font: { size: 11 } },
-        grid:  { color: "rgba(255,255,255,0.05)" }
+        grid:  { color: "rgba(107,114,128,0.1)" }
       }
     }
   }

@@ -40,7 +40,11 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :alarm_logs, only: %i[ index show ]
+  resources :alarm_logs, only: %i[ index show ] do
+    collection do
+      get :list # 記録一覧
+    end
+  end
 
   resources :message_templates, only: [ :index, :new, :create, :edit, :update, :destroy ] do
     collection do
