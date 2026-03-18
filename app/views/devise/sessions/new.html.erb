@@ -93,18 +93,6 @@
           </div>
         </div>
 
-        <%# ログイン状態を保持する %>
-        <% if devise_mapping.rememberable? %>
-          <div class="flex items-center gap-2">
-            <%= f.check_box :remember_me,
-                class: "h-4 w-4 rounded
-                        border-gray-300 dark:border-gray-600
-                        bg-white dark:bg-gray-700
-                        focus:ring-1 focus:ring-gray-400 dark:focus:ring-gray-600" %>
-            <%= f.label :remember_me, "ログイン状態を保持する",
-                class: "text-sm text-gray-600 dark:text-gray-400 select-none" %>
-          </div>
-        <% end %>
 
         <%# ログインボタン %>
         <div>
