@@ -73,7 +73,14 @@ class MessageTemplatesController < ApplicationController
 
   def destroy
     @message_template.destroy!
-    redirect_to message_templates_path, notice: "定型文を削除しました", status: :see_other
+
+    respond_to do |format|
+      format.turbo_stream do
+        flash.now[:notice] = "定型文を削除しました"
+        load_templates_list_data
+      end
+      format.html { redirect_to manage_message_templates_path, notice: "定型文を削除しました", status: :see_other }
+    end
   end
 
   private
