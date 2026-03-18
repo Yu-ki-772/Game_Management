@@ -1,0 +1,205 @@
+<%# app/views/shared/_guide_content.html.erb %>
+
+<%# タイトルブロック %>
+<div class="border-b border-gray-200 dark:border-gray-800 pb-5">
+  <h1 class="text-lg font-bold text-gray-800 dark:text-gray-100 tracking-tight">
+    使い方ガイド
+  </h1>
+</div>
+
+<%# ── 基本の使い方 ────────────────────────────────── %>
+
+<%# 1. アラームを作成 %>
+<section class="space-y-3">
+  <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md
+                 bg-gray-900 dark:bg-white
+                 text-white dark:text-gray-900
+                 text-xs font-bold shrink-0">1</span>
+    アラームを作成
+  </h2>
+  <div class="bg-gray-50 dark:bg-gray-900
+              border border-gray-200 dark:border-gray-800
+              rounded-xl px-5 py-4">
+    <div class="flex items-start gap-4">
+      <div class="shrink-0 mt-0.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round"
+             class="text-gray-700 dark:text-gray-300">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+          <path d="M12 10l0 3l2 0" />
+          <path d="M7 4l-2.75 2" />
+          <path d="M17 4l2.75 2" />
+        </svg>
+      </div>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+        アラームを作成し、ゲームのスケジュール等を設定します。設定した時刻になると、ブラウザのプッシュ通知でお知らせします。
+      </p>
+    </div>
+  </div>
+</section>
+
+<%# 2. アラームをストップ %>
+<section class="space-y-3">
+  <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md
+                 bg-gray-900 dark:bg-white
+                 text-white dark:text-gray-900
+                 text-xs font-bold shrink-0">2</span>
+    アラームをストップ
+  </h2>
+  <div class="bg-gray-50 dark:bg-gray-900
+              border border-gray-200 dark:border-gray-800
+              rounded-xl px-5 py-4">
+    <div class="flex items-start gap-4">
+      <div class="shrink-0 mt-0.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round"
+             class="text-gray-700 dark:text-gray-300">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M7.587 7.566a7 7 0 1 0 9.833 9.864m1.35 -2.645a7 7 0 0 0 -8.536 -8.56" />
+          <path d="M12 12v1h1" />
+          <path d="M5.261 5.265l-1.011 .735" />
+          <path d="M17 4l2.75 2" />
+          <path d="M3 3l18 18" />
+        </svg>
+      </div>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+        ゲームをやめたら、該当アラームのストップボタンを押してください。アラームをストップすると、時間管理の記録が付きます。
+      </p>
+    </div>
+  </div>
+</section>
+
+<%# 3. 記録を確認 %>
+<section class="space-y-3">
+  <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md
+                 bg-gray-900 dark:bg-white
+                 text-white dark:text-gray-900
+                 text-xs font-bold shrink-0">3</span>
+    記録を確認
+  </h2>
+  <div class="bg-gray-50 dark:bg-gray-900
+              border border-gray-200 dark:border-gray-800
+              rounded-xl px-5 py-4">
+    <div class="flex items-start gap-4">
+      <div class="shrink-0 mt-0.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round"
+             class="text-gray-700 dark:text-gray-300">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+          <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />
+          <path d="M9 17v-4" />
+          <path d="M12 17v-1" />
+          <path d="M15 17v-2" />
+        </svg>
+      </div>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+        記録の統計や一覧を確認できます。
+      </p>
+    </div>
+  </div>
+</section>
+
+<%# ── さらに活用する ──────────────────────────────── %>
+
+<div class="pt-2 border-t border-gray-200 dark:border-gray-800">
+  <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 pt-4">
+    さらに活用する
+  </p>
+</div>
+
+<%# フレンドとアラームを共有 %>
+<section class="space-y-3">
+  <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round"
+         class="shrink-0 text-gray-400 dark:text-gray-500">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+      <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+    </svg>
+    フレンドとアラームを共有
+  </h2>
+  <div class="bg-gray-50 dark:bg-gray-900
+              border border-gray-200 dark:border-gray-800
+              rounded-xl px-5 py-4 space-y-3">
+    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+      作成したアラームにフレンドを招待することができます。これにより、招待されたフレンドにも同じアラームが有効になり、お互いの時間管理を維持できます。
+    </p>
+    <div class="bg-white dark:bg-gray-800
+                border border-gray-200 dark:border-gray-800
+                rounded-md px-4 py-3">
+      <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">補足</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+        フレンド申請は、フレンドメニューの「ユーザー検索」から送ることができます。
+      </p>
+    </div>
+  </div>
+</section>
+
+<%# 定型文の活用 %>
+<section class="space-y-3">
+  <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round"
+         class="shrink-0 text-gray-400 dark:text-gray-500">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M12 11v.01" />
+      <path d="M8 11v.01" />
+      <path d="M16 11v.01" />
+      <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3l12 0" />
+    </svg>
+    定型文の活用
+  </h2>
+  <div class="bg-gray-50 dark:bg-gray-900
+              border border-gray-200 dark:border-gray-800
+              rounded-xl px-5 py-4">
+    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+      ゲーム仲間にやめるのを切り出したいときに、あらかじめ用意した定型文を使うことができます。チャットに貼り付けたい場合は、
+      <span class="inline-flex items-center gap-0.5 align-middle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round"
+             class="text-gray-500 dark:text-gray-400">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" />
+          <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 1 2 2h2" />
+        </svg>
+      </span>
+      ボタンでコピーすることができます。
+    </p>
+  </div>
+</section>
+
+<%# 診断 %>
+<section class="space-y-3">
+  <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round"
+         class="shrink-0 text-gray-400 dark:text-gray-500">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M9 11l3 3l8 -8" />
+      <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+    </svg>
+    診断
+  </h2>
+  <div class="bg-gray-50 dark:bg-gray-900
+              border border-gray-200 dark:border-gray-800
+              rounded-xl px-5 py-4 space-y-3">
+    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+      「ゲーム時間管理度診断」では、いくつかの質問に答えることで現在のゲームとの向き合い方を確認できます。
+    </p>
+  </div>
+</section>

@@ -65,7 +65,6 @@
     </p>
 
     <div class="flex justify-center">
-      <%# Vercel 風：白背景では黒ボタン、ダークでは白ボタン %>
       <%= link_to new_user_session_path,
           class: "inline-flex items-center gap-2 px-6 py-2.5
                   bg-gray-900 dark:bg-white
@@ -87,182 +86,255 @@
   </div>
 <% end %>
 
-<%# 機能紹介セクション %>
-<div class="py-12">
+<%# 機能紹介セクション（ログイン済みユーザーのみ） %>
+<%# 機能紹介セクション（ログイン済みユーザーのみ） %>
+<% if user_signed_in? %>
+  <div class="py-8">
 
-  <%# セクション見出し：Vercel 風のシンプルな区切り %>
-  <div class="flex items-center justify-between mb-8">
-    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
-      Features
+    <div class="flex justify-end mb-4">
+      <%= link_to new_alarm_path,
+          data: { turbo_frame: "dialog" },
+          class: "inline-flex items-center gap-1.5 px-3 py-1.5
+                  bg-gray-900 dark:bg-white
+                  text-white dark:text-gray-900
+                  text-xs font-semibold rounded-md
+                  hover:bg-gray-700 dark:hover:bg-gray-100
+                  transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 4v16m8-8H4"/>
+        </svg>
+        アラームを作成
+      <% end %>
+    </div>
+  </div>
+
+    <%# アイコン + タイトルの横並びコンパクトカード。
+        ログイン済みユーザーはすでに機能を知っているため
+        説明文は省いてショートカットとして機能させる。 %>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+
+      <%= link_to alarms_path, class: "block group" do %>
+        <div class="flex items-center gap-2.5 px-3 py-2.5
+                    border border-gray-200 dark:border-gray-800 rounded-lg
+                    bg-white dark:bg-gray-950
+                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:border-gray-300 dark:hover:border-gray-700
+                    transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round"
+               class="shrink-0 text-gray-500 dark:text-gray-400">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+            <path d="M12 10l0 3l2 0" />
+            <path d="M7 4l-2.75 2" />
+            <path d="M17 4l2.75 2" />
+          </svg>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">アラーム</span>
+        </div>
+      <% end %>
+
+      <%= link_to pending_alarms_path, class: "block group" do %>
+        <div class="flex items-center gap-2.5 px-3 py-2.5
+                    border border-gray-200 dark:border-gray-800 rounded-lg
+                    bg-white dark:bg-gray-950
+                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:border-gray-300 dark:hover:border-gray-700
+                    transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round"
+               class="shrink-0 text-gray-500 dark:text-gray-400">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M7.587 7.566a7 7 0 1 0 9.833 9.864m1.35 -2.645a7 7 0 0 0 -8.536 -8.56" />
+            <path d="M12 12v1h1" />
+            <path d="M5.261 5.265l-1.011 .735" />
+            <path d="M17 4l2.75 2" />
+            <path d="M3 3l18 18" />
+          </svg>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">ストップ</span>
+        </div>
+      <% end %>
+
+      <%= link_to alarm_logs_path, class: "block group" do %>
+        <div class="flex items-center gap-2.5 px-3 py-2.5
+                    border border-gray-200 dark:border-gray-800 rounded-lg
+                    bg-white dark:bg-gray-950
+                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:border-gray-300 dark:hover:border-gray-700
+                    transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round"
+               class="shrink-0 text-gray-500 dark:text-gray-400">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+            <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />
+            <path d="M9 17v-4" />
+            <path d="M12 17v-1" />
+            <path d="M15 17v-2" />
+          </svg>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">記録</span>
+        </div>
+      <% end %>
+
+      <%= link_to message_templates_path, class: "block group" do %>
+        <div class="flex items-center gap-2.5 px-3 py-2.5
+                    border border-gray-200 dark:border-gray-800 rounded-lg
+                    bg-white dark:bg-gray-950
+                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:border-gray-300 dark:hover:border-gray-700
+                    transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round"
+               class="shrink-0 text-gray-500 dark:text-gray-400">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M12 11v.01" />
+            <path d="M8 11v.01" />
+            <path d="M16 11v.01" />
+            <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3l12 0" />
+          </svg>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">定型文</span>
+        </div>
+      <% end %>
+
+      <%= link_to new_diagnosis_result_path, class: "block group" do %>
+        <div class="flex items-center gap-2.5 px-3 py-2.5
+                    border border-gray-200 dark:border-gray-800 rounded-lg
+                    bg-white dark:bg-gray-950
+                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:border-gray-300 dark:hover:border-gray-700
+                    transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round"
+               class="shrink-0 text-gray-500 dark:text-gray-400">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M9 11l3 3l8 -8" />
+            <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+          </svg>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">診断</span>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+<% end %>
+
+<%# ── カレンダーセクション（ログイン済みユーザーのみ） ── %>
+<% if user_signed_in? %>
+  <div class="py-8 mt-8">
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">
+      カレンダー
     </h2>
-    <%# ログイン時のクイックアクションボタン群 %>
-    <% if user_signed_in? %>
-      <div class="flex items-center gap-2">
-        <%= link_to new_alarm_path,
-            data: { turbo_frame: "dialog" },
-            class: "inline-flex items-center gap-1.5 px-3 py-1.5
+    <p class="text-xs text-gray-400 dark:text-gray-500 mb-4">
+      登録されたアラームが表示されます
+    </p>
+
+    <%= turbo_frame_tag "calendar" do %>
+      <%= month_calendar(
+            events: @alarms,
+            attribute: :start_time,
+            start_date: @start_date,
+            params: { controller: 'home', action: 'top' }
+          ) do |date, alarms_on_date| %>
+
+        <div class="flex flex-col gap-0.5 flex-1 overflow-hidden">
+          <% visible_alarms = alarms_on_date.first(3) %>
+          <% remaining_count = alarms_on_date.size - 3 %>
+
+          <% visible_alarms.each do |alarm| %>
+            <div class="rounded-sm border-l-2 overflow-hidden
+                        bg-gray-50 dark:bg-gray-900
+                        border-gray-300 dark:border-gray-700
+                        p-0.5 sm:p-1.5">
+
+              <%# スマホ：縦棒で時刻範囲を表現 %>
+              <div class="sm:hidden flex flex-col items-start">
+                <% if alarm.started_at.present? %>
+                  <span class="text-[9px] tabular-nums leading-tight
+                               text-gray-900 dark:text-gray-400">
+                    <%= alarm.started_at.strftime("%H:%M") %>
+                  </span>
+                  <div class="w-px h-2 bg-gray-900 dark:bg-gray-300
+                              opacity-40 my-0.5 ml-[10px]"></div>
+                <% end %>
+                <span class="text-[9px] font-semibold tabular-nums leading-tight
+                             text-gray-900 dark:text-white">
+                  <%= alarm.scheduled_at.strftime("%H:%M") %>
+                </span>
+              </div>
+
+              <%# デスクトップ：時刻＋人数 %>
+              <div class="hidden sm:block">
+                <div class="flex items-center gap-1 text-[11px]
+                            text-gray-900 dark:text-white">
+                  <svg class="w-2.5 h-2.5 flex-shrink-0" fill="none"
+                       stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  <span class="tabular-nums"><%= alarm.time_text %></span>
+                </div>
+                <% if alarm.alarm_memberships.size > 1 %>
+                  <div class="flex items-center gap-1 text-[10px] mt-0.5
+                              text-gray-400 dark:text-gray-500">
+                    <svg class="w-2.5 h-2.5 flex-shrink-0"
+                         fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                    </svg>
+                    <span><%= alarm.alarm_memberships.size %>人</span>
+                  </div>
+                <% end %>
+              </div>
+
+            </div>
+          <% end %>
+
+          <% if remaining_count > 0 %>
+            <div class="text-[9px] sm:text-[10px] text-gray-400 dark:text-gray-500
+                        text-center py-0.5 font-medium tabular-nums">
+              +<%= remaining_count %>件
+            </div>
+          <% end %>
+        </div>
+
+      <% end %>
+    <% end %>
+
+  </div>
+<% end %>
+
+<% unless user_signed_in? %>
+  <div class="py-12">
+    <div class="max-w-lg mx-auto space-y-6">
+      <%= render "shared/guide_content" %>
+
+      <%# ガイドを読み終えたユーザーに自然な流れでログインを促す %>
+      <div class="pt-4 flex justify-center">
+        <%= link_to new_user_session_path,
+            class: "inline-flex items-center gap-2 px-6 py-2.5
                     bg-gray-900 dark:bg-white
                     text-white dark:text-gray-900
-                    text-xs font-semibold rounded-md
+                    text-sm font-semibold rounded-md
                     hover:bg-gray-700 dark:hover:bg-gray-100
                     transition-colors" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="2.5"
+          <span>はじめる</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 4v16m8-8H4"/>
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M5 12l14 0" />
+            <path d="M15 16l4 -4" />
+            <path d="M15 8l4 4" />
           </svg>
-          アラームを作成
-        <% end %>
-
-        <%= link_to new_diagnosis_result_path,
-            class: "inline-flex items-center gap-1.5 px-3 py-1.5
-                    bg-white dark:bg-gray-950
-                    border border-gray-200 dark:border-gray-800
-                    text-gray-700 dark:text-gray-300
-                    text-xs font-semibold rounded-md
-                    hover:bg-gray-50 dark:hover:bg-gray-900
-                    transition-colors" do %>
-          診断
         <% end %>
       </div>
-    <% end %>
+
+    </div>
   </div>
-
-  <%# フィーチャーカードグリッド %>
-  <%#
-    Vercel 風カードの設計：
-    - border は1px の細線のみ（border-2 を廃止）
-    - shadow なし（ボーダーだけで区切る）
-    - hover は背景色の微妙な変化のみ
-    - 固定高さ h-48 を廃止してコンテンツに委ねる
-    - アイコンカラーはエメラルドを維持（ブランドの一貫性）
-  %>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-
-    <%= link_to alarms_path, class: "block group" do %>
-      <div class="h-full border border-gray-200 dark:border-gray-800 rounded-lg p-5
-                  bg-white dark:bg-gray-950
-                  hover:bg-gray-50 dark:hover:bg-gray-900
-                  hover:border-gray-300 dark:hover:border-gray-700
-                  transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round"
-             class="text-emerald-600 dark:text-emerald-500 mb-4">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-          <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-          <path d="M12 10l0 3l2 0" />
-          <path d="M7 4l-2.75 2" />
-          <path d="M17 4l2.75 2" />
-        </svg>
-        <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-1">
-          アラーム
-        </h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-          終了予定時刻を設定。
-        </p>
-      </div>
-    <% end %>
-
-    <%= link_to pending_alarms_path, class: "block group" do %>
-      <div class="h-full border border-gray-200 dark:border-gray-800 rounded-lg p-5
-                  bg-white dark:bg-gray-950
-                  hover:bg-gray-50 dark:hover:bg-gray-900
-                  hover:border-gray-300 dark:hover:border-gray-700
-                  transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round"
-             class="text-emerald-600 dark:text-emerald-500 mb-4">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-          <path d="M7.587 7.566a7 7 0 1 0 9.833 9.864m1.35 -2.645a7 7 0 0 0 -8.536 -8.56" />
-          <path d="M12 12v1h1" />
-          <path d="M5.261 5.265l-1.011 .735" />
-          <path d="M17 4l2.75 2" />
-          <path d="M3 3l18 18" />
-        </svg>
-        <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-1">
-          アラームをストップ
-        </h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400">
-          アラームをストップして記録を作成。
-        </p>
-      </div>
-    <% end %>
-
-    <%= link_to alarm_logs_path, class: "block group" do %>
-      <div class="h-full border border-gray-200 dark:border-gray-800 rounded-lg p-5
-                  bg-white dark:bg-gray-950
-                  hover:bg-gray-50 dark:hover:bg-gray-900
-                  hover:border-gray-300 dark:hover:border-gray-700
-                  transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round"
-             class="text-emerald-600 dark:text-emerald-500 mb-4">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-          <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-          <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />
-          <path d="M9 17v-4" />
-          <path d="M12 17v-1" />
-          <path d="M15 17v-2" />
-        </svg>
-        <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-1">
-          記録
-        </h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400">
-          プレイ時間の節制の記録確認。
-        </p>
-      </div>
-    <% end %>
-
-    <%= link_to message_templates_path, class: "block group" do %>
-      <div class="h-full border border-gray-200 dark:border-gray-800 rounded-lg p-5
-                  bg-white dark:bg-gray-950
-                  hover:bg-gray-50 dark:hover:bg-gray-900
-                  hover:border-gray-300 dark:hover:border-gray-700
-                  transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round"
-             class="text-emerald-600 dark:text-emerald-500 mb-4">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-          <path d="M12 11v.01" />
-          <path d="M8 11v.01" />
-          <path d="M16 11v.01" />
-          <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3l12 0" />
-        </svg>
-        <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-1">
-          定型文
-        </h3>
-        <p class="text-sm text-gray-500 dark:text-gray.400">
-          終了したい時、ゲーム仲間へのメッセージを考える手間を省略。
-        </p>
-      </div>
-    <% end %>
-
-    <%= link_to new_diagnosis_result_path, class: "block group" do %>
-      <div class="h-full border border-gray-200 dark:border-gray-800 rounded-lg p-5
-                  bg-white dark:bg-gray-950
-                  hover:bg-gray-50 dark:hover:bg-gray-900
-                  hover:border-gray-300 dark:hover:border-gray-700
-                  transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round"
-             class="text-emerald-600 dark:text-emerald-500 mb-4">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-          <path d="M9 11l3 3l8 -8" />
-          <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
-        </svg>
-        <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-1">
-          ゲーム時間管理度診断
-        </h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400">
-          ゲームとの関わり方を4つの軸で振り返り、より充実したゲームライフへ。
-        </p>
-      </div>
-    <% end %>
-
-  </div>
-</div>
+<% end %>

@@ -3,6 +3,10 @@
 class PagesController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :privacy_policy, :terms ]
 
+  # 「その他」画面
+  def others
+  end
+
   # プライバシーポリシー
   def privacy_policy
   end
@@ -11,6 +15,7 @@ class PagesController < ApplicationController
   def terms
   end
 
-  def others
+  # 使い方ガイド
+  def guide
   end
 end

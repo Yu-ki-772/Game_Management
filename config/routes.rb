@@ -75,6 +75,7 @@ Rails.application.routes.draw do
   get "/privacy_policy" => "pages#privacy_policy", as: :privacy_policy # プライバシーポリシー
   get "/terms" => "pages#terms", as: :terms # 利用規約
   get "/others" => "pages#others", as: :others
+  get "/guide" => "pages#guide", as: :guide
 
   #==============================================================
   # その他
