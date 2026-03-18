@@ -7,7 +7,7 @@ class AlarmLogsController < ApplicationController
 
     recent_minutes_to_unlock = all_minutes_to_unlock.last(7)
     @minutes_stats = recent_minutes_to_unlock.each_with_index.to_h do |min, i|
-      ["#{i + 1}回目", min]
+      [ "#{i + 1}回目", min ]
     end
 
     @friend_stats = base
@@ -38,7 +38,7 @@ class AlarmLogsController < ApplicationController
   def show
     @alarm_log = AlarmLog
       .where(user_uuid: current_user.uuid)
-      .includes(alarm: [:creator, { alarm_memberships: :user }])
+      .includes(alarm: [ :creator, { alarm_memberships: :user } ])
       .find(params[:id])
 
     @members = @alarm_log.alarm.alarm_memberships
