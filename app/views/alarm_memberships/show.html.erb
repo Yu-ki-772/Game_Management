@@ -56,6 +56,8 @@
       <div>
         <%= render "alarm_memberships/alarm_detail", alarm: @alarm, expired: expired %>
       </div>
+      
+      <%= render 'shared/error_messages', object: @membership %>
 
       <%# ストップ済み or ストップボタン %>
       <% if @alarm.alarm_logs.exists?(user_uuid: current_user.uuid) %>
