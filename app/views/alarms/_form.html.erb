@@ -14,8 +14,8 @@
       <span class="text-red-400 ml-0.5">*</span>
     <% end %>
     <%= f.text_field :label,
-        placeholder: 'アラーム',
-        class: "w-full px-3.5 py-2.5 rounded-lg text-sm
+        placeholder: '例: RPG',
+        class: "w-full px-3.5 py-2.5 rounded-lg text-base
                 border border-gray-200 dark:border-gray-800
                 bg-white dark:bg-gray-900
                 text-gray-900 dark:text-white
@@ -35,7 +35,7 @@
           class: "flex items-center gap-2 text-sm font-medium
                   text-gray-700 dark:text-gray-300" do %>
         プレイ開始時刻
-        <span class="text-[10px] font-normal text-gray-400 dark:text-gray-500
+        <span class="text-[11px] font-normal text-gray-600 dark:text-gray-500
                      bg-gray-100 dark:bg-gray-800
                      border border-gray-200 dark:border-gray-700
                      px-1.5 py-0.5 rounded">
@@ -44,7 +44,7 @@
       <% end %>
       <%= f.datetime_field :started_at,
           style: "width: calc(100% - 30px);",
-          class: "px-3.5 py-2.5 rounded-lg text-sm
+          class: "px-3.5 py-2.5 rounded-lg text-base
                   border border-gray-200 dark:border-gray-800
                   bg-white dark:bg-gray-900
                   text-gray-900 dark:text-white
@@ -83,7 +83,7 @@
         class: "flex items-center gap-2 text-sm font-medium
                 text-gray-700 dark:text-gray-300" do %>
       事前リマインダー
-      <span class="text-[10px] font-normal text-gray-400 dark:text-gray-500
+      <span class="text-[11px] font-normal text-gray-600 dark:text-gray-500
                    bg-gray-100 dark:bg-gray-800
                    border border-gray-200 dark:border-gray-700
                    px-1.5 py-0.5 rounded">
@@ -179,7 +179,7 @@
       <%= f.submit alarm.persisted? ? '更新する' : 'アラームを作成',
           data: { turbo_submits_with: alarm.persisted? ? "更新中..." : "作成中..." },
           class: "w-full sm:w-auto px-5 py-2 rounded-lg
-                  text-sm font-semibold
+                  text-base font-semibold
                   bg-gray-900 dark:bg-white
                   text-white dark:text-gray-900
                   hover:bg-gray-700 dark:hover:bg-gray-300

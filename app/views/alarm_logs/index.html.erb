@@ -9,7 +9,7 @@
       <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         プレイ記録
       </h1>
-      <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">
+      <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">
         プレイ時間の統計
       </p>
     </div>
@@ -19,8 +19,8 @@
 <div class="border border-gray-200 dark:border-gray-800
             rounded-xl overflow-hidden mb-8">
   <div class="bg-white dark:bg-gray-950 px-6 py-5">
-    <p class="text-[11px] font-medium tracking-widest uppercase
-              text-gray-400 dark:text-gray-500 mb-4">
+    <p class="text-xl font-semibold tracking-widest uppercase
+              text-gray-700 dark:text-gray-500 mb-4">
       引き延ばし（平均）
     </p>
     <% avg_color = @average_minutes.nil?  ? "text-gray-900 dark:text-white" :
@@ -35,10 +35,6 @@
 
     <%# ── グラフセクション ── %>
     <div>
-      <h2 class="text-xs font-medium tracking-widest uppercase
-                 text-gray-400 dark:text-gray-500 mb-4">
-        統計
-      </h2>
 
       <div class="space-y-3">
 
@@ -48,10 +44,10 @@
           <div class="bg-white dark:bg-gray-950
                       border border-gray-200 dark:border-gray-800
                       rounded-xl px-5 pt-5 pb-4">
-            <p class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+            <p class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-1">
               プレイ時間の推移
             </p>
-            <p class="text-xs text-gray-400 dark:text-gray-500 mb-4">過去7日間</p>
+            <p class="text-sm text-gray-600 dark:text-gray-500 mb-4">過去7日間</p>
             <% if @play_duration_stats.any? %>
               <%= line_chart @play_duration_stats,
                   height: "180px",
@@ -76,13 +72,19 @@
                       }
                     },
                     scales: {
-                      x: { grid: { color: "rgba(107,114,128,0.1)" } },
-                      y: { grid: { color: "rgba(107,114,128,0.1)" } }
+                      x: { 
+                        grid: { color: "rgba(107,114,128,0.1)" },
+                        ticks: { color: "#9ca3af", font: { size: 13 } }
+                        },
+                      y: {
+                        grid: { color: "rgba(107,114,128,0.1)" },
+                        ticks: { color: "#9ca3af", font: { size: 13 } }
+                        }
                     }
                   } %>
             <% else %>
               <div class="flex items-center justify-center py-10">
-                <p class="text-sm text-gray-400 dark:text-gray-500">まだデータがありません</p>
+                <p class="text-base text-gray-600 dark:text-gray-500">まだデータがありません</p>
               </div>
             <% end %>
           </div>
@@ -91,10 +93,10 @@
           <div class="bg-white dark:bg-gray-950
                       border border-gray-200 dark:border-gray-800
                       rounded-xl px-5 pt-5 pb-4">
-            <p class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+            <p class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-1">
               引き延ばし時間の推移
             </p>
-            <p class="text-xs text-gray-400 dark:text-gray-500 mb-4">直近7回</p>
+            <p class="text-sm text-gray-600 dark:text-gray-500 mb-4">直近7回</p>
             <% minutes_stats_labeled = @minutes_stats.to_a.each_with_index.map do |(_, value), i|
                 size = @minutes_stats.size
                 label = if i == size - 1 then "前回"
@@ -129,8 +131,14 @@
                       }
                     },
                     scales: {
-                      x: { grid: { color: "rgba(107,114,128,0.1)" } },
-                      y: { grid: { color: "rgba(107,114,128,0.1)" } }
+                      x: { 
+                        grid: { color: "rgba(107,114,128,0.1)" },
+                        ticks: { color: "#9ca3af", font: { size: 13 } }
+                       },
+                      y: { 
+                        grid: { color: "rgba(107,114,128,0.1)" },
+                        ticks: { color: "#9ca3af", font: { size: 13 } }
+                        }
                     }
                   } %>
             <% else %>
@@ -146,7 +154,7 @@
         <div class="bg-white dark:bg-gray-950
                     border border-gray-200 dark:border-gray-800
                     rounded-xl px-5 pt-5 pb-4">
-          <p class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+          <p class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-1">
             フレンドごとの引き延ばし時間
           </p>
           <p class="text-xs text-gray-400 dark:text-gray-500 mb-4">
@@ -177,11 +185,11 @@
                   indexAxis: "y",
                   scales: {
                     y: {
-                      ticks: { color: "#6b7280", font: { size: 12, weight: "500" } },
+                      ticks: { color: "#6b7280", font: { size: 15, weight: "500" } },
                       grid:  { display: false }
                     },
                     x: {
-                      ticks: { color: "#9ca3af", font: { size: 11 } },
+                      ticks: { color: "#9ca3af", font: { size: 15 } },
                       grid:  { color: "rgba(107,114,128,0.1)" }
                     }
                   }

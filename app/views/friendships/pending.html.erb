@@ -7,7 +7,7 @@
     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
       受け取ったフレンド申請
     </h1>
-    <p class="text-sm mt-1">
+    <p class="text-base mt-1">
       <% if @pending.any? %>
         <%# 件数はグレー系に。赤は「緊急・破壊的アクション」専用 %>
         <span class="font-semibold text-gray-700 dark:text-gray-300"><%= @pending.count %></span>
@@ -52,7 +52,7 @@
                     </div>
                   <% end %>
                 </div>
-                <span class="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">
+                <span class="text-base font-semibold text-gray-800 dark:text-gray-100 truncate">
                   <%= pending.user.name %>
                 </span>
               <% end %>
@@ -68,7 +68,7 @@
                             bg-gray-900 dark:bg-white
                             text-white dark:text-gray-900
                             hover:bg-gray-700 dark:hover:bg-gray-300
-                            text-xs font-semibold rounded-md
+                            text-sm font-semibold rounded-md
                             transition-colors duration-100 cursor-pointer" do %>
                   承認
                 <% end %>
@@ -78,7 +78,7 @@
                     method: :patch,
                     params: { action_type: 'reject' },
                     data: { turbo_submits_with: "拒否中..." },
-                    class: "px-3.5 py-1.5 text-xs font-medium rounded-md
+                    class: "px-3.5 py-1.5 text-sm font-medium rounded-md
                             text-gray-400 dark:text-gray-500
                             border border-gray-200 dark:border-gray-800
                             hover:text-red-500 dark:hover:text-red-400

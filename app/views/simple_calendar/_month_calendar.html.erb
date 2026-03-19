@@ -21,7 +21,7 @@
     <% end %>
 
     <%# tabular-nums + min-w でボタン位置がぶれない %>
-    <span class="text-base sm:text-xl font-bold tabular-nums
+    <span class="text-base sm:text-2xl font-bold tabular-nums
                  text-gray-800 dark:text-white
                  min-w-[7rem] sm:min-w-[9rem] text-center">
       <%= start_date.strftime("%Y年%m月") %>
@@ -45,7 +45,7 @@
     <thead>
       <tr>
         <% t('date.abbr_day_names').each_with_index do |day_name, index| %>
-          <th class="py-1.5 sm:py-2 sm:px-3 text-center text-[10px] sm:text-xs font-semibold
+          <th class="py-1.5 sm:py-2 sm:px-3 text-center text-[10px] sm:text-sm font-semibold
                      bg-gray-50 dark:bg-gray-900
                      border-b border-gray-200 dark:border-gray-800
                      <%= 'text-red-600 dark:text-red-400'   if index == 0 %>
@@ -66,12 +66,12 @@
 
                 <%# 日付ヘッダー：作成ボタンを削除し今日バッジのみ %>
                 <div class="flex justify-between items-center mb-0.5 sm:mb-1">
-                  <span class="text-[11px] sm:text-sm font-semibold
-                               text-gray-800 dark:text-gray-200 leading-none">
+                  <span class="text-sm sm:text-base font-semibold
+                               text-gray-500 dark:text-gray-200 leading-none">
                     <%= day.day %>
                   </span>
                   <% if day == Date.today %>
-                    <span class="text-[8px] sm:text-[10px] bg-emerald-500 text-white
+                    <span class="text-xs sm:text-[10px] bg-emerald-500 text-white
                                  px-0.5 sm:px-1.5 py-0.5 rounded font-semibold leading-tight">
                       <span class="sm:hidden">今</span>
                       <span class="hidden sm:inline">今日</span>

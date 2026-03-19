@@ -19,7 +19,7 @@ class MessageTemplatesController < ApplicationController
 
     # 検索がなくなったので固定メッセージに統一
     @empty_message = "まだブックマークがありません"
-    @empty_description = "定型文一覧からブックマークを追加してみましょう"
+    @empty_description = "管理画面からブックマークを追加してみましょう"
   end
 
   def manage

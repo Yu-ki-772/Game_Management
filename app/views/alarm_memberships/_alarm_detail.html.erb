@@ -10,7 +10,7 @@
 <div id="alarm_detail_<%= alarm.id %>">
 
   <%# 時刻：最も重要な情報なので大きく表示。membership_row の text-base より大きい text-3xl で詳細感を出す。 %>
-  <p class="text-3xl font-bold tabular-nums tracking-tight leading-none
+  <p class="text-4xl font-bold tabular-nums tracking-tight leading-none
              <%= expired ? 'text-red-500 dark:text-red-400' : 'text-gray-900 dark:text-white' %>">
     <% if alarm.started_at.present? %>
       <%= alarm.started_at.strftime("%H:%M") %>
@@ -23,14 +23,14 @@
 
   <%# 日付：補足情報なので控えめに。membership_row の日付テキストと同じトークン。 %>
   <p class="text-sm font-medium tabular-nums mt-1
-            text-gray-400 dark:text-gray-500">
+            text-gray-500 dark:text-gray-500">
     <%= alarm.scheduled_at.strftime("%Y年%-m月%-d日") %>
     （<%= %w[日 月 火 水 木 金 土][alarm.scheduled_at.wday] %>）
   </p>
 
   <%# ラベル：bg-gray-700 → bg-gray-800 に統一 %>
   <% if alarm.label.present? %>
-    <p class="mt-3 inline-block text-sm font-semibold
+    <p class="mt-3 inline-block text-base font-semibold
               text-gray-700 dark:text-gray-300
               bg-gray-100 dark:bg-gray-800
               rounded-lg px-3 py-1.5">

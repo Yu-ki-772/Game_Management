@@ -3,7 +3,7 @@
   <%= render 'alarms/navigation' %>
 
   <div class="mb-4 sm:mb-6">
-    <h1 class="text-xl sm:text-2xl font-bold tracking-tight
+    <h1 class="text-2xl font-bold tracking-tight
                text-gray-900 dark:text-white mb-1 sm:mb-2">
       アラームカレンダー
     </h1>
@@ -38,13 +38,13 @@
             <%# スマホ：縦棒で時刻範囲を表現 %>
             <div class="sm:hidden flex flex-col items-start">
               <% if alarm.started_at.present? %>
-                <span class="text-[9px] tabular-nums leading-tight
+                <span class="text-sm tabular-nums leading-tight
                             text-gray-900 dark:text-gray-400">
                   <%= alarm.started_at.strftime("%H:%M") %>
                 </span>
-                <div class="w-px h-2 bg-gray-900 dark:bg-gray-300 opacity-40 my-0.5 ml-[10px]"></div>
+                <div class="w-px h-2 bg-gray-900 dark:bg-gray-300 opacity-40 my-0.5 ml-[15px]"></div>
               <% end %>
-              <span class="text-[9px] font-semibold tabular-nums leading-tight
+              <span class="text-sm font-semibold tabular-nums leading-tight
                           text-gray-900 dark:text-white">
                 <%= alarm.scheduled_at.strftime("%H:%M") %>
               </span>
@@ -52,7 +52,7 @@
 
             <%# デスクトップ：時刻（time_text）＋人数 %>
             <div class="hidden sm:block">
-              <div class="flex items-center gap-1 text-[11px]
+              <div class="flex items-center gap-1 text-base
                           text-gray-900 dark:text-white">
                 <svg class="w-2.5 h-2.5 flex-shrink-0" fill="none"
                     stroke="currentColor" viewBox="0 0 24 24">
@@ -62,9 +62,9 @@
                 <span class="tabular-nums"><%= alarm.time_text %></span>
               </div>
               <% if alarm.alarm_memberships.size > 1 %>
-                <div class="flex items-center gap-1 text-[10px] mt-0.5
+                <div class="flex items-center gap-1 text-sm mt-0.5
                             text-gray-400 dark:text-gray-500">
-                  <svg class="w-2.5 h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
                   </svg>
                   <span><%= alarm.alarm_memberships.size %>人</span>
@@ -76,8 +76,8 @@
         <% end %>
 
         <% if remaining_count > 0 %>
-          <div class="text-[9px] sm:text-[10px] text-gray-400 dark:text-gray-500
-                      text-center py-0.5 font-medium tabular-nums">
+          <div class="text-[9px] sm:text-sm text-gray-400 dark:text-gray-500
+                      text-center py-0.5 font-normal tabular-nums">
             +<%= remaining_count %>件
           </div>
         <% end %>
