@@ -131,24 +131,21 @@
     <div class="max-w-lg mx-auto px-5 py-4 flex flex-col items-center gap-2">
       <nav class="flex items-center gap-1">
         <%= link_to privacy_policy_path,
-            class: "text-xs text-gray-400 dark:text-gray-600
-                    hover:text-gray-600 dark:hover:text-gray-400
+            class: "text-base text-gray-600 dark:text-gray-600
                     px-3 py-2 rounded-md
                     hover:bg-gray-50 dark:hover:bg-gray-900
                     transition-colors" do %>
           プライバシーポリシー
         <% end %>
-        <span class="text-gray-200 dark:text-gray-800 text-xs select-none">|</span>
         <%= link_to terms_path,
-            class: "text-xs text-gray-400 dark:text-gray-600
-                    hover:text-gray-600 dark:hover:text-gray-400
+            class: "text-base text-gray-600 dark:text-gray-600
                     px-3 py-2 rounded-md
                     hover:bg-gray-50 dark:hover:bg-gray-900
                     transition-colors" do %>
           利用規約
         <% end %>
       </nav>
-      <p class="text-xs text-gray-300 dark:text-gray-800">
+      <p class="text-sm text-gray-500 dark:text-gray-700">
         &copy; <%= Date.current.year %> Game Exit
       </p>
     </div>
