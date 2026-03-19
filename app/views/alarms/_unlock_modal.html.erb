@@ -36,8 +36,8 @@
     </button>
 
     <%# タイトル：tracking-tight を付けて他のページタイトルと統一 %>
-    <h2 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white mb-4">
-      アラームをストップしました！
+    <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
+      アラームをストップしました
     </h2>
 
     <%#
@@ -47,7 +47,7 @@
       赤：「遅れ＝緊急・問題」→ 維持（意味のある色）。
     %>
     <% if alarm_log.minutes_to_unlock < 0 %>
-      <p class="text-sm font-medium mb-5
+      <p class="text-base font-medium mb-5
                 text-emerald-600 dark:text-emerald-400">
         🎉 早めに離脱できたね！おめでとう！
       </p>
@@ -56,12 +56,12 @@
         アンバーを廃止。グレーでニュートラルに表現し、
         絵文字と文言で「少し遅れ」の温度感を伝える。
       %>
-      <p class="text-sm font-medium mb-5
+      <p class="text-base font-medium mb-5
                 text-gray-500 dark:text-gray-400">
         ⏰ 少し遅くなっちゃったね。次は早めに離脱しよう！
       </p>
     <% elsif alarm_log.minutes_to_unlock > 60 %>
-      <p class="text-sm font-medium mb-5
+      <p class="text-base font-medium mb-5
                 text-red-500 dark:text-red-400">
         😓 だいぶ遅くなっちゃったね。次こそ早めに切り上げよう！
       </p>
@@ -77,19 +77,19 @@
     <div class="bg-gray-50 dark:bg-gray-900
                 border border-gray-200 dark:border-gray-800
                 rounded-xl px-4 py-4 mb-5">
-      <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">
+      <p class="text-base text-gray-600 dark:text-gray-400 mb-1">
         引き延ばし時間
       </p>
-      <p class="text-3xl font-bold tabular-nums tracking-tight
+      <p class="text-xl font-bold tabular-nums tracking-tight
                 text-gray-900 dark:text-white">
         <%= format_play_minutes(alarm_log.minutes_to_unlock) %>
       </p>
 
       <% if alarm_log.play_duration.present? %>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mt-3 mb-1">
+        <p class="text-base text-gray-600 dark:text-gray-400 mt-3 mb-1">
           プレイ時間
         </p>
-        <p class="text-3xl font-bold tabular-nums tracking-tight
+        <p class="text-xl font-bold tabular-nums tracking-tight
                   text-gray-900 dark:text-white">
           <%= format_play_minutes(alarm_log.play_duration) %>
         </p>
@@ -108,7 +108,7 @@
                 bg-gray-900 dark:bg-white
                 hover:bg-gray-700 dark:hover:bg-gray-200
                 text-white dark:text-gray-900
-                text-sm font-semibold rounded-xl transition-colors" do %>
+                text-base font-normal rounded-xl transition-colors" do %>
       <%= image_tag "x_logo_for_light.png", class: "h-4 hidden dark:block" %>
       <%= image_tag "x_logo_for_dark.png",  class: "h-4 dark:hidden" %>
       <span>でシェア</span>
