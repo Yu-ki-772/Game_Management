@@ -4,55 +4,44 @@
 <div id="<%= dom_id(membership) %>"
      class="relative group px-5 py-4">
 
-  <%#
-  ── 透明リンク層 ──
-  空文字列 "" を第1引数（name）に渡すことで
-  link_to(name, url, html_options) の3引数形式が確定し、
-  class や aria が URL パラメータではなく HTML 属性として出力される。
-  %>
   <%= link_to "",
       alarm_alarm_membership_path(alarm, membership),
       class: "absolute inset-0 z-0
-              group-hover:bg-gray-50 dark:group-hover:bg-gray-900/60
+              group-hover:bg-gray-100 dark:group-hover:bg-gray-900/60
               transition-colors" %>
 
-  <%# flex レイアウト層：pointer-events-none でクリックをリンク層に透過 %>
   <div class="relative
               flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3
               pointer-events-none">
 
     <div class="flex items-center gap-4 flex-1 min-w-0">
 
+      <%# 日付spanを削除したので、時刻だけになりpaddingを py-2 → py-2.5 に調整 %>
       <div class="flex flex-col items-center justify-center gap-1 shrink-0
                   bg-gray-50 dark:bg-gray-900
                   border border-gray-200 dark:border-gray-800
                   rounded-lg px-3 py-2.5 min-w-[68px]">
 
-        <span class="text-base font-bold tabular-nums
+        <span class="text-xl font-bold tabular-nums
                      text-gray-900 dark:text-white
                      whitespace-nowrap leading-tight">
           <% if alarm.started_at.present? %>
             <%= alarm.started_at.strftime("%H:%M") %>
-            <span class="text-xs font-normal text-gray-400 dark:text-gray-600 mx-0.5">–</span>
+            <span class="text-xs font-bold text-gray-400 dark:text-gray-600 mx-0.5">–</span>
             <%= alarm.scheduled_at.strftime("%H:%M") %>
           <% else %>
             <%= alarm.scheduled_at.strftime("%H:%M") %>
           <% end %>
         </span>
 
-        <span class="text-xs font-medium tabular-nums
-                     text-gray-400 dark:text-gray-600
-                     whitespace-nowrap leading-tight">
-          <%= alarm.scheduled_at.strftime("%-m/%-d") %>
-          (<%= %w[日 月 火 水 木 金 土][alarm.scheduled_at.wday] %>)
-        </span>
+        <%# 日付・曜日のspanを削除 %>
 
       </div>
 
       <div class="flex-1 min-w-0 flex flex-col gap-1.5">
 
-        <span class="text-base font-semibold text-gray-900 dark:text-white truncate">
-          <%= truncate(alarm.label, length: 20) %>
+        <span class="text-lg font-semibold text-gray-900 dark:text-white truncate">
+          <%= truncate(alarm.label, length: 14) %>
         </span>
 
         <% if alarm.reminder_minutes.present? %>
@@ -121,7 +110,7 @@
               <% end %>
             </div>
 
-            <span class="text-xs text-gray-400 dark:text-gray-600 truncate">
+            <span class="text-sm text-gray-500 dark:text-gray-600 truncate">
               <%= truncate(alarm.creator.name, length: 11, omission: "...") %>
             </span>
           </div>
@@ -130,17 +119,13 @@
       </div>
     </div>
 
-    <%#
-    ── 操作ボタンエリア ──
-    pointer-events-auto で親の pointer-events-none を上書きする。
-    %>
     <% if alarm.created_by?(current_user) %>
       <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto pointer-events-auto">
         <%= render "alarm_memberships/invite_dropdown", alarm: alarm %>
 
         <%= link_to edit_alarm_path(alarm),
             data: { turbo_frame: "dialog" },
-            class: "px-3 py-1.5 text-xs font-medium rounded-md
+            class: "px-3 py-1.5 text-sm font-medium rounded-md
                     border border-gray-200 dark:border-gray-800
                     text-gray-600 dark:text-gray-400
                     bg-white dark:bg-gray-950
@@ -154,7 +139,7 @@
             method: :delete,
             data: { turbo_confirm: '本当に削除しますか?',
                     turbo_submits_with: "削除中..." },
-            class: "px-3 py-1.5 text-xs font-medium rounded-md
+            class: "px-3 py-1.5 text-sm font-medium rounded-md
                     border border-red-200 dark:border-red-900
                     text-red-500 dark:text-red-400
                     bg-white dark:bg-gray-950

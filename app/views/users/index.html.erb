@@ -8,7 +8,7 @@
     <%# tracking-tight を追加 %>
     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">ユーザー検索</h1>
     <%# 補足テキストは gray-400/500 に統一 %>
-    <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">ユーザーネームでフレンドを探せます</p>
+    <p class="text-base text-gray-600 dark:text-gray-500 mt-1">ユーザーネームでフレンドを探せます</p>
   </div>
 
   <%# ── 検索フォーム ── %>
@@ -26,7 +26,7 @@
             placeholder: 'ユーザーネームを検索...',
             autofocus: true,
             class: "w-full px-3.5 py-2.5
-                    border border-gray-200 dark:border-gray-800 rounded-md text-sm
+                    border border-gray-200 dark:border-gray-800 rounded-md text-base
                     bg-gray-50 dark:bg-gray-800
                     text-gray-900 dark:text-gray-100
                     placeholder:text-gray-400 dark:placeholder:text-gray-600
@@ -44,7 +44,7 @@
                     bg-gray-900 dark:bg-white
                     hover:bg-gray-700 dark:hover:bg-gray-300
                     text-white dark:text-gray-900
-                    text-sm font-semibold rounded-md
+                    text-base font-semibold rounded-md
                     transition-colors duration-100 cursor-pointer" %>
         <%# クリアはセカンダリ的な操作なのでテキストのみ %>
         <%= link_to "クリア", users_path,
@@ -59,7 +59,7 @@
 
   <%# ── 検索結果件数 ── %>
   <% if params[:q].present? %>
-    <p class="text-xs text-gray-400 dark:text-gray-500 mb-4">
+    <p class="text-base text-gray-600 dark:text-gray-500 mb-4">
       <span class="font-semibold text-gray-700 dark:text-gray-300 text-sm tabular-nums">
         <%= @search_count %>
       </span> 件見つかりました
@@ -113,7 +113,7 @@
                 <% end %>
               </div>
 
-              <span class="text-sm font-bold text-gray-800 dark:text-gray-100 truncate">
+              <span class="text-base font-bold text-gray-800 dark:text-gray-100 truncate">
                 <%= user.name %>
               </span>
             <% end %>

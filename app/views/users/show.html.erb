@@ -3,11 +3,11 @@
 
   <%# 戻るリンク：ホバーは emerald ではなくグレー系に %>
   <%= link_to request.referer || users_path,
-        class: "inline-flex items-center gap-1 text-sm
-                text-gray-400 dark:text-gray-500
+        class: "inline-flex items-center gap-1 text-base
+                text-gray-700 dark:text-gray-500
                 hover:text-gray-700 dark:hover:text-gray-300
                 transition-colors duration-100 mb-6" do %>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
     </svg>
     戻る
@@ -15,12 +15,12 @@
 
   <%# セクション区切り：border トークンを統一 %>
   <div class="pb-5 border-b border-gray-200 dark:border-gray-800 mb-8">
-    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">プロフィール</h1>
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">プロフィール</h1>
   </div>
 
   <%# カード：shadow-sm 削除、bg・border をトークンに合わせる %>
   <div class="bg-white dark:bg-gray-900 rounded-xl
-              border border-gray-200 dark:border-gray-800
+              border border-gray-300 dark:border-gray-800
               p-6 max-w-lg">
 
     <%# アバター + 名前 %>
@@ -49,11 +49,11 @@
       </div>
 
       <div class="flex-1 min-w-0">
-        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 truncate">
+        <p class="text-xl font-bold text-gray-900 dark:text-gray-100 truncate">
           <%= @user.name %>
         </p>
         <% if @user == current_user %>
-          <p class="text-base text-gray-400 dark:text-gray-500 truncate">
+          <p class="text-sm text-gray-500 dark:text-gray-500 truncate">
             <%= @user.email %>
           </p>
         <% end %>
@@ -64,7 +64,7 @@
     <% if @user.description.present? %>
       <div class="bg-gray-50 dark:bg-gray-800 rounded-md px-4 py-3 mb-6
                   border border-gray-200 dark:border-gray-800">
-        <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+        <p class="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
           <%= @user.description %>
         </p>
       </div>
@@ -77,7 +77,7 @@
         <%= link_to edit_user_registration_path,
             class: "inline-flex items-center gap-2 px-4 py-1.5
                     bg-white dark:bg-gray-950
-                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:bg-gray-100 dark:hover:bg-gray-900
                     text-gray-600 dark:text-gray-300
                     text-base font-semibold rounded-md
                     border border-gray-200 dark:border-gray-800

@@ -15,7 +15,7 @@
               border border-gray-300 dark:border-gray-600
               border-l-4 border-l-gray-500 dark:border-l-gray-400
               rounded-lg
-              text-gray-700 dark:text-gray-200
+              text-gray-900 dark:text-gray-200
               shadow-[0_0_16px_rgba(0,0,0,0.08)]
               dark:shadow-[0_0_20px_rgba(255,255,255,0.07)]
               hover:shadow-[0_0_20px_rgba(0,0,0,0.12)]
@@ -30,7 +30,7 @@
                a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6"/>
       <path d="M9 17v1a3 3 0 0 0 6 0v-1"/>
     </svg>
-    <span class="text-sm font-medium flex-1">
+    <span class="text-base font-medium flex-1">
       ストップできるアラームが <%= @stoppable_alarms_count %> 件あります
     </span>
     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
@@ -94,13 +94,13 @@
     <div class="flex justify-end mb-4">
       <%= link_to new_alarm_path,
           data: { turbo_frame: "dialog" },
-          class: "inline-flex items-center gap-1.5 px-3 py-1.5
+          class: "inline-flex items-center gap-1.5 px-3.5 py-1.5
                   bg-gray-900 dark:bg-white
                   text-white dark:text-gray-900
-                  text-xs font-semibold rounded-md
+                  text-lg font-normal rounded-md
                   hover:bg-gray-700 dark:hover:bg-gray-100
                   transition-colors" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" stroke-width="2.5"
             stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 4v16m8-8H4"/>
@@ -119,10 +119,10 @@
         <div class="flex items-center gap-2.5 px-3 py-2.5
                     border border-gray-200 dark:border-gray-800 rounded-lg
                     bg-white dark:bg-gray-950
-                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:bg-gray-200 dark:hover:bg-gray-900
                     hover:border-gray-300 dark:hover:border-gray-700
                     transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round"
                class="shrink-0 text-gray-500 dark:text-gray-400">
@@ -132,7 +132,7 @@
             <path d="M7 4l-2.75 2" />
             <path d="M17 4l2.75 2" />
           </svg>
-          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">アラーム</span>
+          <span class="text-2xl font-normal text-gray-900 dark:text-gray-300">アラーム</span>
         </div>
       <% end %>
 
@@ -140,10 +140,10 @@
         <div class="flex items-center gap-2.5 px-3 py-2.5
                     border border-gray-200 dark:border-gray-800 rounded-lg
                     bg-white dark:bg-gray-950
-                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:bg-gray-200 dark:hover:bg-gray-900
                     hover:border-gray-300 dark:hover:border-gray-700
                     transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round"
                class="shrink-0 text-gray-500 dark:text-gray-400">
@@ -154,7 +154,7 @@
             <path d="M17 4l2.75 2" />
             <path d="M3 3l18 18" />
           </svg>
-          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">ストップ</span>
+          <span class="text-2xl font-normal text-gray-900 dark:text-gray-300">ストップ</span>
         </div>
       <% end %>
 
@@ -162,10 +162,10 @@
         <div class="flex items-center gap-2.5 px-3 py-2.5
                     border border-gray-200 dark:border-gray-800 rounded-lg
                     bg-white dark:bg-gray-950
-                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:bg-gray-200 dark:hover:bg-gray-900
                     hover:border-gray-300 dark:hover:border-gray-700
                     transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round"
                class="shrink-0 text-gray-500 dark:text-gray-400">
@@ -176,7 +176,7 @@
             <path d="M12 17v-1" />
             <path d="M15 17v-2" />
           </svg>
-          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">記録</span>
+          <span class="text-2xl font-normal text-gray-900 dark:text-gray-300">記録</span>
         </div>
       <% end %>
 
@@ -184,10 +184,10 @@
         <div class="flex items-center gap-2.5 px-3 py-2.5
                     border border-gray-200 dark:border-gray-800 rounded-lg
                     bg-white dark:bg-gray-950
-                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:bg-gray-200 dark:hover:bg-gray-900
                     hover:border-gray-300 dark:hover:border-gray-700
                     transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round"
                class="shrink-0 text-gray-500 dark:text-gray-400">
@@ -197,7 +197,7 @@
             <path d="M16 11v.01" />
             <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3l12 0" />
           </svg>
-          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">定型文</span>
+          <span class="text-2xl font-normal text-gray-900 dark:text-gray-300">定型文</span>
         </div>
       <% end %>
 
@@ -205,10 +205,10 @@
         <div class="flex items-center gap-2.5 px-3 py-2.5
                     border border-gray-200 dark:border-gray-800 rounded-lg
                     bg-white dark:bg-gray-950
-                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:bg-gray-200 dark:hover:bg-gray-900
                     hover:border-gray-300 dark:hover:border-gray-700
                     transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round"
                class="shrink-0 text-gray-500 dark:text-gray-400">
@@ -216,7 +216,7 @@
             <path d="M9 11l3 3l8 -8" />
             <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
           </svg>
-          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">診断</span>
+          <span class="text-2xl font-normal text-gray-900 dark:text-gray-300">診断</span>
         </div>
       <% end %>
 
@@ -227,10 +227,10 @@
 <%# ── カレンダーセクション（ログイン済みユーザーのみ） ── %>
 <% if user_signed_in? %>
   <div class="py-8 mt-8">
-    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">
+    <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-400 mb-1">
       カレンダー
     </h2>
-    <p class="text-xs text-gray-400 dark:text-gray-500 mb-4">
+    <p class="text-base text-gray-500 dark:text-gray-500 mb-4">
       登録されたアラームが表示されます
     </p>
 
@@ -255,14 +255,14 @@
               <%# スマホ：縦棒で時刻範囲を表現 %>
               <div class="sm:hidden flex flex-col items-start">
                 <% if alarm.started_at.present? %>
-                  <span class="text-[9px] tabular-nums leading-tight
+                  <span class="text-sm tabular-nums leading-tight
                                text-gray-900 dark:text-gray-400">
                     <%= alarm.started_at.strftime("%H:%M") %>
                   </span>
                   <div class="w-px h-2 bg-gray-900 dark:bg-gray-300
-                              opacity-40 my-0.5 ml-[10px]"></div>
+                              opacity-40 my-0.5 ml-[15px]"></div>
                 <% end %>
-                <span class="text-[9px] font-semibold tabular-nums leading-tight
+                <span class="text-sm font-semibold tabular-nums leading-tight
                              text-gray-900 dark:text-white">
                   <%= alarm.scheduled_at.strftime("%H:%M") %>
                 </span>
@@ -270,9 +270,9 @@
 
               <%# デスクトップ：時刻＋人数 %>
               <div class="hidden sm:block">
-                <div class="flex items-center gap-1 text-[11px]
+                <div class="flex items-center gap-1 text-base
                             text-gray-900 dark:text-white">
-                  <svg class="w-2.5 h-2.5 flex-shrink-0" fill="none"
+                  <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none"
                        stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
                           stroke-width="2"
@@ -281,9 +281,9 @@
                   <span class="tabular-nums"><%= alarm.time_text %></span>
                 </div>
                 <% if alarm.alarm_memberships.size > 1 %>
-                  <div class="flex items-center gap-1 text-[10px] mt-0.5
+                  <div class="flex items-center gap-1 text-sm mt-0.5
                               text-gray-400 dark:text-gray-500">
-                    <svg class="w-2.5 h-2.5 flex-shrink-0"
+                    <svg class="w-3.5 h-3.5 flex-shrink-0"
                          fill="currentColor" viewBox="0 0 20 20">
                       <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
                     </svg>
@@ -296,8 +296,8 @@
           <% end %>
 
           <% if remaining_count > 0 %>
-            <div class="text-[9px] sm:text-[10px] text-gray-400 dark:text-gray-500
-                        text-center py-0.5 font-medium tabular-nums">
+            <div class="text-[9px] sm:text-sm text-gray-400 dark:text-gray-500
+                        text-center py-0.5 font-normal tabular-nums">
               +<%= remaining_count %>件
             </div>
           <% end %>

@@ -8,7 +8,7 @@
     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
       フレンド一覧
     </h1>
-    <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">
+    <p class="text-base text-gray-400 dark:text-gray-500 mt-1">
       <% if @friends.any? %>
         <span class="font-semibold text-gray-700 dark:text-gray-300"><%= @friends.count %></span> 人のフレンドがいます
       <% end %>
@@ -31,7 +31,7 @@
           <%= @pending_friendship_count %>
         </span>
         <%# テキストも普通のグレーに %>
-        <span class="text-sm text-gray-700 dark:text-gray-300">
+        <span class="text-base text-gray-700 dark:text-gray-300">
           件のフレンド申請が届いています
         </span>
       </div>
@@ -85,7 +85,7 @@
                     </div>
                   <% end %>
                 </div>
-                <span class="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">
+                <span class="text-base font-semibold text-gray-800 dark:text-gray-100 truncate">
                   <%= friend.name %>
                 </span>
               <% end %>
@@ -95,7 +95,7 @@
                   method: :delete,
                   form: { data: { turbo_confirm: "本当に#{friend.name}さんとのフレンド関係を解除しますか？この操作は取り消せません。" } },
                   data: { turbo_submits_with: "解除中..." },
-                  class: "shrink-0 px-3 py-1.5 text-xs font-medium rounded-md
+                  class: "shrink-0 px-3 py-1.5 text-sm font-medium rounded-md
                           text-gray-400 dark:text-gray-500
                           border border-gray-200 dark:border-gray-800
                           hover:text-red-500 dark:hover:text-red-400

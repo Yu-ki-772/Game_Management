@@ -13,7 +13,7 @@
         </h1>
       </div>
       <% unless @alarm_logs.empty? %>
-        <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums pb-0.5">
+        <span class="text-sm text-gray-600 dark:text-gray-500 tabular-nums pb-0.5">
           全 <%= @total_count %> 件
         </span>
       <% end %>
@@ -37,13 +37,13 @@
           <thead>
             <tr class="border-b border-gray-200 dark:border-gray-800">
               <%# 日付を左端に追加 %>
-              <th class="text-left text-[11px] font-medium tracking-widest uppercase
-                         text-gray-400 dark:text-gray-500 px-5 py-3 w-1/3">日付</th>
-              <th class="text-left text-[11px] font-medium tracking-widest uppercase
-                         text-gray-400 dark:text-gray-500 px-5 py-3 w-1/3">プレイ時間</th>
+              <th class="text-left text-sm font-medium tracking-widest uppercase
+                         text-gray-600 dark:text-gray-500 px-5 py-3 w-1/3">日付</th>
+              <th class="text-left text-sm font-medium tracking-widest uppercase
+                         text-gray-600 dark:text-gray-500 px-5 py-3 w-1/3">プレイ時間</th>
               <%# 引き延ばしは右端・右揃え %>
-              <th class="text-right text-[11px] font-medium tracking-widest uppercase
-                         text-gray-400 dark:text-gray-500 px-5 py-3 w-1/3">引き延ばし</th>
+              <th class="text-right text-sm font-medium tracking-widest uppercase
+                         text-gray-600 dark:text-gray-500 px-5 py-3 w-1/3">引き延ばし</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
@@ -57,7 +57,7 @@
                 <%# 日付列 %>
                 <td class="p-0">
                   <%= link_to alarm_log_path(alarm_log), class: "block px-5 py-4" do %>
-                    <span class="text-sm tabular-nums text-gray-500 dark:text-gray-400">
+                    <span class="text-base tabular-nums text-gray-500 dark:text-gray-400">
                       <%= l(alarm_log.unlocked_at, format: "%-m/%-d（%a）") %>
                     </span>
                   <% end %>
@@ -66,7 +66,7 @@
                 <%# プレイ時間列 %>
                 <td class="p-0">
                   <%= link_to alarm_log_path(alarm_log), class: "block px-5 py-4" do %>
-                    <span class="text-sm font-semibold tabular-nums text-gray-900 dark:text-white">
+                    <span class="text-lg font-semibold tabular-nums text-gray-900 dark:text-white">
                       <%= alarm_log.play_duration.present? ? format_play_minutes(alarm_log.play_duration) : "—" %>
                     </span>
                   <% end %>
@@ -75,7 +75,7 @@
                 <%# 引き延ばし列：右揃え %>
                 <td class="p-0">
                   <%= link_to alarm_log_path(alarm_log), class: "block px-5 py-4 text-right" do %>
-                    <span class="text-sm font-bold tabular-nums <%= color_class %>">
+                    <span class="text-xl font-bold tabular-nums <%= color_class %>">
                       <%= format_play_minutes(minutes) %>
                     </span>
                   <% end %>
@@ -101,14 +101,9 @@
 
             <%# 左側：日付とプレイ時間 %>
             <div class="flex flex-col gap-0.5">
-              <span class="text-sm font-medium tabular-nums text-gray-900 dark:text-white">
+              <span class="text-base font-medium tabular-nums text-gray-900 dark:text-white">
                 <%= l(alarm_log.unlocked_at, format: "%-m/%-d（%a）") %>
               </span>
-              <% if alarm_log.play_duration.present? %>
-                <span class="text-xs text-gray-400 dark:text-gray-500">
-                  <%= format_play_minutes(alarm_log.play_duration) %> プレイ
-                </span>
-              <% end %>
             </div>
 
             <%#
@@ -117,10 +112,10 @@
               w-16 の固定幅を外したことで「120分」のような長い値でも折り返さない。
             %>
             <div class="shrink-0 flex flex-col items-end gap-0.5 ml-4">
-              <span class="text-lg font-bold tabular-nums leading-tight whitespace-nowrap <%= color_class %>">
+              <span class="text-xl font-bold tabular-nums leading-tight whitespace-nowrap <%= color_class %>">
                 <%= format_play_minutes(minutes) %>
               </span>
-              <span class="text-[10px] text-gray-400 dark:text-gray-500 leading-tight">
+              <span class="text-sm text-gray-600 dark:text-gray-500 leading-tight">
                 引き延ばし
               </span>
             </div>

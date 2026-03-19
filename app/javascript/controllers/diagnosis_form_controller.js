@@ -6,7 +6,7 @@ import { Controller } from "@hotwired/stimulus"
 const TOTAL_QUESTIONS = 10
 
 export default class extends Controller {
-  static targets = ["counter", "footerCounter", "bar", "submit"]
+  static targets = ["footerCounter", "bar", "submit"]
 
   connect() {
     this.updateProgress()
@@ -20,7 +20,6 @@ export default class extends Controller {
     const answered = this.element.querySelectorAll("input[type='radio']:checked").length
     const progressPercent = Math.round((answered / TOTAL_QUESTIONS) * 100)
 
-    this.counterTarget.textContent       = `${answered} / ${TOTAL_QUESTIONS} 回答済み`
     this.footerCounterTarget.textContent = `${answered} / ${TOTAL_QUESTIONS}`
     this.barTarget.style.width           = `${progressPercent}%`
     this.submitTarget.disabled           = answered < TOTAL_QUESTIONS

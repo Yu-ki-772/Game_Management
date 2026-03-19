@@ -24,7 +24,7 @@
     <% message_templates.group_by(&:reason).each do |reason, templates| %>
 
       <section class="bg-white dark:bg-gray-950
-                      border border-gray-200 dark:border-gray-800
+                      border border-gray-300 dark:border-gray-800
                       rounded-xl overflow-hidden"
                data-controller="disclosure"
                data-disclosure-key-value="<%= reason %>">
@@ -35,11 +35,11 @@
                        bg-gray-50 dark:bg-gray-900/40
                        hover:bg-gray-100 dark:hover:bg-gray-900/60
                        transition-colors duration-100">
-          <h2 class="text-base font-semibold text-gray-700 dark:text-gray-300 leading-snug">
+          <h2 class="text-lg font-semibold text-gray-950 dark:text-gray-300 leading-snug">
             <%= reason %>
           </h2>
           <svg data-disclosure-target="icon"
-               class="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0
+               class="w-5 h-5 text-gray-400 dark:text-gray-500 shrink-0
                       transition-transform duration-200"
                fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -48,7 +48,7 @@
         </button>
 
         <ul data-disclosure-target="content"
-            class="divide-y divide-gray-100 dark:divide-gray-800">
+            class="divide-y divide-gray-200 dark:divide-gray-800">
           <% templates.each do |template| %>
             <% bookmark = user_bookmarks[template.id] %>
             <% is_owner = template.user_uuid.present? && template.user_uuid == current_user&.uuid %>
@@ -59,7 +59,7 @@
 
               <div class="flex items-center gap-4">
 
-                <p class="flex-1 min-w-0 text-base leading-relaxed text-gray-700 dark:text-gray-300">
+                <p class="flex-1 min-w-0 text-base font-medium leading-relaxed text-gray-700 dark:text-gray-300">
                   <%= template.template %>
                 </p>
 
@@ -76,7 +76,7 @@
                   <% if user_signed_in? && is_owner %>
                     <%= link_to edit_message_template_path(template),
                         data: { turbo_frame: "dialog" },
-                        class: "px-3 py-1.5 text-xs font-medium rounded-md
+                        class: "px-3 py-1.5 text-sm font-medium rounded-md
                                 text-gray-600 dark:text-gray-400
                                 border border-gray-200 dark:border-gray-800
                                 bg-white dark:bg-gray-950
@@ -90,7 +90,7 @@
                         method: :delete,
                         data: { turbo_confirm: '本当に削除しますか?',
                                 turbo_submits_with: "削除中..." },
-                        class: "px-3 py-1.5 text-xs font-medium rounded-md
+                        class: "px-3 py-1.5 text-sm font-medium rounded-md
                                 text-red-500 dark:text-red-400
                                 border border-red-200 dark:border-red-900
                                 bg-white dark:bg-gray-950
