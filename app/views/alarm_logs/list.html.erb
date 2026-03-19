@@ -52,33 +52,33 @@
               <% color_class = minutes >= 60 ? "text-red-500 dark:text-red-400" :
                                minutes >= 0  ? "text-orange-400 dark:text-orange-400" :
                                                "text-emerald-600 dark:text-emerald-400" %>
-              <tr class="hover:bg-gray-50 dark:hover:bg-gray-900/40 transition-colors duration-100">
+              <tr class="transition-colors duration-100">
 
                 <%# 日付列 %>
                 <td class="p-0">
-                  <%= link_to alarm_log_path(alarm_log), class: "block px-5 py-4" do %>
+                  <div class="block px-5 py-4">
                     <span class="text-base tabular-nums text-gray-500 dark:text-gray-400">
                       <%= l(alarm_log.unlocked_at, format: "%-m/%-d（%a）") %>
                     </span>
-                  <% end %>
+                  </div>
                 </td>
 
                 <%# プレイ時間列 %>
                 <td class="p-0">
-                  <%= link_to alarm_log_path(alarm_log), class: "block px-5 py-4" do %>
+                  <div class="block px-5 py-4">
                     <span class="text-lg font-semibold tabular-nums text-gray-900 dark:text-white">
                       <%= alarm_log.play_duration.present? ? format_play_minutes(alarm_log.play_duration) : "—" %>
                     </span>
-                  <% end %>
+                  </div>
                 </td>
 
                 <%# 引き延ばし列：右揃え %>
                 <td class="p-0">
-                  <%= link_to alarm_log_path(alarm_log), class: "block px-5 py-4 text-right" do %>
+                  <div class="block px-5 py-4 text-right">
                     <span class="text-xl font-bold tabular-nums <%= color_class %>">
                       <%= format_play_minutes(minutes) %>
                     </span>
-                  <% end %>
+                  </div>
                 </td>
 
               </tr>
@@ -94,10 +94,8 @@
           <% color_class = minutes >= 60 ? "text-red-500 dark:text-red-400" :
                            minutes >= 0  ? "text-orange-400 dark:text-orange-400" :
                                            "text-emerald-600 dark:text-emerald-400" %>
-          <%= link_to alarm_log_path(alarm_log),
-              class: "flex items-center justify-between px-5 py-4
-                      hover:bg-gray-50 dark:hover:bg-gray-900/40
-                      transition-colors duration-100" do %>
+          <div class="flex items-center justify-between px-5 py-4
+                      transition-colors duration-100">
 
             <%# 左側：日付とプレイ時間 %>
             <div class="flex flex-col gap-0.5">
@@ -120,7 +118,7 @@
               </span>
             </div>
 
-          <% end %>
+          </div>
         <% end %>
       </div>
 

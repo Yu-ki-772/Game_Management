@@ -40,7 +40,7 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :alarm_logs, only: %i[ index show ] do
+  resources :alarm_logs, only: %i[ index ] do
     collection do
       get :list # 記録一覧
     end
