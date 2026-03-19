@@ -126,21 +126,22 @@
 <% else %>
   <%# ── ログイン前フッター ── %>
   <footer class="bg-white dark:bg-black
-                 border-t border-gray-100 dark:border-gray-900
-                 transition-colors duration-200">
-    <div class="max-w-lg mx-auto px-5 py-4 flex flex-col items-center gap-2">
+                border-t border-gray-100 dark:border-gray-900
+                transition-colors duration-200">
+    <div class="max-w-lg mx-auto px-5 pt-4 pb-6 pb-safe
+                flex flex-col items-center gap-2">
       <nav class="flex items-center gap-1">
         <%= link_to privacy_policy_path,
             class: "text-base text-gray-600 dark:text-gray-600
                     px-3 py-2 rounded-md
-                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:bg-gray-100 dark:hover:bg-gray-900
                     transition-colors" do %>
           プライバシーポリシー
         <% end %>
         <%= link_to terms_path,
             class: "text-base text-gray-600 dark:text-gray-600
                     px-3 py-2 rounded-md
-                    hover:bg-gray-50 dark:hover:bg-gray-900
+                    hover:bg-gray-100 dark:hover:bg-gray-900
                     transition-colors" do %>
           利用規約
         <% end %>

@@ -6,8 +6,8 @@
 
     <%# ヘッダー：タイトル %>
     <div class="text-center mb-8">
-      <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">アカウント作成</h2>
-      <p class="mt-1.5 text-sm text-gray-500 dark:text-gray-400">アカウントを作成してください</p>
+      <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">アカウント作成</h2>
+      <p class="mt-1.5 text-base text-gray-500 dark:text-gray-400">アカウントを作成してください</p>
     </div>
 
     <%# メインカード %>
@@ -20,18 +20,18 @@
           html: { class: "space-y-5" }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
 
-        <p class="text-xs text-gray-400 dark:text-gray-500">
+        <p class="text-base text-gray-400 dark:text-gray-500">
           <span class="text-red-500 font-bold">*</span> は必須項目です
         </p>
 
         <%# ユーザネーム %>
         <div class="space-y-1.5">
-          <%= f.label :name, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300" do %>
+          <%= f.label :name, class: "block text-base font-semibold text-gray-700 dark:text-gray-300" do %>
             ユーザネーム <span class="text-red-400">*</span>
           <% end %>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-3 flex items-center">
-              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
               </svg>
@@ -42,7 +42,7 @@
                 class: "w-full pl-10 pr-4 py-2.5 rounded-md
                         border border-gray-200 dark:border-gray-700
                         bg-white dark:bg-gray-800
-                        text-gray-900 dark:text-gray-100 text-sm
+                        text-gray-900 dark:text-gray-100 text-base
                         placeholder-gray-400 dark:placeholder-gray-500
                         focus:outline-none focus:ring-1 focus:ring-gray-400 dark:focus:ring-gray-600
                         focus:border-gray-400 dark:focus:border-gray-600
@@ -52,12 +52,12 @@
 
         <%# メールアドレス %>
         <div class="space-y-1.5">
-          <%= f.label :email, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300" do %>
+          <%= f.label :email, class: "block text-base font-semibold text-gray-700 dark:text-gray-300" do %>
             メールアドレス <span class="text-red-400">*</span>
           <% end %>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-3 flex items-center">
-              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
@@ -68,7 +68,7 @@
                 class: "w-full pl-10 pr-4 py-2.5 rounded-md
                         border border-gray-200 dark:border-gray-700
                         bg-white dark:bg-gray-800
-                        text-gray-900 dark:text-gray-100 text-sm
+                        text-gray-900 dark:text-gray-100 text-base
                         placeholder-gray-400 dark:placeholder-gray-500
                         focus:outline-none focus:ring-1 focus:ring-gray-400 dark:focus:ring-gray-600
                         focus:border-gray-400 dark:focus:border-gray-600
@@ -78,12 +78,12 @@
 
         <%# パスワード %>
         <div class="space-y-1.5">
-          <%= f.label :password, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300" do %>
+          <%= f.label :password, class: "block text-base font-semibold text-gray-700 dark:text-gray-300" do %>
             パスワード <span class="text-red-400">*</span>
           <% end %>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-3 flex items-center">
-              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
               </svg>
@@ -93,17 +93,13 @@
                 class: "w-full pl-10 pr-4 py-2.5 rounded-md
                         border border-gray-200 dark:border-gray-700
                         bg-white dark:bg-gray-800
-                        text-gray-900 dark:text-gray-100 text-sm
+                        text-gray-900 dark:text-gray-100 text-base
                         focus:outline-none focus:ring-1 focus:ring-gray-400 dark:focus:ring-gray-600
                         focus:border-gray-400 dark:focus:border-gray-600
                         transition-colors" %>
           </div>
           <% if @minimum_password_length %>
-            <p class="text-xs text-gray-400 dark:text-gray-500 mt-1 ml-1 flex items-center gap-1">
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
+            <p class="text-sm text-gray-500 dark:text-gray-500 mt-1 ml-1 flex items-center gap-1">
               <%= @minimum_password_length %> 文字以上
             </p>
           <% end %>
@@ -111,12 +107,12 @@
 
         <%# パスワード確認 %>
         <div class="space-y-1.5">
-          <%= f.label :password_confirmation, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300" do %>
+          <%= f.label :password_confirmation, class: "block text-base font-semibold text-gray-700 dark:text-gray-300" do %>
             パスワード確認 <span class="text-red-400">*</span>
           <% end %>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-3 flex items-center">
-              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
               </svg>
@@ -126,7 +122,7 @@
                 class: "w-full pl-10 pr-4 py-2.5 rounded-md
                         border border-gray-200 dark:border-gray-700
                         bg-white dark:bg-gray-800
-                        text-gray-900 dark:text-gray-100 text-sm
+                        text-gray-900 dark:text-gray-100 text-base
                         focus:outline-none focus:ring-1 focus:ring-gray-400 dark:focus:ring-gray-600
                         focus:border-gray-400 dark:focus:border-gray-600
                         transition-colors" %>
@@ -137,7 +133,7 @@
         <div class="pt-1">
           <%= f.submit "アカウントを作成",
               class: "w-full py-3 px-4 rounded-md
-                      text-sm font-bold
+                      text-base font-bold
                       text-white dark:text-gray-900
                       bg-gray-900 dark:bg-white
                       hover:bg-gray-700 dark:hover:bg-gray-300
@@ -146,10 +142,10 @@
       <% end %>
 
       <%# リンク類 %>
-      <div class="pt-6 mt-6 border-t border-gray-200 dark:border-gray-800
+      <div class="pt-6 mt-6 border-t border-gray-300 dark:border-gray-800
                   flex flex-col items-center gap-3">
         <%= link_to "ログインはこちら", new_session_path(resource_name),
-            class: "text-sm font-semibold
+            class: "text-base font-semibold
                     text-gray-700 dark:text-gray-300
                     hover:text-gray-900 dark:hover:text-gray-100
                     transition-colors" %>
