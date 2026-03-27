@@ -40,7 +40,8 @@
           </h2>
           <svg data-disclosure-target="icon"
                class="w-5 h-5 text-gray-400 dark:text-gray-500 shrink-0
-                      transition-transform duration-200"
+                      transition-transform duration-200
+                      -rotate-90"
                fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M19 9l-7 7-7-7" />
@@ -48,7 +49,8 @@
         </button>
 
         <ul data-disclosure-target="content"
-            class="divide-y divide-gray-200 dark:divide-gray-800">
+            class="divide-y divide-gray-200 dark:divide-gray-800
+                   hidden">
           <% templates.each do |template| %>
             <% bookmark = user_bookmarks[template.id] %>
             <% is_owner = template.user_uuid.present? && template.user_uuid == current_user&.uuid %>
