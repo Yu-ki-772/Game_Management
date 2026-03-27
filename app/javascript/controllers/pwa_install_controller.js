@@ -25,7 +25,6 @@ export default class extends Controller {
     window.deferredInstallPrompt.prompt()
 
     const { outcome } = await window.deferredInstallPrompt.userChoice
-    console.log(`[PWA] インストール選択結果: ${outcome}`)
 
     // prompt() は一度しか呼べないため使用後にクリアする
     window.deferredInstallPrompt = null

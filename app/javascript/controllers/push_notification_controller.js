@@ -47,7 +47,6 @@ export default class extends Controller {
 
       const permission = await Notification.requestPermission();
       if (permission !== "granted") {
-        console.log("Push通知が拒否されました");
         this.closeModal()
         return;
       }
@@ -60,15 +59,12 @@ export default class extends Controller {
 
       const success = await this.saveSubscription(subscription);
       if (success) {
-        console.log("[Push] 購読完了");
         this.hideElement("push-subscribe-btn")
         this.showElement("push-unsubscribe-btn")
       } else {
-        console.error("[Push] サーバーへの保存に失敗しました");
       }
 
     } catch (error) {
-      console.error("[Push] 購読エラー:", error);
 
     } finally {
       this.closeModal()
@@ -91,25 +87,21 @@ export default class extends Controller {
       const subscription = await registration.pushManager.getSubscription()
 
       if (!subscription) {
-        console.log("[Push] 購読情報が見つかりません")
         return
       }
 
       const success = await this.deleteSubscription(subscription);
       if (!success) {
-        console.error("[Push] サーバー側の削除に失敗しました");
         return;
       }
 
       await subscription.unsubscribe();
-      console.log("[Push] 購読解除完了");
 
       // 通知設定ページでボタンを切り替える
       this.hideElement("push-unsubscribe-btn")
       this.showElement("push-subscribe-btn")
 
     } catch (error) {
-      console.error("[Push] 購読解除エラー:", error);
 
     } finally {
       if (btn) {
