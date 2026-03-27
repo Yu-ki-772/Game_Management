@@ -72,7 +72,7 @@ gem "pagy", "~> 43.3"
 gem "simple_calendar", "~> 3.1"
 
 # メタタグの実装用
-gem "meta-tags", "~> 2.22", ">= 2.22.3"
+gem "meta-tags", "~> 2.23"
 
 gem "chartkick", "~> 5.2", ">= 5.2.1" # グラフ用
 
