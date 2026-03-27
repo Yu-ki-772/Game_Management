@@ -20,19 +20,12 @@
   <div class="space-y-5">
     <% message_templates.group_by(&:reason).each do |reason, templates| %>
 
-      <%#
-        data-disclosure-open-value に search_active を渡す。
-        検索中（search_active: true）→ 開いた状態でレンダリング。
-        デフォルト（search_active: false）→ 閉じた状態でレンダリング。
-        Stimulus の openValueChanged() が connect 時に自動で呼ばれるので、
-        追加の JS は不要。
-      %>
       <section class="bg-white dark:bg-gray-950
                       border border-gray-300 dark:border-gray-800
                       rounded-xl overflow-hidden"
-               data-controller="disclosure">
+               data-controller="disclosure"
+               data-disclosure-key-value="<%= reason %>">
 
-        <%# セクションヘッダーをボタンとして機能させる %>
         <button type="button"
                 data-action="click->disclosure#toggle"
                 class="w-full px-5 py-3.5 flex items-center justify-between
@@ -42,14 +35,10 @@
           <h2 class="text-lg text-gray-800 dark:text-gray-300 leading-snug">
             <%= reason %>
           </h2>
-          <%#
-            矢印アイコン。
-            openValueChanged() で transform を操作して回転させる。
-            transition で回転をアニメーションにする。
-          %>
           <svg data-disclosure-target="icon"
                class="w-5 h-5 text-gray-400 dark:text-gray-500 shrink-0
-                      transition-transform duration-200"
+                      transition-transform duration-200
+                      -rotate-90"
                fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M19 9l-7 7-7-7" />
@@ -57,7 +46,8 @@
         </button>
 
         <ul data-disclosure-target="content"
-            class="divide-y divide-gray-200 dark:divide-gray-800">
+            class="divide-y divide-gray-200 dark:divide-gray-800
+                   hidden">
           <% templates.each do |template| %>
 
             <li class="px-5 py-4

@@ -22,12 +22,7 @@ export default class extends Controller {
   }
 
   openValueChanged() {
-    if (this.openValue) {
-      this.contentTarget.style.display = "block"
-      this.iconTarget.style.transform = "rotate(0deg)"
-    } else {
-      this.contentTarget.style.display = "none"
-      this.iconTarget.style.transform = "rotate(-90deg)"
-    }
+    this.contentTarget.classList.toggle("hidden", !this.openValue)
+    this.iconTarget.classList.toggle("-rotate-90", !this.openValue)
   }
 }
