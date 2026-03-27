@@ -155,26 +155,16 @@
     <div class="flex flex-col-reverse gap-2
                 sm:flex-row sm:items-center sm:justify-end">
 
-      <% if turbo_frame_request? %>
-        <button type="button"
-                data-action="click->dialog#close"
-                class="w-full sm:w-auto px-4 py-2 rounded-lg
-                       text-sm font-medium text-center
-                       text-gray-500 dark:text-gray-400
-                       hover:text-gray-700 dark:hover:text-gray-200
-                       hover:bg-gray-200 dark:hover:bg-gray-900
-                       transition-colors duration-100">
-          キャンセル
-        </button>
-      <% else %>
-        <%= link_to 'キャンセル', request.referer || alarms_path,
-            class: "w-full sm:w-auto px-4 py-2 rounded-lg
-                    text-sm font-medium text-center block
-                    text-gray-500 dark:text-gray-400
-                    hover:text-gray-700 dark:hover:text-gray-200
-                    hover:bg-gray-100 dark:hover:bg-gray-900
-                    transition-colors duration-100" %>
-      <% end %>
+      <button type="button"
+              data-action="click->dialog#close"
+              class="w-full sm:w-auto px-4 py-2 rounded-lg
+                      text-sm font-medium text-center
+                      text-gray-500 dark:text-gray-400
+                      hover:text-gray-700 dark:hover:text-gray-200
+                      hover:bg-gray-200 dark:hover:bg-gray-900
+                      transition-colors duration-100">
+        キャンセル
+      </button>
 
       <%= f.submit alarm.persisted? ? '更新する' : 'アラームを作成',
           data: { turbo_submits_with: alarm.persisted? ? "更新中..." : "作成中..." },
