@@ -34,24 +34,24 @@ RSpec.describe AlarmLog, type: :model do
           expect(build(:alarm_log, minutes_to_unlock: 0)).to be_valid
         end
 
-        it "-1440分（境界値）のとき有効である" do
-          expect(build(:alarm_log, minutes_to_unlock: -1440)).to be_valid
+        it "-299分（境界値）のとき有効である" do
+          expect(build(:alarm_log, minutes_to_unlock: -299)).to be_valid
         end
 
-        it "1440分（境界値）のとき有効である" do
-          expect(build(:alarm_log, minutes_to_unlock: 1440)).to be_valid
+        it "299分（境界値）のとき有効である" do
+          expect(build(:alarm_log, minutes_to_unlock: 299)).to be_valid
         end
       end
 
       context "範囲外の場合" do
-        it "-1441分のとき base にエラーが追加される" do
-          log = build(:alarm_log, minutes_to_unlock: -1441)
+        it "-300分のとき base にエラーが追加される" do
+          log = build(:alarm_log, minutes_to_unlock: -300)
           log.valid?
           expect(log.errors[:base]).not_to be_empty
         end
 
-        it "1441分のとき base にエラーが追加される" do
-          log = build(:alarm_log, minutes_to_unlock: 1441)
+        it "300分のとき base にエラーが追加される" do
+          log = build(:alarm_log, minutes_to_unlock: 300)
           log.valid?
           expect(log.errors[:base]).not_to be_empty
         end
