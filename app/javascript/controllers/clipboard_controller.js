@@ -37,7 +37,6 @@ export default class extends Controller {
         "clipboard-success"
       )
     }).catch((error) => {
-      console.error("コピー失敗:", error)
       this.#showFeedback(
         "M6 18L18 6M6 6l12 12",  // ×マーク
         "clipboard-error"

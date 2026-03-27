@@ -1,13 +1,10 @@
 self.addEventListener('install', function(event) {
-  console.log('Service Worker installing.');
 });
 
 self.addEventListener('activate', function(event) {
-  console.log('Service Worker activated.');
 });
 
 self.addEventListener('fetch', function(event) {
-  console.log('Fetching:', event.request.url);
 });
 
 // サーバーからプッシュ通知が届いたときに発火する
@@ -25,7 +22,6 @@ self.addEventListener('push', function(event) {
 
 // 通知クリック/タップ時の処理
 self.addEventListener('notificationclick', function(event) {
-  console.log('通知をクリック');
   event.notification.close();
 
   const url = event.notification.data?.url || '/';
