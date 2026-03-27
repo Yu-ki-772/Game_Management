@@ -72,15 +72,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update_resource(resource, params)
     # アバターが添付されている場合のみリサイズ処理を行う
     if params[:avatar].present?
+      avatar = params[:avatar]
+
+      # 2MB以下かどうかをリサイズ前に確認
+      if avatar.size > 2.megabytes
+        resource.errors.add(:avatar, "：2MB以下のファイルをアップロードしてください。")
+        return false
+      end
+
       resized_image = ImageProcessing::Vips
-                  .source(params[:avatar])
+                  .source(avatar)
                   .resize_to_fill(200, 200)
                   .call
 
       resource.avatar.attach(
         io: resized_image,
-        filename: params[:avatar].original_filename,
-        content_type: params[:avatar].content_type
+        filename: avatar.original_filename,
+        content_type: avatar.content_type
       )
 
       params = params.except(:avatar)
