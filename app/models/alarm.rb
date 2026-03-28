@@ -34,28 +34,34 @@ class Alarm < ApplicationRecord
 
   # alarm_membershipsテーブルに紐づくalarmだけを返すスコープ
   scope :with_membership, -> { joins(:alarm_memberships).distinct }
-  scope :not_unlocked_by, ->(user) {
-    where.not(
-      uuid: AlarmLog.where(user_uuid: user.uuid).select(:alarm_uuid)
-    )
-  }
 
-  # カレンダーへの表示用のスコープ
-  # started_atがある場合はそれを、ない場合はscheduled_atを期間判定に使用
-  scope :in_period, ->(start_date, end_date) {
-    where(started_at: ..end_date)
-      .where("scheduled_at >= ?", start_date)
-      .or(
-        where(started_at: nil)
-          .where(scheduled_at: start_date..end_date)
-      )
-  }
+
+  
 
   # ストップ可能なアラーム
   scope :stoppable_now, -> {
     now = Time.current
     where(scheduled_at: (now - 5.hours)..(now + 5.hours))
   }
+
+  # 該当ユーザにアンロックされていないものに絞るメソッド
+  # （該当アラームに紐づいたアラームログがないかどうかで判定）
+  def self.not_unlocked_by(user)
+    where.not(
+      uuid: AlarmLog.where(user_uuid: user.uuid).select(:alarm_uuid)
+    )
+  end
+
+  # カレンダーへの表示用メソッド
+  # started_atがある場合はそれを、ない場合はscheduled_atを期間判定に使用
+  def self.in_period(start_date, end_date)
+    where(started_at: ..end_date)
+      .where(scheduled_at: start_date..)
+      .or(
+        where(started_at: nil)
+          .where(scheduled_at: start_date..end_date)
+      )
+  end
 
   def start_time
     started_at || scheduled_at

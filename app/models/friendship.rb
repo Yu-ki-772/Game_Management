@@ -7,14 +7,17 @@ class Friendship < ApplicationRecord
   validates :user_uuid, uniqueness: { scope: :friend_uuid }
 
   # ユーザとのfriendshipが存在するかでの絞り込み
-  scope :between, ->(user1, user2) {
+  def self.between(user1, user2)
     where(user_uuid: user1.id, friend_uuid: user2.id)
       .or(where(user_uuid: user2.id, friend_uuid: user1.id))
-  }
-  scope :between_user_and_ids, ->(user, user_uuids) {
+  end
+
+  # 指定したユーザーと複数の相手ユーザーとの間にある
+  # フレンドシップをまとめて取得するとき用
+  def self.between_user_and_ids(user, user_uuids)
     where(user_uuid: user.uuid, friend_uuid: user_uuids)
       .or(where(user_uuid: user_uuids, friend_uuid: user.uuid))
-  }
+  end
 
   # friendshipの相手側のユーザを返す
   def partner(user)
