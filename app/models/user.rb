@@ -48,26 +48,10 @@ class User < ApplicationRecord
 
   scope :non_admin, -> { where(admin: false) } # 管理者ユーザかどうかの確認
 
-  # フレンドを優先的に表示させるためのスコープ
-  scope :friends_first, ->(user) {
-    joins(
-      ActiveRecord::Base.sanitize_sql([
-        "LEFT JOIN friendships ON (
-          (friendships.friend_uuid = users.uuid AND friendships.user_uuid = ?)
-          OR
-          (friendships.user_uuid = users.uuid AND friendships.friend_uuid = ?)
-        ) AND friendships.status = ?",
-        user.uuid,
-        user.uuid,
-        Friendship.statuses[:accepted]
-      ])
-    ).order(
-      Arel.sql("CASE WHEN friendships.id IS NOT NULL THEN 0 ELSE 1 END ASC, users.name ASC")
-    )
-  }
+
 
   # フレンドのみに絞込
-  scope :friends_with, ->(user) {
+  def self.friends_with(user)
     # 「自分が申請した」フレンドのuuidをサブクエリで取得する。
     sent_friend_uuids = Friendship.accepted
                                   .where(user_uuid: user.uuid)
@@ -80,7 +64,7 @@ class User < ApplicationRecord
 
     # 両方のサブクエリをORでつなぎ、どちらの方向のフレンドも拾う。
     where(uuid: sent_friend_uuids).or(where(uuid: received_friend_uuids))
-  }
+  end
 
   #========================================================
   # publicメソッド
