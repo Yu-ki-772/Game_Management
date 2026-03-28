@@ -36,7 +36,7 @@ class Alarm < ApplicationRecord
   scope :with_membership, -> { joins(:alarm_memberships).distinct }
 
 
-  
+
 
   # ストップ可能なアラーム
   scope :stoppable_now, -> {
