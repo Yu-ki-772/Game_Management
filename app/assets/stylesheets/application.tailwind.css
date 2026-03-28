@@ -1,3 +1,5 @@
+/* app/assets/stylesheets/application.tailwind.css */
+
 @import "tailwindcss";
 @import "./pagy-tailwind.css";
 
@@ -22,23 +24,25 @@
   --cal-othermonth-text: rgb(113 113 122);
 }
 
-.simple-calendar,
-.simple-calendar table {
-  display: table !important;
-  width: 100% !important;
-  table-layout: fixed !important;
-  border-collapse: collapse !important;
-}
+@layer components {
+  .simple-calendar,
+  .simple-calendar table {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
 
-.simple-calendar thead { display: table-header-group !important; }
+  .simple-calendar thead { display: table-header-group; }
 
-.simple-calendar thead tr,
-.simple-calendar tbody tr { display: table-row !important; }
+  .simple-calendar thead tr,
+  .simple-calendar tbody tr { display: table-row; }
 
-.simple-calendar thead th,
-.simple-calendar tbody td {
-  display: table-cell !important;
-  width: 14.28%;
+  .simple-calendar thead th,
+  .simple-calendar tbody td {
+    display: table-cell;
+    width: 14.28%;
+  }
 }
 
 .simple-calendar tbody td {
