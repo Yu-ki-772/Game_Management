@@ -143,7 +143,7 @@
                   } %>
             <% else %>
               <div class="flex items-center justify-center py-10">
-                <p class="text-sm text-gray-400 dark:text-gray-500">まだデータがありません</p>
+                <p class="text-base text-gray-500 dark:text-gray-500">まだデータがありません</p>
               </div>
             <% end %>
           </div>
@@ -157,21 +157,21 @@
           <p class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-1">
             フレンドごとの引き延ばし時間
           </p>
-          <p class="text-xs text-gray-400 dark:text-gray-500 mb-4">
-            一緒にプレイしたフレンドの平均を比較
+          <p class="text-sm text-gray-600 dark:text-gray-500 mb-4">
+            一緒にプレイしたフレンドごとの平均を比較
           </p>
           <div class="flex items-center gap-4 mb-4">
             <div class="flex items-center gap-1.5">
               <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
-              <span class="text-[11px] text-gray-400 dark:text-gray-500">0分未満</span>
+              <span class="text-[11px] text-gray-500 dark:text-gray-500">0分未満</span>
             </div>
             <div class="flex items-center gap-1.5">
               <span class="inline-block w-2 h-2 rounded-full bg-orange-400"></span>
-              <span class="text-[11px] text-gray-400 dark:text-gray-500">0〜59分</span>
+              <span class="text-[11px] text-gray-500 dark:text-gray-500">0〜59分</span>
             </div>
             <div class="flex items-center gap-1.5">
               <span class="inline-block w-2 h-2 rounded-full bg-red-400"></span>
-              <span class="text-[11px] text-gray-400 dark:text-gray-500">60分以上</span>
+              <span class="text-[11px] text-gray-500 dark:text-gray-500">60分以上</span>
             </div>
           </div>
           <% if @friend_stats.any? %>
@@ -196,7 +196,7 @@
                 } %>
           <% else %>
             <div class="flex items-center justify-center py-10">
-              <p class="text-sm text-gray-400 dark:text-gray-500">まだデータがありません</p>
+              <p class="text-base text-gray-500 dark:text-gray-500">まだデータがありません</p>
             </div>
           <% end %>
         </div>
