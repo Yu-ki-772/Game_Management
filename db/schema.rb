@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_13_122551) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_29_023241) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,9 +45,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_13_122551) do
   create_table "alarm_logs", force: :cascade do |t|
     t.uuid "alarm_uuid", null: false
     t.datetime "created_at", null: false
-    t.integer "minutes_to_unlock"
+    t.integer "minutes_to_stop"
     t.integer "play_duration"
-    t.datetime "unlocked_at", null: false
+    t.datetime "stopped_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_uuid"
     t.index ["alarm_uuid"], name: "index_alarm_logs_on_alarm_uuid"
@@ -74,7 +74,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_13_122551) do
     t.datetime "scheduled_at", null: false
     t.boolean "sent", default: false, null: false
     t.datetime "started_at"
-    t.boolean "unlocked", default: false, null: false
+    t.boolean "stopped", default: false, null: false
     t.datetime "updated_at", null: false
     t.uuid "user_uuid", null: false
     t.index ["job_id"], name: "index_alarms_on_job_id"
