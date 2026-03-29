@@ -2,7 +2,7 @@ class AlarmsController < ApplicationController
   #=================================================
   # フィルタ設定
   #=================================================
-  before_action :set_alarm, only: [ :edit, :update, :unlock, :destroy ]
+  before_action :set_alarm, only: [ :edit, :update, :stop, :destroy ]
 
   #=================================================
   # 一覧・表示系アクション
@@ -10,7 +10,7 @@ class AlarmsController < ApplicationController
   def index
     @memberships = current_user.alarm_memberships
                               .joins(:alarm)
-                              .merge(Alarm.unsent.future.locked)
+                              .merge(Alarm.unsent.future.not_stopped)
                               .includes(
                                 alarm: [
                                   { creator: { avatar_attachment: :blob } },
@@ -67,9 +67,9 @@ class AlarmsController < ApplicationController
 
       # pending画面に追加すべきかの判定
       @add_to_pending = current_user.alarm_memberships
-                                      .not_unlocked_by(current_user)
+                                      .not_stopped_by(current_user)
                                       .joins(:alarm)
-                                      .merge(Alarm.locked.stoppable_now)
+                                      .merge(Alarm.not_stopped.stoppable_now)
                                       .exists?(@membership.id)
 
       respond_to do |format|
@@ -113,7 +113,7 @@ class AlarmsController < ApplicationController
   end
 
   # アラームのストップの処理
-  def unlock
+  def stop
     membership = @alarm.alarm_memberships.find_by(user_uuid: current_user.uuid)
 
     # メンバーシップが存在しない場合
@@ -123,13 +123,13 @@ class AlarmsController < ApplicationController
       return
     end
 
-    alarm_log = membership.unlock
+    alarm_log = membership.stop
 
     if alarm_log
       flash[:alarm_log_id] = alarm_log.id
       redirect_to alarm_logs_path, notice: "アラームをストップしました", status: :see_other
     else
-      handle_unlock_failure
+      handle_stop_failure
     end
   end
 
@@ -155,15 +155,15 @@ class AlarmsController < ApplicationController
     params.require(:alarm).permit(:label, :scheduled_at, :started_at, :reminder_minutes)
   end
 
-  # pendingとhandle_unlock_failureの両方で同じ招待アラームの取得処理が必要なため、
+  # pendingとhandle_stop_failureの両方で同じ招待アラームの取得処理が必要なため、
   # メソッドとして切り出すことで重複を避ける。
   # { alarm_uuid => membership } というHashを返すことで、
   # ビュー側がalarm.uuidをキーにO(1)でmembershipを取得できる。
   def pending_alarm_memberships
     current_user.alarm_memberships
-                .not_unlocked_by(current_user)
+                .not_stopped_by(current_user)
                 .joins(:alarm)
-                .merge(Alarm.locked.stoppable_now)
+                .merge(Alarm.not_stopped.stoppable_now)
                 .includes(
                   :user,
                   alarm: [ :alarm_memberships, { members: :avatar_attachment }, { creator: :avatar_attachment } ]
@@ -183,7 +183,7 @@ class AlarmsController < ApplicationController
     memberships = current_user.alarm_memberships
                               .joins(:alarm)
                               .merge(
-                                Alarm.locked.in_period(start_of_calendar, end_of_calendar)
+                                Alarm.not_stopped.in_period(start_of_calendar, end_of_calendar)
                               )
                               .includes(alarm: :alarm_memberships)
 
@@ -192,8 +192,8 @@ class AlarmsController < ApplicationController
                         .sort_by(&:start_time)
   end
 
-  def handle_unlock_failure
-    @alarms = current_user.alarms.locked.near
+  def handle_stop_failure
+    @alarms = current_user.alarms.not_stopped.near
                           .includes(
                             :alarm_memberships,
                             creator: { avatar_attachment: :blob },

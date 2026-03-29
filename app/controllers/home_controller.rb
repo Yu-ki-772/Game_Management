@@ -20,7 +20,7 @@ class HomeController < ApplicationController
     memberships = current_user.alarm_memberships
                               .joins(:alarm)
                               .merge(
-                                Alarm.locked.in_period(start_of_calendar, end_of_calendar)
+                                Alarm.not_stopped.in_period(start_of_calendar, end_of_calendar)
                               )
                               .includes(alarm: :alarm_memberships)
 

@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   def set_stoppable_alarms_count
     @stoppable_alarms_count = current_user.member_alarms
                               .stoppable_now
-                              .not_unlocked_by(current_user)
+                              .not_stopped_by(current_user)
                               .count
   end
 end

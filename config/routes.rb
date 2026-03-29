@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       get :calendar
     end
     member do
-      patch :unlock
+      patch :stop
     end
     resources :alarm_memberships, only: [ :create, :destroy, :show ] do
       collection do
@@ -36,7 +36,7 @@ Rails.application.routes.draw do
         get :search_users
       end
       member do
-        patch :unlock
+        patch :stop
       end
     end
   end

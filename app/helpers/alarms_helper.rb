@@ -42,11 +42,11 @@ module AlarmsHelper
   def x_share_url_for_alarm_log(alarm_log)
     base_url = "https://x.com/intent/tweet"
 
-    minutes_to_unlock = format_play_minutes(alarm_log.minutes_to_unlock)
+    minutes_to_stop = format_play_minutes(alarm_log.minutes_to_stop)
     play_duration     = format_play_minutes(alarm_log.play_duration)
 
     share_data = {
-      text: "プレイ時間: #{play_duration}\n目標に対する引き延ばし時間: #{minutes_to_unlock}",
+      text: "プレイ時間: #{play_duration}\n目標に対する引き延ばし時間: #{minutes_to_stop}",
       url: ENV.fetch("APP_URL", "http://localhost:3000"),
       hashtags: "ゲーム,時間管理,GameExit"
     }

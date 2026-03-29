@@ -206,7 +206,7 @@
     <%# アラームストップ時のモーダル %>
     <% if flash[:alarm_log_id] %>
       <% alarm_log = AlarmLog.find(flash[:alarm_log_id]) %>
-      <%= render 'alarms/unlock_modal', alarm_log: alarm_log %>
+      <%= render 'alarms/stop_modal', alarm_log: alarm_log %>
     <% end %>
   <% end %>
 </div>

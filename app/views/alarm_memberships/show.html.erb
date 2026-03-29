@@ -74,7 +74,7 @@
       <% else %>
         <% if expired %>
           <%= button_to 'アラームをストップ',
-                unlock_alarm_alarm_membership_path(@alarm, @membership),
+                stop_alarm_alarm_membership_path(@alarm, @membership),
                 method: :patch,
                 data: { turbo_submits_with: "ストップ中..." },
                 class: "w-full py-3 text-lg font-semibold rounded-lg
@@ -86,7 +86,7 @@
         <% else %>
           <% if stoppable?(@alarm) %>
             <%= button_to 'アラームをストップ',
-                  unlock_alarm_alarm_membership_path(@alarm, @membership),
+                  stop_alarm_alarm_membership_path(@alarm, @membership),
                   method: :patch,
                   data: { turbo_submits_with: "ストップ中..." },
                   class: "w-full py-3 text-lg font-semibold rounded-lg

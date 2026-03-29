@@ -19,7 +19,7 @@ ja:
         scheduled_at:      アラーム時刻
         started_at:        プレイ開始時刻
         sent:              送信済み
-        unlocked:          解除済み
+        stopped:          ストップ済み
         job_id:            ジョブID
         reminder_job_id:   リマインダージョブID
         reminder_minutes:  リマインダー時間（分前）
@@ -28,8 +28,8 @@ ja:
       alarm_log:
         alarm_uuid:        アラーム
         user_uuid:         ユーザー
-        unlocked_at:       解除時刻
-        minutes_to_unlock: 解除までの時間（分）
+        stopped_at:       ストップ時刻
+        minutes_to_stop: ストップまでの時間（分）
         play_duration:     プレイ時間（分）
 
       alarm_membership:
