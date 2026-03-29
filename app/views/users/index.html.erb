@@ -58,7 +58,7 @@
   <% end %>
 
   <%# ── 検索結果件数 ── %>
-  <% if params[:q].present? %>
+  <% if params[:q].present? && @search_count >= 1 %>
     <p class="text-base text-gray-600 dark:text-gray-500 mb-4">
       <span class="font-semibold text-gray-700 dark:text-gray-300 text-sm tabular-nums">
         <%= @search_count %>
@@ -130,11 +130,13 @@
       </ul>
 
     <% else %>
-      <div class="text-center py-16">
-        <p class="text-sm text-gray-400 dark:text-gray-500">
-          <%= params[:q].present? ? "検索条件に一致するユーザーが見つかりませんでした" : "ユーザーが見つかりませんでした" %>
-        </p>
-      </div>
+      <% if params[:q].present? %>
+        <div class="text-center py-16">
+          <p class="text-sm text-gray-400 dark:text-gray-500">
+            検索条件に一致するユーザーが見つかりませんでした
+          </p>
+        </div>
+      <% end %>
     <% end %>
   </div>
 

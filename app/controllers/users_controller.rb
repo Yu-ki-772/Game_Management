@@ -2,8 +2,10 @@ class UsersController < ApplicationController
   def index
     @q = User.non_admin.excluding(current_user).ransack(search_params)
 
+    base_scope = params.dig(:q, :name_cont).present? ? @q.result : User.none
+
     @pagy, @users = pagy(
-      @q.result.with_attached_avatar,
+      base_scope.with_attached_avatar,
       limit: 15
     )
 
