@@ -41,8 +41,14 @@ module ApplicationHelper
     "#{base_url}?#{share_data.to_query}"
   end
 
-  def nav_link_class(path)
-    if current_page?(path)
+
+  # コントローラー名かパスのいずれかに一致する場合の
+  # フッタのメニューの色
+  def nav_link_class_for(controllers: [], paths: [])
+    is_active = controllers.include?(controller_name) ||
+                paths.any? { |path| current_page?(path) }
+
+    if is_active
       "#{active_state_classes} px-3 py-2 rounded-md text-sm"
     else
       "text-gray-500 dark:text-gray-400

@@ -19,7 +19,7 @@
         <%= link_to root_path,
             class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md
                     text-sm font-medium transition-colors
-                    #{nav_link_class(root_path)}" do %>
+                    #{nav_link_class_for(paths: [root_path])}" do %>
           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round">
@@ -32,12 +32,10 @@
         <% end %>
 
         <%# ── アラーム ── %>
-        <%# ── アラーム ── %>
-        <%# ドロップダウンを廃止してアラーム一覧への直接リンクに変更 %>
         <%= link_to alarms_path,
             class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md
                     text-sm font-medium transition-colors
-                    #{nav_link_class(alarms_path)}" do %>
+                    #{nav_link_class_for(controllers: ['alarms', 'alarm_memberships'])}" do %>
           <div class="relative">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2"
@@ -62,7 +60,7 @@
         <%= link_to alarm_logs_path,
             class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md
                     text-sm font-medium transition-colors
-                    #{nav_link_class(alarm_logs_path)}" do %>
+                    #{nav_link_class_for(controllers: ['alarm_logs'])}" do %>
           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round">
@@ -80,7 +78,7 @@
         <%= link_to message_templates_path,
             class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md
                     text-sm font-medium transition-colors
-                    #{nav_link_class(message_templates_path)}" do %>
+                    #{nav_link_class_for(controllers: ['message_templates'])}" do %>
           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round">
@@ -94,11 +92,10 @@
         <% end %>
 
         <%# ── フレンド ── %>
-        <%# ドロップダウンを廃止してフレンド一覧への直接リンクに変更 %>
         <%= link_to friendships_path,
             class: "flex flex-col items-center gap-1 px-3 py-2 rounded-md
                     text-sm font-medium transition-colors
-                    #{nav_link_class(friendships_path)}" do %>
+                    #{nav_link_class_for(controllers: ['friendships'], paths: [users_path])}" do %>
           <div class="relative">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2"
