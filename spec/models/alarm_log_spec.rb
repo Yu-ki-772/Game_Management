@@ -28,30 +28,30 @@ RSpec.describe AlarmLog, type: :model do
   # ============================================================
   describe "validations" do
     # アラームのストップは設定時刻から24時間（1440分）前後の範囲内のみ受け付ける
-    describe "minutes_to_unlock_range" do
+    describe "minutes_to_stop_range" do
       context "範囲内の場合" do
         it "0分のとき有効である" do
-          expect(build(:alarm_log, minutes_to_unlock: 0)).to be_valid
+          expect(build(:alarm_log, minutes_to_stop: 0)).to be_valid
         end
 
         it "-299分（境界値）のとき有効である" do
-          expect(build(:alarm_log, minutes_to_unlock: -299)).to be_valid
+          expect(build(:alarm_log, minutes_to_stop: -299)).to be_valid
         end
 
         it "299分（境界値）のとき有効である" do
-          expect(build(:alarm_log, minutes_to_unlock: 299)).to be_valid
+          expect(build(:alarm_log, minutes_to_stop: 299)).to be_valid
         end
       end
 
       context "範囲外の場合" do
         it "-300分のとき base にエラーが追加される" do
-          log = build(:alarm_log, minutes_to_unlock: -300)
+          log = build(:alarm_log, minutes_to_stop: -300)
           log.valid?
           expect(log.errors[:base]).not_to be_empty
         end
 
         it "300分のとき base にエラーが追加される" do
-          log = build(:alarm_log, minutes_to_unlock: 300)
+          log = build(:alarm_log, minutes_to_stop: 300)
           log.valid?
           expect(log.errors[:base]).not_to be_empty
         end

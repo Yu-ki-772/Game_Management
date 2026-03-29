@@ -7,10 +7,10 @@ class AlarmReminderJob < ApplicationJob
     alarm = Alarm.find_by(uuid: alarm_uuid)
     return unless alarm
 
-    unlocked_user_uuids = alarm.alarm_logs.pluck(:user_uuid)
+    stopped_user_uuids = alarm.alarm_logs.pluck(:user_uuid)
 
     unnotified_memberships = alarm.alarm_memberships
-                                  .where.not(user_uuid: unlocked_user_uuids)
+                                  .where.not(user_uuid: stopped_user_uuids)
 
     return if unnotified_memberships.empty?
 

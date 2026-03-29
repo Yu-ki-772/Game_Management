@@ -3,7 +3,7 @@ FactoryBot.define do
   factory :alarm_log do
     association :alarm
     alarm_uuid        { alarm.uuid }
-    minutes_to_unlock { 0 }
-    unlocked_at       { Time.current }
+    minutes_to_stop { 0 }
+    stopped_at       { Time.current }
   end
 end

@@ -64,9 +64,9 @@ class AlarmMembershipsController < ApplicationController
   end
 
   # メンバーとしてアラームをストップする。（アラーム作成者のアラームとは分離している。）
-  def unlock
+  def stop
     @membership = @alarm.alarm_memberships.find_by!(user_uuid: current_user.uuid)
-    alarm_log = @membership.unlock
+    alarm_log = @membership.stop
 
     if alarm_log
 

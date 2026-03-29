@@ -27,7 +27,7 @@ class Alarm < ApplicationRecord
   #=======================================
   scope :unsent, -> { where(sent: false) }
   scope :future, -> { where("scheduled_at > ?", Time.current) }
-  scope :locked, -> { where(unlocked: false) }
+  scope :not_stopped, -> { where(stopped: false) }
 
   # 設定時間（24時間前後）で絞る
   scope :near, -> { where(scheduled_at: 24.hours.ago..24.hours.from_now) }
@@ -44,9 +44,9 @@ class Alarm < ApplicationRecord
     where(scheduled_at: (now - 5.hours)..(now + 5.hours))
   }
 
-  # 該当ユーザにアンロックされていないものに絞るメソッド
+  # 該当ユーザにストップされていないものに絞るメソッド
   # （該当アラームに紐づいたアラームログがないかどうかで判定）
-  def self.not_unlocked_by(user)
+  def self.not_stopped_by(user)
     where.not(
       uuid: AlarmLog.where(user_uuid: user.uuid).select(:alarm_uuid)
     )

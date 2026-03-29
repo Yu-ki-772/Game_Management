@@ -73,9 +73,9 @@ RSpec.describe AlarmMembership, type: :model do
     end
 
     # ----------------------------------------------------------
-    # #unlocked?
+    # #stopped?
     # ----------------------------------------------------------
-    describe "#unlocked?" do
+    describe "#stopped?" do
       context "ユーザーがアラームをストップ済みの場合" do
         it "true を返す" do
           alarm      = create(:alarm)
@@ -83,11 +83,11 @@ RSpec.describe AlarmMembership, type: :model do
           # alarm_log を直接作成してストップ済みの状態を作る
           alarm.alarm_logs.create!(
             user_uuid:         membership.user_uuid,
-            unlocked_at:       Time.current,
-            minutes_to_unlock: 0
+            stopped_at:       Time.current,
+            minutes_to_stop: 0
           )
 
-          expect(membership.unlocked?).to be true
+          expect(membership.stopped?).to be true
         end
       end
 
@@ -96,25 +96,25 @@ RSpec.describe AlarmMembership, type: :model do
           alarm      = create(:alarm)
           membership = alarm.alarm_memberships.first
 
-          expect(membership.unlocked?).to be false
+          expect(membership.stopped?).to be false
         end
       end
     end
 
-    describe "#unlock" do
-      context "すでにアンロック済みの場合" do
+    describe "#stop" do
+      context "すでにストップ済みの場合" do
         it "false を返す" do
           alarm      = create(:alarm)
           membership = alarm.alarm_memberships.first
 
-          # 事前にアンロック済みの状態を作る
+          # 事前にストップ済みの状態を作る
           alarm.alarm_logs.create!(
             user_uuid:         membership.user_uuid,
-            unlocked_at:       Time.current,
-            minutes_to_unlock: 0
+            stopped_at:       Time.current,
+            minutes_to_stop: 0
           )
 
-          expect(membership.unlock).to be false
+          expect(membership.stop).to be false
         end
       end
 
@@ -124,17 +124,17 @@ RSpec.describe AlarmMembership, type: :model do
           alarm.update_column(:scheduled_at, 25.hours.ago)
           membership = alarm.alarm_memberships.first
 
-          expect(membership.unlock).to be false
+          expect(membership.stop).to be false
         end
       end
 
-      context "正常にアンロックできた場合" do
+      context "正常にストップできた場合" do
         it "AlarmLog を返す" do
           alarm      = create(:alarm)
           alarm.update_column(:scheduled_at, 1.minute.ago)
           membership = alarm.alarm_memberships.first
 
-          result = membership.unlock
+          result = membership.stop
 
           expect(result).to be_a(AlarmLog)
         end
@@ -144,33 +144,33 @@ RSpec.describe AlarmMembership, type: :model do
           alarm.update_column(:scheduled_at, 1.minute.ago)
           membership = alarm.alarm_memberships.first
 
-          expect { membership.unlock }.to change(AlarmLog, :count).by(1)
+          expect { membership.stop }.to change(AlarmLog, :count).by(1)
         end
       end
 
-      context "全員がアンロック済みになった場合" do
-        it "alarm.unlocked が true になる" do
+      context "全員がストップ済みになった場合" do
+        it "alarm.stopped が true になる" do
           alarm      = create(:alarm)
           alarm.update_column(:scheduled_at, 1.minute.ago)
           membership = alarm.alarm_memberships.first
 
-          membership.unlock
+          membership.stop
 
-          expect(alarm.reload.unlocked).to be true
+          expect(alarm.reload.stopped).to be true
         end
       end
 
-      context "まだ全員がアンロック済みでない場合" do
-        it "alarm.unlocked は false のまま" do
+      context "まだ全員がストップ済みでない場合" do
+        it "alarm.stopped は false のまま" do
           alarm      = create(:alarm)
           alarm.update_column(:scheduled_at, 1.minute.ago)
           membership = alarm.alarm_memberships.first
 
-          allow(membership).to receive(:all_members_unlocked?).and_return(false)
+          allow(membership).to receive(:all_members_stopped?).and_return(false)
 
-          membership.unlock
+          membership.stop
 
-          expect(alarm.reload.unlocked).to be false
+          expect(alarm.reload.stopped).to be false
         end
       end
     end

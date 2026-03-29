@@ -1,11 +1,11 @@
-<%# app/views/alarms/_unlock_modal.html.erb %>
-<div data-controller="unlock_modal"
-     data-unlock_modal-alarm-log-id-value="<%= alarm_log.id %>"
-     data-action="turbo:before-cache@window->unlock_modal#beforeCache"
+<%# app/views/alarms/_stop_modal.html.erb %>
+<div data-controller="stop_modal"
+     data-stop_modal-alarm-log-id-value="<%= alarm_log.id %>"
+     data-action="turbo:before-cache@window->stop_modal#beforeCache"
      class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none">
 
   <%# オーバーレイ背景 %>
-  <div data-action="click->unlock_modal#close"
+  <div data-action="click->stop_modal#close"
        class="absolute inset-0 bg-black/40 dark:bg-black/60"></div>
 
   <%#
@@ -21,7 +21,7 @@
               p-6 w-11/12 max-w-sm mx-4">
 
     <%# 閉じるボタン %>
-    <button data-action="click->unlock_modal#close"
+    <button data-action="click->stop_modal#close"
             title="閉じる"
             class="absolute top-4 right-4
                    text-gray-400 dark:text-gray-500
@@ -46,12 +46,12 @@
       アンバー：色体系から除外済み → gray に変更してメッセージで温度感を表現。
       赤：「遅れ＝緊急・問題」→ 維持（意味のある色）。
     %>
-    <% if alarm_log.minutes_to_unlock < 0 %>
+    <% if alarm_log.minutes_to_stop < 0 %>
       <p class="text-base font-medium mb-5
                 text-emerald-600 dark:text-emerald-400">
         🎉 早めに離脱できたね！おめでとう！
       </p>
-    <% elsif alarm_log.minutes_to_unlock.between?(1, 60) %>
+    <% elsif alarm_log.minutes_to_stop.between?(1, 60) %>
       <%#
         アンバーを廃止。グレーでニュートラルに表現し、
         絵文字と文言で「少し遅れ」の温度感を伝える。
@@ -60,7 +60,7 @@
                 text-gray-500 dark:text-gray-400">
         ⏰ 少し遅くなっちゃったね。次は早めに離脱しよう！
       </p>
-    <% elsif alarm_log.minutes_to_unlock > 60 %>
+    <% elsif alarm_log.minutes_to_stop > 60 %>
       <p class="text-base font-medium mb-5
                 text-red-500 dark:text-red-400">
         😓 だいぶ遅くなっちゃったね。次こそ早めに切り上げよう！
@@ -82,7 +82,7 @@
       </p>
       <p class="text-xl font-bold tabular-nums tracking-tight
                 text-gray-900 dark:text-white">
-        <%= format_play_minutes(alarm_log.minutes_to_unlock) %>
+        <%= format_play_minutes(alarm_log.minutes_to_stop) %>
       </p>
 
       <% if alarm_log.play_duration.present? %>

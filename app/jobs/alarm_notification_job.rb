@@ -9,10 +9,10 @@ class AlarmNotificationJob < ApplicationJob
 
     return if alarm.sent?
 
-    unlocked_user_uuids = alarm.alarm_logs.pluck(:user_uuid)
+    stopped_user_uuids = alarm.alarm_logs.pluck(:user_uuid)
 
     unnotified_memberships = alarm.alarm_memberships
-                                  .where.not(user_uuid: unlocked_user_uuids)
+                                  .where.not(user_uuid: stopped_user_uuids)
 
     return if unnotified_memberships.empty?
 

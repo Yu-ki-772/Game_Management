@@ -118,7 +118,7 @@
     <div class="shrink-0 self-end sm:self-auto pointer-events-auto">
       <% if expired %>
         <%= button_to 'ストップ',
-            unlock_alarm_alarm_membership_path(alarm, membership),
+            stop_alarm_alarm_membership_path(alarm, membership),
             method: :patch,
             data: { turbo_submits_with: "ストップ中..." },
             class: "px-4 py-2 text-base font-semibold rounded-md
@@ -129,7 +129,7 @@
                     transition-colors" %>
       <% else %>
         <%= button_to 'ストップ',
-            unlock_alarm_alarm_membership_path(alarm, membership),
+            stop_alarm_alarm_membership_path(alarm, membership),
             method: :patch,
             data: { turbo_submits_with: "ストップ中..." },
             class: "px-4 py-2 text-base font-semibold rounded-md
