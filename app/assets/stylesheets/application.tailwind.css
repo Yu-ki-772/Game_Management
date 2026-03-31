@@ -1,102 +1,15 @@
 /* app/assets/stylesheets/application.tailwind.css */
 
 @import "tailwindcss";
-@import "./pagy-tailwind.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root {
-  --cal-border:          rgb(229 231 235);
-  --cal-sunday-bg:       rgb(254 242 242);
-  --cal-saturday-bg:     rgb(239 246 255);
-  --cal-today-bg:        rgb(236 253 245);
-  --cal-othermonth-bg:   rgb(249 250 251);
-  --cal-othermonth-text: rgb(156 163 175);
-}
+@import "./pagy-tailwind.css";
+@import "./simple-calendar.css";
+@import "./clipboard.css";
+@import "./dialog.css";
 
-/* .dark クラスが html 要素に付いたとき、変数の値を差し替える */
-.dark {
-  --cal-border:          rgb(39 39 42);
-  --cal-sunday-bg:       rgb(69 26 26);
-  --cal-saturday-bg:     rgb(23 37 84);
-  --cal-today-bg:        rgb(20 61 43);
-  --cal-othermonth-bg:   rgb(9 9 11);
-  --cal-othermonth-text: rgb(113 113 122);
-}
 
-@layer components {
-  .simple-calendar,
-  .simple-calendar table {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
-  }
-
-  .simple-calendar thead { display: table-header-group; }
-
-  .simple-calendar thead tr,
-  .simple-calendar tbody tr { display: table-row; }
-
-  .simple-calendar thead th,
-  .simple-calendar tbody td {
-    display: table-cell;
-    width: 14.28%;
-  }
-}
-
-.simple-calendar tbody td {
-  border: 1px solid var(--cal-border);
-  vertical-align: top;
-  min-height: 80px;
-  transition: background-color 0.2s ease;
-}
-
-.simple-calendar .wday-0 { background-color: var(--cal-sunday-bg); }
-.simple-calendar .wday-6 { background-color: var(--cal-saturday-bg); }
-.simple-calendar .today  { background-color: var(--cal-today-bg); }
-
-.simple-calendar .prev-month,
-.simple-calendar .next-month {
-  background-color: var(--cal-othermonth-bg);
-  opacity: 0.6;
-}
-
-.simple-calendar .prev-month span:first-child,
-.simple-calendar .next-month span:first-child {
-  color: var(--cal-othermonth-text);
-}
-
-/* Tailwind の sm:（640px）・lg:（1024px）に揃えることで、
-   HTML 側の sm: クラスと同じ境界線でスタイルが切り替わる。 */
-@media (max-width: 639px) {
-  .simple-calendar tbody td { min-height: 56px; }
-}
-
-@media (min-width: 640px) {
-  .simple-calendar tbody td { min-height: 100px; }
-}
-
-@media (min-width: 1024px) {
-  .simple-calendar tbody td { min-height: 120px; }
-}
-
-/* 定型文一覧のクリップボードにコピーするボタン用 */
-.clipboard-success {
-  @apply text-emerald-600 bg-emerald-50;
-
-  @variant dark {
-    @apply text-emerald-400 bg-emerald-900/30;
-  }
-}
-
-.clipboard-error {
-  @apply text-red-500 bg-red-50;
-
-  @variant dark {
-    @apply text-red-400 bg-red-950/50;
-  }
-}
 
 /* 画面遷移時のプログレスバーのカスタマイズ */
 .turbo-progress-bar {
@@ -111,27 +24,6 @@ turbo-frame[busy] {
   cursor: wait;
   pointer-events: none;
   transition: opacity 0.15s ease;
-}
-
-
-/* ── ダイアログ本体のスライドアニメーション ── */
-dialog[open] {
-  animation: dialog-slide-in 0.2s ease-out both;
-}
-
-@keyframes dialog-slide-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px) scale(0.98);
-  }
-}
-
-dialog[open]::backdrop {
-  animation: backdrop-fade-in 0.2s ease-out both;
-}
-
-@keyframes backdrop-fade-in {
-  from { opacity: 0; }
 }
 
 
