@@ -1,7 +1,9 @@
 // app/javascript/controllers/push_notification_controller.js
-
 import { Controller } from "@hotwired/stimulus"
+import { PushSubscriptionService } from "../api/push_subscription"
 
+// 購読情報の作成・削除ボタン用の処理と、
+// 購読情報の作成を促すモーダルの表示の処理
 export default class extends Controller {
   static values = {
     vapidPublicKey: String
@@ -16,8 +18,8 @@ export default class extends Controller {
       return
     }
 
-    const registration = await navigator.serviceWorker.ready
-    const subscription = await registration.pushManager.getSubscription()
+    this.service = new PushSubscriptionService(this.vapidPublicKeyValue)
+    const subscription = await this.service.getSubscription()
 
     this.hideElement("push-status-loading")
 
@@ -29,10 +31,8 @@ export default class extends Controller {
   }
 
   async subscribe() {
-    // ターゲットが存在しない場合は何もしない
     if (!this.hasSubscribeBtnTarget) return
 
-    // ローディングアニメーション
     const btn = this.subscribeBtnTarget
     const originalText = btn.textContent
     btn.disabled = true
@@ -40,28 +40,22 @@ export default class extends Controller {
 
     try {
       if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-        alert("このブラウザはプッシュ通知に対応していません");
+        alert("このブラウザはプッシュ通知に対応していません")
         this.closeModal()
-        return;
+        return
       }
 
-      const permission = await Notification.requestPermission();
+      const permission = await Notification.requestPermission()
       if (permission !== "granted") {
         this.closeModal()
-        return;
+        return
       }
 
-      const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: this.urlBase64ToUint8Array(this.vapidPublicKeyValue)
-      });
-
-      const success = await this.saveSubscription(subscription);
+      const subscription = await this.service.createSubscription()
+      const success = await this.service.saveSubscription(subscription)
       if (success) {
         this.hideElement("push-subscribe-btn")
         this.showElement("push-unsubscribe-btn")
-      } else {
       }
 
     } catch (error) {
@@ -74,7 +68,6 @@ export default class extends Controller {
   }
 
   async unsubscribe() {
-    // ローディングアニメーション
     const btn = this.hasUnsubscribeBtnTarget ? this.unsubscribeBtnTarget : null
     const originalText = btn?.textContent
     if (btn) {
@@ -83,21 +76,19 @@ export default class extends Controller {
     }
 
     try {
-      const registration = await navigator.serviceWorker.ready
-      const subscription = await registration.pushManager.getSubscription()
+      const subscription = await this.service.getSubscription()
 
       if (!subscription) {
         return
       }
 
-      const success = await this.deleteSubscription(subscription);
+      const success = await this.service.deleteSubscription(subscription)
       if (!success) {
-        return;
+        return
       }
 
-      await subscription.unsubscribe();
+      await subscription.unsubscribe()
 
-      // 通知設定ページでボタンを切り替える
       this.hideElement("push-unsubscribe-btn")
       this.showElement("push-subscribe-btn")
 
@@ -111,62 +102,18 @@ export default class extends Controller {
     }
   }
 
-  async saveSubscription(subscription) {
-    const { endpoint, keys } = subscription.toJSON();
-
-    const response = await fetch("/web_push_subscriptions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
-      },
-      body: JSON.stringify({
-        endpoint,
-        p256dh: keys.p256dh,
-        auth:   keys.auth
-      })
-    });
-
-    return response.ok;
-  }
-
-  async deleteSubscription(subscription) {
-    const response = await fetch("/web_push_subscriptions", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
-      },
-      body: JSON.stringify({ endpoint: subscription.endpoint })
-    });
-
-    return response.ok;
-  }
-
   closeModal() {
     const modal = document.getElementById("push-notification-modal")
     if (modal) modal.remove()
   }
 
-  // 要素が存在する場合のみ hidden クラスを外す
   showElement(id) {
     const element = document.getElementById(id)
     if (element) element.classList.remove("hidden")
   }
 
-  // 要素が存在する場合のみ hidden クラスを追加する
   hideElement(id) {
     const element = document.getElementById(id)
     if (element) element.classList.add("hidden")
-  }
-
-  urlBase64ToUint8Array(base64String) {
-    // Base64 を atob() が読めるように変換
-    const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
-
-    // Base64文字列をバイト値の配列（Uint8Array）に変換
-    const rawData = window.atob(base64);
-    return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
   }
 }
