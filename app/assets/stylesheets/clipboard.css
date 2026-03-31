@@ -1,0 +1,18 @@
+/* app/assets/stylesheets/clipboard.css */
+
+/* 定型文一覧のクリップボードにコピーするボタン用 */
+.clipboard-success {
+  @apply text-emerald-600 bg-emerald-50;
+
+  @variant dark {
+    @apply text-emerald-400 bg-emerald-900/30;
+  }
+}
+
+.clipboard-error {
+  @apply text-red-500 bg-red-50;
+
+  @variant dark {
+    @apply text-red-400 bg-red-950/50;
+  }
+}
