@@ -2,6 +2,8 @@
 import { Controller } from "@hotwired/stimulus"
 import { PushSubscriptionService } from "../api/push_subscription"
 
+// 購読情報の作成・削除ボタン用の処理と、
+// 購読情報の作成を促すモーダルの表示の処理
 export default class extends Controller {
   static values = {
     vapidPublicKey: String
