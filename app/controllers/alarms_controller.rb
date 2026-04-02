@@ -9,6 +9,7 @@ class AlarmsController < ApplicationController
   #=================================================
   def index
     @memberships = current_user.alarm_memberships
+                              .not_stopped_by(current_user)
                               .joins(:alarm)
                               .merge(Alarm.unsent.future.not_stopped)
                               .includes(
