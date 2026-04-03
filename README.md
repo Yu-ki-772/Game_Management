@@ -71,7 +71,7 @@ https://game-exit.com/
 | --- | --- |
 | バックエンド | Ruby on Rails |
 | フロントエンド | Hotwire（Turbo / Stimulus） / Tailwind CSS v4 |
-| データベース | PostgreSQL（Aiven） |
+| データベース | PostgreSQL（Supabase） |
 | 画像関連 | Cloudinary / Active Storage / libvips |
 | バックグラウンドジョブ | Good Job |
 | カレンダー | simple_calendar |
@@ -86,9 +86,9 @@ https://game-exit.com/
 
 ## 技術選定理由
 
-**Aiven（PostgreSQL）**
+**Supabase（PostgreSQL）**
 
-Renderの無料PostgreSQLは30日で失効し、Neonは稼働時間に制限があるためバックグラウンドジョブのポーリングと相性が悪い。Aivenは無料枠に稼働時間の制限がなく、Database URLを環境変数に設定するだけで動作するシンプルさが決め手。
+Renderの無料PostgreSQLは30日で失効し、Neonは稼働時間に制限があるためバックグラウンドジョブのポーリングと相性が悪い。Aivenは稼働時間の制限がなくシンプルに使えるが、RenderのWebサーバーが置かれているシンガポールリージョンに対応していない。アプリとDBのリージョンを一致させてネットワーク遅延を抑えるため、シンガポールリージョンを持つSupabaseを採用。
 → [詳細記事](https://qiita.com/Shiro_yy/items/58f055639796f92d1d6f)
 
 **Render**
