@@ -29,7 +29,7 @@ class AlarmLogsController < ApplicationController
     base = AlarmLog.where(user_uuid: current_user.uuid)
 
     @pagy, @alarm_logs = pagy(
-      base.includes(alarm: :creator).order(stopped_at: :desc),
+      base.order(stopped_at: :desc),
       limit: 20
     )
     @total_count = base.count
