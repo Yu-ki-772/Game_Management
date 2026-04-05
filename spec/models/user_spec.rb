@@ -192,6 +192,24 @@ RSpec.describe User, type: :model do
     end
   end
 
+  # ============================================================
+  # スコープ
+  # ============================================================
+  describe "scopes" do
+    describe ".non_admin" do
+      let!(:normal_user) { create(:user) }
+      let!(:admin_user)  { create(:user, :admin) }
+
+      it "管理者ユーザーを含まない" do
+        expect(User.non_admin).not_to include(admin_user)
+      end
+
+      it "一般ユーザーを含む" do
+        expect(User.non_admin).to include(normal_user)
+      end
+    end
+  end
+
 
   # ============================================================
   # インスタンスメソッド

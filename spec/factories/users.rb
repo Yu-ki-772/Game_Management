@@ -11,5 +11,10 @@ FactoryBot.define do
       uid      { SecureRandom.uuid }
       provider { "google_oauth2" }
     end
+
+    # 管理者ユーザーを作りたい場合はこのtraitを使う
+    trait :admin do
+      admin { true }
+    end
   end
 end
