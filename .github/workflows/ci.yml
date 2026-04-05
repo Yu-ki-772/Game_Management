@@ -76,13 +76,13 @@ jobs:
           bundler-cache: true
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version-file: '.node-version'
+          node-version: '20'
           cache: 'yarn'
 
       - name: Install JavaScript dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Build JavaScript and CSS
         run: yarn build && yarn build:css
