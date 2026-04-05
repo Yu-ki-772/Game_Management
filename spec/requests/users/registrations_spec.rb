@@ -2,7 +2,6 @@
 require "rails_helper"
 
 RSpec.describe "Users::Registrations", type: :request do
-
   describe "POST /users" do
     context "有効なパラメータのとき" do
       let(:registration_params) do
