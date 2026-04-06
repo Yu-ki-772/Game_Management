@@ -223,7 +223,7 @@ RSpec.describe "Alarms", type: :request do
     context "メンバーシップが存在しないとき" do
       let(:alarm) do
         alarm = create(:alarm, creator: user, user_uuid: user.uuid, scheduled_at: 30.minutes.from_now)
-        
+
         alarm.alarm_memberships.destroy_all
         alarm
       end
