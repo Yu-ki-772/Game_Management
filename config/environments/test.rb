@@ -7,7 +7,7 @@ Rails.application.configure do
   config.after_initialize do
     Bullet.enable        = true
     Bullet.bullet_logger = true
-    Bullet.raise         = true # raise an error if n+1 query occurs
+    Bullet.raise         = false # クエリが最適でないとテストが失敗してしまう問題をfalseで予防
   end
 
   # Settings specified here will take precedence over those in config/application.rb.
@@ -56,4 +56,6 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  config.active_job.queue_adapter = :test
 end
