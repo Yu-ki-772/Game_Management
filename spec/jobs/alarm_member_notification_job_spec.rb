@@ -99,7 +99,5 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
       expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now(alarm.uuid, user.uuid)
     end
-
-
   end
 end
