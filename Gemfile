@@ -79,7 +79,7 @@ gem "meta-tags", "~> 2.23"
 
 gem "chartkick", "~> 5.2", ">= 5.2.1" # グラフ用
 
-gem "groupdate", "~> 6.7"
+gem "groupdate", "~> 6.8"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
