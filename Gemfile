@@ -57,7 +57,7 @@ gem "omniauth-google-oauth2", "~> 1.2"
 gem "omniauth-rails_csrf_protection", "~> 2.0", ">= 2.0.1"
 
 # メール送信サービス
-gem "resend", "~> 1.0"
+gem "resend", "~> 1.1"
 
 # バックグラウンドジョブの実装用
 gem "good_job", "~> 4.13"
