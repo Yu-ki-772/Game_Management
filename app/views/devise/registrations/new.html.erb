@@ -98,6 +98,7 @@
                         focus:border-gray-400 dark:focus:border-gray-600
                         transition-colors" %>
           </div>
+          <!-- パスワードの字数制約を表示 -->
           <% if @minimum_password_length %>
             <p class="text-sm text-gray-500 dark:text-gray-500 mt-1 ml-1 flex items-center gap-1">
               <%= @minimum_password_length %> 文字以上

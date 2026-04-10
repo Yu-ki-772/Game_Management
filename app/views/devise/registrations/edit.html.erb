@@ -1,9 +1,8 @@
 <%# app/views/devise/registrations/edit.html.erb %>
-<%# 他画面と同じレイアウト構造に統一（min-h-screen の全面塗りつぶしをやめる） %>
 <div class="max-w-7xl mx-auto px-4 py-8">
   <div class="max-w-md">
 
-    <%# 戻るリンク：ホバーはグレー系に %>
+    <%# 戻るリンク %>
     <%= link_to user_path(current_user),
           class: "inline-flex items-center gap-1 text-sm
                   text-gray-400 dark:text-gray-500
@@ -15,14 +14,14 @@
       プロフィールに戻る
     <% end %>
 
-    <%# セクション区切り：show.html.erb と同じ構造 %>
+    <%# ページヘッダ %>
     <div class="pb-5 border-b border-gray-200 dark:border-gray-800 mb-8">
       <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
         プロフィール編集
       </h1>
     </div>
 
-    <%# カード：shadow-sm 削除、bg・border をトークンに合わせる %>
+    <%# 編集フォーム %>
     <div class="bg-white dark:bg-gray-900 rounded-xl
                 border border-gray-200 dark:border-gray-800 p-8">
 
@@ -37,7 +36,7 @@
                 class: "rounded-full w-20 h-20 object-cover
                         border border-gray-200 dark:border-gray-800" %>
           <% else %>
-            <%# ヘッダーと統一（頭+肩パス、stroke-width="2"） %>
+            <%# アbたー画像未設定時のデフォルトアイコン（ヘッダーと統一） %>
             <div class="w-20 h-20 rounded-full
                         bg-gray-50 dark:bg-gray-800
                         border border-gray-200 dark:border-gray-800
@@ -56,7 +55,6 @@
           <div class="w-full">
             <%= f.label :avatar, "アバター画像",
                 class: "block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2" %>
-            <%# ファイル選択欄もトークンに合わせる %>
             <div class="rounded-md border border-gray-200 dark:border-gray-800
                         bg-gray-50 dark:bg-gray-800 p-1">
               <%= f.file_field :avatar,
