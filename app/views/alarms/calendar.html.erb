@@ -12,6 +12,7 @@
     </p>
   </div>
 
+  <%# カレンダーの月移動をページ全体のリロードなしで行うための turbo_frame_tag %>
   <%= turbo_frame_tag "calendar" do %>
     <%= month_calendar(
           events: @alarms,
@@ -20,22 +21,18 @@
           params: { controller: 'alarms', action: 'calendar' }
         ) do |date, alarms_on_date| %>
 
+      <%# 1日の枠内に表示するアラームの数を制限して表示 %>
       <div class="flex flex-col gap-0.5 flex-1 overflow-hidden">
         <% visible_alarms = alarms_on_date.first(3) %>
         <% remaining_count = alarms_on_date.size - 3 %>
 
         <% visible_alarms.each do |alarm| %>
-          <%#
-            色分けなし・リンクなし・cursor 指定なし。
-            閲覧専用画面として情報だけを提示する。
-            スタイルはアラーム一覧の日付ブロックと同じグレー系に統一。
-          %>
           <div class="rounded-sm border-l-2 overflow-hidden
                       bg-gray-50 dark:bg-gray-900
                       border-gray-300 dark:border-gray-700
                       p-0.5 sm:p-1.5">
 
-            <%# スマホ：縦棒で時刻範囲を表現 %>
+            <%# スマホ：縦棒を使って「開始~終了」の時刻範囲を表現 %>
             <div class="sm:hidden flex flex-col items-start">
               <% if alarm.started_at.present? %>
                 <span class="text-sm tabular-nums leading-tight
@@ -50,7 +47,7 @@
               </span>
             </div>
 
-            <%# デスクトップ：時刻（time_text）＋人数 %>
+            <%# デスクトップ：時刻範囲と参加人数を表示 %>
             <div class="hidden sm:block">
               <div class="flex items-center gap-1 text-base
                           text-gray-900 dark:text-white">
@@ -75,6 +72,7 @@
           </div>
         <% end %>
 
+        <%# 溢れたアラームの件数を表示 %>
         <% if remaining_count > 0 %>
           <div class="text-[9px] sm:text-sm text-gray-400 dark:text-gray-500
                       text-center py-0.5 font-normal tabular-nums">

@@ -18,7 +18,7 @@
               rounded-xl
               border border-gray-200 dark:border-gray-800">
 
-    <%# ステータスバー：通知済み → 時間超過 → 待機中 の順で評価 %>
+    <%# ステータスバー：時間超過 or 待機中 %>
     <% if expired %>
       <div class="flex items-center justify-center gap-1.5
                   text-base font-semibold text-center py-2 tracking-wide rounded-t-xl
@@ -52,7 +52,7 @@
                 <%= expired ? 'bg-red-50/40 dark:bg-red-950/20' : '' %>
                 rounded-b-xl transition-colors duration-100">
 
-      <%# 日時・ラベル：expired を渡して時刻テキストの色を連動させる %>
+      <%# 日時・ラベル：expired を渡して時刻テキストの色をステータスバーに連動させる %>
       <div>
         <%= render "alarm_memberships/alarm_detail", alarm: @alarm, expired: expired %>
       </div>
@@ -111,7 +111,7 @@
         <% end %>
       <% end %>
 
-      <%# 作成者向け操作ボタン %>
+      <%# 作成者のみに表示される操作ボタン %>
       <% if @alarm.created_by?(current_user) %>
         <div class="flex items-center justify-end gap-2 pt-2
                     border-t border-gray-100 dark:border-gray-800">
@@ -180,6 +180,7 @@
             </div>
           </li>
 
+          <!-- 表示するメンバー  -->
           <% @display_members.each do |member| %>
             <li class="flex items-center gap-3">
               <% if member.avatar.attached? %>
@@ -211,6 +212,7 @@
             </li>
           <% end %>
 
+          <!-- 残りのメンバーの数  -->
           <% if @hidden_count > 0 %>
             <li class="text-sm text-gray-600 dark:text-gray-500 pl-1">
               他 <%= @hidden_count %> 人

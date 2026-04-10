@@ -9,10 +9,7 @@
        class="absolute inset-0 bg-black/40 dark:bg-black/60"></div>
 
   <%#
-    モーダル本体。
-    bg-gray-800 → bg-gray-950 に修正（確定トークン）。
-    shadow は floating 要素として例外的に維持。
-    border を追加してトークンに揃える。
+    モーダル本体
   %>
   <div class="relative
               bg-white dark:bg-gray-950
@@ -20,7 +17,7 @@
               rounded-xl shadow-lg shadow-black/10 dark:shadow-black/40
               p-6 w-11/12 max-w-sm mx-4">
 
-    <%# 閉じるボタン %>
+    <%# モーダルを閉じるボタン %>
     <button data-action="click->stop_modal#close"
             title="閉じる"
             class="absolute top-4 right-4
@@ -35,15 +32,15 @@
       </svg>
     </button>
 
-    <%# タイトル：tracking-tight を付けて他のページタイトルと統一 %>
+    
     <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
       アラームをストップしました
     </h2>
 
     <%#
-      時間に応じたメッセージ。
+      目標の超過時間に応じたメッセージ。
       エメラルド：「早め離脱＝完了・成功」→ 維持（意味のある色）。
-      アンバー：色体系から除外済み → gray に変更してメッセージで温度感を表現。
+      グレー： 「少し遅れた場合」
       赤：「遅れ＝緊急・問題」→ 維持（意味のある色）。
     %>
     <% if alarm_log.minutes_to_stop < 0 %>
@@ -52,10 +49,6 @@
         🎉 早めに離脱できたね！おめでとう！
       </p>
     <% elsif alarm_log.minutes_to_stop.between?(1, 60) %>
-      <%#
-        アンバーを廃止。グレーでニュートラルに表現し、
-        絵文字と文言で「少し遅れ」の温度感を伝える。
-      %>
       <p class="text-base font-medium mb-5
                 text-gray-500 dark:text-gray-400">
         ⏰ 少し遅くなっちゃったね。次は早めに離脱しよう！
@@ -69,11 +62,6 @@
       <div class="mb-5"></div>
     <% end %>
 
-    <%#
-      記録内容カード。
-      bg-gray-700 → bg-gray-900 に修正（確定トークン）。
-      border を追加。
-    %>
     <div class="bg-gray-50 dark:bg-gray-900
                 border border-gray-200 dark:border-gray-800
                 rounded-xl px-4 py-4 mb-5">
@@ -98,8 +86,6 @@
 
     <%#
       X シェアボタン。
-      独自のダークグレーパターン → プライマリボタンの反転パターンに統一。
-      （bg-gray-900 dark:bg-white / text-white dark:text-gray-900）
     %>
     <%= link_to x_share_url_for_alarm_log(alarm_log),
         target: "_blank",

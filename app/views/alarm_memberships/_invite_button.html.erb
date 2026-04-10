@@ -3,8 +3,6 @@
   <% if membership %>
     <%#
       招待済みの場合：ブルーで表示し、hover 時に赤へ変化させる。
-      「招待済み → 解除」という状態変化を色のグラデーションで表現することで、
-      ユーザーが「今何が起きているか / 押したら何が起きるか」を直感的に理解できる。
     %>
     <%= button_to "招待済み",
           alarm_alarm_membership_path(alarm, membership),

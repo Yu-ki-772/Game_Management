@@ -11,6 +11,7 @@
     招待
   </button>
 
+  <!-- stimulusコントローラを使用 -->
   <div data-dropdown-target="menu"
        class="hidden absolute right-0 z-50
               w-72 max-w-[calc(100vw-2rem)]
@@ -40,6 +41,7 @@
                          name: "q[name_cont]" %>
     <% end %>
 
+    <!-- 検索結果(_search_results.html.erb)を差し込むためのturbo_frame_tag -->
     <%= turbo_frame_tag "alarm_membership_search_#{alarm.uuid}" do %>
     <% end %>
 

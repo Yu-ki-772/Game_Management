@@ -1,7 +1,9 @@
 <%# app/views/alarm_memberships/_search_results.html.erb %>
+
+<!-- invite_dropdown.html.erbに差し込むためのturbo_frame_tag -->
 <%= turbo_frame_tag "alarm_membership_search_#{alarm.uuid}" do %>
   <% if users.any? %>
-    <%# max-h + overflow-y-auto でスクロール可能なコンテナにするだけ %>
+    <%# max-h + overflow-y-auto でスクロール可能なコンテナにする %>
     <div class="max-h-56 overflow-y-auto">
       <ul class="divide-y divide-gray-100 dark:divide-gray-700">
         <% users.each do |user| %>

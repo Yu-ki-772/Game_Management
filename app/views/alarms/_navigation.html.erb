@@ -1,9 +1,6 @@
 <%# app/views/alarms/_navigation.html.erb %>
 <%#
-  アクティブ状態のピルを bg-emerald-500 から bg-gray-900 dark:bg-white に変更。
-  エメラルドは「アクションを起こすボタン」の色として温存し、
-  「現在地を示すインジケーター」には使わないことで、
-  「エメラルド = 何かが起きる」という色の意味論を一貫させる。
+  ナビゲーションバー
 %>
 <nav class="mb-4 sm:mb-6
             bg-white dark:bg-gray-950
@@ -62,6 +59,7 @@
     <span>未ストップ</span>
 
     <% if @stoppable_alarms_count&.positive? %>
+      <!-- 未ストップのアラームの数のバッチ -->
       <span class="inline-flex items-center justify-center
                   w-4 h-4 text-[10px] font-bold
                   text-white bg-red-500 rounded-full">
