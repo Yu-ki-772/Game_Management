@@ -76,6 +76,7 @@
                 </span>
               <% end %>
 
+              <!-- 表示するメンバー -->
               <% alarm_display_members(alarm).each do |member| %>
                 <% if member.avatar.attached? %>
                   <%= image_tag member.avatar,
@@ -95,6 +96,7 @@
                 <% end %>
               <% end %>
 
+              <!-- 残りの（表示しない）メンバーの数 -->
               <% if alarm_hidden_members_count(alarm) > 0 %>
                 <span class="w-5 h-5 rounded-full
                              bg-gray-100 dark:bg-gray-800
@@ -106,6 +108,7 @@
               <% end %>
             </div>
 
+            <!-- アラーム作成者 -->
             <span class="text-sm text-gray-500 dark:text-gray-600 truncate">
               <%= truncate(alarm.creator.name, length: 11, omission: "...") %>
             </span>

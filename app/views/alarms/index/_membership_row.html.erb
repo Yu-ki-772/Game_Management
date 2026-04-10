@@ -16,7 +16,6 @@
 
     <div class="flex items-center gap-4 flex-1 min-w-0">
 
-      <%# 日付spanを削除したので、時刻だけになりpaddingを py-2 → py-2.5 に調整 %>
       <div class="flex flex-col items-center justify-center gap-1 shrink-0
                   bg-gray-50 dark:bg-gray-900
                   border border-gray-200 dark:border-gray-800
@@ -34,17 +33,19 @@
           <% end %>
         </span>
 
-        <%# 日付・曜日のspanを削除 %>
 
       </div>
 
       <div class="flex-1 min-w-0 flex flex-col gap-1.5">
 
+        <!-- ラベルの表示 -->
         <span class="text-lg font-semibold text-gray-900 dark:text-white truncate">
           <%= truncate(alarm.label, length: 14) %>
         </span>
 
+        
         <% if alarm.reminder_minutes.present? %>
+          <!-- リマインダー設定の表示 -->
           <span class="inline-flex items-center gap-1 w-fit text-xs
                        text-emerald-600 dark:text-emerald-400
                        bg-emerald-50 dark:bg-emerald-900/20

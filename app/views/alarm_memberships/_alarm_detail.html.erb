@@ -1,9 +1,6 @@
 <%# app/views/alarm_memberships/_alarm_detail.html.erb %>
 <%#
   show.html.erb から expired を locals で受け取る。
-  update.turbo_stream.erb など他の場所から呼ばれる場合は
-  expired: false をデフォルトとして扱う。
-  expired が true のとき時刻テキストを赤系にして pending 画面と統一する。
 %>
 <% expired = local_assigns.fetch(:expired, false) %>
 
