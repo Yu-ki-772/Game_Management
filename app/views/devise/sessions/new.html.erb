@@ -18,6 +18,11 @@
 
       <%# Google OAuth ボタン %>
       <div class="mb-6 flex justify-center">
+        <%# 
+          data: { turbo: false } をいれた理由:
+          外部ドメイン(Google)へのリダイレクトを伴うため、
+          Turboによる非同期リクエストを無効化し、確実に遷移させる必要がある。
+        %>
         <%= button_to user_google_oauth2_omniauth_authorize_path,
             method: :post,
             data: { turbo: false },
@@ -27,7 +32,7 @@
         <% end %>
       </div>
 
-      <%# 区切り線 %>
+      <%# googleログインと通常ログインを区切る線 %>
       <div class="relative mb-6">
         <div class="absolute inset-0 flex items-center">
           <div class="w-full border-t border-gray-300 dark:border-gray-800"></div>

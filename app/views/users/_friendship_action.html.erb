@@ -1,6 +1,8 @@
 <%# app/views/users/_friendship_action.html.erb %>
 
-<%# ケース1: 相手から申請が来ている → 承認アクション（プライマリ） %>
+<!-- ユーザ間のfriendshipの関係性に応じたボタンorバッジを表示 -->
+
+<%# ケース1: 相手から申請が来ている → 承認ボタン %>
 <% if pending_request_from_user.present? %>
   <%= button_to friendship_path(pending_request_from_user),
       method: :patch,
@@ -15,7 +17,7 @@
     申請を承認
   <% end %>
 
-<%# ケース2: 関係なし → 申請ボタン（セカンダリ） %>
+<%# ケース2: 関係なし → 申請ボタン %>
 <% elsif existing_friendship.nil? %>
   <%= button_to friendships_path,
       method: :post,
@@ -31,7 +33,7 @@
     フレンド申請
   <% end %>
 
-<%# ケース3: 承認済み → 状態バッジ（エメラルドは状態表示として意味論的に正当） %>
+<%# ケース3: 承認済み（フレンド状態） → 状態バッジ %>
 <% elsif existing_friendship.accepted? %>
   <span class="px-3 py-1.5
                bg-emerald-50 dark:bg-emerald-950/40
@@ -41,7 +43,7 @@
     フレンドです
   </span>
 
-<%# ケース4: 自分から申請済み → 状態バッジ（中立グレー） %>
+<%# ケース4: 自分から申請済み → 状態バッジ %>
 <% elsif existing_friendship.user_uuid == current_user.uuid %>
   <span class="px-3 py-1.5
                bg-gray-50 dark:bg-gray-900
