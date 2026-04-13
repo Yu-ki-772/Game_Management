@@ -12,4 +12,5 @@
 <%# フラッシュメッセージ表示 %>
 <%= render_turbo_stream_flash_messages %>
 
+<%# ダイアログ（更新フォーム）をupdateで空にすることで閉じる %>
 <%= turbo_stream.update "dialog" %>

@@ -1,4 +1,5 @@
 <%# app/views/message_templates/_unbookmark_button.html.erb %>
+<!-- turbo_streamで更新するためにidを設定 -->
 <div id="bookmark_button_<%= message_template.id %>">
   <%= button_to bookmark_path(bookmark),
       method: :delete,

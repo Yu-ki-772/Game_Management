@@ -17,5 +17,8 @@
       empty_description: "検索条件を変更してお試しください" %>
 <% end %>
 
+<!-- フラッシュメッセージの表示 -->
 <%= render_turbo_stream_flash_messages %>
+
+<%# ダイアログ（作成フォーム）をupdateで空にすることで閉じる %>
 <%= turbo_stream.update "dialog" %>
