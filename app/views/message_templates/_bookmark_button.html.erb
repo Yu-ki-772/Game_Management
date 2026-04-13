@@ -1,4 +1,5 @@
 <%# app/views/message_templates/_bookmark_button.html.erb %>
+<!-- turbo_streamでajax更新するためにidを設定 -->
 <div id="bookmark_button_<%= message_template.id %>">
   <%= button_to bookmarks_path(message_template_id: message_template.id),
       method: :post,
