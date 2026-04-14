@@ -1,4 +1,5 @@
 <%# app/views/shared/_pwa_install_prompt.html.erb %>
+<!-- pwaのインストールを促すモーダル -->
 <div id="pwa-install-modal"
      data-controller="pwa-install"
      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 dark:bg-black/50">
@@ -48,7 +49,6 @@
       </p>
     </div>
 
-    <%# セカンダリ：ボーダーで区切るパターン %>
     <button data-action="click->pwa-install#close"
             class="w-full px-4 py-2 rounded-md
                    text-sm font-medium
