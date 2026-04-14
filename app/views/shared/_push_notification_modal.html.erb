@@ -1,4 +1,5 @@
 <%# app/views/shared/_push_notification_modal.html.erb %>
+<!-- ブラウザ通知の許可を促すモーダル -->
 <div id="push-notification-modal"
      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 dark:bg-black/50">
 
@@ -19,8 +20,7 @@
          data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>"
          class="space-y-2">
 
-      <%# id が必要な理由：subscribe() 完了後に hideElement("push-subscribe-btn") が
-          このIDで要素を探して非表示にするため。idがないと購読後もボタンが残り続ける。 %>
+      <%# dom操作用にidを設定 %>
       <button id="push-subscribe-btn"
               data-push-notification-target="subscribeBtn"
               data-action="click->push-notification#subscribe"
@@ -33,7 +33,6 @@
         通知をオンにする
       </button>
 
-      <%# 赤は「緊急・エラー」として意味論的に正当 %>
       <p id="push-not-supported"
          class="hidden text-sm text-red-500 dark:text-red-400 leading-relaxed">
         現在の環境ではプッシュ通知を有効にできません。iOSでプッシュ通知を有効にしたい場合は、このアプリをホーム画面に追加してください。

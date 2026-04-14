@@ -1,13 +1,7 @@
 <%# app/views/shared/_footer.html.erb %>
-<%#
-  Vercel 風の変更点：
-  - bg-gray-800 → bg-black
-  - shadow を削除してボーダーのみで区切る
-  - アクティブ状態をエメラルドで統一（ブランドカラーを節制して使う）
-  - ドロップダウンも黒系で統一
-%>
 
 <% if user_signed_in? %>
+  <!-- ログイン時フッタ（各メニューにアクティブリンクを設定済み） -->
   <footer class="bg-white dark:bg-black
                  border-t border-gray-200 dark:border-gray-800
                  sticky bottom-0 z-50
