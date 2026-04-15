@@ -1,5 +1,4 @@
 class AlarmLogsController < ApplicationController
-
   # 統計画面
   def index
     base = AlarmLog.where(user_uuid: current_user.uuid)

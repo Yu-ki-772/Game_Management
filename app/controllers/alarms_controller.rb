@@ -125,7 +125,7 @@ class AlarmsController < ApplicationController
       return
     end
 
-    # alarm_logデータの作成 
+    # alarm_logデータの作成
     alarm_log = membership.stop
 
     if alarm_log
