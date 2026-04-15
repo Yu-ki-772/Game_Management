@@ -27,6 +27,7 @@ class AlarmsController < ApplicationController
     load_calendar_data
   end
 
+  # 未ストップ（でかつストップ可能な）アラームの表示
   def pending
     @alarm_memberships = pending_alarm_memberships
   end
@@ -41,7 +42,7 @@ class AlarmsController < ApplicationController
 
     now = Time.current.change(sec: 0)
 
-    # デフォルトは1時間後
+    # アラームの設定時間のデフォルトは1時間後
     @alarm.scheduled_at = now + 1.hour
 
     # カレンダーから未来の日付が渡された場合は上書き
@@ -53,7 +54,7 @@ class AlarmsController < ApplicationController
       end
     end
 
-    # 作成画面に入ったときに、started_atがscheduled_atの1時間前にする
+    # 作成画面に入ったときに、started_atの初期値をscheduled_atの1時間前にするために取得
     @alarm.started_at = @alarm.scheduled_at - 1.hour
   end
 
@@ -66,7 +67,7 @@ class AlarmsController < ApplicationController
       # リストへのajaxでの追加のために作成直後の membership を取得する。
       @membership = @alarm.alarm_memberships.find_by(user: current_user)
 
-      # pending画面に追加すべきかの判定
+      # pending画面に追加すべきかの判定に使用
       @add_to_pending = current_user.alarm_memberships
                                       .not_stopped_by(current_user)
                                       .joins(:alarm)
@@ -124,6 +125,7 @@ class AlarmsController < ApplicationController
       return
     end
 
+    # alarm_logデータの作成
     alarm_log = membership.stop
 
     if alarm_log
@@ -152,14 +154,12 @@ class AlarmsController < ApplicationController
     @alarm = current_user.alarms.find(params[:id])
   end
 
+  # ストロングパラメータ
   def alarm_params
     params.require(:alarm).permit(:label, :scheduled_at, :started_at, :reminder_minutes)
   end
 
-  # pendingとhandle_stop_failureの両方で同じ招待アラームの取得処理が必要なため、
-  # メソッドとして切り出すことで重複を避ける。
-  # { alarm_uuid => membership } というHashを返すことで、
-  # ビュー側がalarm.uuidをキーにO(1)でmembershipを取得できる。
+  # 未ストップ（でかつストップ可能な）アラームの表示
   def pending_alarm_memberships
     current_user.alarm_memberships
                 .not_stopped_by(current_user)
@@ -193,6 +193,7 @@ class AlarmsController < ApplicationController
                         .sort_by(&:start_time)
   end
 
+  # アラームストップ時の処理
   def handle_stop_failure
     @alarms = current_user.alarms.not_stopped.near
                           .includes(
@@ -208,7 +209,7 @@ class AlarmsController < ApplicationController
     render "alarms/pending", status: :unprocessable_entity
   end
 
-  # インストール（ホーム画面に追加）用のプロンプトの表示
+  # pwaインストール（ホーム画面に追加）を促すモーダルを表示済みかどうかの確認
   def check_pwa_install_prompt
     return if current_user.pwa_install_prompted
 

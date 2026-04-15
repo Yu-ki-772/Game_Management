@@ -1,8 +1,11 @@
 class AlarmLogsController < ApplicationController
+  # 統計画面
   def index
     base = AlarmLog.where(user_uuid: current_user.uuid)
 
     all_minutes_to_stop = base.order(:stopped_at).pluck(:minutes_to_stop)
+
+    # minutes_to_stop（引き延ばし時間の平均）
     @average_minutes = all_minutes_to_stop.any? ? (all_minutes_to_stop.sum.to_f / all_minutes_to_stop.size).round : nil
 
     recent_minutes_to_stop = all_minutes_to_stop.last(7)
@@ -10,6 +13,7 @@ class AlarmLogsController < ApplicationController
       [ "#{i + 1}回目", min ]
     end
 
+    # 一緒にプレイしたメンバーごとのアラーム停止の平均時間
     @friend_stats = base
       .joins(alarm: { alarm_memberships: :user })
       .where.not(alarm_memberships: { user_uuid: current_user.uuid })
@@ -19,12 +23,14 @@ class AlarmLogsController < ApplicationController
       .sort_by { |_, value| value }.reverse
       .to_h
 
+    # 直近数日の、日別プレイ時間
     @play_duration_stats = base
       .where.not(play_duration: nil)
       .group_by_day(:stopped_at, time_zone: "Tokyo", format: "%-m月%-d日", last: 7)
       .sum(:play_duration)
   end
 
+  # 記録リスト画面
   def list
     base = AlarmLog.where(user_uuid: current_user.uuid)
 
@@ -32,6 +38,8 @@ class AlarmLogsController < ApplicationController
       base.order(stopped_at: :desc),
       limit: 20
     )
+
+    # 該当ユーザのアラームログの数
     @total_count = base.count
   end
 end
