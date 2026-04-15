@@ -2,7 +2,7 @@
 class AlarmMembershipsController < ApplicationController
   before_action :set_alarm
 
-  # GET /alarms/:alarm_id/alarm_memberships/search_users
+  # フレンドをアラームに招待するときの検索用
   def search_users
     @q = User.non_admin.excluding(current_user).ransack(search_params)
 
@@ -21,7 +21,6 @@ class AlarmMembershipsController < ApplicationController
           }
   end
 
-  # POST /alarms/:alarm_id/alarm_memberships
   def create
     @membership = @alarm.alarm_memberships.new(user_uuid: params[:user_id])
     @user = User.find_by(uuid: params[:user_id])
@@ -40,15 +39,14 @@ class AlarmMembershipsController < ApplicationController
 
   def show
     @membership = @alarm.alarm_memberships.find_by!(id: params[:id])
-    @creator    = @alarm.creator
-    @members    = @alarm.alarm_memberships.includes(:user).map(&:user)
+    @creator    = @alarm.creator # アラームの作成者
+    @members    = @alarm.alarm_memberships.includes(:user).map(&:user) # アラームの作成者以外のメンバー
 
     other_members  = @members.reject { |user| user == @creator }
     @display_members = other_members.first(19)
     @hidden_count    = other_members.size - @display_members.size
   end
 
-  # DELETE /alarms/:alarm_id/alarm_memberships/:id
   def destroy
     @membership = @alarm.alarm_memberships.find(params[:id])
     @user = @membership.user
@@ -66,7 +64,7 @@ class AlarmMembershipsController < ApplicationController
   # メンバーとしてアラームをストップする。（アラーム作成者のアラームとは分離している。）
   def stop
     @membership = @alarm.alarm_memberships.find_by!(user_uuid: current_user.uuid)
-    alarm_log = @membership.stop
+    alarm_log = @membership.stop # stop時にalarm_logを作成
 
     if alarm_log
 
@@ -84,7 +82,7 @@ class AlarmMembershipsController < ApplicationController
     raise ActiveRecord::RecordNotFound unless @alarm.accessible_by?(current_user)
   end
 
-  # 検索用
+  # アラームへのフレンド招待時の検索用
   def search_params
     return {} unless params[:q]
     params.require(:q).permit(:name_cont)
