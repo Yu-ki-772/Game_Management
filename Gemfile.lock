@@ -174,8 +174,8 @@ GEM
       fugit (>= 1.11.0)
       railties (>= 6.1.0)
       thor (>= 1.0.0)
-    groupdate (6.7.0)
-      activesupport (>= 7.1)
+    groupdate (6.8.0)
+      activesupport (>= 7.2)
     hashie (5.1.0)
       logger
     httparty (0.24.2)
@@ -242,7 +242,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (6.0.2)
+    minitest (6.0.3)
       drb (~> 2.0)
       prism (~> 1.5)
     msgpack (1.8.0)
@@ -557,7 +557,7 @@ DEPENDENCIES
   factory_bot_rails (~> 6.5, >= 6.5.1)
   faker (~> 3.6)
   good_job (~> 4.13)
-  groupdate (~> 6.7)
+  groupdate (~> 6.8)
   image_processing (~> 1.2)
   jbuilder
   jsbundling-rails
@@ -652,7 +652,7 @@ CHECKSUMS
   fugit (1.12.1) sha256=5898f478ede9b415f0804e42b8f3fd53f814bd85eebffceebdbc34e1107aaf68
   globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
   good_job (4.13.3) sha256=37478710dddd2630ed055f2159111ce6f7f14482d8ccb412142ee04674151e2e
-  groupdate (6.7.0) sha256=beaa8d5bf3856814681914a1d4a20e77436a2214b85d0017dc2ea5c355fb6777
+  groupdate (6.8.0) sha256=16f90ea18ca981c38e41e592416480b28353aa5e5cc3e7cb13a68b8fb5d40510
   hashie (5.1.0) sha256=c266471896f323c446ea8207f8ffac985d2718df0a0ba98651a3057096ca3870
   httparty (0.24.2) sha256=8fca6a54aa0c4aa4303a0fd33e5e2156175d6a5334f714263b458abd7fda9c38
   i18n (1.14.8) sha256=285778639134865c5e0f6269e0b818256017e8cde89993fdfcbfb64d088824a5
@@ -677,7 +677,7 @@ CHECKSUMS
   meta-tags (2.23.0) sha256=ffe78b5bee398de4ff5ac3316f5a786049538a651643b8476def06c3acc762c1
   mini_magick (5.3.1) sha256=29395dfd76badcabb6403ee5aff6f681e867074f8f28ce08d78661e9e4a351c4
   mini_mime (1.1.5) sha256=8681b7e2e4215f2a159f9400b5816d85e9d8c6c6b491e96a12797e798f8bccef
-  minitest (6.0.2) sha256=db6e57956f6ecc6134683b4c87467d6dd792323c7f0eea7b93f66bd284adbc3d
+  minitest (6.0.3) sha256=88ac8a1de36c00692420e7cb3cc11a0773bbcb126aee1c249f320160a7d11411
   msgpack (1.8.0) sha256=e64ce0212000d016809f5048b48eb3a65ffb169db22238fb4b72472fecb2d732
   multi_xml (0.8.1) sha256=addba0290bac34e9088bfe73dc4878530297a82a7bbd66cb44dcd0a4b86edf5a
   multipart-post (2.4.1) sha256=9872d03a8e552020ca096adadbf5e3cb1cd1cdd6acd3c161136b8a5737cdb4a8
