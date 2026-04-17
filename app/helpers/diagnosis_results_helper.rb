@@ -59,10 +59,10 @@ module DiagnosisResultsHelper
     base_url = "https://x.com/intent/tweet"
 
     zone_emoji = case result.zone
-                 when "green"  then "🟢"
-                 when "yellow" then "🟡"
-                 when "orange" then "🟠"
-                 end
+    when "green"  then "🟢"
+    when "yellow" then "🟡"
+    when "orange" then "🟠"
+    end
 
     app_url = ENV.fetch("APP_URL", "http://localhost:3000")
 

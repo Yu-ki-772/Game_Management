@@ -66,7 +66,7 @@ class DiagnosisResult < ApplicationRecord
       answer_value = answers[question[:key]].to_i
       acc[question[:axis]] += question[:reversed] ? answer_value : (6 - answer_value)
     end
-    axis_scores = raw_scores.to_h { |axis, score| [axis, (score.to_f / AXIS_MAX_SCORE[axis] * 25).round(1)] }
+    axis_scores = raw_scores.to_h { |axis, score| [ axis, (score.to_f / AXIS_MAX_SCORE[axis] * 25).round(1) ] }
     axis_scores.merge(total: axis_scores.values.sum.round(1))
   end
 end
