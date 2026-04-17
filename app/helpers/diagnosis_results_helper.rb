@@ -53,4 +53,23 @@ module DiagnosisResultsHelper
   def zone_text_class(result)   = ZONE_DATA[result.zone][:text]
   def zone_dot_class(result)    = ZONE_DATA[result.zone][:dot]
   def zone_bar_class(result)    = ZONE_DATA[result.zone][:bar]
+
+  # 診断結果シェア時のurl
+  def x_share_url_for_diagnosis(result)
+    base_url = "https://x.com/intent/tweet"
+
+    zone_emoji = case result.zone
+                 when "green"  then "🟢"
+                 when "yellow" then "🟡"
+                 when "orange" then "🟠"
+                 end
+
+    app_url = ENV.fetch("APP_URL", "http://localhost:3000")
+
+    share_data = {
+      text: "ゲーム時間管理度診断をやってみました！\n#{zone_emoji} #{result.total_score.round} / 100点\n#{app_url}\n#ゲーム #時間管理 #GameExit"
+    }
+
+    "#{base_url}?#{share_data.to_query}"
+  end
 end
