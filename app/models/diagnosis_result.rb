@@ -33,38 +33,31 @@ class DiagnosisResult < ApplicationRecord
   def orange? = zone == "orange"
   def red?    = zone == "red"
 
-
   # 軸ごとに表示するものを決める
   def axis_items
     [
-      { icon: "🎮", name: "コントロール感",   score: control_score.to_f    },
-      { icon: "🌿", name: "生活統合度",       score: life_score.to_f        },
-      { icon: "⭐", name: "プレイの質",       score: quality_score.to_f     },
-      { icon: "🎯", name: "自己認識の一致度", score: consistency_score.to_f }
+      { icon: "🎮", name: "やめる力",         score: control_score.to_f     },
+      { icon: "🌿", name: "生活への影響",     score: life_score.to_f         },
+      { icon: "⭐", name: "プレイの充実度",   score: quality_score.to_f      },
+      { icon: "🎯", name: "振り返り力",       score: consistency_score.to_f  }
     ]
   end
 
   private
 
-
-
-
-
-  # 質問ごとの軸や配転基準
+  # 質問ごとの軸や配点基準
   QUESTIONS = [
-    { key: "q1",  axis: :control,     reversed: false },
-    { key: "q2",  axis: :control,     reversed: true  },
-    { key: "q3",  axis: :life,        reversed: true  },
-    { key: "q4",  axis: :life,        reversed: true  },
-    { key: "q5",  axis: :life,        reversed: true  },
-    { key: "q6",  axis: :quality,     reversed: false },
-    { key: "q7",  axis: :quality,     reversed: true  },
-    { key: "q8",  axis: :quality,     reversed: true  },
-    { key: "q9",  axis: :consistency, reversed: false },
-    { key: "q10", axis: :consistency, reversed: true  }
+    { key: "q1", axis: :control,     reversed: false },
+    { key: "q2", axis: :life,        reversed: true  },
+    { key: "q3", axis: :life,        reversed: true  },
+    { key: "q4", axis: :life,        reversed: true },
+    { key: "q5", axis: :quality,     reversed: false },
+    { key: "q6", axis: :quality,     reversed: true  },
+    { key: "q7", axis: :consistency, reversed: false },
+    { key: "q8", axis: :consistency, reversed: false }
   ].freeze
 
-  AXIS_MAX_SCORE = { control: 10, life: 15, quality: 15, consistency: 10 }.freeze
+  AXIS_MAX_SCORE = { control: 5, life: 15, quality: 10, consistency: 10 }.freeze
 
   # スコアの算出
   def self.calculate_scores(answers)
@@ -73,7 +66,7 @@ class DiagnosisResult < ApplicationRecord
       answer_value = answers[question[:key]].to_i
       acc[question[:axis]] += question[:reversed] ? answer_value : (6 - answer_value)
     end
-    axis_scores = raw_scores.to_h { |axis, score| [ axis, (score.to_f / AXIS_MAX_SCORE[axis] * 25).round(1) ] }
+    axis_scores = raw_scores.to_h { |axis, score| [axis, (score.to_f / AXIS_MAX_SCORE[axis] * 25).round(1)] }
     axis_scores.merge(total: axis_scores.values.sum.round(1))
   end
 end
