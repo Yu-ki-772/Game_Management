@@ -15,7 +15,7 @@
       <% end %>
     </div>
 
-    <%# ── ページヘッダー：アラーム一覧と同じ構造 ── %>
+    <%# ── ページヘッダー ── %>
     <div class="pb-5 border-b border-gray-200 dark:border-gray-800">
       <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         診断結果
@@ -89,7 +89,23 @@
       </div>
     <% end %>
 
-    <%# ── ⑤ アクションボタン %>
+    <%# ── Xシェアボタン（診断結果がレッドゾーン以外の場合のみ表示）── %>
+    <% unless @result.red? %>
+      <%= link_to x_share_url_for_diagnosis(@result),
+            target: "_blank",
+            rel: "noopener noreferrer",
+            class: "flex items-center justify-center gap-2 w-full py-2.5
+                    bg-gray-900 dark:bg-white
+                    hover:bg-gray-700 dark:hover:bg-gray-200
+                    text-white dark:text-gray-900
+                    text-base font-normal rounded-xl transition-colors" do %>
+        <%= image_tag "x_logo_for_light.png", class: "h-4 hidden dark:block" %>
+        <%= image_tag "x_logo_for_dark.png",  class: "h-4 dark:hidden" %>
+        <span>でシェア</span>
+      <% end %>
+    <% end %>
+
+    <%# ── アクションボタン %>
     <div class="flex gap-2">
       <%= link_to new_diagnosis_result_path,
             class: "flex-1 px-3 py-2.5 text-sm font-medium rounded-md border

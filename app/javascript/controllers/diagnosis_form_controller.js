@@ -3,7 +3,8 @@
 
 import { Controller } from "@hotwired/stimulus"
 
-const TOTAL_QUESTIONS = 10
+// 質問の総数
+const TOTAL_QUESTIONS = 8
 
 export default class extends Controller {
   static targets = ["footerCounter", "bar", "submit"]
@@ -16,6 +17,7 @@ export default class extends Controller {
     this.updateProgress()
   }
 
+  // 質問回答の進捗バーのajax更新
   updateProgress() {
     const answered = this.element.querySelectorAll("input[type='radio']:checked").length
     const progressPercent = Math.round((answered / TOTAL_QUESTIONS) * 100)

@@ -19,13 +19,13 @@
       <% end %>
     </div>
 
-    <%# ── ページヘッダー：アラーム一覧と同じ構造 ── %>
+    <%# ── ページヘッダー ── %>
     <div class="pb-5 border-b border-gray-200 dark:border-gray-800">
       <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         ゲーム時間管理度診断
       </h1>
       <p class="text-base text-gray-600 dark:text-gray-500 mt-1">
-        全10問・2〜3分で完了します
+        全8問・1〜2分で完了します
       </p>
     </div>
 
@@ -45,52 +45,48 @@
                            border border-gray-200 dark:border-gray-700
                            px-2.5 py-1 rounded-full" %>
 
-    <%# 軸① コントロール感 %>
+    <%# 軸① やめる力 %>
     <div class="space-y-3">
       <div class="flex items-center gap-2 px-1">
-        <span class="<%= axis_badge_class %>">🎮 軸① コントロール感</span>
+        <span class="<%= axis_badge_class %>">🎮 軸① やめる力</span>
       </div>
       <%= render "question", qnum: "Q1", name: "answers[q1]",
-            text: "プレイをやめようと思ったとき、予定通りにやめられていますか？" %>
+            text: "プレイをやめようと決めたとき、実際にやめられることが多いですか？" %>
+    </div>
+
+    <%# 軸② 生活への影響 %>
+    <div class="space-y-3">
+      <div class="flex items-center gap-2 px-1">
+        <span class="<%= axis_badge_class %>">🌿 軸② 生活への影響</span>
+      </div>
       <%= render "question", qnum: "Q2", name: "answers[q2]",
-            text: "「あと少しだけ」と思って、プレイを延長してしまうことがありますか？" %>
-    </div>
-
-    <%# 軸② 生活統合度 %>
-    <div class="space-y-3">
-      <div class="flex items-center gap-2 px-1">
-        <span class="<%= axis_badge_class %>">🌿 軸② 生活統合度</span>
-      </div>
-      <%= render "question", qnum: "Q3", name: "answers[q3]",
             text: "ゲームが原因で、十分な睡眠が取れなかったと感じることがありますか？" %>
+      <%= render "question", qnum: "Q3", name: "answers[q3]",
+            text: "勉強・仕事・家事など、やるべきことへの支障が出ていると感じることがありますか？" %>
       <%= render "question", qnum: "Q4", name: "answers[q4]",
-            text: "勉強・仕事・家事など、日常のやるべきことに影響が出ていると感じることがありますか？" %>
+            text: "ゲーム中に、食事や休憩を後回しにしてしまうことがありますか？" %>
+    </div>
+
+    <%# 軸③ プレイの充実度 %>
+    <div class="space-y-3">
+      <div class="flex items-center gap-2 px-1">
+        <span class="<%= axis_badge_class %>">⭐ 軸③ プレイの充実度</span>
+      </div>
       <%= render "question", qnum: "Q5", name: "answers[q5]",
-            text: "大切な人（家族・友人など）と過ごす時間が、以前と比べて減ったと感じることがありますか？" %>
-    </div>
-
-    <%# 軸③ プレイの質 %>
-    <div class="space-y-3">
-      <div class="flex items-center gap-2 px-1">
-        <span class="<%= axis_badge_class %>">⭐ 軸③ プレイの質</span>
-      </div>
-      <%= render "question", qnum: "Q6", name: "answers[q6]",
             text: "ゲームを終えた後、満足感や達成感を感じることが多いですか？" %>
-      <%= render "question", qnum: "Q7", name: "answers[q7]",
+      <%= render "question", qnum: "Q6", name: "answers[q6]",
             text: "特にやりたいゲームがなくても、なんとなくゲームを起動することがありますか？" %>
-      <%= render "question", qnum: "Q8", name: "answers[q8]",
-            text: "気分が落ち込んでいるときやストレスを感じているとき、それを紛らわすことが主な目的でゲームを起動することがありますか？" %>
     </div>
 
-    <%# 軸④ 自己認識の一致度 %>
+    <%# 軸④ 振り返り力 %>
     <div class="space-y-3">
       <div class="flex items-center gap-2 px-1">
-        <span class="<%= axis_badge_class %>">🎯 軸④ 自己認識の一致度</span>
+        <span class="<%= axis_badge_class %>">🎯 軸④ 振り返り力</span>
       </div>
-      <%= render "question", qnum: "Q9", name: "answers[q9]",
-            text: "プレイを始める前に決めた時間通りに、ゲームを終えられることが多いですか？" %>
-      <%= render "question", qnum: "Q10", name: "answers[q10]",
-            text: "プレイ時間が、自分の想定より大幅に長くなることがありますか？" %>
+      <%= render "question", qnum: "Q7", name: "answers[q7]",
+            text: "自分がどのくらいの頻度・時間ゲームをしているか、おおよそ把握できていると思いますか？" %>
+      <%= render "question", qnum: "Q8", name: "answers[q8]",
+            text: "ゲームを終えた後、今日どのくらいプレイしたか意識することがありますか？" %>
     </div>
 
     <p class="text-center text-sm text-gray-600 dark:text-gray-600 leading-relaxed">
@@ -99,7 +95,7 @@
 
   <% end %>
 
-  <%# フッター：進捗バーと送信ボタンはそのまま維持 %>
+  <%# フッター %>
   <div class="shrink-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur
               border-t border-gray-200 dark:border-gray-800
               px-4 py-3">
@@ -114,7 +110,7 @@
         </div>
         <span data-diagnosis-form-target="footerCounter"
               class="text-base tabular-nums text-gray-600 dark:text-gray-500 shrink-0">
-          0 / 10
+          0 / 8
         </span>
       </div>
 

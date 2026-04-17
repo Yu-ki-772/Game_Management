@@ -144,11 +144,11 @@ RSpec.describe DiagnosisResult, type: :model do
     describe "#axis_items" do
       let(:result) do
         build(:diagnosis_result,
-          control_score:     15.0,
+          control_score:     25.0,
           life_score:        5.0,
-          quality_score:     11.7,
-          consistency_score: 15.0,
-          total_score:       46.7
+          quality_score:     15.0,
+          consistency_score: 25.0,
+          total_score:       70.0
         )
       end
 
@@ -165,13 +165,12 @@ RSpec.describe DiagnosisResult, type: :model do
       end
 
       it "control_score が Float として score に設定される" do
-        # to_f が呼ばれているため、整数で渡しても Float になるはず
         result = build(:diagnosis_result,
-          control_score:     15,
+          control_score:     25,
           life_score:        5.0,
-          quality_score:     11.7,
-          consistency_score: 15.0,
-          total_score:       46.7
+          quality_score:     15.0,
+          consistency_score: 25.0,
+          total_score:       70.0
         )
         expect(result.axis_items.first[:score]).to be_a(Float)
       end
@@ -183,17 +182,17 @@ RSpec.describe DiagnosisResult, type: :model do
   # ============================================================
   describe "class methods" do
     describe ".build_from_answers" do
-      # ↓ 計算結果
+      # ↓ 計算結果（全問に 1 と回答した場合）
       # reversed: false の問いは 6-1=5、reversed: true の問いは 1 になる。
-      # control:     q1(5) + q2(1)          = 6  → 6.0/10*25  = 15.0
-      # life:        q3(1) + q4(1) + q5(1)  = 3  → 3.0/15*25  = 5.0
-      # quality:     q6(5) + q7(1) + q8(1)  = 7  → 7.0/15*25  = 11.7
-      # consistency: q9(5) + q10(1)         = 6  → 6.0/10*25  = 15.0
-      # total:       15.0 + 5.0 + 11.7 + 15.0   = 46.7
+      # control:     q1(5)                        = 5  → 5.0/5*25   = 25.0
+      # life:        q2(1) + q3(1) + q4(1)        = 3  → 3.0/15*25  = 5.0
+      # quality:     q5(5) + q6(1)                = 6  → 6.0/10*25  = 15.0
+      # consistency: q7(5) + q8(5)                = 10 → 10.0/10*25 = 25.0
+      # total:       25.0 + 5.0 + 15.0 + 25.0    = 70.0
       let(:user) { build(:user) }
       # 全て１と回答
       let(:answers) do
-        (1..10).each_with_object({}) { |i, h| h["q#{i}"] = "1" }
+        (1..8).each_with_object({}) { |i, h| h["q#{i}"] = "1" }
       end
 
       it "DiagnosisResult のインスタンスを返す" do
@@ -208,7 +207,7 @@ RSpec.describe DiagnosisResult, type: :model do
 
       it "control_score が正しく計算される" do
         result = DiagnosisResult.build_from_answers(user, answers)
-        expect(result.control_score).to eq(15.0)
+        expect(result.control_score).to eq(25.0)
       end
 
       it "life_score が正しく計算される" do
@@ -218,17 +217,17 @@ RSpec.describe DiagnosisResult, type: :model do
 
       it "quality_score が正しく計算される" do
         result = DiagnosisResult.build_from_answers(user, answers)
-        expect(result.quality_score).to eq(11.7)
+        expect(result.quality_score).to eq(15.0)
       end
 
       it "consistency_score が正しく計算される" do
         result = DiagnosisResult.build_from_answers(user, answers)
-        expect(result.consistency_score).to eq(15.0)
+        expect(result.consistency_score).to eq(25.0)
       end
 
       it "total_score が正しく計算される" do
         result = DiagnosisResult.build_from_answers(user, answers)
-        expect(result.total_score).to eq(46.7)
+        expect(result.total_score).to eq(70.0)
       end
     end
   end
