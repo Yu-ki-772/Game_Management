@@ -3,7 +3,7 @@
 
 ゲーム仲間との共同プレイにも目を向けた「ゲーム時間管理アプリ」です。
 
-<img src="https://github.com/user-attachments/assets/d67a3ed5-1a6f-45f7-9eb2-cab4d6528da8" width="600">
+<img width="600" src="https://github.com/user-attachments/assets/01fb9d6f-0dfa-4afe-bd04-503bae5b2dce" />
 
 ---
 
