@@ -12,13 +12,13 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <%# ダークモードの画面ちらつき防止（CSS実行より前に、「.dark」クラスの有無を確定させる） %>
     <script>
-      (function() {
-        var saved = localStorage.getItem("theme");
-        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        var isDark = saved === "dark" || (saved !== "light" && prefersDark);
-        if (isDark) document.documentElement.classList.add("dark");
-      })();
+      const saved = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const isDark = saved === "dark" || (saved !== "light" && prefersDark);
+      if (isDark) document.documentElement.classList.add("dark");
     </script>
 
     <%= yield :head %>
