@@ -14,11 +14,11 @@ export default class extends Controller {
     const button = this.buttonTarget
 
     button.innerHTML = `
-      <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${svgPath}" />
       </svg>
     `
-    button.className = `shrink-0 p-2 rounded-md transition-colors duration-100 ${stateClass}`
+    button.className = `shrink-0 p-1 rounded-md transition-colors duration-100 ${stateClass}`
     button.disabled = true
 
     setTimeout(() => {
