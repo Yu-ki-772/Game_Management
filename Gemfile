@@ -98,7 +98,7 @@ group :development, :test do
 
   gem "rspec-rails", "~> 8.0"
   gem "factory_bot_rails", "~> 6.5", ">= 6.5.1"
-  gem "faker", "~> 3.6"
+  gem "faker", "~> 3.8"
 
   # N+1問題対策
   gem "bullet", "~> 8.1"
