@@ -11,7 +11,10 @@ class WebPushSubscriptionsController < ApplicationController
       record_timestamps: true
     )
 
-    head :ok
+    flash.now[:notice] = "通知をオンにしました"
+
+  rescue ActiveRecord::ActiveRecordError
+    flash.now[:alert] = "通知をオンにできませんでした"
   end
 
   def destroy
@@ -19,10 +22,13 @@ class WebPushSubscriptionsController < ApplicationController
                                 .find_by(endpoint: params[:endpoint])
 
     if subscription
-      subscription.destroy
-      head :ok
+      subscription.destroy!
+      flash.now[:notice] = "通知をオフにしました"
     else
-      head :not_found
+      flash.now[:alert] = "通知の設定をオフにできませんでした"
     end
+
+  rescue ActiveRecord::ActiveRecordError
+    flash.now[:alert] = "通知をオフにできませんでした"
   end
 end

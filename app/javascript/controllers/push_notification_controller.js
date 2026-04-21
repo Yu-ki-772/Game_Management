@@ -53,15 +53,15 @@ export default class extends Controller {
 
       const subscription = await this.service.createSubscription()
       const success = await this.service.saveSubscription(subscription)
+
       if (success) {
         this.hideElement("push-subscribe-btn")
         this.showElement("push-unsubscribe-btn")
+        this.closeModal()
       }
 
     } catch (error) {
-
     } finally {
-      this.closeModal()
       btn.disabled = false
       btn.textContent = originalText
     }

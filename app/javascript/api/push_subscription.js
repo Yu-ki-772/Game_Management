@@ -34,6 +34,10 @@ export class PushSubscriptionService {
       })
     })
 
+    // レスポンスボディをTurboに委譲
+    const html = await response.text()
+    Turbo.renderStreamMessage(html)
+
     return response.ok
   }
 
@@ -43,6 +47,10 @@ export class PushSubscriptionService {
       headers: csrfHeaders(),
       body: JSON.stringify({ endpoint: subscription.endpoint })
     })
+
+    // レスポンスボディをTurboに委譲
+    const html = await response.text()
+    Turbo.renderStreamMessage(html)  
 
     return response.ok
   }
