@@ -115,3 +115,63 @@ Google Calendar APIは外部カレンダーとの連携が不要な今回の要�
 
 pg_searchやkaminariは更新が滞っている。また、pg_searchは今回の要件にはオーバースペック。ransackとpagyはともに積極的にメンテナンスされており、シンプルな要件に過不足なくフィットしている。
 → [詳細記事](https://qiita.com/Shiro_yy/items/157b5bde85354ffc20dc)
+
+## ER図
+[<img src="https://github.com/user-attachments/assets/c22b262a-18c6-454d-a3b9-fa9dc164e3aa" />](https://drive.google.com/file/d/1peliZu3S-7Y-Ucdi7gNU5Jug4bT9Q32d/view?usp=sharing)
+
+テーブル構成は大きく分けて、**「ユーザー情報」** **「アラーム・記録」** **「定型文」** **「その他」**の4つに分類されます。
+
+### ユーザー情報に関するテーブル
+こちらでは、ユーザー名やメールアドレス、アイコン画像などの基本的な情報を `usersテーブル` で管理しています。また、ブラウザやデバイスごとのプッシュ通知の購読情報を `web_push_subscriptionsテーブル` で管理しており、`usersテーブル` と関連付けることで、ユーザーごとに複数デバイスへの通知を送れる設計にしています。
+
+### アラーム・記録に関するテーブル
+こちらでは、アラームの設定情報を管理する `alarmsテーブル` と `usersテーブル` を関連付けることで、ユーザーごとにアラームを作成・管理できるようにしました。
+
+また、アラームへの参加状況や通知の送信状態を管理する `alarm_membershipsテーブル` を作成し、`alarmsテーブル` と関連付けています。これにより、フレンドと共有したアラームに対して、参加者ごとの通知状態を個別に管理できます。
+
+さらに、アラームがストップされた際の記録を `alarm_logsテーブル` で管理しており、プレイ時間やストップまでの時間などの実績データをユーザごとに保存できる設計にしています。
+
+### 定型文に関するテーブル
+こちらでは、定型文を管理する `message_templatesテーブル`、定型文のブックマーク情報を保存する `bookmarksテーブル` を作成し、`usersテーブル` と関連付けています。
+
+### その他のテーブル
+まず、ユーザー間のフレンド関係を管理する `friendshipsテーブル` については、`statusカラム` を用いて申請中・承認済みの状態を管理できるようにしました。
+
+そして、ゲーム時間管理度診断の結果を記録する `diagnosis_resultsテーブル` を `usersテーブル` と関連付けることで、ユーザーごとに診断履歴を管理できる設計にしています（※診断履歴の確認機能は今後実装する予定）。
+
+## こだわった実装
+### ダークモードのちらつき防止
+ダークモードをJavaScriptファイルで実装すると、ページ読み込み時に
+一瞬ライトモードで表示される**ちらつきが発生**します。
+
+ブラウザはHTMLを上から順にパースするため、
+ファイルとして読み込むスクリプトの実行はレンダリングより後になります。
+そのためファイル側でテーマを切り替えても、最初の描画には間に合いません。
+
+**インラインスクリプトをCSSより前に配置**することで、
+最初のレンダリング時点で`.dark`クラスを確定させ、ちらつきをゼロにしています。
+
+```html: app/views/layouts/application.html.erb
+<%# CSSより前に配置 %>
+<script>
+  const saved = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const isDark = saved === "dark" || (saved !== "light" && prefersDark);
+  if (isDark) document.documentElement.classList.add("dark");
+</script>
+```
+### 検索機能のプライバシー保護
+<img width="600" src="https://github.com/user-attachments/assets/7f49f6ee-fba8-419b-ab9a-eebc3e87806d" />
+
+ユーザー検索機能では、検索ワードがない状態で全ユーザーを表示してしまうと、
+本名で登録しているユーザーの名前が意図せず一覧に表示されてしまうリスクがあります。
+
+そのため、検索ワードがない場合は`User.none`を返すことで、
+**データベースへの問い合わせ自体を発行せず、一覧に何も表示しない**設計にしています。
+
+```ruby
+base_scope = params.dig(:q, :name_cont).present? ? @q.result : User.none
+```
+
+これにより、ユーザーが明示的に検索ワードを入力した場合のみ
+結果が表示される設計となっています。
