@@ -150,8 +150,8 @@ pg_searchやkaminariは更新が滞っている。また、pg_searchは今回の
 
 **インラインスクリプトをCSSより前に配置**することで、
 最初のレンダリング時点で`.dark`クラスを確定させ、ちらつきをゼロにしています。
-
-```html: app/views/layouts/application.html.erb
+#### app/views/layouts/application.html.erb
+```html
 <%# CSSより前に配置 %>
 <script>
   const saved = localStorage.getItem("theme");
