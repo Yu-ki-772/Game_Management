@@ -65,7 +65,7 @@ gem "resend", "~> 1.3"
 gem "good_job", "~> 4.18"
 
 # クラウドストレージ用
-gem "cloudinary", "~> 2.4", ">= 2.4.4"
+gem "cloudinary", "~> 2.4"
 
 # 検索用
 gem "ransack", "~> 4.4", ">= 4.4.1"
