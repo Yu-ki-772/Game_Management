@@ -166,5 +166,4 @@ class User < ApplicationRecord
       content_type: avatar_file.content_type
     )
   end
-
 end

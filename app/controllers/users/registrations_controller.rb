@@ -73,7 +73,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     # アバターがパラメータに含まれている場合のみリサイズ処理を行う
     if params[:avatar].present?
       return false unless resource.attach_resized_avatar(params[:avatar])
-      
+
       params = params.except(:avatar)
     end
 
