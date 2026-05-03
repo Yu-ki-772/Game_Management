@@ -1,14 +1,10 @@
 class WebPushSubscriptionsController < ApplicationController
   def create
-    WebPushSubscription.upsert(
-      {
-        endpoint:   params[:endpoint],
-        user_uuid:  current_user.uuid,
-        p256dh:     params[:p256dh],
-        auth:       params[:auth]
-      },
-      unique_by: :endpoint,
-      record_timestamps: true
+    WebPushSubscription.subscribe(
+      endpoint: params[:endpoint],
+      user:     current_user,
+      p256dh:   params[:p256dh],
+      auth:     params[:auth]
     )
 
     flash.now[:notice] = "通知をオンにしました"
