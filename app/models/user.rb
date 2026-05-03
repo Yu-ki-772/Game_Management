@@ -144,4 +144,26 @@ class User < ApplicationRecord
   def unbookmark(message_template)
     bookmarks_message_templates.destroy(message_template)
   end
+
+  # アバター画像をリサイズして添付する
+  def attach_resized_avatar(avatar_file)
+    # 2MB以下かどうかをリサイズ前に確認
+    if avatar_file.size > 2.megabytes
+      errors.add(:avatar, "：2MB以下のファイルをアップロードしてください。")
+      return false
+    end
+
+    # リサイズ
+    resized_image = ImageProcessing::Vips
+                .source(avatar_file)
+                .resize_to_fill(200, 200)
+                .call
+
+    # 添付
+    avatar.attach(
+      io: resized_image,
+      filename: avatar_file.original_filename,
+      content_type: avatar_file.content_type
+    )
+  end
 end
