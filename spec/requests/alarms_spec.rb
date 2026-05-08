@@ -214,9 +214,9 @@ RSpec.describe "Alarms", type: :request do
         create(:alarm, creator: user, user_uuid: user.uuid, scheduled_at: 30.minutes.from_now)
       end
 
-      it "alarm_logs_pathにリダイレクトする" do
+      it "statistic_alarm_logs_pathにリダイレクトする" do
         patch stop_alarm_path(alarm)
-        expect(response).to redirect_to(alarm_logs_path)
+        expect(response).to redirect_to(statistic_alarm_logs_path)
       end
     end
 

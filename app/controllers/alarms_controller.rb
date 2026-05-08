@@ -130,7 +130,7 @@ class AlarmsController < ApplicationController
 
     if alarm_log
       flash[:alarm_log_id] = alarm_log.id
-      redirect_to alarm_logs_path, notice: "アラームをストップしました", status: :see_other
+      redirect_to statistic_alarm_logs_path, notice: "アラームをストップしました", status: :see_other
     else
       handle_stop_failure
     end

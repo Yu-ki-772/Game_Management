@@ -1,6 +1,6 @@
 class AlarmLogsController < ApplicationController
   # 統計画面
-  def index
+  def statistic
     base = AlarmLog.where(user_uuid: current_user.uuid)
 
     all_minutes_to_stop = base.order(:stopped_at).pluck(:minutes_to_stop)
@@ -31,7 +31,7 @@ class AlarmLogsController < ApplicationController
   end
 
   # 記録リスト画面
-  def list
+  def index
     base = AlarmLog.where(user_uuid: current_user.uuid)
 
     @pagy, @alarm_logs = pagy(

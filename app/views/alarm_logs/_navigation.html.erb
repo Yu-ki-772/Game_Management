@@ -6,11 +6,11 @@
             p-1 flex gap-0.5 overflow-x-auto">
 
   <%# 統計 %>
-  <%= link_to alarm_logs_path,
+  <%= link_to statistic_alarm_logs_path,
       class: "flex-shrink-0 flex items-center gap-1.5
               px-3.5 py-2 rounded-lg text-sm font-medium
               transition-colors duration-100
-              #{current_page?(alarm_logs_path) ?
+              #{current_page?(statistic_alarm_logs_path) ?
                 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' :
                 'text-gray-500 dark:text-gray-400
                  hover:text-gray-900 dark:hover:text-gray-100
@@ -23,11 +23,11 @@
   <% end %>
 
   <%# 記録一覧 %>
-  <%= link_to list_alarm_logs_path,
+  <%= link_to alarm_logs_path,
       class: "flex-shrink-0 flex items-center gap-1.5
               px-3.5 py-2 rounded-lg text-sm font-medium
               transition-colors duration-100
-              #{current_page?(list_alarm_logs_path) ?
+              #{current_page?(alarm_logs_path) ?
                 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' :
                 'text-gray-500 dark:text-gray-400
                  hover:text-gray-900 dark:hover:text-gray-100

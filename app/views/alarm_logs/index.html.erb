@@ -5,207 +5,135 @@
     <%= render 'alarm_logs/navigation' %>
 
     <%# ── ページヘッダー ── %>
-    <div class="pb-6 border-b border-gray-200 dark:border-gray-800 mb-8">
-      <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        プレイ記録
-      </h1>
-      <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">
-        プレイ時間の統計
-      </p>
-    </div>
-
-    <%# ── サマリーパネル ── %>
-<div class="border border-gray-200 dark:border-gray-800
-            rounded-xl overflow-hidden mb-8">
-  <div class="bg-white dark:bg-gray-950 px-6 py-5">
-    <p class="text-xl font-semibold tracking-widest uppercase
-              text-gray-700 dark:text-gray-500 mb-4">
-      引き延ばし（平均）
-    </p>
-    <% avg_color = @average_minutes.nil?  ? "text-gray-900 dark:text-white" :
-                   @average_minutes >= 60 ? "text-red-500 dark:text-red-400" :
-                   @average_minutes >= 0  ? "text-gray-500 dark:text-gray-400" :
-                                            "text-emerald-600 dark:text-emerald-400" %>
-    <p class="text-4xl font-bold tabular-nums tracking-tight leading-none <%= avg_color %>">
-      <%= @average_minutes ? format_play_minutes(@average_minutes) : "–" %>
-    </p>
-  </div>
-</div>
-
-    <%# ── グラフセクション ── %>
-    <div>
-
-      <div class="space-y-3">
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
-          <%# プレイ時間の推移：sky-400 %>
-          <div class="bg-white dark:bg-gray-950
-                      border border-gray-200 dark:border-gray-800
-                      rounded-xl px-5 pt-5 pb-4">
-            <p class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-1">
-              プレイ時間の推移
-            </p>
-            <p class="text-sm text-gray-600 dark:text-gray-500 mb-4">過去7日間</p>
-            <% if @play_duration_stats.any? %>
-              <%= line_chart @play_duration_stats,
-                  height: "180px",
-                  colors: ["#38bdf8"],
-                  suffix: "分",
-                  library: {
-                    elements: {
-                      line: {
-                        borderWidth: 1.5,
-                        tension: 0.4,
-                        fill: true,
-                        backgroundColor: "rgba(56,189,248,0.08)"
-                      },
-                      point: {
-                        radius: 3,
-                        hoverRadius: 4,
-                        backgroundColor: "#38bdf8",
-                        borderColor:     "#38bdf8",
-                        borderWidth: 0,
-                        hoverBorderWidth: 2,
-                        hoverBorderColor: "rgba(56,189,248,0.4)"
-                      }
-                    },
-                    scales: {
-                      x: { 
-                        grid: { color: "rgba(107,114,128,0.1)" },
-                        ticks: { color: "#9ca3af", font: { size: 13 } }
-                        },
-                      y: {
-                        grid: { color: "rgba(107,114,128,0.1)" },
-                        ticks: { color: "#9ca3af", font: { size: 13 } }
-                        }
-                    }
-                  } %>
-            <% else %>
-              <div class="flex items-center justify-center py-10">
-                <p class="text-base text-gray-600 dark:text-gray-500">まだデータがありません</p>
-              </div>
-            <% end %>
-          </div>
-
-          <%# 引き延ばし時間の推移 %>
-          <div class="bg-white dark:bg-gray-950
-                      border border-gray-200 dark:border-gray-800
-                      rounded-xl px-5 pt-5 pb-4">
-            <p class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-1">
-              引き延ばし時間の推移
-            </p>
-            <p class="text-sm text-gray-600 dark:text-gray-500 mb-4">直近7回</p>
-            <% minutes_stats_labeled = @minutes_stats.to_a.each_with_index.map do |(_, value), i|
-                size = @minutes_stats.size
-                label = if i == size - 1 then "前回"
-                        elsif i == size - 2 then "前々回"
-                        else "#{i + 1}回目"
-                        end
-                [label, value]
-              end.to_h %>
-            <% if minutes_stats_labeled.any? %>
-              <% point_colors = minutes_stats_labeled.values.map do |value|
-                  value >= 60 ? "#f87171" : value >= 0 ? "#fb923c" : "#34d399"
-                end %>
-              <%= line_chart minutes_stats_labeled,
-                  height: "180px",
-                  colors: ["#e879f9"],
-                  suffix: "分",
-                  library: {
-                    elements: {
-                      line: {
-                        borderWidth: 1.5,
-                        tension: 0.4,
-                        fill: true,
-                        backgroundColor: "rgba(232,121,249,0.08)"
-                      },
-                      point: {
-                        radius: 3,
-                        hoverRadius: 4,
-                        backgroundColor: point_colors,
-                        borderWidth: 0,
-                        hoverBorderWidth: 2,
-                        hoverBorderColor: "rgba(232,121,249,0.4)"
-                      }
-                    },
-                    scales: {
-                      x: { 
-                        grid: { color: "rgba(107,114,128,0.1)" },
-                        ticks: { color: "#9ca3af", font: { size: 13 } }
-                       },
-                      y: { 
-                        grid: { color: "rgba(107,114,128,0.1)" },
-                        ticks: { color: "#9ca3af", font: { size: 13 } }
-                        }
-                    }
-                  } %>
-            <% else %>
-              <div class="flex items-center justify-center py-10">
-                <p class="text-base text-gray-500 dark:text-gray-500">まだデータがありません</p>
-              </div>
-            <% end %>
-          </div>
-
-        </div>
-
-        <%# フレンドごとの平均引き延ばし時間（横棒グラフ） %>
-        <div class="bg-white dark:bg-gray-950
-                    border border-gray-200 dark:border-gray-800
-                    rounded-xl px-5 pt-5 pb-4">
-          <p class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-1">
-            フレンドごとの引き延ばし時間
-          </p>
-          <p class="text-sm text-gray-600 dark:text-gray-500 mb-4">
-            一緒にプレイしたフレンドごとの平均を比較
-          </p>
-          <div class="flex items-center gap-4 mb-4">
-            <div class="flex items-center gap-1.5">
-              <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
-              <span class="text-[11px] text-gray-500 dark:text-gray-500">0分未満</span>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <span class="inline-block w-2 h-2 rounded-full bg-orange-400"></span>
-              <span class="text-[11px] text-gray-500 dark:text-gray-500">0〜59分</span>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <span class="inline-block w-2 h-2 rounded-full bg-red-400"></span>
-              <span class="text-[11px] text-gray-500 dark:text-gray-500">60分以上</span>
-            </div>
-          </div>
-          <% if @friend_stats.any? %>
-            <% friend_colors = @friend_stats.values.map do |avg|
-                 avg >= 60 ? "#f87171" : avg >= 0 ? "#fb923c" : "#34d399"
-               end %>
-            <%= bar_chart @friend_stats,
-                height:  "#{[@friend_stats.size * 44, 120].max}px",
-                dataset: { backgroundColor: friend_colors, borderRadius: 4 },
-                library: {
-                  indexAxis: "y",
-                  scales: {
-                    y: {
-                      ticks: { color: "#6b7280", font: { size: 15, weight: "500" } },
-                      grid:  { display: false }
-                    },
-                    x: {
-                      ticks: { color: "#9ca3af", font: { size: 15 } },
-                      grid:  { color: "rgba(107,114,128,0.1)" }
-                    }
-                  }
-                } %>
-          <% else %>
-            <div class="flex items-center justify-center py-10">
-              <p class="text-base text-gray-500 dark:text-gray-500">まだデータがありません</p>
-            </div>
-          <% end %>
-        </div>
-
+    <div class="max-w-2xl pb-6 border-b border-gray-200 dark:border-gray-800 mb-8">
+      <div class="flex items-baseline gap-5">
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          記録一覧
+        </h1>
+        <% unless @alarm_logs.empty? %>
+          <span class="text-sm text-gray-600 dark:text-gray-500 tabular-nums">
+            全 <%= @total_count %> 件
+          </span>
+        <% end %>
       </div>
     </div>
-    <%# アラームストップ時のモーダル %>
-    <% if flash[:alarm_log_id] %>
-      <% alarm_log = AlarmLog.find(flash[:alarm_log_id]) %>
-      <%= render 'alarms/stop_modal', alarm_log: alarm_log %>
-    <% end %>
+
+    <%# ── 記録一覧 ── %>
+    <div class="max-w-2xl bg-white dark:bg-gray-950
+                border border-gray-200 dark:border-gray-800
+                rounded-xl overflow-hidden">
+
+      <%# ページネーション（上） %>
+      <% if @pagy.pages > 1 %>
+        <div class="px-5 py-3 border-b border-gray-200 dark:border-gray-800 flex justify-center">
+          <%== @pagy.series_nav %>
+        </div>
+      <% end %>
+
+      <%# デスクトップ: テーブル %>
+      <div class="hidden sm:block">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-gray-200 dark:border-gray-800">
+              <%# 日付を左端に追加 %>
+              <th class="text-left text-sm font-medium tracking-widest uppercase
+                         text-gray-600 dark:text-gray-500 px-5 py-3 w-1/3">日付</th>
+              <th class="text-left text-sm font-medium tracking-widest uppercase
+                         text-gray-600 dark:text-gray-500 px-5 py-3 w-1/3">プレイ時間</th>
+              <%# 引き延ばしは右端・右揃え %>
+              <th class="text-right text-sm font-medium tracking-widest uppercase
+                         text-gray-600 dark:text-gray-500 px-5 py-3 w-1/3">引き延ばし</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+            <% @alarm_logs.each do |alarm_log| %>
+              <% minutes = alarm_log.minutes_to_stop %>
+              <% color_class = minutes >= 60 ? "text-red-500 dark:text-red-400" :
+                               minutes >= 0  ? "text-orange-400 dark:text-orange-400" :
+                                               "text-emerald-600 dark:text-emerald-400" %>
+              <tr class="transition-colors duration-100">
+
+                <%# 日付列 %>
+                <td class="p-0">
+                  <div class="block px-5 py-4">
+                    <span class="text-base tabular-nums text-gray-500 dark:text-gray-400">
+                      <%= l(alarm_log.stopped_at, format: "%-m/%-d（%a）") %>
+                    </span>
+                  </div>
+                </td>
+
+                <%# プレイ時間列 %>
+                <td class="p-0">
+                  <div class="block px-5 py-4">
+                    <span class="text-lg font-semibold tabular-nums text-gray-900 dark:text-white">
+                      <%= alarm_log.play_duration.present? ? format_play_minutes(alarm_log.play_duration) : "—" %>
+                    </span>
+                  </div>
+                </td>
+
+                <%# 引き延ばし列：右揃え %>
+                <td class="p-0">
+                  <div class="block px-5 py-4 text-right">
+                    <span class="text-xl font-bold tabular-nums <%= color_class %>">
+                      <%= format_play_minutes(minutes) %>
+                    </span>
+                  </div>
+                </td>
+
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <%# モバイル: リスト %>
+      <div class="sm:hidden divide-y divide-gray-100 dark:divide-gray-800">
+        <% @alarm_logs.each do |alarm_log| %>
+          <% minutes = alarm_log.minutes_to_stop %>
+          <% color_class = minutes >= 60 ? "text-red-500 dark:text-red-400" :
+                           minutes >= 0  ? "text-orange-400 dark:text-orange-400" :
+                                           "text-emerald-600 dark:text-emerald-400" %>
+          <div class="flex items-center justify-between px-5 py-4
+                      transition-colors duration-100">
+
+            <%# 左側：日付とプレイ時間 %>
+            <div class="flex flex-col gap-0.5">
+              <span class="text-base font-medium tabular-nums text-gray-900 dark:text-white">
+                <%= l(alarm_log.stopped_at, format: "%-m/%-d（%a）") %>
+              </span>
+            </div>
+
+            <%#
+              右側：引き延ばし時間。
+            %>
+            <div class="shrink-0 flex flex-col items-end gap-0.5 ml-4">
+              <span class="text-xl font-bold tabular-nums leading-tight whitespace-nowrap <%= color_class %>">
+                <%= format_play_minutes(minutes) %>
+              </span>
+              <span class="text-sm text-gray-600 dark:text-gray-500 leading-tight">
+                引き延ばし
+              </span>
+            </div>
+
+          </div>
+        <% end %>
+      </div>
+
+      <%# 空状態 %>
+      <% if @alarm_logs.empty? %>
+        <div class="flex flex-col items-center justify-center py-20">
+          <p class="text-base text-gray-500 dark:text-gray-500">まだ記録がありません</p>
+        </div>
+      <% end %>
+
+      <%# ページネーション（下） %>
+      <% if @pagy.pages > 1 %>
+        <div class="px-5 py-4 border-t border-gray-200 dark:border-gray-800 flex justify-center">
+          <%== @pagy.series_nav %>
+        </div>
+      <% end %>
+
+    </div>
+
   <% end %>
 </div>
