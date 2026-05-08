@@ -99,5 +99,10 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
       expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now(alarm.uuid, user.uuid)
     end
+
+    it "notified が true にならない" do
+      described_class.perform_now(alarm.uuid, user.uuid)
+      expect(membership.reload.notified).to be false
+    end
   end
 end

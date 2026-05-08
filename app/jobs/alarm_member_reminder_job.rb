@@ -17,13 +17,11 @@ class AlarmMemberReminderJob < ApplicationJob
     # 通知済みかどうかのチェック
     return if membership.reminder_notified?
 
-    # メール・プッシュ通知より先に送信済みとして記録（エラー時のリトライによる二重送信対策）
-    membership.update!(reminder_notified: true)
-
     user = User.find_by(uuid: user_uuid)
     return unless user
 
     send_push_notification(user, build_reminder_payload(alarm, minutes_until_alarm, membership))
+    membership.update!(reminder_notified: true)
   end
 
   private
