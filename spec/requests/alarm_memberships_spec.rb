@@ -144,9 +144,9 @@ RSpec.describe "AlarmMemberships", type: :request do
     context "ストップに成功するとき" do
       let(:membership) { alarm.alarm_memberships.find_by(user_uuid: user.uuid) }
 
-      it "alarm_logs_pathにリダイレクトする" do
+      it "statistic_alarm_logs_pathにリダイレクトする" do
         patch stop_alarm_alarm_membership_path(alarm, membership)
-        expect(response).to redirect_to(alarm_logs_path)
+        expect(response).to redirect_to(statistic_alarm_logs_path)
       end
     end
 
