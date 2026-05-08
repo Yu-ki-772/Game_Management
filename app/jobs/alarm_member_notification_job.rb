@@ -28,8 +28,6 @@ class AlarmMemberNotificationJob < ApplicationJob
       return
     end
 
-    membership.update!(notified: true)
-
     user = User.find_by(uuid: user_uuid)
     unless user
       Rails.logger.warn("[AlarmMemberNotificationJob] ユーザーが見つかりません uuid=#{user_uuid}")
@@ -38,6 +36,7 @@ class AlarmMemberNotificationJob < ApplicationJob
 
     Rails.logger.info("[AlarmMemberNotificationJob] send_push_notification を呼び出します user=#{user_uuid}")
     send_push_notification(user, build_alarm_payload(alarm, membership))
+    membership.update!(notified: true)
   end
 
   private
