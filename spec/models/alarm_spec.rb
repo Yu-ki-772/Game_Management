@@ -127,10 +127,6 @@ RSpec.describe Alarm, type: :model do
   # インスタンスメソッド
   # ============================================================
   describe "instance methods" do
-    before do
-      allow_any_instance_of(Alarm).to receive(:schedule_notification_job)
-    end
-
     # ----------------------------------------------------------
     # #start_time
     # ----------------------------------------------------------
