@@ -123,7 +123,7 @@ class AlarmsController < ApplicationController
   # pwaインストール（ホーム画面に追加）を促すモーダルを表示済みかどうかの確認
   def check_pwa_install_prompt
     return if current_user.pwa_install_prompted
-    
+
     flash[:show_pwa_install_prompt] = true
     current_user.update!(pwa_install_prompted: true)
   end
