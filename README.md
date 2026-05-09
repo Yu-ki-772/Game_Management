@@ -99,8 +99,8 @@ https://game-exit.com/
 | 検索 | Ransack |
 | ページネーション | Pagy |
 | 開発環境の構築 | Docker |
-| 本番環境のWebサービス | Render |
-| 本番環境のDBサービス | Supabase |
+| PaaS | Render |
+| 本番DB | Supabase |
 | 計測 | Google Analytics |
 
 
@@ -134,7 +134,7 @@ https://game-exit.com/
 → 詳細記事（ https://qiita.com/Shiro_yy/items/141767ae5e5cc2dce033 ）
 
 
-### 本番環境のWebサービスに Render を選んだ理由
+### PaaSに Render を選んだ理由
 
 ・ Fly.ioは無料プランが廃止済み<br>
 ・ Koyeb（無料プラン）はリージョンがフランクフルトまたはワシントンDCに限られレイテンシが大きい。<br>
@@ -142,11 +142,11 @@ https://game-exit.com/
 
 → 詳細記事（ https://qiita.com/Shiro_yy/items/f90fd41ccabcd727ecfb ）
 
-### 本番環境のDBサービスに Supabase を選んだ理由
+### 本番DBに Supabase を選んだ理由
 
 ・ Renderの無料プランは30日で失効する。<br>
 ・ Neon無料プランは稼働時間に制限があるためバックグラウンドジョブのポーリングと相性が悪い。<br>
-・ Aiven無料プランは稼働時間の制限がなくシンプルに使えるが、シンガポールリージョンに対応していない。（RenderのWebサービスのリージョンがシンガポールであるため、WebサービスとDBサービスの間でレイテンシが発生してしまう。）<br>
+・ Aiven無料プランは稼働時間の制限がなくシンプルに使えるが、シンガポールリージョンに対応していない。（Renderのリージョンがシンガポールであるため、Renderとの間の処理でレイテンシが発生してしまう。）<br>
 ⭐ **Supabase無料プラン** はAivenが満たしている要件を満たしているのに加え、シンガポールリージョンがある。
 
 → 詳細記事（ https://qiita.com/Shiro_yy/items/58f055639796f92d1d6f ）
