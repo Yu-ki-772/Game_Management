@@ -62,32 +62,7 @@
 
   <%# pb-64 でスクロール余白あり（index画面と統一） %>
   <div id="pending_alarms_list" class="pb-64">
-    <% if @alarm_memberships.present? %>
-      <div class="bg-white dark:bg-gray-950
-                  rounded-xl
-                  border border-gray-200 dark:border-gray-800
-                  divide-y divide-gray-100 dark:divide-gray-800">
-
-        <%# scheduled_at（アラームの設定時刻） の日付でグループ化 %>
-        <% @alarm_memberships.values.group_by { |m| m.alarm.scheduled_at.to_date }.each do |date, memberships| %>
-
-          <div class="px-5 py-2 bg-gray-100 dark:bg-gray-900/40">
-            <span class="text-sm font-medium text-gray-800 dark:text-gray-400">
-              <%= date.strftime("%-m/%-d") %>（<%= %w[日 月 火 水 木 金 土][date.wday] %>）
-            </span>
-          </div>
-
-          <!-- 各アラームをレンダリング -->
-          <% memberships.each do |membership| %>
-            <%= render 'alarms/pending/membership_row', membership: membership %>
-          <% end %>
-
-        <% end %>
-      </div>
-    <% else %>
-      <!-- アラームがない場合に表示するもの -->
-      <%= render 'alarms/pending/no_alarms_message' %>
-    <% end %>
+    <%= render 'alarms/pending/list', memberships: @pending_memberships.values %>
   </div>
 
 </div>

@@ -1,0 +1,20 @@
+<%# app/views/alarms/index/_list.html.erb %>
+<% if memberships.present? %>
+  <div class="bg-white dark:bg-gray-950
+              rounded-xl
+              border border-gray-200 dark:border-gray-800
+              divide-y divide-gray-100 dark:divide-gray-800">
+    <% memberships.group_by { |m| m.alarm.scheduled_at.to_date }.each do |date, group| %>
+      <div class="px-5 py-2 bg-gray-100 dark:bg-gray-900/40">
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-400">
+          <%= date.strftime("%-m/%-d") %>（<%= %w[日 月 火 水 木 金 土][date.wday] %>）
+        </span>
+      </div>
+      <% group.each do |membership| %>
+        <%= render 'alarms/index/membership_row', membership: membership %>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <%= render 'alarms/index/no_alarms_message' %>
+<% end %>
