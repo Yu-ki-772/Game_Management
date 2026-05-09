@@ -1,12 +1,8 @@
 class AlarmsController < ApplicationController
-  #=================================================
-  # フィルタ設定
-  #=================================================
-  before_action :set_alarm, only: [ :edit, :update, :stop, :destroy ]
+  include CalendarLoadable
 
-  #=================================================
-  # 一覧・表示系アクション
-  #=================================================
+  before_action :set_alarm, only: [ :edit, :update, :destroy ]
+
   def index
     @memberships = index_memberships
   end
@@ -18,17 +14,12 @@ class AlarmsController < ApplicationController
 
   # 未ストップ（でかつストップ可能な）アラームの表示
   def pending
-    @pending_memberships = pending_alarm_memberships
+    @pending_memberships = current_user.pending_alarm_memberships
   end
 
-  #=================================================
-  # 作成・更新系アクション
-  #=================================================
   def new
     @alarm = current_user.alarms.build
-
     @start_date = params[:start_date]&.to_date
-
     now = Time.current.change(sec: 0)
 
     # アラームの設定時間のデフォルトは1時間後
@@ -55,7 +46,7 @@ class AlarmsController < ApplicationController
 
       @membership = @alarm.alarm_memberships.find_by(user: current_user)
       @memberships = index_memberships
-      @pending_memberships = pending_alarm_memberships
+      @pending_memberships = current_user.pending_alarm_memberships
 
       respond_to do |format|
         format.turbo_stream do
@@ -98,42 +89,12 @@ class AlarmsController < ApplicationController
     end
   end
 
-  # アラームのストップの処理
-  def stop
-    membership = @alarm.alarm_memberships.find_by(user_uuid: current_user.uuid)
-
-    # メンバーシップが存在しない場合
-    if membership.nil?
-      @pending_memberships = pending_alarm_memberships
-      flash.now[:alert] = "アラームをストップできませんでした"
-      render "alarms/pending", status: :unprocessable_entity
-      return
-    end
-
-    # alarm_logデータの作成
-    alarm_log = membership.stop
-
-    if alarm_log
-      flash[:alarm_log_id] = alarm_log.id
-      redirect_to statistic_alarm_logs_path, notice: "アラームをストップしました", status: :see_other
-    else
-      handle_stop_failure
-    end
-  end
-
-  #=================================================
-  # 削除アクション
-  #=================================================
   def destroy
     @alarm.destroy!
     redirect_to alarms_path, notice: "アラームを削除しました", status: :see_other
   end
 
   private
-
-  #=================================================
-  # privateメソッド
-  #=================================================
 
   def set_alarm
     @alarm = current_user.alarms.find(params[:id])
@@ -159,59 +120,10 @@ class AlarmsController < ApplicationController
                 .order("alarms.scheduled_at asc")
   end
 
-  # 未ストップ（でかつストップ可能な）アラームの表示
-  def pending_alarm_memberships
-    current_user.alarm_memberships
-                .not_stopped_by(current_user)
-                .joins(:alarm)
-                .merge(Alarm.not_stopped.stoppable_now)
-                .includes(
-                  :user,
-                  alarm: [ :alarm_memberships, { members: :avatar_attachment }, { creator: :avatar_attachment } ]
-                )
-                .order("alarms.scheduled_at ASC")
-  end
-
-  def load_calendar_data
-    # start_date パラメータがあれば使い、なければ今月を基準にする。
-    @start_date = params[:start_date].present? ? params[:start_date].to_date : Date.today
-
-    # カレンダー表示用の期間を計算（カレンダーグリッド全体）
-    start_of_calendar = @start_date.beginning_of_month.beginning_of_week(:sunday)
-    end_of_calendar   = @start_date.end_of_month.end_of_week(:sunday)
-
-    memberships = current_user.alarm_memberships
-                              .joins(:alarm)
-                              .merge(
-                                Alarm.not_stopped.in_period(start_of_calendar, end_of_calendar)
-                              )
-                              .includes(alarm: :alarm_memberships)
-
-    @alarms = memberships.map(&:alarm)
-                        .uniq(&:uuid)
-                        .sort_by(&:start_time)
-  end
-
-  # アラームストップ時の処理
-  def handle_stop_failure
-    @alarms = current_user.alarms.not_stopped.near
-                          .includes(
-                            :alarm_memberships,
-                            creator: { avatar_attachment: :blob },
-                            members: { avatar_attachment: :blob }
-                          ).
-                          order(scheduled_at: :asc)
-
-    @pending_memberships = pending_alarm_memberships
-
-    flash.now[:alert] = "アラームをストップできませんでした"
-    render "alarms/pending", status: :unprocessable_entity
-  end
-
   # pwaインストール（ホーム画面に追加）を促すモーダルを表示済みかどうかの確認
   def check_pwa_install_prompt
     return if current_user.pwa_install_prompted
-
+    
     flash[:show_pwa_install_prompt] = true
     current_user.update!(pwa_install_prompted: true)
   end

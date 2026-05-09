@@ -27,9 +27,6 @@ Rails.application.routes.draw do
       get :pending
       get :calendar
     end
-    member do
-      patch :stop
-    end
     resources :alarm_memberships, only: [ :create, :destroy, :show ] do
       collection do
         # アラームに招待するユーザーを検索する用

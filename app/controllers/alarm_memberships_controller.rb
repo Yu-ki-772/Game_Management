@@ -1,11 +1,11 @@
-# app/controllers/alarm_memberships_controller.rb
 class AlarmMembershipsController < ApplicationController
+  include CalendarLoadable
+
   before_action :set_alarm
 
   # フレンドをアラームに招待するときの検索用
   def search_users
     @q = User.non_admin.excluding(current_user).ransack(search_params)
-
     @users = @q.result
                 .with_attached_avatar
                 .friends_with(current_user)
@@ -61,17 +61,18 @@ class AlarmMembershipsController < ApplicationController
     )
   end
 
-  # メンバーとしてアラームをストップする。（アラーム作成者のアラームとは分離している。）
+  # メンバーとしてアラームをストップする。
   def stop
     @membership = @alarm.alarm_memberships.find_by!(user_uuid: current_user.uuid)
     alarm_log = @membership.stop # stop時にalarm_logを作成
 
     if alarm_log
-
-      flash[:alarm_log_id] = alarm_log.id if alarm_log
+      flash[:alarm_log_id] = alarm_log.id
       redirect_to statistic_alarm_logs_path, notice: "アラームをストップしました", status: :see_other
     else
-      redirect_to pending_alarms_path, alert: "アラームをストップできませんでした"
+      @pending_memberships = current_user.pending_alarm_memberships
+      flash.now[:alert] = "アラームをストップできませんでした"
+      render "alarms/pending", status: :unprocessable_entity
     end
   end
 

@@ -166,4 +166,17 @@ class User < ApplicationRecord
       content_type: avatar_file.content_type
     )
   end
+
+  # 未ストップ（でかつストップ可能な）アラームの取得用
+  def pending_alarm_memberships
+    alarm_memberships
+      .not_stopped_by(self)
+      .joins(:alarm)
+      .merge(Alarm.not_stopped.stoppable_now)
+      .includes(
+        :user,
+        alarm: [ :alarm_memberships, { members: :avatar_attachment }, { creator: :avatar_attachment } ]
+      )
+      .order("alarms.scheduled_at ASC")
+  end
 end
