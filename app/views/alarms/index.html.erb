@@ -50,32 +50,5 @@
 
 <%# アラームリスト %>
 <div id="alarms_list" class="pb-64">
-  <% if @memberships.present? %>
-    <div class="bg-white dark:bg-gray-950
-                rounded-xl
-                border border-gray-200 dark:border-gray-800
-                divide-y divide-gray-100 dark:divide-gray-800">
-
-      <%# scheduled_at の日付でグループ化して日付ヘッダーを挟む %>
-      <% @memberships.group_by { |m| m.alarm.scheduled_at.to_date }.each do |date, memberships| %>
-
-        <%# 日付ヘッダー行 %>
-        <div class="px-5 py-2
-                    bg-gray-100 dark:bg-gray-900/40">
-          <span class="text-sm font-medium text-gray-800 dark:text-gray-400">
-            <%= date.strftime("%-m/%-d") %>（<%= %w[日 月 火 水 木 金 土][date.wday] %>）
-          </span>
-        </div>
-
-        <!-- 各アラームの表示 -->
-        <% memberships.each do |membership| %>
-          <%= render 'alarms/index/membership_row', membership: membership %>
-        <% end %>
-
-      <% end %>
-    </div>
-  <% else %>
-    <!-- アラームがない場合に表示するもの -->
-    <%= render 'alarms/index/no_alarms_message' %>
-  <% end %>
+  <%= render 'alarms/index/list', memberships: @memberships %>
 </div>

@@ -8,18 +8,7 @@ class AlarmsController < ApplicationController
   # 一覧・表示系アクション
   #=================================================
   def index
-    @memberships = current_user.alarm_memberships
-                              .not_stopped_by(current_user)
-                              .joins(:alarm)
-                              .merge(Alarm.unsent.future.not_stopped)
-                              .includes(
-                                alarm: [
-                                  { creator: { avatar_attachment: :blob } },
-                                  { members: { avatar_attachment: :blob } },
-                                  :alarm_memberships
-                                ]
-                              )
-                              .order("alarms.scheduled_at asc")
+    @memberships = index_memberships
   end
 
   # カレンダー
@@ -29,7 +18,7 @@ class AlarmsController < ApplicationController
 
   # 未ストップ（でかつストップ可能な）アラームの表示
   def pending
-    @alarm_memberships = pending_alarm_memberships
+    @pending_memberships = pending_alarm_memberships
   end
 
   #=================================================
@@ -64,15 +53,9 @@ class AlarmsController < ApplicationController
     if @alarm.save
       check_pwa_install_prompt
 
-      # リストへのajaxでの追加のために作成直後の membership を取得する。
       @membership = @alarm.alarm_memberships.find_by(user: current_user)
-
-      # pending画面に追加すべきかの判定に使用
-      @add_to_pending = current_user.alarm_memberships
-                                      .not_stopped_by(current_user)
-                                      .joins(:alarm)
-                                      .merge(Alarm.not_stopped.stoppable_now)
-                                      .exists?(@membership.id)
+      @memberships = index_memberships
+      @pending_memberships = pending_alarm_memberships
 
       respond_to do |format|
         format.turbo_stream do
@@ -97,6 +80,7 @@ class AlarmsController < ApplicationController
   def update
     if @alarm.update(alarm_params)
       @membership = @alarm.alarm_memberships.find_by(user: current_user)
+      @memberships = index_memberships
 
       respond_to do |format|
         format.turbo_stream do
@@ -120,6 +104,7 @@ class AlarmsController < ApplicationController
 
     # メンバーシップが存在しない場合
     if membership.nil?
+      @pending_memberships = pending_alarm_memberships
       flash.now[:alert] = "アラームをストップできませんでした"
       render "alarms/pending", status: :unprocessable_entity
       return
@@ -157,6 +142,21 @@ class AlarmsController < ApplicationController
   # ストロングパラメータ
   def alarm_params
     params.require(:alarm).permit(:label, :scheduled_at, :started_at, :reminder_minutes)
+  end
+
+  def index_memberships
+    current_user.alarm_memberships
+                .not_stopped_by(current_user)
+                .joins(:alarm)
+                .merge(Alarm.unsent.future.not_stopped)
+                .includes(
+                  alarm: [
+                    { creator: { avatar_attachment: :blob } },
+                    { members: { avatar_attachment: :blob } },
+                    :alarm_memberships
+                  ]
+                )
+                .order("alarms.scheduled_at asc")
   end
 
   # 未ストップ（でかつストップ可能な）アラームの表示
@@ -203,7 +203,7 @@ class AlarmsController < ApplicationController
                           ).
                           order(scheduled_at: :asc)
 
-    @alarm_memberships = pending_alarm_memberships
+    @pending_memberships = pending_alarm_memberships
 
     flash.now[:alert] = "アラームをストップできませんでした"
     render "alarms/pending", status: :unprocessable_entity

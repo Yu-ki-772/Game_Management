@@ -1,15 +1,14 @@
 <%# app/views/alarms/update.turbo_stream.erb %>
 
-<%# リスト行の更新：一覧画面（indexやpending）内の該当する行を最新状態に差し替え %>
-<%= turbo_stream.replace dom_id(@membership),
-      partial: "alarms/index/membership_row",
-      locals: { membership: @membership } %>
+<%# indexページ用 %>
+<%= turbo_stream.update "alarms_list" do %>
+  <%= render 'alarms/index/list', memberships: @memberships %>
+<% end %>
 
 <%# 詳細画面の更新 %>
 <%= turbo_stream.replace "alarm_detail_#{@alarm.id}",
       partial: "alarm_memberships/alarm_detail",
       locals: { alarm: @alarm } %>
-
 
 <!-- フラッシュメッセージの表示 -->
 <%= render_turbo_stream_flash_messages %>
