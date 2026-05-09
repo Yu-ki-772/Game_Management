@@ -170,7 +170,6 @@ class AlarmsController < ApplicationController
                   alarm: [ :alarm_memberships, { members: :avatar_attachment }, { creator: :avatar_attachment } ]
                 )
                 .order("alarms.scheduled_at ASC")
-                .index_by(&:alarm_uuid)
   end
 
   def load_calendar_data
