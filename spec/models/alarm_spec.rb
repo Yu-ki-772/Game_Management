@@ -228,10 +228,10 @@ RSpec.describe Alarm, type: :model do
 
       context "渡したユーザーがメンバーシップに存在する場合" do
         it "true を返す" do
-          alarm  = build(:alarm)
-          member = build(:user, uuid: SecureRandom.uuid)
-
-          allow(alarm.alarm_memberships).to receive(:any?).and_return(true)
+          # スタブを使わず実際のオブジェクトを用意することで、
+          # any? に渡したブロックの照合ロジックも含めて検証する
+          alarm  = create(:alarm)
+          member = alarm.creator
 
           expect(alarm.accessible_by?(member)).to be true
         end
