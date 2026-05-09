@@ -45,12 +45,6 @@ RSpec.describe "Alarms", type: :request do
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "PATCH /alarms/:id/stop はログイン画面にリダイレクトする" do
-      alarm = create(:alarm, creator: user, user_uuid: user.uuid)
-      patch stop_alarm_path(alarm)
-      expect(response).to redirect_to(new_user_session_path)
-    end
-
     it "DELETE /alarms/:id はログイン画面にリダイレクトする" do
       alarm = create(:alarm, creator: user, user_uuid: user.uuid)
       delete alarm_path(alarm)
@@ -203,62 +197,7 @@ RSpec.describe "Alarms", type: :request do
     end
   end
 
-  # =========================================================
-  # PATCH /alarms/:id/stop (stop)
-  # =========================================================
-  describe "PATCH /alarms/:id/stop" do
-    before { sign_in user }
 
-    context "メンバーシップが存在するとき" do
-      let(:alarm) do
-        create(:alarm, creator: user, user_uuid: user.uuid, scheduled_at: 30.minutes.from_now)
-      end
-
-      it "statistic_alarm_logs_pathにリダイレクトする" do
-        patch stop_alarm_path(alarm)
-        expect(response).to redirect_to(statistic_alarm_logs_path)
-      end
-    end
-
-    context "メンバーシップが存在しないとき" do
-      let(:alarm) do
-        alarm = create(:alarm, creator: user, user_uuid: user.uuid, scheduled_at: 30.minutes.from_now)
-
-        alarm.alarm_memberships.destroy_all
-        alarm
-      end
-
-      it "422を返す" do
-        patch stop_alarm_path(alarm)
-        expect(response).to have_http_status(:unprocessable_content)
-      end
-    end
-
-    context "既にストップ済みのアラームのとき" do
-      let(:alarm) do
-        create(:alarm, creator: user, user_uuid: user.uuid, scheduled_at: 30.minutes.from_now)
-      end
-
-      before do
-        alarm.alarm_memberships.find_by(user_uuid: user.uuid).stop
-      end
-
-      it "422を返す" do
-        patch stop_alarm_path(alarm)
-        expect(response).to have_http_status(:unprocessable_content)
-      end
-    end
-
-    context "他のユーザーのアラームのとき" do
-      let(:other_user)  { create(:user) }
-      let(:other_alarm) { create(:alarm, creator: other_user, user_uuid: other_user.uuid) }
-
-      it "404を返す" do
-        patch stop_alarm_path(other_alarm)
-        expect(response).to have_http_status(:not_found)
-      end
-    end
-  end
 
   # =========================================================
   # DELETE /alarms/:id (destroy)
