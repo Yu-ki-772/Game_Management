@@ -157,9 +157,9 @@ RSpec.describe "AlarmMemberships", type: :request do
         membership.stop
       end
 
-      it "pending_alarms_pathにリダイレクトする" do
+      it "422を返す" do
         patch stop_alarm_alarm_membership_path(alarm, membership)
-        expect(response).to redirect_to(pending_alarms_path)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
