@@ -102,4 +102,40 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
       expect(membership.reload.notified).to be false
     end
   end
+
+  # =========================================================
+  # PushNotifiable（concern）: rescueブロックの検証
+  # =========================================================
+  describe "WebPush::ExpiredSubscription が発生したとき" do
+    before do
+      create(:web_push_subscription, user: user)
+      response_double = double("response", body: "", code: "410")
+      allow(WebPush).to receive(:payload_send).and_raise(WebPush::ExpiredSubscription.new(response_double, "host"))
+    end
+
+    it "該当の購読が削除される" do
+      expect {
+        described_class.perform_now(alarm.uuid, user.uuid)
+      }.to change(WebPushSubscription, :count).by(-1)
+    end
+  end
+
+  describe "WebPush::ResponseError が発生したとき" do
+    before do
+      create(:web_push_subscription, user: user)
+      response_double = double("response", body: "")
+      allow(WebPush).to receive(:payload_send).and_raise(WebPush::ResponseError.new(response_double, "host"))
+    end
+
+    it "ジョブが継続してエラーにならない" do
+      expect {
+        described_class.perform_now(alarm.uuid, user.uuid)
+      }.not_to raise_error
+    end
+
+    it "エラーログを出力する" do
+      expect(Rails.logger).to receive(:error).at_least(:once)
+      described_class.perform_now(alarm.uuid, user.uuid)
+    end
+  end
 end
