@@ -162,5 +162,19 @@ RSpec.describe "AlarmMemberships", type: :request do
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
+
+    context "メンバーシップが存在しないとき" do
+      let(:other_user)  { create(:user) }
+      let(:membership)  { alarm.alarm_memberships.find_by(user_uuid: user.uuid) }
+
+      before do
+        sign_in other_user
+      end
+
+      it "404を返す" do
+        patch stop_alarm_alarm_membership_path(alarm, membership)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
   end
 end
