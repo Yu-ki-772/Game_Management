@@ -34,20 +34,15 @@ RSpec.describe AlarmMembership, type: :model do
       end
 
       context "ユーザーがアラームの作成者でない場合（creator? が false）" do
-        let(:creator)    { build(:user) }
-        let(:alarm)      { build(:alarm, creator: creator) }
-        let(:member)     { build(:user) }
+        let(:creator)    { create(:user) }
+        let(:alarm)      { create(:alarm, creator: creator) }
+        let(:member)     { create(:user) }
         let(:membership) { build(:alarm_membership, alarm: alarm, user: member, user_uuid: member.uuid) }
 
-        let(:friendship_relation_double) { double }
-
-        before do
-          allow(Friendship).to receive(:accepted).and_return(friendship_relation_double)
-          allow(friendship_relation_double).to receive(:between).and_return(friendship_relation_double)
-        end
-
         context "作成者とフレンド関係にある場合" do
-          before { allow(friendship_relation_double).to receive(:exists?).and_return(true) }
+          before do
+            create(:friendship, user: creator, friend: member, status: :accepted)
+          end
 
           it "有効である" do
             expect(membership).to be_valid
@@ -55,8 +50,6 @@ RSpec.describe AlarmMembership, type: :model do
         end
 
         context "作成者とフレンド関係にない場合" do
-          before { allow(friendship_relation_double).to receive(:exists?).and_return(false) }
-
           it "user_uuid にエラーが追加される" do
             membership.valid?
             expect(membership.errors[:user_uuid]).not_to be_empty

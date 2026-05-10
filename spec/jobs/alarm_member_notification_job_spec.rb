@@ -88,9 +88,6 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
   # ガード節: ユーザーが存在しないとき
   # =========================================================
   describe "ユーザーが存在しないとき" do
-    let!(:alarm)      { create(:alarm, creator: user, user_uuid: user.uuid, scheduled_at: 30.minutes.from_now) }
-    let!(:membership) { alarm.alarm_memberships.find_by(user_uuid: user.uuid) }
-
     before do
       allow(User).to receive(:find_by).and_return(nil)
     end
