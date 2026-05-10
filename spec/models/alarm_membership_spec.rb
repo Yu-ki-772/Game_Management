@@ -59,106 +59,88 @@ RSpec.describe AlarmMembership, type: :model do
     end
   end
 
-
   describe "instance methods" do
     # ----------------------------------------------------------
     # #stopped?
     # ----------------------------------------------------------
     describe "#stopped?" do
-      context "ユーザーがアラームをストップ済みの場合" do
-        it "true を返す" do
-          alarm      = create(:alarm)
-          membership = alarm.alarm_memberships.first
-          # alarm_log を直接作成してストップ済みの状態を作る
-          alarm.alarm_logs.create!(
-            user_uuid:         membership.user_uuid,
-            stopped_at:       Time.current,
-            minutes_to_stop: 0
-          )
+      let(:alarm)      { create(:alarm) }
+      let(:membership) { alarm.alarm_memberships.first }
 
+      context "ユーザーがアラームをストップ済みの場合" do
+        before do
+          create(:alarm_log, alarm: alarm, user_uuid: membership.user_uuid)
+        end
+
+        it "true を返す" do
           expect(membership.stopped?).to be true
         end
       end
 
       context "ユーザーがアラームをストップしていない場合" do
         it "false を返す" do
-          alarm      = create(:alarm)
-          membership = alarm.alarm_memberships.first
-
           expect(membership.stopped?).to be false
         end
       end
     end
 
     describe "#stop" do
+      let(:alarm)      { create(:alarm) }
+      let(:membership) { alarm.alarm_memberships.first }
+
       context "すでにストップ済みの場合" do
+        before do
+          create(:alarm_log, alarm: alarm, user_uuid: membership.user_uuid)
+        end
+
         it "false を返す" do
-          alarm      = create(:alarm)
-          membership = alarm.alarm_memberships.first
-
-          # 事前にストップ済みの状態を作る
-          alarm.alarm_logs.create!(
-            user_uuid:         membership.user_uuid,
-            stopped_at:       Time.current,
-            minutes_to_stop: 0
-          )
-
           expect(membership.stop).to be false
         end
       end
 
       context "AlarmLog のバリデーションが失敗する場合" do
-        it "false を返す" do
-          alarm = create(:alarm, scheduled_at: 25.hours.from_now)
+        before do
           alarm.update_column(:scheduled_at, 25.hours.ago)
-          membership = alarm.alarm_memberships.first
+        end
 
+        it "false を返す" do
           expect(membership.stop).to be false
         end
       end
 
       context "正常にストップできた場合" do
-        it "AlarmLog を返す" do
-          alarm      = create(:alarm)
+        before do
           alarm.update_column(:scheduled_at, 1.minute.ago)
-          membership = alarm.alarm_memberships.first
+        end
 
-          result = membership.stop
-
-          expect(result).to be_a(AlarmLog)
+        it "AlarmLog を返す" do
+          expect(membership.stop).to be_a(AlarmLog)
         end
 
         it "AlarmLog が DB に保存される" do
-          alarm      = create(:alarm)
-          alarm.update_column(:scheduled_at, 1.minute.ago)
-          membership = alarm.alarm_memberships.first
-
           expect { membership.stop }.to change(AlarmLog, :count).by(1)
         end
       end
 
       context "全員がストップ済みになった場合" do
-        it "alarm.stopped が true になる" do
-          alarm      = create(:alarm)
+        before do
           alarm.update_column(:scheduled_at, 1.minute.ago)
-          membership = alarm.alarm_memberships.first
+        end
 
+        it "alarm.stopped が true になる" do
           membership.stop
-
           expect(alarm.reload.stopped).to be true
         end
       end
 
       context "まだ全員がストップ済みでない場合" do
-        it "alarm.stopped は false のまま" do
-          alarm      = create(:alarm)
+        before do
           alarm.update_column(:scheduled_at, 1.minute.ago)
-          membership = alarm.alarm_memberships.first
+        end
 
+        it "alarm.stopped は false のまま" do
           allow(membership).to receive(:all_members_stopped?).and_return(false)
-
           membership.stop
-
           expect(alarm.reload.stopped).to be false
         end
       end
