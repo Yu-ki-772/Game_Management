@@ -16,7 +16,20 @@ RSpec.describe AlarmReminderJob, type: :job do
     end
   end
 
+  # =========================================================
+  # ガード節: 未通知のメンバーが存在しないとき（全員ストップ済み）
+  # =========================================================
+  describe "未通知のメンバーが存在しないとき" do
+    before do
+      create(:alarm_log, alarm: alarm, user_uuid: user.uuid)
+    end
 
+    it "AlarmMemberReminderJobをエンキューしない" do
+      expect {
+        described_class.perform_now(alarm.uuid)
+      }.not_to have_enqueued_job(AlarmMemberReminderJob)
+    end
+  end
 
   # =========================================================
   # 正常系: 未通知のメンバーが存在するとき
