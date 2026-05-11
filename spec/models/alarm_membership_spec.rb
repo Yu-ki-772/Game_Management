@@ -109,6 +109,16 @@ RSpec.describe AlarmMembership, type: :model do
         end
       end
 
+      context "AlarmLog のバリデーションが通過する場合" do
+        before do
+          alarm.update_column(:scheduled_at, 299.minutes.ago) # 境界値: 299分以内でバリデーションが通る
+        end
+
+        it "AlarmLog を返す" do
+          expect(membership.stop).to be_a(AlarmLog)
+        end
+      end
+
       context "正常にストップできた場合" do
         it "AlarmLog を返す" do
           expect(membership.stop).to be_a(AlarmLog)
