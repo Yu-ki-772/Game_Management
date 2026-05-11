@@ -46,45 +46,30 @@ RSpec.describe Friendship, type: :model do
     end
   end
 
-
   describe "instance methods" do
     describe "#partner" do
+      let(:user)       { create(:user) }
+      let(:other_user) { create(:user) }
+
       context "accepted 状態でない場合（pending）" do
         it "nil を返す" do
-          user       = create(:user)
-          other_user = create(:user)
           # statusのデフォルトは pending
           friendship = create(:friendship, user: user, friend: other_user)
-
           expect(friendship.partner(user)).to be_nil
         end
       end
 
       context "accepted 状態の場合" do
+        let(:friendship) { create(:friendship, user: user, friend: other_user, status: :accepted) }
+
         context "渡したユーザーが申請者（user_uuid 側）の場合" do
           it "friend を返す" do
-            user       = create(:user)
-            other_user = create(:user)
-            friendship = create(:friendship,
-              user:   user,
-              friend: other_user,
-              status: :accepted
-            )
-
             expect(friendship.partner(user)).to eq(other_user)
           end
         end
 
         context "渡したユーザーが受け取り側（friend_uuid 側）の場合" do
           it "user を返す" do
-            user       = create(:user)
-            other_user = create(:user)
-            friendship = create(:friendship,
-              user:   user,
-              friend: other_user,
-              status: :accepted
-            )
-
             expect(friendship.partner(other_user)).to eq(user)
           end
         end

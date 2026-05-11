@@ -1,3 +1,4 @@
+# spec/models/alarm_membership_spec.rb
 require "rails_helper"
 
 RSpec.describe AlarmMembership, type: :model do
@@ -100,7 +101,7 @@ RSpec.describe AlarmMembership, type: :model do
 
       context "AlarmLog のバリデーションが失敗する場合" do
         before do
-          alarm.update_column(:scheduled_at, 25.hours.ago)
+          alarm.update_column(:scheduled_at, 300.minutes.ago) # 境界値: 300分超でバリデーションが失敗する
         end
 
         it "false を返す" do
@@ -108,11 +109,17 @@ RSpec.describe AlarmMembership, type: :model do
         end
       end
 
-      context "正常にストップできた場合" do
+      context "AlarmLog のバリデーションが通過する場合" do
         before do
-          alarm.update_column(:scheduled_at, 1.minute.ago)
+          alarm.update_column(:scheduled_at, 299.minutes.ago) # 境界値: 299分以内でバリデーションが通る
         end
 
+        it "AlarmLog を返す" do
+          expect(membership.stop).to be_a(AlarmLog)
+        end
+      end
+
+      context "正常にストップできた場合" do
         it "AlarmLog を返す" do
           expect(membership.stop).to be_a(AlarmLog)
         end
@@ -123,10 +130,6 @@ RSpec.describe AlarmMembership, type: :model do
       end
 
       context "全員がストップ済みになった場合" do
-        before do
-          alarm.update_column(:scheduled_at, 1.minute.ago)
-        end
-
         it "alarm.stopped が true になる" do
           membership.stop
           expect(alarm.reload.stopped).to be true
@@ -134,10 +137,6 @@ RSpec.describe AlarmMembership, type: :model do
       end
 
       context "まだ全員がストップ済みでない場合" do
-        before do
-          alarm.update_column(:scheduled_at, 1.minute.ago)
-        end
-
         it "alarm.stopped は false のまま" do
           allow(membership).to receive(:all_members_stopped?).and_return(false)
           membership.stop
