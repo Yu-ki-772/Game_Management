@@ -69,7 +69,6 @@ RSpec.describe User, type: :model do
         .source(:message_template)
     end
 
-
     it do
       is_expected.to have_many(:web_push_subscriptions)
         .with_foreign_key(:user_uuid)
@@ -94,7 +93,6 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_presence_of(:name) }
 
     it { is_expected.to validate_length_of(:description).is_at_most(255) }
-
 
     # uid は `if: -> { uid.present? }` で条件付きのため、存在する場合・しない場合を分けて検証
     context "uid が存在する場合" do
@@ -210,7 +208,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-
   # ============================================================
   # インスタンスメソッド
   # ============================================================
@@ -240,22 +237,19 @@ RSpec.describe User, type: :model do
     # #pending_request_from?
     # ----------------------------------------------------------
     describe "#pending_request_from?" do
+      let(:user)       { create(:user) }
+      let(:other_user) { create(:user) }
+
       context "対象ユーザから pending のフレンドリクエストが来ている場合" do
         it "その Friendship を返す" do
-          user       = create(:user)
-          other_user = create(:user)
           # other_user → user への pending リクエストを作成する
           friendship = create(:friendship, user: other_user, friend: user)
-
           expect(user.pending_request_from?(other_user)).to eq(friendship)
         end
       end
 
       context "対象ユーザからフレンドリクエストが来ていない場合" do
         it "nil を返す" do
-          user       = create(:user)
-          other_user = create(:user)
-
           expect(user.pending_request_from?(other_user)).to be_nil
         end
       end
@@ -265,21 +259,18 @@ RSpec.describe User, type: :model do
     # #friendship_with
     # ----------------------------------------------------------
     describe "#friendship_with" do
+      let(:user)       { create(:user) }
+      let(:other_user) { create(:user) }
+
       context "対象ユーザとの Friendship が存在する場合" do
         it "その Friendship を返す" do
-          user       = create(:user)
-          other_user = create(:user)
           friendship = create(:friendship, user: user, friend: other_user)
-
           expect(user.friendship_with(other_user)).to eq(friendship)
         end
       end
 
       context "対象ユーザとの Friendship が存在しない場合" do
         it "nil を返す" do
-          user       = create(:user)
-          other_user = create(:user)
-
           expect(user.friendship_with(other_user)).to be_nil
         end
       end
@@ -289,24 +280,22 @@ RSpec.describe User, type: :model do
     # #bookmark / #unbookmark
     # ----------------------------------------------------------
     describe "#bookmark" do
+      let(:user)             { create(:user) }
+      let(:message_template) { create(:message_template) }
+
       it "message_template をブックマークに追加する" do
-        user             = create(:user)
-        message_template = create(:message_template)
-
         user.bookmark(message_template)
-
         expect(user.bookmarks_message_templates).to include(message_template)
       end
     end
 
     describe "#unbookmark" do
-      it "message_template をブックマークから削除する" do
-        user             = create(:user)
-        message_template = create(:message_template)
+      let(:user)             { create(:user) }
+      let(:message_template) { create(:message_template) }
 
+      it "message_template をブックマークから削除する" do
         user.bookmark(message_template) # 事前にブックマークしておく
         user.unbookmark(message_template)
-
         expect(user.bookmarks_message_templates).not_to include(message_template)
       end
     end

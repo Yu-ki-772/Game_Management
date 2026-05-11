@@ -45,7 +45,7 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
   describe "既にストップ済みのとき" do
     before do
       create(:web_push_subscription, user: user)
-      create(:alarm_log, alarm_uuid: alarm.uuid, user_uuid: user.uuid)
+      create(:alarm_log, alarm: alarm, user_uuid: user.uuid)
     end
 
     it "push通知を送信しない" do

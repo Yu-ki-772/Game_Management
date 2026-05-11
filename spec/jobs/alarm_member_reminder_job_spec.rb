@@ -6,9 +6,9 @@ RSpec.describe AlarmMemberReminderJob, type: :job do
     allow(WebPush).to receive(:payload_send)
   end
 
-  let(:user)             { create(:user) }
-  let(:alarm)            { create(:alarm, creator: user, user_uuid: user.uuid, scheduled_at: 30.minutes.from_now) }
-  let(:membership)       { alarm.alarm_memberships.find_by(user_uuid: user.uuid) }
+  let(:user)                { create(:user) }
+  let(:alarm)               { create(:alarm, creator: user, user_uuid: user.uuid, scheduled_at: 30.minutes.from_now) }
+  let(:membership)          { alarm.alarm_memberships.find_by(user_uuid: user.uuid) }
   let(:minutes_until_alarm) { 30 }
 
   # =========================================================
@@ -46,7 +46,7 @@ RSpec.describe AlarmMemberReminderJob, type: :job do
   describe "既にストップ済みのとき" do
     before do
       create(:web_push_subscription, user: user)
-      create(:alarm_log, alarm_uuid: alarm.uuid, user_uuid: user.uuid)
+      create(:alarm_log, alarm: alarm, user_uuid: user.uuid)
     end
 
     it "push通知を送信しない" do
