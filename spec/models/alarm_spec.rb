@@ -36,14 +36,12 @@ RSpec.describe Alarm, type: :model do
   # バリデーション
   # ============================================================
   describe "validations" do
-    # ---- label ----
     it { is_expected.to validate_presence_of(:label) }
     it { is_expected.to validate_length_of(:label).is_at_most(255) }
 
-    # ---- scheduled_at ----
     it { is_expected.to validate_presence_of(:scheduled_at) }
 
-    # ---- scheduled_at_must_be_in_the_future（カスタムバリデーション）----
+    # scheduled_at_must_be_in_the_future（カスタムバリデーション）
     describe "scheduled_at_must_be_in_the_future" do
       context "scheduled_at が未来の日時の場合" do
         it "有効である" do
@@ -61,7 +59,7 @@ RSpec.describe Alarm, type: :model do
       end
     end
 
-    # ---- started_at_must_be_before_scheduled_at（カスタムバリデーション）----
+    # started_at_must_be_before_scheduled_at（カスタムバリデーション）
     describe "started_at_must_be_before_scheduled_at" do
       context "started_at が存在する場合" do
         context "started_at が scheduled_at より前の場合" do
@@ -91,7 +89,7 @@ RSpec.describe Alarm, type: :model do
       end
     end
 
-    # ---- started_at_within_allowed_range（カスタムバリデーション）----
+    # started_at_within_allowed_range（カスタムバリデーション）
     describe "started_at_within_allowed_range" do
       context "started_at が存在する場合" do
         context "started_at が現在時刻から7時間以内の場合" do
@@ -127,9 +125,6 @@ RSpec.describe Alarm, type: :model do
   # インスタンスメソッド
   # ============================================================
   describe "instance methods" do
-    # ----------------------------------------------------------
-    # #start_time
-    # ----------------------------------------------------------
     describe "#start_time" do
       context "started_at が存在する場合" do
         it "started_at を返す" do
@@ -146,9 +141,6 @@ RSpec.describe Alarm, type: :model do
       end
     end
 
-    # ----------------------------------------------------------
-    # #time_text
-    # ----------------------------------------------------------
     describe "#time_text" do
       context "started_at が存在する場合" do
         it "started_at と scheduled_at を HH:MM - HH:MM 形式で返す" do
@@ -171,9 +163,6 @@ RSpec.describe Alarm, type: :model do
       end
     end
 
-    # ----------------------------------------------------------
-    # #belonging_to_membership?
-    # ----------------------------------------------------------
     describe "#belonging_to_membership?" do
       context "alarm_membership が存在する場合" do
         it "true を返す" do
@@ -191,9 +180,6 @@ RSpec.describe Alarm, type: :model do
       end
     end
 
-    # ----------------------------------------------------------
-    # #created_by?
-    # ----------------------------------------------------------
     describe "#created_by?" do
       context "渡したユーザーがアラームの作成者である場合" do
         it "true を返す" do
@@ -211,9 +197,6 @@ RSpec.describe Alarm, type: :model do
       end
     end
 
-    # ----------------------------------------------------------
-    # #accessible_by?
-    # ----------------------------------------------------------
     describe "#accessible_by?" do
       context "渡したユーザーがアラームの作成者である場合" do
         it "true を返す" do

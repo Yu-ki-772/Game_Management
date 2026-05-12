@@ -6,10 +6,7 @@ RSpec.describe "WebPushSubscriptions", type: :request do
 
   before { sign_in user }
 
-  # =========================================================
-  # DELETE /web_push_subscriptions (destroy)
-  # =========================================================
-  describe "DELETE /web_push_subscriptions" do
+  describe "destroy" do
     context "購読が存在するとき" do
       let!(:subscription) { create(:web_push_subscription, user: user) }
 

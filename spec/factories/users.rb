@@ -1,5 +1,9 @@
 # spec/factories/users.rb
 FactoryBot.define do
+  # SecureRandom.uuid はランダムなuuidを生成
+  # Faker::Name.name はランダムな人名を返す
+  # Faker::Internet.unique.email はユニークなメールアドレスを生成
+
   factory :user do
     uuid     { SecureRandom.uuid }
     name     { Faker::Name.name }

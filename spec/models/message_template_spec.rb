@@ -22,16 +22,16 @@ RSpec.describe MessageTemplate, type: :model do
   # バリデーション
   # ============================================================
   describe "validations" do
-    # ---- reason ----
     it { is_expected.to validate_presence_of(:reason) }
     it { is_expected.to validate_length_of(:reason).is_at_most(255) }
 
-    # ---- template ----
     it { is_expected.to validate_presence_of(:template) }
     it { is_expected.to validate_length_of(:template).is_at_most(255) }
   end
 
-
+  # ============================================================
+  # クラスメソッド
+  # ============================================================
   describe "class methods" do
     describe ".existing_reasons" do
       let(:user)       { create(:user) }
@@ -42,7 +42,7 @@ RSpec.describe MessageTemplate, type: :model do
         create(:message_template, user_uuid: user.uuid,       reason: "自分の理由")
         # 共通テンプレート（user_uuid: nil）
         create(:message_template, user_uuid: nil,             reason: "共通の理由")
-        # 他ユーザーのテンプレート（含まれないはず）
+        # 他ユーザーのテンプレート（取得結果に含まれないことを確認するために作成）
         create(:message_template, user_uuid: other_user.uuid, reason: "他人の理由")
       end
 

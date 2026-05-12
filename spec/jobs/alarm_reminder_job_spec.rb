@@ -5,9 +5,7 @@ RSpec.describe AlarmReminderJob, type: :job do
   let(:user)  { create(:user) }
   let(:alarm) { create(:alarm, creator: user, user_uuid: user.uuid, scheduled_at: 30.minutes.from_now) }
 
-  # =========================================================
-  # ガード節: アラームが存在しないとき
-  # =========================================================
+  # 異常系
   describe "アラームが存在しないとき" do
     it "AlarmMemberReminderJobをエンキューしない" do
       expect {
@@ -16,10 +14,8 @@ RSpec.describe AlarmReminderJob, type: :job do
     end
   end
 
-  # =========================================================
-  # ガード節: 未通知のメンバーが存在しないとき（全員ストップ済み）
-  # =========================================================
-  describe "未通知のメンバーが存在しないとき" do
+  # 異常系
+  describe "未通知のメンバーが存在しない（全員ストップ済み）とき" do
     before do
       create(:alarm_log, alarm: alarm, user_uuid: user.uuid)
     end
@@ -31,9 +27,7 @@ RSpec.describe AlarmReminderJob, type: :job do
     end
   end
 
-  # =========================================================
-  # 正常系: 未通知のメンバーが存在するとき
-  # =========================================================
+  # 正常系
   describe "未通知のメンバーが存在するとき" do
     it "未通知のメンバー分だけAlarmMemberReminderJobをエンキューする" do
       expect {

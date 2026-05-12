@@ -61,9 +61,6 @@ RSpec.describe AlarmMembership, type: :model do
   end
 
   describe "instance methods" do
-    # ----------------------------------------------------------
-    # #stopped?
-    # ----------------------------------------------------------
     describe "#stopped?" do
       let(:alarm)      { create(:alarm) }
       let(:membership) { alarm.alarm_memberships.first }

@@ -2,7 +2,7 @@
 require "rails_helper"
 
 RSpec.describe "Users::Registrations", type: :request do
-  describe "POST /users" do
+  describe "新規登録" do
     context "有効なパラメータのとき" do
       let(:registration_params) do
         {
@@ -57,7 +57,7 @@ RSpec.describe "Users::Registrations", type: :request do
     end
   end
 
-  describe "PATCH /users" do
+  describe "プロフィール更新" do
     let(:user) { create(:user) }
     before { sign_in user }
 

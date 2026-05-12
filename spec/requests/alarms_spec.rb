@@ -4,58 +4,52 @@ require "rails_helper"
 RSpec.describe "Alarms", type: :request do
   let(:user) { create(:user) }
 
-  # =========================================================
-  # 未ログインのとき
-  # =========================================================
   describe "未ログインのとき" do
-    it "GET /alarms はログイン画面にリダイレクトする" do
+    it "index はログイン画面にリダイレクトする" do
       get alarms_path
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "GET /alarms/new はログイン画面にリダイレクトする" do
+    it "new はログイン画面にリダイレクトする" do
       get new_alarm_path
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "GET /alarms/calendar はログイン画面にリダイレクトする" do
+    it "calendar はログイン画面にリダイレクトする" do
       get calendar_alarms_path
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "GET /alarms/pending はログイン画面にリダイレクトする" do
+    it "pending はログイン画面にリダイレクトする" do
       get pending_alarms_path
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "POST /alarms はログイン画面にリダイレクトする" do
+    it "create はログイン画面にリダイレクトする" do
       post alarms_path, params: { alarm: { label: "テスト", scheduled_at: 1.hour.from_now } }
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "GET /alarms/:id/edit はログイン画面にリダイレクトする" do
+    it "edit はログイン画面にリダイレクトする" do
       alarm = create(:alarm, creator: user, user_uuid: user.uuid)
       get edit_alarm_path(alarm)
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "PATCH /alarms/:id はログイン画面にリダイレクトする" do
+    it "update はログイン画面にリダイレクトする" do
       alarm = create(:alarm, creator: user, user_uuid: user.uuid)
       patch alarm_path(alarm), params: { alarm: { label: "変更後" } }
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "DELETE /alarms/:id はログイン画面にリダイレクトする" do
+    it "destroy はログイン画面にリダイレクトする" do
       alarm = create(:alarm, creator: user, user_uuid: user.uuid)
       delete alarm_path(alarm)
       expect(response).to redirect_to(new_user_session_path)
     end
   end
 
-  # =========================================================
-  # GET /alarms (index)
-  # =========================================================
-  describe "GET /alarms" do
+  describe "index" do
     before { sign_in user }
 
     it "200を返す" do
@@ -64,10 +58,7 @@ RSpec.describe "Alarms", type: :request do
     end
   end
 
-  # =========================================================
-  # GET /alarms/calendar (calendar)
-  # =========================================================
-  describe "GET /alarms/calendar" do
+  describe "calendar" do
     before { sign_in user }
 
     it "200を返す" do
@@ -76,10 +67,7 @@ RSpec.describe "Alarms", type: :request do
     end
   end
 
-  # =========================================================
-  # GET /alarms/pending (pending)
-  # =========================================================
-  describe "GET /alarms/pending" do
+  describe "pending" do
     before { sign_in user }
 
     it "200を返す" do
@@ -88,10 +76,7 @@ RSpec.describe "Alarms", type: :request do
     end
   end
 
-  # =========================================================
-  # GET /alarms/new (new)
-  # =========================================================
-  describe "GET /alarms/new" do
+  describe "new" do
     before { sign_in user }
 
     it "200を返す" do
@@ -100,10 +85,7 @@ RSpec.describe "Alarms", type: :request do
     end
   end
 
-  # =========================================================
-  # POST /alarms (create)
-  # =========================================================
-  describe "POST /alarms" do
+  describe "create" do
     before { sign_in user }
 
     context "有効なパラメータのとき" do
@@ -136,10 +118,7 @@ RSpec.describe "Alarms", type: :request do
     end
   end
 
-  # =========================================================
-  # GET /alarms/:id/edit (edit)
-  # =========================================================
-  describe "GET /alarms/:id/edit" do
+  describe "edit" do
     before { sign_in user }
 
     context "自分のアラームのとき" do
@@ -162,10 +141,7 @@ RSpec.describe "Alarms", type: :request do
     end
   end
 
-  # =========================================================
-  # PATCH /alarms/:id (update)
-  # =========================================================
-  describe "PATCH /alarms/:id" do
+  describe "update" do
     before { sign_in user }
 
     context "自分のアラームのとき" do
@@ -197,12 +173,7 @@ RSpec.describe "Alarms", type: :request do
     end
   end
 
-
-
-  # =========================================================
-  # DELETE /alarms/:id (destroy)
-  # =========================================================
-  describe "DELETE /alarms/:id" do
+  describe "destroy" do
     before { sign_in user }
 
     context "自分のアラームのとき" do
