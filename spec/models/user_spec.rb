@@ -212,9 +212,6 @@ RSpec.describe User, type: :model do
   # インスタンスメソッド
   # ============================================================
   describe "instance methods" do
-    # ----------------------------------------------------------
-    # #send_friend_request
-    # ----------------------------------------------------------
     describe "#send_friend_request" do
       let(:user)       { create(:user) }
       let(:other_user) { create(:user) }
@@ -233,9 +230,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-    # ----------------------------------------------------------
-    # #pending_request_from?
-    # ----------------------------------------------------------
     describe "#pending_request_from?" do
       let(:user)       { create(:user) }
       let(:other_user) { create(:user) }
@@ -255,9 +249,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-    # ----------------------------------------------------------
-    # #friendship_with
-    # ----------------------------------------------------------
     describe "#friendship_with" do
       let(:user)       { create(:user) }
       let(:other_user) { create(:user) }
@@ -276,9 +267,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-    # ----------------------------------------------------------
-    # #bookmark / #unbookmark
-    # ----------------------------------------------------------
     describe "#bookmark" do
       let(:user)             { create(:user) }
       let(:message_template) { create(:message_template) }
@@ -300,9 +288,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-    # ----------------------------------------------------------
-    # #avatar_image?
-    # ----------------------------------------------------------
     describe "#avatar_image?" do
       context "jpeg または png が添付されている場合" do
         it "true を返す" do

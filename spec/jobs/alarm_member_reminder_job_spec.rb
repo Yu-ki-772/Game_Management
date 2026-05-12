@@ -11,9 +11,7 @@ RSpec.describe AlarmMemberReminderJob, type: :job do
   let(:membership)          { alarm.alarm_memberships.find_by(user_uuid: user.uuid) }
   let(:minutes_until_alarm) { 30 }
 
-  # =========================================================
-  # 正常系: 全ての条件を満たすとき
-  # =========================================================
+  # 正常系
   describe "全ての条件を満たすとき" do
     before do
       create(:web_push_subscription, user: user)
@@ -30,9 +28,7 @@ RSpec.describe AlarmMemberReminderJob, type: :job do
     end
   end
 
-  # =========================================================
-  # ガード節: アラームが存在しないとき
-  # =========================================================
+  # 異常系
   describe "アラームが存在しないとき" do
     it "push通知を送信しない" do
       expect(WebPush).not_to receive(:payload_send)
@@ -40,9 +36,7 @@ RSpec.describe AlarmMemberReminderJob, type: :job do
     end
   end
 
-  # =========================================================
-  # ガード節: 既にストップ済みのとき
-  # =========================================================
+  # 異常系
   describe "既にストップ済みのとき" do
     before do
       create(:web_push_subscription, user: user)
@@ -55,9 +49,7 @@ RSpec.describe AlarmMemberReminderJob, type: :job do
     end
   end
 
-  # =========================================================
-  # ガード節: メンバーシップが存在しないとき
-  # =========================================================
+  # 異常系
   describe "メンバーシップが存在しないとき" do
     before do
       create(:web_push_subscription, user: user)
@@ -70,9 +62,7 @@ RSpec.describe AlarmMemberReminderJob, type: :job do
     end
   end
 
-  # =========================================================
-  # ガード節: 既にリマインダー通知済みのとき
-  # =========================================================
+  # 異常系
   describe "既にリマインダー通知済みのとき（reminder_notified: true）" do
     before do
       create(:web_push_subscription, user: user)
@@ -85,9 +75,7 @@ RSpec.describe AlarmMemberReminderJob, type: :job do
     end
   end
 
-  # =========================================================
-  # ガード節: ユーザーが存在しないとき
-  # =========================================================
+  # 異常系
   describe "ユーザーが存在しないとき" do
     before do
       allow(User).to receive(:find_by).and_return(nil)

@@ -15,6 +15,7 @@ RSpec.describe DiagnosisResult, type: :model do
     end
   end
 
+
   # ============================================================
   # バリデーション
   # ============================================================
@@ -33,7 +34,7 @@ RSpec.describe DiagnosisResult, type: :model do
       end
     end
 
-    describe :total_score do
+    describe "total_score" do
       it { is_expected.to validate_presence_of(:total_score) }
 
       it do
@@ -48,12 +49,7 @@ RSpec.describe DiagnosisResult, type: :model do
   # インスタンスメソッド
   # ============================================================
   describe "instance methods" do
-    # ----------------------------------------------------------
-    # #zone
-    # ----------------------------------------------------------
     describe "#zone" do
-      # 境界値を中心に検証
-
       context "total_score が 80 以上の場合" do
         it "境界値の 80 のとき green を返す" do
           result = build(:diagnosis_result, total_score: 80)
@@ -138,9 +134,6 @@ RSpec.describe DiagnosisResult, type: :model do
       end
     end
 
-    # ----------------------------------------------------------
-    # #axis_items
-    # ----------------------------------------------------------
     describe "#axis_items" do
       let(:result) do
         build(:diagnosis_result,

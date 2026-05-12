@@ -29,7 +29,7 @@ RSpec.describe Friendship, type: :model do
     it do
       is_expected.to validate_uniqueness_of(:user_uuid)
         .scoped_to(:friend_uuid)
-        .ignoring_case_sensitivity # UUID はDBに保存時に小文字へ正規化されるため、大文字での一意性検証を無効化
+        .ignoring_case_sensitivity # UUID はDBに保存時に小文字へ正規化されるのに対し、shoulda-matchers が大文字で一意性を検証しようとし失敗するため、大文字での一意性検証を無効化。
     end
   end
 
@@ -53,7 +53,7 @@ RSpec.describe Friendship, type: :model do
 
       context "accepted 状態でない場合（pending）" do
         it "nil を返す" do
-          # statusのデフォルトは pending
+          # statusカラムのデフォルト値は pending
           friendship = create(:friendship, user: user, friend: other_user)
           expect(friendship.partner(user)).to be_nil
         end

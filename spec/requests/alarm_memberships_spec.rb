@@ -5,43 +5,37 @@ RSpec.describe "AlarmMemberships", type: :request do
   let(:user)  { create(:user) }
   let(:alarm) { create(:alarm, creator: user, user_uuid: user.uuid) }
 
-  # =========================================================
-  # 未ログインのとき
-  # =========================================================
   describe "未ログインのとき" do
-    it "GET /alarms/:alarm_id/alarm_memberships/search_users はログイン画面にリダイレクトする" do
+    it "search_users はログイン画面にリダイレクトする" do
       get search_users_alarm_alarm_memberships_path(alarm)
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "POST /alarms/:alarm_id/alarm_memberships はログイン画面にリダイレクトする" do
+    it "create はログイン画面にリダイレクトする" do
       post alarm_alarm_memberships_path(alarm)
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "GET /alarms/:alarm_id/alarm_memberships/:id はログイン画面にリダイレクトする" do
+    it "show はログイン画面にリダイレクトする" do
       membership = alarm.alarm_memberships.find_by(user_uuid: user.uuid)
       get alarm_alarm_membership_path(alarm, membership)
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "DELETE /alarms/:alarm_id/alarm_memberships/:id はログイン画面にリダイレクトする" do
+    it "destroy はログイン画面にリダイレクトする" do
       membership = alarm.alarm_memberships.find_by(user_uuid: user.uuid)
       delete alarm_alarm_membership_path(alarm, membership)
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "PATCH /alarms/:alarm_id/alarm_memberships/:id/stop はログイン画面にリダイレクトする" do
+    it "stop はログイン画面にリダイレクトする" do
       membership = alarm.alarm_memberships.find_by(user_uuid: user.uuid)
       patch stop_alarm_alarm_membership_path(alarm, membership)
       expect(response).to redirect_to(new_user_session_path)
     end
   end
 
-  # =========================================================
-  # set_alarmの認可チェック
-  # =========================================================
-  describe "set_alarmの認可チェック" do
+  describe "アクセス権限のないユーザーのとき" do
     context "アクセス権限がないユーザー（作成者でもメンバーでもない）のとき" do
       let(:other_user)  { create(:user) }
       let(:other_alarm) { create(:alarm, creator: other_user, user_uuid: other_user.uuid) }
@@ -55,10 +49,7 @@ RSpec.describe "AlarmMemberships", type: :request do
     end
   end
 
-  # =========================================================
-  # GET /alarms/:alarm_id/alarm_memberships/search_users
-  # =========================================================
-  describe "GET /alarms/:alarm_id/alarm_memberships/search_users" do
+  describe "search_users" do
     before { sign_in user }
 
     it "200を返す" do
@@ -67,10 +58,7 @@ RSpec.describe "AlarmMemberships", type: :request do
     end
   end
 
-  # =========================================================
-  # POST /alarms/:alarm_id/alarm_memberships (create)
-  # =========================================================
-  describe "POST /alarms/:alarm_id/alarm_memberships" do
+  describe "create" do
     before { sign_in user }
 
     context "フレンドのユーザーを招待するとき" do
@@ -96,10 +84,7 @@ RSpec.describe "AlarmMemberships", type: :request do
     end
   end
 
-  # =========================================================
-  # GET /alarms/:alarm_id/alarm_memberships/:id (show)
-  # =========================================================
-  describe "GET /alarms/:alarm_id/alarm_memberships/:id" do
+  describe "show" do
     before { sign_in user }
 
     let(:membership) { alarm.alarm_memberships.find_by(user_uuid: user.uuid) }
@@ -110,10 +95,7 @@ RSpec.describe "AlarmMemberships", type: :request do
     end
   end
 
-  # =========================================================
-  # DELETE /alarms/:alarm_id/alarm_memberships/:id (destroy)
-  # =========================================================
-  describe "DELETE /alarms/:alarm_id/alarm_memberships/:id" do
+  describe "destroy" do
     before { sign_in user }
 
     context "メンバーシップが存在するとき" do
@@ -131,10 +113,7 @@ RSpec.describe "AlarmMemberships", type: :request do
     end
   end
 
-  # =========================================================
-  # PATCH /alarms/:alarm_id/alarm_memberships/:id/stop (stop)
-  # =========================================================
-  describe "PATCH /alarms/:alarm_id/alarm_memberships/:id/stop" do
+  describe "stop" do
     before { sign_in user }
 
     let(:alarm) do
@@ -163,7 +142,7 @@ RSpec.describe "AlarmMemberships", type: :request do
       end
     end
 
-    context "メンバーシップが存在しないとき" do
+    context "他のユーザーが別ユーザーのメンバーシップにアクセスしようとするとき" do
       let(:other_user)  { create(:user) }
       let(:membership)  { alarm.alarm_memberships.find_by(user_uuid: user.uuid) }
 

@@ -4,25 +4,19 @@ require "rails_helper"
 RSpec.describe "Users", type: :request do
   let(:user) { create(:user) }
 
-  # =========================================================
-  # 未ログインのとき
-  # =========================================================
   describe "未ログインのとき" do
-    it "GET /users はログイン画面にリダイレクトする" do
+    it "index はログイン画面にリダイレクトする" do
       get users_path
       expect(response).to redirect_to(new_user_session_path)
     end
 
-    it "GET /users/:id はログイン画面にリダイレクトする" do
+    it "show はログイン画面にリダイレクトする" do
       get user_path(user)
       expect(response).to redirect_to(new_user_session_path)
     end
   end
 
-  # =========================================================
-  # GET /users (index)
-  # =========================================================
-  describe "GET /users" do
+  describe "index" do
     before { sign_in user }
 
     context "検索クエリがないとき" do
@@ -42,10 +36,7 @@ RSpec.describe "Users", type: :request do
     end
   end
 
-  # =========================================================
-  # GET /users/:id (show)
-  # =========================================================
-  describe "GET /users/:id" do
+  describe "show" do
     before { sign_in user }
 
     context "自分のプロフィールを見るとき" do

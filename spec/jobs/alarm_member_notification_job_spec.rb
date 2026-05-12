@@ -10,9 +10,7 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
   let(:alarm)      { create(:alarm, creator: user, user_uuid: user.uuid, scheduled_at: 30.minutes.from_now) }
   let(:membership) { alarm.alarm_memberships.find_by(user_uuid: user.uuid) }
 
-  # =========================================================
-  # 正常系: 全ての条件を満たすとき
-  # =========================================================
+  # 正常系
   describe "全ての条件を満たすとき" do
     before do
       create(:web_push_subscription, user: user)
@@ -29,9 +27,7 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
     end
   end
 
-  # =========================================================
-  # ガード節: アラームが存在しないとき
-  # =========================================================
+  # 異常系
   describe "アラームが存在しないとき" do
     it "push通知を送信しない" do
       expect(WebPush).not_to receive(:payload_send)
@@ -39,9 +35,7 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
     end
   end
 
-  # =========================================================
-  # ガード節: 既にストップ済みのとき
-  # =========================================================
+  # 異常系
   describe "既にストップ済みのとき" do
     before do
       create(:web_push_subscription, user: user)
@@ -54,9 +48,7 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
     end
   end
 
-  # =========================================================
-  # ガード節: メンバーシップが存在しないとき
-  # =========================================================
+  # 異常系
   describe "メンバーシップが存在しないとき" do
     before do
       create(:web_push_subscription, user: user)
@@ -69,9 +61,7 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
     end
   end
 
-  # =========================================================
-  # ガード節: 既に通知済みのとき
-  # =========================================================
+  # 異常系
   describe "既に通知済みのとき（notified: true）" do
     before do
       create(:web_push_subscription, user: user)
@@ -84,9 +74,7 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
     end
   end
 
-  # =========================================================
-  # ガード節: ユーザーが存在しないとき
-  # =========================================================
+  # 異常系
   describe "ユーザーが存在しないとき" do
     before do
       allow(User).to receive(:find_by).and_return(nil)
@@ -103,9 +91,7 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
     end
   end
 
-  # =========================================================
-  # PushNotifiable（concern）: rescueブロックの検証
-  # =========================================================
+  # 異常系
   describe "WebPush::ExpiredSubscription が発生したとき" do
     before do
       create(:web_push_subscription, user: user)
@@ -120,6 +106,7 @@ RSpec.describe AlarmMemberNotificationJob, type: :job do
     end
   end
 
+  # 異常系
   describe "WebPush::ResponseError が発生したとき" do
     before do
       create(:web_push_subscription, user: user)
