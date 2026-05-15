@@ -2,7 +2,7 @@
 ### 「ゲーム時間が長引いてしまう」を解決する！
 ゲーム仲間との共同プレイにも目を向けた「ゲーム時間管理アプリ」です。
 
-<img width="600" src="https://github.com/user-attachments/assets/01fb9d6f-0dfa-4afe-bd04-503bae5b2dce" />
+<img width="650" src="https://github.com/user-attachments/assets/01fb9d6f-0dfa-4afe-bd04-503bae5b2dce" />
 
 
 
@@ -45,36 +45,41 @@ https://game-exit.com/
 
 
 ### アラーム機能
-
-<img src="https://github.com/user-attachments/assets/46d7a5d9-5333-4019-bc03-df6f77d8f458" width="600">
-
 ゲームの開始時間と終了時間を設定し、終了時間になったらブラウザから通知が届きます。<br>
 なお、リマインダーの設定も可能です。
 
+<img width="650" src="https://github.com/user-attachments/assets/93ac2618-f217-41f0-aaaf-7c573f6211a2" />
+
+
+
 ### フレンドとのアラーム共有機能
-
-<img src="https://github.com/user-attachments/assets/e2c4ffb7-2e50-4ead-bd0e-cf975b291ba7" width="600">
-
 フレンドをアラームに招待することでアラームを共有できます。<br>
 アラームに招待されたフレンドにもブラウザからの通知が届きます。
 
+<img src="https://github.com/user-attachments/assets/e2c4ffb7-2e50-4ead-bd0e-cf975b291ba7" width="650">
+
+
+
 ### プレイ時間の記録機能
-
-<img src="https://github.com/user-attachments/assets/6e34834c-3a59-46d5-9558-ffed893dbe9f" width="600">
-
 プレイ時間の記録を、グラフ等により複数の視点で確認できます。
 
+<img src="https://github.com/user-attachments/assets/6e34834c-3a59-46d5-9558-ffed893dbe9f" width="650">
+
+
+
 ### 定型文機能
-
-<img src="https://github.com/user-attachments/assets/838a06fd-f0b8-47f7-a406-4e7ede2b2cca" width="600">
-
 ゲーム仲間にやめるのを切り出しづらい場合に、事前に用意した定型文を即座にコピーし使用できます。
 
+<img src="https://github.com/user-attachments/assets/838a06fd-f0b8-47f7-a406-4e7ede2b2cca" width="650">
+
+
+
 ### 診断機能
-
-<img width="600" src="https://github.com/user-attachments/assets/25e4d791-1b59-4447-8b2b-8908894a1fda" />
-
 質問に答え、診断結果を確認することで、自分のゲームとの向き合い方を振り返ることができます。
+
+<img width="650" src="https://github.com/user-attachments/assets/25e4d791-1b59-4447-8b2b-8908894a1fda" />
+
+
 
 ### PWAインストール
 ブラウザからの通知が、ブラウザを閉じていても届くようにするために、PWA化を実装しました。
@@ -186,6 +191,22 @@ https://game-exit.com/
 - ゲーム時間管理度診断の結果を記録する `diagnosis_resultsテーブル` を `usersテーブル` と関連付けることで、ユーザーごとに診断履歴を管理できる設計にしています（※診断履歴の確認機能は今後実装する予定）。
 
 ## こだわった実装
+### 「PWAインストール」と「通知設定」の案内
+これらの案内モーダルにより、ユーザーが「どういった流れで通知が届くんだろう？」と迷うことを防止しています。
+#### <通知設定の案内モーダル>
+初回ログイン時に通知設定の案内モーダルが表示されるようにしています。
+
+<img width="650" src="https://github.com/user-attachments/assets/08007ee3-52d6-4c5a-b48f-aaa893f37003" />
+
+
+
+#### <PWAインストールの案内モーダル>
+また、アラーム初回作成時に、PWAインストールの案内モーダルが表示されるようにしています。
+
+<img width="650" src="https://github.com/user-attachments/assets/8888f106-8980-47ad-aa47-83e942675820" />
+
+
+---
 ### ダークモードのちらつき防止
 #### <問題点>
 「アプリを開いたときのダークモードへの切り替え」をJSファイル側で実装すると、ページ読み込み時に
@@ -211,8 +232,9 @@ https://game-exit.com/
 <%# JS %>
 <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 ```
+---
 ### ユーザー検索機能のプライバシー保護
-<img width="600" src="https://github.com/user-attachments/assets/7f49f6ee-fba8-419b-ab9a-eebc3e87806d" />
+<img width="650" src="https://github.com/user-attachments/assets/7f49f6ee-fba8-419b-ab9a-eebc3e87806d" />
 
 #### <問題点>
 ユーザー検索機能では、検索ワードがない状態で全ユーザーを表示してしまうと、 **本名で登録しているユーザーの名前が意図せず一覧画面に表示されてしまうリスク** があります。
