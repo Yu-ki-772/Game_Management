@@ -7,7 +7,7 @@ gem "rack", "~> 3.2", ">= 3.2.6"
 
 gem "addressable", "~> 2.9"
 
-gem 'net-imap', '~> 0.6.4'
+gem "net-imap", "~> 0.6.4"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
