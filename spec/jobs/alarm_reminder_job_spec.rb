@@ -1,7 +1,7 @@
 # spec/jobs/alarm_reminder_job_spec.rb
 require "rails_helper"
 
-RSpec.describe AlarmReminderJob, type: :job do
+RSpec.describe AlarmReminderJob do
   let(:user)  { create(:user) }
   let(:alarm) { create(:alarm, creator: user, user_uuid: user.uuid, scheduled_at: 30.minutes.from_now) }
 

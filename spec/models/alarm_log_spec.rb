@@ -1,7 +1,7 @@
 # spec/models/alarm_log_spec.rb
 require "rails_helper"
 
-RSpec.describe AlarmLog, type: :model do
+RSpec.describe AlarmLog do
   subject { build(:alarm_log) }
 
   # ============================================================
@@ -9,14 +9,14 @@ RSpec.describe AlarmLog, type: :model do
   # ============================================================
   describe "associations" do
     it do
-      is_expected.to belong_to(:alarm)
+      expect(subject).to belong_to(:alarm)
         .with_primary_key(:uuid)
         .with_foreign_key(:alarm_uuid)
     end
 
     # optional: true のため、user が nil でも有効であることも合わせて検証
     it do
-      is_expected.to belong_to(:user)
+      expect(subject).to belong_to(:user)
         .with_primary_key(:uuid)
         .with_foreign_key(:user_uuid)
         .optional

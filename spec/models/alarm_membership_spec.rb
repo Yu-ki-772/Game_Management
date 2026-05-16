@@ -1,7 +1,7 @@
 # spec/models/alarm_membership_spec.rb
 require "rails_helper"
 
-RSpec.describe AlarmMembership, type: :model do
+RSpec.describe AlarmMembership do
   subject { build(:alarm_membership) }
 
   # ============================================================
@@ -9,14 +9,14 @@ RSpec.describe AlarmMembership, type: :model do
   # ============================================================
   describe "associations" do
     it "user に belongs_to している" do
-      reflection = AlarmMembership.reflect_on_association(:user)
+      reflection = described_class.reflect_on_association(:user)
       expect(reflection.macro).to eq(:belongs_to)
       expect(reflection.options[:foreign_key]).to eq("user_uuid")
       expect(reflection.options[:primary_key]).to eq("uuid")
     end
 
     it "alarm に belongs_to している" do
-      reflection = AlarmMembership.reflect_on_association(:alarm)
+      reflection = described_class.reflect_on_association(:alarm)
       expect(reflection.macro).to eq(:belongs_to)
       expect(reflection.options[:foreign_key]).to eq("alarm_uuid")
       expect(reflection.options[:primary_key]).to eq("uuid")

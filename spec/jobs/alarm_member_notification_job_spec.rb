@@ -1,7 +1,7 @@
 # spec/jobs/alarm_member_notification_job_spec.rb
 require "rails_helper"
 
-RSpec.describe AlarmMemberNotificationJob, type: :job do
+RSpec.describe AlarmMemberNotificationJob do
   before do
     allow(WebPush).to receive(:payload_send)
   end

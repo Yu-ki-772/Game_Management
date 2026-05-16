@@ -1,7 +1,7 @@
 # spec/models/bookmark_spec.rb
 require "rails_helper"
 
-RSpec.describe Bookmark, type: :model do
+RSpec.describe Bookmark do
   subject { build(:bookmark) }
 
   # ============================================================
@@ -9,7 +9,7 @@ RSpec.describe Bookmark, type: :model do
   # ============================================================
   describe "associations" do
     it do
-      is_expected.to belong_to(:user)
+      expect(subject).to belong_to(:user)
         .with_primary_key(:uuid)
         .with_foreign_key(:user_uuid)
     end
@@ -22,7 +22,7 @@ RSpec.describe Bookmark, type: :model do
   # ============================================================
   describe "validations" do
     it do
-      is_expected.to validate_uniqueness_of(:user_uuid)
+      expect(subject).to validate_uniqueness_of(:user_uuid)
         .scoped_to(:message_template_id)
         .ignoring_case_sensitivity # UUID はDBに保存時に小文字へ正規化されるのに対し、shoulda-matchers が大文字で一意性を検証しようとし失敗するため、大文字での一意性検証を無効化。
     end

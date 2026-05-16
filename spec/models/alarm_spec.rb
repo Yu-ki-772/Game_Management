@@ -1,7 +1,7 @@
 # spec/models/alarm_spec.rb
 require "rails_helper"
 
-RSpec.describe Alarm, type: :model do
+RSpec.describe Alarm do
   subject { build(:alarm) }
 
   # ============================================================
@@ -9,21 +9,21 @@ RSpec.describe Alarm, type: :model do
   # ============================================================
   describe "associations" do
     it do
-      is_expected.to belong_to(:creator)
+      expect(subject).to belong_to(:creator)
         .class_name("User")
         .with_foreign_key(:user_uuid)
         .with_primary_key(:uuid)
     end
 
     it do
-      is_expected.to have_many(:alarm_logs)
+      expect(subject).to have_many(:alarm_logs)
         .with_primary_key(:uuid)
         .with_foreign_key(:alarm_uuid)
         .dependent(:destroy)
     end
 
     it do
-      is_expected.to have_many(:alarm_memberships)
+      expect(subject).to have_many(:alarm_memberships)
         .with_foreign_key(:alarm_uuid)
         .with_primary_key(:uuid)
         .dependent(:destroy)

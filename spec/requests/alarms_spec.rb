@@ -1,7 +1,7 @@
 # spec/requests/alarms_spec.rb
 require "rails_helper"
 
-RSpec.describe "Alarms", type: :request do
+RSpec.describe "Alarms" do
   let(:user) { create(:user) }
 
   describe "未ログインのとき" do
