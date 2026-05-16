@@ -18,8 +18,8 @@ RSpec.describe AlarmMemberReminderJob do
     end
 
     it "push通知を送信する" do
-      expect(WebPush).to receive(:payload_send).at_least(:once)
       described_class.perform_now(alarm.uuid, user.uuid, minutes_until_alarm)
+      expect(WebPush).to have_received(:payload_send).at_least(:once)
     end
 
     it "membershipのreminder_notifiedをtrueに更新する" do
@@ -31,8 +31,8 @@ RSpec.describe AlarmMemberReminderJob do
   # 異常系
   describe "アラームが存在しないとき" do
     it "push通知を送信しない" do
-      expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now("存在しないuuid", user.uuid, minutes_until_alarm)
+      expect(WebPush).not_to have_received(:payload_send)
     end
   end
 
@@ -44,8 +44,8 @@ RSpec.describe AlarmMemberReminderJob do
     end
 
     it "push通知を送信しない" do
-      expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now(alarm.uuid, user.uuid, minutes_until_alarm)
+      expect(WebPush).not_to have_received(:payload_send)
     end
   end
 
@@ -57,8 +57,8 @@ RSpec.describe AlarmMemberReminderJob do
     end
 
     it "push通知を送信しない" do
-      expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now(alarm.uuid, user.uuid, minutes_until_alarm)
+      expect(WebPush).not_to have_received(:payload_send)
     end
   end
 
@@ -70,8 +70,8 @@ RSpec.describe AlarmMemberReminderJob do
     end
 
     it "push通知を送信しない" do
-      expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now(alarm.uuid, user.uuid, minutes_until_alarm)
+      expect(WebPush).not_to have_received(:payload_send)
     end
   end
 
@@ -82,8 +82,8 @@ RSpec.describe AlarmMemberReminderJob do
     end
 
     it "push通知を送信しない" do
-      expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now(alarm.uuid, user.uuid, minutes_until_alarm)
+      expect(WebPush).not_to have_received(:payload_send)
     end
 
     it "reminder_notified が true にならない" do

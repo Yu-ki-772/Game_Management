@@ -17,8 +17,8 @@ RSpec.describe AlarmMemberNotificationJob do
     end
 
     it "push通知を送信する" do
-      expect(WebPush).to receive(:payload_send).at_least(:once)
       described_class.perform_now(alarm.uuid, user.uuid)
+      expect(WebPush).to have_received(:payload_send).at_least(:once)
     end
 
     it "membershipのnotifiedをtrueに更新する" do
@@ -30,8 +30,8 @@ RSpec.describe AlarmMemberNotificationJob do
   # 異常系
   describe "アラームが存在しないとき" do
     it "push通知を送信しない" do
-      expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now("存在しないuuid", user.uuid)
+      expect(WebPush).not_to have_received(:payload_send)
     end
   end
 
@@ -43,8 +43,8 @@ RSpec.describe AlarmMemberNotificationJob do
     end
 
     it "push通知を送信しない" do
-      expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now(alarm.uuid, user.uuid)
+      expect(WebPush).not_to have_received(:payload_send)
     end
   end
 
@@ -56,8 +56,8 @@ RSpec.describe AlarmMemberNotificationJob do
     end
 
     it "push通知を送信しない" do
-      expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now(alarm.uuid, user.uuid)
+      expect(WebPush).not_to have_received(:payload_send)
     end
   end
 
@@ -69,8 +69,8 @@ RSpec.describe AlarmMemberNotificationJob do
     end
 
     it "push通知を送信しない" do
-      expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now(alarm.uuid, user.uuid)
+      expect(WebPush).not_to have_received(:payload_send)
     end
   end
 
@@ -81,8 +81,8 @@ RSpec.describe AlarmMemberNotificationJob do
     end
 
     it "push通知を送信しない" do
-      expect(WebPush).not_to receive(:payload_send)
       described_class.perform_now(alarm.uuid, user.uuid)
+      expect(WebPush).not_to have_received(:payload_send)
     end
 
     it "notified が true にならない" do
@@ -95,7 +95,9 @@ RSpec.describe AlarmMemberNotificationJob do
   describe "WebPush::ExpiredSubscription が発生したとき" do
     before do
       create(:web_push_subscription, user: user)
+      # rubocop:disable RSpec/VerifiedDoubles
       response_double = double("response", body: "", code: "410")
+      # rubocop:enable RSpec/VerifiedDoubles
       allow(WebPush).to receive(:payload_send).and_raise(WebPush::ExpiredSubscription.new(response_double, "host"))
     end
 
@@ -110,7 +112,9 @@ RSpec.describe AlarmMemberNotificationJob do
   describe "WebPush::ResponseError が発生したとき" do
     before do
       create(:web_push_subscription, user: user)
+      # rubocop:disable RSpec/VerifiedDoubles
       response_double = double("response", body: "")
+      # rubocop:enable RSpec/VerifiedDoubles
       allow(WebPush).to receive(:payload_send).and_raise(WebPush::ResponseError.new(response_double, "host"))
     end
 
@@ -121,8 +125,9 @@ RSpec.describe AlarmMemberNotificationJob do
     end
 
     it "エラーログを出力する" do
-      expect(Rails.logger).to receive(:error).at_least(:once)
+      allow(Rails.logger).to receive(:error)
       described_class.perform_now(alarm.uuid, user.uuid)
+      expect(Rails.logger).to have_received(:error).at_least(:once)
     end
   end
 end

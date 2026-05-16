@@ -32,7 +32,7 @@ RSpec.describe "Users::Registrations" do
     end
 
     context "無効なパラメータのとき（メールアドレスが重複している）" do
-      let!(:existing_user) { create(:user, email: "duplicate@example.com") }
+      before { create(:user, email: "duplicate@example.com") }
 
       let(:duplicate_email_params) do
         {
