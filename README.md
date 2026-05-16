@@ -63,7 +63,7 @@ https://game-exit.com/
 ### プレイ時間の記録機能
 プレイ時間の記録を、グラフ等により複数の視点で確認できます。
 
-<img src="https://github.com/user-attachments/assets/6e34834c-3a59-46d5-9558-ffed893dbe9f" width="650">
+<img width="650" src="https://github.com/user-attachments/assets/9619c1b4-fb13-4ec1-bf9e-f552cf28e4b8" />
 
 
 
