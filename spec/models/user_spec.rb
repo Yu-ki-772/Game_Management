@@ -1,7 +1,7 @@
 # spec/models/user_spec.rb
 require "rails_helper"
 
-RSpec.describe User, type: :model do
+RSpec.describe User do
   subject { build(:user) }
 
   # ============================================================
@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
   # ============================================================
   describe "associations" do
     it do
-      is_expected.to have_many(:alarms)
+      expect(subject).to have_many(:alarms)
         .with_primary_key(:uuid)
         .with_foreign_key(:user_uuid)
         .dependent(:destroy)
@@ -18,7 +18,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:alarm_logs).through(:alarms) }
 
     it do
-      is_expected.to have_many(:direct_alarm_logs)
+      expect(subject).to have_many(:direct_alarm_logs)
         .class_name("AlarmLog")
         .with_foreign_key(:user_uuid)
         .with_primary_key(:uuid)
@@ -26,28 +26,28 @@ RSpec.describe User, type: :model do
     end
 
     it do
-      is_expected.to have_many(:message_templates)
+      expect(subject).to have_many(:message_templates)
         .with_primary_key(:uuid)
         .with_foreign_key(:user_uuid)
         .dependent(:destroy)
     end
 
     it do
-      is_expected.to have_many(:bookmarks)
+      expect(subject).to have_many(:bookmarks)
         .with_primary_key(:uuid)
         .with_foreign_key(:user_uuid)
         .dependent(:destroy)
     end
 
     it do
-      is_expected.to have_many(:friendships)
+      expect(subject).to have_many(:friendships)
         .with_primary_key(:uuid)
         .with_foreign_key(:user_uuid)
         .dependent(:destroy)
     end
 
     it do
-      is_expected.to have_many(:received_friendships)
+      expect(subject).to have_many(:received_friendships)
         .class_name("Friendship")
         .with_primary_key(:uuid)
         .with_foreign_key(:friend_uuid)
@@ -55,7 +55,7 @@ RSpec.describe User, type: :model do
     end
 
     it do
-      is_expected.to have_many(:alarm_memberships)
+      expect(subject).to have_many(:alarm_memberships)
         .with_foreign_key(:user_uuid)
         .with_primary_key(:uuid)
         .dependent(:destroy)
@@ -64,20 +64,20 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:member_alarms).through(:alarm_memberships).source(:alarm) }
 
     it do
-      is_expected.to have_many(:bookmarks_message_templates)
+      expect(subject).to have_many(:bookmarks_message_templates)
         .through(:bookmarks)
         .source(:message_template)
     end
 
     it do
-      is_expected.to have_many(:web_push_subscriptions)
+      expect(subject).to have_many(:web_push_subscriptions)
         .with_foreign_key(:user_uuid)
         .with_primary_key(:uuid)
         .dependent(:destroy)
     end
 
     it do
-      is_expected.to have_many(:diagnosis_results)
+      expect(subject).to have_many(:diagnosis_results)
         .with_primary_key(:uuid)
         .with_foreign_key(:user_uuid)
         .dependent(:destroy)
@@ -199,11 +199,11 @@ RSpec.describe User, type: :model do
       let!(:admin_user)  { create(:user, :admin) }
 
       it "管理者ユーザーを含まない" do
-        expect(User.non_admin).not_to include(admin_user)
+        expect(described_class.non_admin).not_to include(admin_user)
       end
 
       it "一般ユーザーを含む" do
-        expect(User.non_admin).to include(normal_user)
+        expect(described_class.non_admin).to include(normal_user)
       end
     end
   end

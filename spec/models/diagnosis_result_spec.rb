@@ -1,7 +1,7 @@
 # spec/models/diagnosis_result_spec.rb
 require "rails_helper"
 
-RSpec.describe DiagnosisResult, type: :model do
+RSpec.describe DiagnosisResult do
   subject { build(:diagnosis_result) }
 
   # ============================================================
@@ -9,7 +9,7 @@ RSpec.describe DiagnosisResult, type: :model do
   # ============================================================
   describe "associations" do
     it do
-      is_expected.to belong_to(:user)
+      expect(subject).to belong_to(:user)
         .with_primary_key(:uuid)
         .with_foreign_key(:user_uuid)
     end
@@ -27,7 +27,7 @@ RSpec.describe DiagnosisResult, type: :model do
         it { is_expected.to validate_presence_of(column) }
 
         it do
-          is_expected.to validate_numericality_of(column)
+          expect(subject).to validate_numericality_of(column)
             .is_greater_than_or_equal_to(0)
             .is_less_than_or_equal_to(25)
         end
@@ -38,7 +38,7 @@ RSpec.describe DiagnosisResult, type: :model do
       it { is_expected.to validate_presence_of(:total_score) }
 
       it do
-        is_expected.to validate_numericality_of(:total_score)
+        expect(subject).to validate_numericality_of(:total_score)
           .is_greater_than_or_equal_to(0)
           .is_less_than_or_equal_to(100)
       end
@@ -189,37 +189,37 @@ RSpec.describe DiagnosisResult, type: :model do
       end
 
       it "DiagnosisResult のインスタンスを返す" do
-        result = DiagnosisResult.build_from_answers(user, answers)
-        expect(result).to be_a(DiagnosisResult)
+        result = described_class.build_from_answers(user, answers)
+        expect(result).to be_a(described_class)
       end
 
       it "保存されていない状態で返す" do
-        result = DiagnosisResult.build_from_answers(user, answers)
+        result = described_class.build_from_answers(user, answers)
         expect(result).not_to be_persisted
       end
 
       it "control_score が正しく計算される" do
-        result = DiagnosisResult.build_from_answers(user, answers)
+        result = described_class.build_from_answers(user, answers)
         expect(result.control_score).to eq(25.0)
       end
 
       it "life_score が正しく計算される" do
-        result = DiagnosisResult.build_from_answers(user, answers)
+        result = described_class.build_from_answers(user, answers)
         expect(result.life_score).to eq(5.0)
       end
 
       it "quality_score が正しく計算される" do
-        result = DiagnosisResult.build_from_answers(user, answers)
+        result = described_class.build_from_answers(user, answers)
         expect(result.quality_score).to eq(15.0)
       end
 
       it "consistency_score が正しく計算される" do
-        result = DiagnosisResult.build_from_answers(user, answers)
+        result = described_class.build_from_answers(user, answers)
         expect(result.consistency_score).to eq(25.0)
       end
 
       it "total_score が正しく計算される" do
-        result = DiagnosisResult.build_from_answers(user, answers)
+        result = described_class.build_from_answers(user, answers)
         expect(result.total_score).to eq(70.0)
       end
     end

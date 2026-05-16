@@ -1,7 +1,7 @@
 # spec/requests/users/registrations_spec.rb
 require "rails_helper"
 
-RSpec.describe "Users::Registrations", type: :request do
+RSpec.describe "Users::Registrations" do
   describe "新規登録" do
     context "有効なパラメータのとき" do
       let(:registration_params) do
@@ -17,7 +17,7 @@ RSpec.describe "Users::Registrations", type: :request do
 
       it "ユーザーが1件作成される" do
         expect { post user_registration_path, params: registration_params }
-          .to change { User.count }.by(1)
+          .to change(User, :count).by(1)
       end
 
       it "root_pathにリダイレクトする" do
@@ -47,7 +47,7 @@ RSpec.describe "Users::Registrations", type: :request do
 
       it "ユーザーが作成されない" do
         expect { post user_registration_path, params: duplicate_email_params }
-          .not_to change { User.count }
+          .not_to change(User, :count)
       end
 
       it "422を返す" do
@@ -59,6 +59,7 @@ RSpec.describe "Users::Registrations", type: :request do
 
   describe "プロフィール更新" do
     let(:user) { create(:user) }
+
     before { sign_in user }
 
     context "有効なパラメータのとき" do

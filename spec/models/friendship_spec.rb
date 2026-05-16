@@ -1,7 +1,7 @@
 # spec/models/friendship_spec.rb
 require "rails_helper"
 
-RSpec.describe Friendship, type: :model do
+RSpec.describe Friendship do
   subject { build(:friendship) }
 
   # ============================================================
@@ -9,13 +9,13 @@ RSpec.describe Friendship, type: :model do
   # ============================================================
   describe "associations" do
     it do
-      is_expected.to belong_to(:user)
+      expect(subject).to belong_to(:user)
         .with_primary_key(:uuid)
         .with_foreign_key(:user_uuid)
     end
 
     it do
-      is_expected.to belong_to(:friend)
+      expect(subject).to belong_to(:friend)
         .class_name("User")
         .with_primary_key(:uuid)
         .with_foreign_key(:friend_uuid)
@@ -27,7 +27,7 @@ RSpec.describe Friendship, type: :model do
   # ============================================================
   describe "validations" do
     it do
-      is_expected.to validate_uniqueness_of(:user_uuid)
+      expect(subject).to validate_uniqueness_of(:user_uuid)
         .scoped_to(:friend_uuid)
         .ignoring_case_sensitivity # UUID はDBに保存時に小文字へ正規化されるのに対し、shoulda-matchers が大文字で一意性を検証しようとし失敗するため、大文字での一意性検証を無効化。
     end
@@ -38,7 +38,7 @@ RSpec.describe Friendship, type: :model do
   # ============================================================
   describe "enum" do
     it "status は pending と accepted の値を持つ" do
-      expect(Friendship.statuses).to eq({ "pending" => "pending", "accepted" => "accepted" })
+      expect(described_class.statuses).to eq({ "pending" => "pending", "accepted" => "accepted" })
     end
 
     it "status のデフォルトは pending である" do

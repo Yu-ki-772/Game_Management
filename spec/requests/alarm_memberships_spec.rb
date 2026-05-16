@@ -1,7 +1,7 @@
 # spec/requests/alarm_memberships_spec.rb
 require "rails_helper"
 
-RSpec.describe "AlarmMemberships", type: :request do
+RSpec.describe "AlarmMemberships" do
   let(:user)  { create(:user) }
   let(:alarm) { create(:alarm, creator: user, user_uuid: user.uuid) }
 
@@ -79,7 +79,7 @@ RSpec.describe "AlarmMemberships", type: :request do
 
       it "422を返す" do
         post alarm_alarm_memberships_path(alarm), params: { user_id: non_friend.uuid }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
@@ -138,7 +138,7 @@ RSpec.describe "AlarmMemberships", type: :request do
 
       it "422を返す" do
         patch stop_alarm_alarm_membership_path(alarm, membership)
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
 

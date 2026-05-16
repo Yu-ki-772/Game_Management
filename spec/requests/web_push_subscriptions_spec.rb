@@ -1,7 +1,7 @@
 # spec/requests/web_push_subscriptions_spec.rb
 require "rails_helper"
 
-RSpec.describe "WebPushSubscriptions", type: :request do
+RSpec.describe "WebPushSubscriptions" do
   let(:user) { create(:user) }
 
   before { sign_in user }
