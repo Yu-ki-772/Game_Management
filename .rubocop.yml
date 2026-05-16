@@ -3,6 +3,7 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
 plugins:
   - rubocop-rspec
+  - rubocop-factory_bot
 
 AllCops:
   NewCops: enable
@@ -26,4 +27,7 @@ RSpec/MultipleExpectations:
   Max: 3
 
 RSpec/NamedSubject:
+  Enabled: false
+
+FactoryBot/AssociationStyle:
   Enabled: false
