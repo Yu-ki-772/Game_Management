@@ -100,6 +100,7 @@ group :development, :test do
 
   gem 'rubocop-rspec', '~> 3.9', require: false
   gem 'rubocop-factory_bot', '~> 2.28', require: false
+  gem 'rubocop-capybara', '~> 2.23', require: false
 
   gem "rspec-rails", "~> 8.0"
   gem "factory_bot_rails", "~> 6.5", ">= 6.5.1"

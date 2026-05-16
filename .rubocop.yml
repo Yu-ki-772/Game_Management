@@ -4,6 +4,7 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 plugins:
   - rubocop-rspec
   - rubocop-factory_bot
+  - rubocop-capybara
 
 AllCops:
   NewCops: enable
