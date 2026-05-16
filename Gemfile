@@ -55,7 +55,7 @@ gem "action_text-trix", "~> 2.1"
 gem "web-push", "~> 3.1"
 
 # ユーザー認証
-gem "devise", "~> 5.0", ">= 5.0.3"
+gem "devise", "~> 5.0"
 gem "devise-i18n", "~> 1.16"
 gem "omniauth-google-oauth2", "~> 1.2"
 gem "omniauth-rails_csrf_protection", "~> 2.0", ">= 2.0.1"
