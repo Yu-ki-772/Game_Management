@@ -4,7 +4,7 @@ require "rails_helper"
 RSpec.describe User do
   subject { build(:user) }
 
-  
+
   describe "associations" do
     it do
       expect(subject).to have_many(:alarms)
