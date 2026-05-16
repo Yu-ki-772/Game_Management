@@ -150,11 +150,7 @@ RSpec.describe DiagnosisResult do
       end
 
       it "各軸データが icon・name・score キーを持つ" do
-        result.axis_items.each do |item|
-          expect(item).to have_key(:icon)
-          expect(item).to have_key(:name)
-          expect(item).to have_key(:score)
-        end
+        expect(result.axis_items).to all(include(:icon, :name, :score))
       end
 
       it "control_score が Float として score に設定される" do

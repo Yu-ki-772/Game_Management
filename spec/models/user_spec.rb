@@ -4,9 +4,7 @@ require "rails_helper"
 RSpec.describe User do
   subject { build(:user) }
 
-  # ============================================================
-  # アソシエーション
-  # ============================================================
+
   describe "associations" do
     it do
       expect(subject).to have_many(:alarms)
@@ -86,9 +84,6 @@ RSpec.describe User do
     it { is_expected.to have_one_attached(:avatar) }
   end
 
-  # ============================================================
-  # バリデーション
-  # ============================================================
   describe "validations" do
     it { is_expected.to validate_presence_of(:name) }
 
@@ -114,12 +109,14 @@ RSpec.describe User do
       context "jpeg または png が添付されている場合" do
         it "有効と判定される" do
           user = build(:user)
+          # rubocop:disable RSpec/VerifiedDoubles
           blob_double = double("blob", byte_size: 1.megabyte)
           attachment_double = double("attachment",
             attached?: true,
             content_type: "image/jpeg",
             blob: blob_double
           )
+          # rubocop:enable RSpec/VerifiedDoubles
           allow(user).to receive(:avatar).and_return(attachment_double)
 
           user.valid?
@@ -130,12 +127,14 @@ RSpec.describe User do
       context "jpeg・png 以外のファイルが添付されている場合" do
         it "エラーが追加される" do
           user = build(:user)
+          # rubocop:disable RSpec/VerifiedDoubles
           blob_double = double("blob", byte_size: 1.megabyte)
           attachment_double = double("attachment",
             attached?: true,
             content_type: "image/gif",
             blob: blob_double
           )
+          # rubocop:enable RSpec/VerifiedDoubles
           allow(user).to receive(:avatar).and_return(attachment_double)
 
           user.valid?
@@ -146,7 +145,9 @@ RSpec.describe User do
       context "アバターが添付されていない場合" do
         it "バリデーションはスキップされる" do
           user = build(:user)
+          # rubocop:disable RSpec/VerifiedDoubles
           attachment_double = double("attachment", attached?: false)
+          # rubocop:enable RSpec/VerifiedDoubles
           allow(user).to receive(:avatar).and_return(attachment_double)
 
           user.valid?
@@ -159,12 +160,14 @@ RSpec.describe User do
       context "2MB 以内の場合" do
         it "有効と判定される" do
           user = build(:user)
+          # rubocop:disable RSpec/VerifiedDoubles
           blob_double = double("blob", byte_size: 1.megabyte)
           attachment_double = double("attachment",
             attached?: true,
             blob: blob_double,
             content_type: "image/jpeg"
           )
+          # rubocop:enable RSpec/VerifiedDoubles
           allow(user).to receive(:avatar).and_return(attachment_double)
 
           user.valid?
@@ -175,12 +178,14 @@ RSpec.describe User do
       context "2MB を超える場合" do
         it "エラーが追加される" do
           user = build(:user)
+          # rubocop:disable RSpec/VerifiedDoubles
           blob_double = double("blob", byte_size: 3.megabytes)
           attachment_double = double("attachment",
             attached?: true,
             blob: blob_double,
             content_type: "image/jpeg"
           )
+          # rubocop:enable RSpec/VerifiedDoubles
           allow(user).to receive(:avatar).and_return(attachment_double)
 
           user.valid?
@@ -190,9 +195,6 @@ RSpec.describe User do
     end
   end
 
-  # ============================================================
-  # スコープ
-  # ============================================================
   describe "scopes" do
     describe ".non_admin" do
       let!(:normal_user) { create(:user) }
@@ -208,9 +210,6 @@ RSpec.describe User do
     end
   end
 
-  # ============================================================
-  # インスタンスメソッド
-  # ============================================================
   describe "instance methods" do
     describe "#send_friend_request" do
       let(:user)       { create(:user) }
@@ -292,10 +291,12 @@ RSpec.describe User do
       context "jpeg または png が添付されている場合" do
         it "true を返す" do
           user = build(:user)
+          # rubocop:disable RSpec/VerifiedDoubles
           attachment_double = double("attachment",
             attached?: true,
             content_type: "image/jpeg"
           )
+          # rubocop:enable RSpec/VerifiedDoubles
           allow(user).to receive(:avatar).and_return(attachment_double)
 
           expect(user.avatar_image?).to be true
@@ -305,10 +306,12 @@ RSpec.describe User do
       context "jpeg・png 以外のファイルが添付されている場合" do
         it "false を返す" do
           user = build(:user)
+          # rubocop:disable RSpec/VerifiedDoubles
           attachment_double = double("attachment",
             attached?: true,
             content_type: "image/gif"
           )
+          # rubocop:enable RSpec/VerifiedDoubles
           allow(user).to receive(:avatar).and_return(attachment_double)
 
           expect(user.avatar_image?).to be false
@@ -318,7 +321,9 @@ RSpec.describe User do
       context "アバターが添付されていない場合" do
         it "false を返す" do
           user = build(:user)
+          # rubocop:disable RSpec/VerifiedDoubles
           attachment_double = double("attachment", attached?: false)
+          # rubocop:enable RSpec/VerifiedDoubles
           allow(user).to receive(:avatar).and_return(attachment_double)
 
           expect(user.avatar_image?).to be false

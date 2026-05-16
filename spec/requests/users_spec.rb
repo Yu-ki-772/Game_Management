@@ -27,7 +27,7 @@ RSpec.describe "Users" do
     end
 
     context "検索クエリがあるとき" do
-      let!(:target_user) { create(:user, name: "検索対象ユーザー") }
+      before { create(:user, name: "検索対象ユーザー") }
 
       it "200を返す" do
         get users_path, params: { q: { name_cont: "検索対象" } }
