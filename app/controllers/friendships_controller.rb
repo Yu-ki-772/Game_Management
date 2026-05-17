@@ -97,7 +97,7 @@ class FriendshipsController < ApplicationController
   private
 
   def set_friendship_for_update
-    @friendship = current_user.received_friendships.find(params[:id])
+    @friendship = Friendship.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "指定されたフレンド申請が見つかりません"
     redirect_to friendships_path
@@ -105,10 +105,6 @@ class FriendshipsController < ApplicationController
 
   def set_friendship_for_destroy
     @friendship = Friendship.find(params[:id])
-    unless @friendship.user_uuid == current_user.uuid || @friendship.friend_uuid == current_user.uuid
-      flash[:alert] = "この操作は許可されていません"
-      redirect_to friendships_path
-    end
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "指定されたフレンド関係が見つかりません"
     redirect_to friendships_path
