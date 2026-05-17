@@ -60,6 +60,12 @@ RSpec.describe "Friendships" do
         post friendships_path, params: { friend_uuid: other_user.uuid }
         expect(response).to redirect_to(users_path)
       end
+
+      it "Friendshipが1件作成される" do
+        expect {
+          post friendships_path, params: { friend_uuid: other_user.uuid }
+        }.to change(Friendship, :count).by(1)
+      end
     end
   end
 
@@ -74,12 +80,23 @@ RSpec.describe "Friendships" do
           patch friendship_path(friendship), params: { action_type: "accept" }
           expect(response).to redirect_to(pending_friendships_path)
         end
+
+        it "ステータスがacceptedになる" do
+          patch friendship_path(friendship), params: { action_type: "accept" }
+          expect(friendship.reload.status).to eq("accepted")
+        end
       end
 
       context "拒否するとき" do
         it "pending_friendships_pathにリダイレクトする" do
           patch friendship_path(friendship), params: { action_type: "reject" }
           expect(response).to redirect_to(pending_friendships_path)
+        end
+
+        it "Friendshipが削除される" do
+          expect {
+            patch friendship_path(friendship), params: { action_type: "reject" }
+          }.to change(Friendship, :count).by(-1)
         end
       end
     end
@@ -104,6 +121,12 @@ RSpec.describe "Friendships" do
       it "friendships_pathにリダイレクトする" do
         delete friendship_path(friendship)
         expect(response).to redirect_to(friendships_path)
+      end
+
+      it "フレンド関係が削除される" do
+        expect {
+          delete friendship_path(friendship)
+        }.to change(Friendship, :count).by(-1)
       end
     end
 
