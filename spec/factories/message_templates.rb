@@ -6,5 +6,11 @@ FactoryBot.define do
     user_uuid { user.uuid }
     reason   { Faker::Lorem.sentence }
     template { Faker::Lorem.sentence }
+
+    # ユーザ登録時から存在する共通のデフォルト定型文
+    trait :common do
+      user      { nil }
+      user_uuid { nil }
+    end
   end
 end
