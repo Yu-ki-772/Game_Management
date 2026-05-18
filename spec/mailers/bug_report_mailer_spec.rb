@@ -12,7 +12,7 @@ RSpec.describe BugReportMailer do
     end
 
     it "宛先が OWNER_EMAIL であること" do
-      expect(mail.to).to eq(["owner@example.com"])
+      expect(mail.to).to eq([ "owner@example.com" ])
     end
 
     it "件名が正しいこと" do
