@@ -1,8 +1,5 @@
 # app/helpers/alarms_helper.rb
 module AlarmsHelper
-
-
-
   # Xでのalarm_logの共有用
   def x_share_url_for_alarm_log(alarm_log)
     base_url = "https://x.com/intent/tweet"
