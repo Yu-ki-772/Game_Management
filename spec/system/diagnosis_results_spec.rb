@@ -1,7 +1,7 @@
 # spec/system/diagnosis_results_spec.rb
 require "rails_helper"
 
-RSpec.describe "ゲーム時間管理度診断", type: :system do
+RSpec.describe "ゲーム時間管理度診断" do
   let(:user) { create(:user) }
 
   before do
@@ -21,7 +21,7 @@ RSpec.describe "ゲーム時間管理度診断", type: :system do
 
   describe "回答の選択" do
     it "1問回答すると進捗カウンターが 1 / 8 に更新される" do
-      all("label", text: "ほとんどない").first.click
+      first("label", text: "ほとんどない").click
 
       expect(page).to have_text("1 / 8")
     end

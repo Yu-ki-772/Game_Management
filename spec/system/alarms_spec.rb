@@ -1,7 +1,7 @@
 # spec/system/alarms_spec.rb
 require "rails_helper"
 
-RSpec.describe "アラーム管理", type: :system do
+RSpec.describe "アラーム管理" do
   let(:user) { create(:user) }
 
   before { login_as(user, scope: :user) }
@@ -21,12 +21,12 @@ RSpec.describe "アラーム管理", type: :system do
       within "#alarms_list" do
         expect(page).to have_text("テストアラーム")
       end
-      expect(page).not_to have_text("日時とラベルを設定してください")
+      expect(page).to have_no_text("日時とラベルを設定してください")
     end
   end
 
   describe "アラームの更新" do
-    let!(:alarm) do
+    before do
       create(:alarm, creator: user, user_uuid: user.uuid,
              label: "旧ラベル", scheduled_at: 1.day.from_now)
     end
@@ -44,7 +44,7 @@ RSpec.describe "アラーム管理", type: :system do
       within "#alarms_list" do
         expect(page).to have_text("新ラベル")
       end
-      expect(page).not_to have_text("日時とラベルを設定してください")
+      expect(page).to have_no_text("日時とラベルを設定してください")
     end
   end
 end

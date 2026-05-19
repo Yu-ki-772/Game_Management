@@ -1,7 +1,7 @@
 # spec/system/friendships_spec.rb
 require "rails_helper"
 
-RSpec.describe "フレンド管理", type: :system do
+RSpec.describe "フレンド管理" do
   let(:user)   { create(:user) }
   let(:target) { create(:user) }
 
@@ -18,7 +18,7 @@ RSpec.describe "フレンド管理", type: :system do
   end
 
   describe "フレンド申請の承認" do
-    let!(:friendship) { create(:friendship, user: target, friend: user, status: :pending) }
+    before { create(:friendship, user: target, friend: user, status: :pending) }
 
     it "承認後に pending リストから消える" do
       visit pending_friendships_path
@@ -29,12 +29,12 @@ RSpec.describe "フレンド管理", type: :system do
 
       click_button "承認"
 
-      expect(page).not_to have_css("#pending_list_section", text: target.name)
+      expect(page).to have_no_css("#pending_list_section", text: target.name)
     end
   end
 
   describe "フレンド関係の解除" do
-    let!(:friendship) { create(:friendship, user: user, friend: target, status: :accepted) }
+    before { create(:friendship, user: user, friend: target, status: :accepted) }
 
     it "解除後にリストから消える" do
       visit friendships_path
@@ -47,7 +47,7 @@ RSpec.describe "フレンド管理", type: :system do
         click_button "解除"
       end
 
-      expect(page).not_to have_css("#friends_list_section", text: target.name)
+      expect(page).to have_no_css("#friends_list_section", text: target.name)
     end
   end
 end

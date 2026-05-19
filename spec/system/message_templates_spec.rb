@@ -1,7 +1,7 @@
 # spec/system/message_templates_spec.rb
 require "rails_helper"
 
-RSpec.describe "定型文管理", type: :system do
+RSpec.describe "定型文管理" do
   let(:user) { create(:user) }
 
   before { login_as(user, scope: :user) }
@@ -18,7 +18,7 @@ RSpec.describe "定型文管理", type: :system do
         click_button "作成する"
       end
 
-      expect(page).not_to have_text("カテゴリごとにグループ化されます")
+      expect(page).to have_no_text("カテゴリごとにグループ化されます")
 
       click_button "やめる理由"
 
@@ -29,7 +29,7 @@ RSpec.describe "定型文管理", type: :system do
   end
 
   describe "定型文の削除" do
-    let!(:template) do
+    before do
       create(:message_template, user_uuid: user.uuid,
              reason: "やめる理由", template: "削除対象の定型文")
     end
@@ -47,7 +47,7 @@ RSpec.describe "定型文管理", type: :system do
         click_button "削除"
       end
 
-      expect(page).not_to have_text("削除対象の定型文")
+      expect(page).to have_no_text("削除対象の定型文")
     end
   end
 end

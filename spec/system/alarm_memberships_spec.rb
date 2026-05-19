@@ -1,7 +1,7 @@
 # spec/system/alarm_memberships_spec.rb
 require "rails_helper"
 
-RSpec.describe "アラームメンバー管理", type: :system do
+RSpec.describe "アラームメンバー管理" do
   let(:creator) { create(:user) }
   let(:friend)  { create(:user) }
   let!(:alarm) do
@@ -9,7 +9,7 @@ RSpec.describe "アラームメンバー管理", type: :system do
   end
 
   before do
-    allow_any_instance_of(Alarm).to receive(:schedule_notification_job)
+    allow_any_instance_of(Alarm).to receive(:schedule_notification_job) # rubocop:disable RSpec/AnyInstance
     create(:friendship, user: creator, friend: friend, status: :accepted)
     login_as(creator, scope: :user)
   end
