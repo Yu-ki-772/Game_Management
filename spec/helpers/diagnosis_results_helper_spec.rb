@@ -66,13 +66,14 @@ RSpec.describe DiagnosisResultsHelper do
     end
 
     context "zone が red のとき" do
-      it "絵文字が含まれない（バグ）" do
+      it "絵文字が含まれない" do
         result = build(:diagnosis_result, total_score: 29)
-        text = decoded_text(result)
-        expect(text).not_to include("🟢")
-        expect(text).not_to include("🟡")
-        expect(text).not_to include("🟠")
-        expect(text).to include("29")
+        expect(decoded_text(result)).not_to match(/🟢|🟡|🟠/)
+      end
+
+      it "total_score を含む" do
+        result = build(:diagnosis_result, total_score: 29)
+        expect(decoded_text(result)).to include("29")
       end
     end
   end
