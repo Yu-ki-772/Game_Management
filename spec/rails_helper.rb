@@ -35,5 +35,5 @@ RSpec.configure do |config|
   config.include ActiveJob::TestHelper, type: :job
 
   config.include Warden::Test::Helpers, type: :system
-  config.after { Warden.test_reset! }
+  config.after(:each, type: :system) { Warden.test_reset! }
 end
