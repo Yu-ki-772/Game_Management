@@ -17,6 +17,12 @@ RUN apt-get update && \
     apt-get install -y libvips42 libvips-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# system spec 用（Chromium本体 + Selenium WebDriver とのブリッジ）
+RUN apt-get update && \
+    apt-get install -y chromium chromium-driver && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
     
 RUN mkdir /myapp
 WORKDIR /myapp
