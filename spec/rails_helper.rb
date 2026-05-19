@@ -33,4 +33,7 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include ActiveJob::TestHelper, type: :job
+
+  config.include Warden::Test::Helpers, type: :system
+  config.after { Warden.test_reset! }
 end

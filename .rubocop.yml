@@ -1,35 +1,29 @@
+# .rubocop.yml
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
-
 plugins:
   - rubocop-rspec
   - rubocop-factory_bot
   - rubocop-capybara
   - rubocop-rspec_rails
-
 AllCops:
   NewCops: enable
-
 # Overwrite or add rules to create your own house style
 #
 # # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
 # Layout/SpaceInsideArrayLiteralBrackets:
 #   Enabled: false
-
 RSpec/ContextWording:
   Enabled: false
-
 RSpec/NestedGroups:
   Max: 5
-
 RSpec/ExampleLength:
   Max: 10
-
+  Exclude:
+    - 'spec/system/**/*'
 RSpec/MultipleExpectations:
   Max: 3
-
 RSpec/NamedSubject:
   Enabled: false
-
 FactoryBot/AssociationStyle:
   Enabled: false
