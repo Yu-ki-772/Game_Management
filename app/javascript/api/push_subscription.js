@@ -1,8 +1,7 @@
 // app/javascript/api/push_subscription.js
-//
 
 // 元の push_notification_controller.js から
-// Push API の操作と 公開鍵の文字列変換を抜き出したクラス。
+// Push API の操作と公開鍵の文字列変換を抜き出したクラス。
 export class PushSubscriptionService {
   constructor(vapidPublicKey) {
     this.vapidPublicKey = vapidPublicKey
@@ -34,10 +33,6 @@ export class PushSubscriptionService {
       })
     })
 
-    // レスポンスボディをTurboに委譲
-    const html = await response.text()
-    Turbo.renderStreamMessage(html)
-
     return response.ok
   }
 
@@ -47,10 +42,6 @@ export class PushSubscriptionService {
       headers: csrfHeaders(),
       body: JSON.stringify({ endpoint: subscription.endpoint })
     })
-
-    // レスポンスボディをTurboに委譲
-    const html = await response.text()
-    Turbo.renderStreamMessage(html)  
 
     return response.ok
   }
