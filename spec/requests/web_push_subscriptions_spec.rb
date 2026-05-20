@@ -10,11 +10,11 @@ RSpec.describe "WebPushSubscriptions" do
     context "購読が存在するとき" do
       let!(:subscription) { create(:web_push_subscription, user: user) }
 
-      it "200を返す" do
+      it "204を返す" do
         delete web_push_subscriptions_path,
           params: { endpoint: subscription.endpoint },
           headers: { "Accept" => "text/vnd.turbo-stream.html" }
-        expect(response).to have_http_status(:ok)
+        expect(response).to have_http_status(:no_content)
       end
 
       it "購読が削除される" do
@@ -27,11 +27,11 @@ RSpec.describe "WebPushSubscriptions" do
     end
 
     context "購読が存在しないとき" do
-      it "200を返す" do
+      it "204を返す" do
         delete web_push_subscriptions_path,
           params: { endpoint: "存在しないendpoint" },
           headers: { "Accept" => "text/vnd.turbo-stream.html" }
-        expect(response).to have_http_status(:ok)
+        expect(response).to have_http_status(:no_content)
       end
     end
   end
