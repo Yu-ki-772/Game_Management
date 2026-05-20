@@ -121,7 +121,7 @@ MVC・ルーティング・DB設計など必要な要素が整理されており
 ⭐ **Hotwire（Turbo / Stimulus）** はバニラJSよりHotwireのほうがRailsとの一貫性を保ちながら可読性高く書けること、またRails 8の標準スタックである点から長期的なメンテナンス面でも安心感があり選定した。
 
 ### データベースに PostgreSQL を選んだ理由
-バックグラウンドジョブのキューアダプタにGood Job gemを採用しており、Good JobはPostgreSQLのみで動作するため。
+バックグラウンドジョブのキューアダプタにGood Job gemを採用しており、Good JobはPostgreSQLでのみ動作するため。
 
 ### バックグラウンドジョブのキューアダプタに Good Job を選んだ理由
 
