@@ -95,7 +95,7 @@ https://game-exit.com/
 | カテゴリ | 技術 |
 | --- | --- |
 | バックエンド | Ruby on Rails 8 |
-| フロントエンド | Hotwire / Tailwind CSS 4 |
+| フロントエンド | Hotwire（Turbo / Stimulus） / Tailwind CSS 4 |
 | データベース | PostgreSQL |
 | バックグラウンドジョブのキューアダプタ | Good Job |
 | ブラウザからのプッシュ通知 | Web Push（gem）、Push API |
@@ -111,6 +111,17 @@ https://game-exit.com/
 
 
 ## 技術選定理由
+
+### バックエンドに Ruby on Rails を選んだ理由
+MVC・ルーティング・DB設計など必要な要素が整理されており、「この処理はなぜここに書くのか」という設計判断を実装とセットで身につけられる点を評価した。技術の幅を広げるよりRailsで設計力・実装力を深めてユーザーに価値を届けることを優先した判断。
+
+### フロントエンド
+**Hotwire（Turbo / Stimulus）を選んだ理由**<br>
+・ Reactは本アプリには複雑な状態管理等が不要なため過剰と判断。<br>
+⭐ **Hotwire（Turbo / Stimulus）** はバニラJSよりHotwireのほうがRailsとの一貫性を保ちながら可読性高く書けること、またRails 8の標準スタックである点から長期的なメンテナンス面でも安心感があり選定した。
+
+### データベースに PostgreSQL を選んだ理由
+バックグラウンドジョブのキューアダプタにGood Job gemを採用しており、Good JobはPostgreSQLのみで動作するため。
 
 ### バックグラウンドジョブのキューアダプタに Good Job を選んだ理由
 
