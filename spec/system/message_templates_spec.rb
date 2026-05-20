@@ -20,7 +20,7 @@ RSpec.describe "定型文管理" do
 
       expect(page).to have_no_text("カテゴリごとにグループ化されます")
 
-      find("button", text: "やめる理由").click
+      find("button", text: "やめる理由").click # rubocop:disable Capybara/SpecificActions
 
       within "#manage_list_content" do
         expect(page).to have_text("テスト定型文")
@@ -37,7 +37,7 @@ RSpec.describe "定型文管理" do
     it "削除後にリストから消える" do
       visit manage_message_templates_path
 
-      find("button", text: "やめる理由").click
+      find("button", text: "やめる理由").click # rubocop:disable Capybara/SpecificActions
 
       within "#manage_list_content" do
         expect(page).to have_text("削除対象の定型文")
