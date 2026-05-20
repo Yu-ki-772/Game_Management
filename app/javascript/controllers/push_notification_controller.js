@@ -68,24 +68,20 @@ export default class extends Controller {
   }
 
   async unsubscribe() {
-    const btn = this.hasUnsubscribeBtnTarget ? this.unsubscribeBtnTarget : null
-    const originalText = btn?.textContent
-    if (btn) {
-      btn.disabled = true
-      btn.textContent = "解除中..."
-    }
+    if (!this.hasUnsubscribeBtnTarget) return
+
+    const btn = this.unsubscribeBtnTarget
+    const originalText = btn.textContent
+    btn.disabled = true
+    btn.textContent = "解除中..."
 
     try {
       const subscription = await this.service.getSubscription()
 
-      if (!subscription) {
-        return
-      }
+      if (!subscription) return
 
       const success = await this.service.deleteSubscription(subscription)
-      if (!success) {
-        return
-      }
+      if (!success) return
 
       await subscription.unsubscribe()
 
@@ -93,12 +89,9 @@ export default class extends Controller {
       this.showElement("push-subscribe-btn")
 
     } catch (error) {
-
     } finally {
-      if (btn) {
-        btn.disabled = false
-        btn.textContent = originalText
-      }
+      btn.disabled = false
+      btn.textContent = originalText
     }
   }
 
