@@ -25,7 +25,14 @@ RSpec.describe WebPushSubscription do
 
     it do
       expect(subject).to validate_uniqueness_of(:endpoint)
+        .scoped_to(:user_uuid)
         .ignoring_case_sensitivity # UUID はDBに保存時に小文字へ正規化されるのに対し、shoulda-matchers が大文字で一意性を検証しようとし失敗するため、大文字での一意性検証を無効化。
+    end
+
+    it "異なるユーザーは同じendpointを持てる" do
+      other_user = create(:user)
+      create(:web_push_subscription, user: other_user, endpoint: subject.endpoint)
+      expect(subject).to be_valid
     end
   end
 end
