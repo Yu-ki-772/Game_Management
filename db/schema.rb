@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_29_023241) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_21_012942) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -246,7 +246,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_29_023241) do
     t.text "p256dh", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_uuid", null: false
-    t.index ["endpoint"], name: "index_web_push_subscriptions_on_endpoint", unique: true
+    t.index ["endpoint", "user_uuid"], name: "index_web_push_subscriptions_on_endpoint_and_user_uuid", unique: true
     t.index ["user_uuid"], name: "index_web_push_subscriptions_on_user_uuid"
   end
 
