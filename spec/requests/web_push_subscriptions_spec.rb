@@ -29,7 +29,7 @@ RSpec.describe "WebPushSubscriptions" do
           params: { endpoint: "https://example.com/push/endpoint", p256dh: "p256dh", auth: "auth" },
           headers: { "Accept" => "text/vnd.turbo-stream.html" }
       }.to change(WebPushSubscription, :count).by(1)
-      expect(response).to have_http_status(:no_content)
+      expect(response).to have_http_status(:ok)
     end
 
     context "同一ユーザーが同一endpointで再購読するとき" do
@@ -66,16 +66,16 @@ RSpec.describe "WebPushSubscriptions" do
             params: { endpoint: subscription.endpoint },
             headers: { "Accept" => "text/vnd.turbo-stream.html" }
         }.to change(WebPushSubscription, :count).by(-1)
-        expect(response).to have_http_status(:no_content)
+        expect(response).to have_http_status(:ok)
       end
     end
 
     context "購読が存在しないとき" do
-      it "204を返す" do
+      it "200を返す" do
         delete web_push_subscriptions_path,
           params: { endpoint: "存在しないendpoint" },
           headers: { "Accept" => "text/vnd.turbo-stream.html" }
-        expect(response).to have_http_status(:no_content)
+        expect(response).to have_http_status(:ok)
       end
     end
 

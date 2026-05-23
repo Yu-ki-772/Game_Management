@@ -3,24 +3,31 @@
 // 元の push_notification_controller.js から
 // Push API の操作と公開鍵の文字列変換を抜き出したクラス。
 export class PushSubscriptionService {
+  // VAPID公開鍵を受け取りインスタンスプロパティに代入
   constructor(vapidPublicKey) {
     this.vapidPublicKey = vapidPublicKey
   }
 
+  // ブラウザ側の既存のPush購読情報を取得する
   async getSubscription() {
-    const registration = await navigator.serviceWorker.ready
-    return registration.pushManager.getSubscription()
+    const registration = await navigator.serviceWorker.ready// ServiceWorkerの準備完了を待つ
+    return registration.pushManager.getSubscription() // 現在の購読情報を返す
   }
 
+  // ブラウザ側でPush購読を作成する
   async createSubscription() {
-    const registration = await navigator.serviceWorker.ready
+    const registration = await navigator.serviceWorker.ready // ServiceWorkerの準備完了を待つ
+    // Push購読を作成して返す
     return registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(this.vapidPublicKey)
+      // VAPID公開鍵をUint8Arrayに変換して渡す
+      applicationServerKey: Uint8Array.fromBase64(this.vapidPublicKey, { alphabet: "base64url" })
     })
   }
 
+  // 購読情報の作成をアプリケーションサーバーにリクエスト
   async saveSubscription(subscription) {
+    // 購読情報からendpointと暗号化キーを取り出す
     const { endpoint, keys } = subscription.toJSON()
 
     const response = await fetch("/web_push_subscriptions", {
@@ -33,9 +40,14 @@ export class PushSubscriptionService {
       })
     })
 
+    // レスポンスボディをTurboに委譲し、フラッシュメッセージをturbo_streamに表示させる
+    const html = await response.text()
+    Turbo.renderStreamMessage(html)
+
     return response.ok
   }
 
+  // 購読情報の削除をアプリケーションサーバーにリクエスト
   async deleteSubscription(subscription) {
     const response = await fetch("/web_push_subscriptions", {
       method: "DELETE",
@@ -43,10 +55,15 @@ export class PushSubscriptionService {
       body: JSON.stringify({ endpoint: subscription.endpoint })
     })
 
+    // レスポンスボディをTurboに委譲し、フラッシュメッセージをturbo_streamに表示させる
+    const html = await response.text()
+    Turbo.renderStreamMessage(html)
+
     return response.ok
   }
 }
 
+// CSRFトークンを含むリクエスト用ヘッダーを返す
 function csrfHeaders() {
   return {
     "Content-Type": "application/json",
@@ -54,10 +71,3 @@ function csrfHeaders() {
   }
 }
 
-// Web Push の VAPID 公開鍵（URL-safe Base64）を Uint8Array に変換する。
-function urlBase64ToUint8Array(base64String) {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
-  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/")
-  const rawData = window.atob(base64)
-  return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)))
-}

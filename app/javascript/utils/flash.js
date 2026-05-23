@@ -1,0 +1,47 @@
+// app/javascript/utils/flash.js
+
+// shared/_flash.html.erbのnoticeと同じ見た目のメッセージをflash_messagesに挿入する
+export function showFlashNotice(message) {
+  document.getElementById("flash_messages").insertAdjacentHTML("afterbegin", `
+    <div data-controller="flash"
+         data-action="turbo:before-cache@window->flash#beforeCache"
+         class="inline-flex items-center gap-3 rounded-md px-4 py-3 max-w-sm w-max bg-emerald-50 border border-emerald-200 dark:bg-emerald-950 dark:border-emerald-800 transition-opacity duration-500"
+         role="alert">
+      <p class="text-lg text-emerald-700 dark:text-emerald-300"></p>
+      <button data-action="flash#dismiss"
+              class="shrink-0 text-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-200"
+              aria-label="閉じる">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+  `)
+  document.getElementById("flash_messages").firstElementChild.querySelector("p").textContent = message
+}
+
+// shared/_flash.html.erbのalertと同じ見た目のエラーメッセージをflash_messagesに挿入する
+export function showFlashAlert(message) {
+  document.getElementById("flash_messages").insertAdjacentHTML("afterbegin", `
+    <div data-controller="flash"
+         data-flash-duration-value="0"
+         class="inline-flex items-center gap-3 rounded-md px-4 py-3 max-w-sm w-max bg-red-50 border border-red-200 dark:bg-red-950 dark:border-red-800 transition-opacity duration-500"
+         role="alert">
+      <p class="text-lg text-red-600 dark:text-red-400"></p>
+      <button data-action="flash#dismiss"
+              class="shrink-0 text-red-400 hover:text-red-600 dark:hover:text-red-200"
+              aria-label="閉じる">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+  `)
+  document.getElementById("flash_messages").firstElementChild.querySelector("p").textContent = message
+}
