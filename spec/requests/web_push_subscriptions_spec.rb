@@ -29,7 +29,7 @@ RSpec.describe "WebPushSubscriptions" do
           params: { endpoint: "https://example.com/push/endpoint", p256dh: "p256dh", auth: "auth" },
           headers: { "Accept" => "text/vnd.turbo-stream.html" }
       }.to change(WebPushSubscription, :count).by(1)
-      expect(response).to have_http_status(:no_content)
+      expect(response).to have_http_status(:ok)
     end
 
     context "同一ユーザーが同一endpointで再購読するとき" do
