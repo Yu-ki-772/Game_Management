@@ -16,7 +16,7 @@ class WebPushSubscriptionsController < ApplicationController
       unique_by: %i[endpoint user_uuid],
       record_timestamps: true
     )
-    
+
     flash.now[:notice] = "通知をオンにしました"
   rescue
     flash.now[:alert] = "通知をオンにできませんでした"
