@@ -4,8 +4,6 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
 
 // ヘッダのドロップダウン
 import DropdownController from './dropdown_controller'
@@ -24,11 +22,11 @@ import ClipboardController from "./clipboard_controller"
 application.register("clipboard", ClipboardController)
 
 // プッシュ通知の購読処理用
-import PushNotificationController from "./push_notification_controller"
+import PushNotificationController from "./pwa/push_notification_controller"
 application.register("push-notification", PushNotificationController)
 
 // PWAホーム画面追加の案内モーダル用
-import PwaInstallController from "./pwa_install_controller"
+import PwaInstallController from "./pwa/pwa_install_controller"
 application.register("pwa-install", PwaInstallController)
 
 // ダークモード・ライトモードの切り替えボタン用
