@@ -2,9 +2,9 @@
 
 import { Controller } from "@hotwired/stimulus"
 // Push API操作を担うサービスクラスをインポート
-import { PushSubscriptionService } from "../api/push_subscription"
+import { PushSubscriptionService } from "../../api/push_subscription"
 // フラッシュメッセージの表示用
-import { showFlashAlert, showFlashNotice } from "../utils/flash"
+import { showFlashAlert, showFlashNotice } from "../../utils/flash"
 
 // 購読情報の作成・削除ボタン用の処理と、
 // 購読情報の作成を促すモーダルの表示の処理
