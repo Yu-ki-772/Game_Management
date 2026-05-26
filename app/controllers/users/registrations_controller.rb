@@ -5,9 +5,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #=======================================================
   # publicメソッド
   #=======================================================
-  def new
-    super
-  end
 
   def create
     super do |resource|
@@ -19,9 +16,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  def edit
-    super
-  end
 
   def update
     super do |resource|
@@ -31,39 +25,21 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  def destroy
-    super
-  end
 
-  def cancel
-    super
-  end
-
-  # ominiauth用
-  def build_resource(hash = {})
-    hash[:uid] = User.create_unique_string
-    super
-  end
 
   protected
   #=======================================================
   # protectedメソッド
   #=======================================================
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [ :name, :uid, :provider ])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :name ])
   end
 
   def configure_account_update_params
     devise_parameter_sanitizer.permit(:account_update, keys: [ :name, :description, :avatar ])
   end
 
-  def after_sign_up_path_for(resource)
-    super(resource)
-  end
 
-  def after_inactive_sign_up_path_for(resource)
-    super(resource)
-  end
 
   def after_update_path_for(resource)
     user_path(id: current_user.uuid)
