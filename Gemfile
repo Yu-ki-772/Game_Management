@@ -73,7 +73,7 @@ gem "cloudinary", "~> 2.4", ">= 2.4.4"
 gem "ransack", "~> 4.4", ">= 4.4.1"
 
 # ページネーション
-gem "pagy", "~> 43.5"
+gem "pagy", "~> 43.6"
 
 # カレンダー
 gem "simple_calendar", "~> 3.1"
